@@ -24,7 +24,7 @@ export default function Home() {
             Home Credit Internal Opportunity Hub
           </p>
           <h1 className="text-4xl font-bold text-white mb-5 leading-tight">
-            Your career doesn't have to go up to grow.
+            Find your next move — without leaving.
           </h1>
           <p className="text-lg mb-8 leading-relaxed" style={{ color: 'rgba(255,255,255,0.85)' }}>
             Talent Marketplace lets you find gigs, projects, and roles across the company that match your skills and where you want to grow — and get matched to them automatically. Instead of waiting for a promotion, you can explore real opportunities happening inside Home Credit right now.

@@ -10,6 +10,7 @@ export default function PostOpportunity() {
     type: 'gig', title: '', department: '', description: '',
     skills_needed: '', duration_days: '', bandwidth: 'Part-time', slots: 1,
   })
+  const [attachedFile, setAttachedFile] = useState(null)
 
   const isHR = user?.role === 'hr_admin'
   const isManager = user?.role === 'manager' || isHR
@@ -86,6 +87,28 @@ export default function PostOpportunity() {
           </div>
         </div>
         {field('Available Slots', 'slots', 'number', { min: 1 })}
+
+        <div>
+          <label className="block text-sm font-medium text-brand-ink mb-1">
+            Attachment <span className="text-brand-muted font-normal">(optional — JD, brief, or any file)</span>
+          </label>
+          <label className="flex items-center gap-3 border-2 border-dashed border-gray-200 rounded-xl px-4 py-4 cursor-pointer hover:border-red-300 transition-colors">
+            <span className="text-2xl">📎</span>
+            <div className="flex-1 min-w-0">
+              {attachedFile
+                ? <><p className="text-sm font-medium text-brand-ink truncate">{attachedFile.name}</p>
+                    <p className="text-xs text-brand-muted">{(attachedFile.size / 1024).toFixed(0)} KB</p></>
+                : <><p className="text-sm text-brand-muted">Click to upload a file</p>
+                    <p className="text-xs text-brand-muted">PDF, Word, Excel, PNG, or any format</p></>
+              }
+            </div>
+            {attachedFile && (
+              <button type="button" onClick={e => { e.preventDefault(); setAttachedFile(null) }}
+                className="text-brand-muted hover:text-red-600 font-bold text-lg shrink-0">×</button>
+            )}
+            <input type="file" className="hidden" onChange={e => setAttachedFile(e.target.files[0] || null)} />
+          </label>
+        </div>
 
         <button type="submit" className="w-full py-3 rounded-xl text-white font-semibold text-sm" style={{ backgroundColor: '#C00000' }}>
           Submit for Review →

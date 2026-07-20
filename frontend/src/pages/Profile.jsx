@@ -83,19 +83,6 @@ export default function Profile() {
         <TagInput label="My top skills" value={form.current_skills} onChange={v => setForm(f => ({ ...f, current_skills: v }))} placeholder="e.g. data analysis (press Enter or Add)" />
         <TagInput label="Skills I want to develop" value={form.skills_to_develop} onChange={v => setForm(f => ({ ...f, skills_to_develop: v }))} placeholder="e.g. facilitation" />
 
-        <div>
-          <label className="block text-sm font-medium text-brand-ink mb-2">Career direction</label>
-          <div className="flex gap-3">
-            {['Manager track', 'Expert track', 'Cross-functional'].map(d => (
-              <label key={d} className="flex items-center gap-2 cursor-pointer">
-                <input type="radio" name="direction" value={d} checked={form.career_direction === d}
-                  onChange={e => setForm(f => ({ ...f, career_direction: e.target.value }))} />
-                <span className="text-sm">{d}</span>
-              </label>
-            ))}
-          </div>
-        </div>
-
         <div className="flex items-center justify-between p-4 bg-brand-grey rounded-xl">
           <div>
             <p className="text-sm font-medium text-brand-ink">Open to opportunities</p>

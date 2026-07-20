@@ -33,7 +33,7 @@ export default function Shell() {
         <nav className="flex-1 px-3 py-4 space-y-5">
           <div>
             <p className="text-white/40 text-xs uppercase tracking-wider px-3 mb-1">Explore</p>
-            <NavItem to="/" label="🏠 Home" />
+            <NavItem to="/" label="📖 Introduction" />
             <NavItem to="/opportunities" label="📋 Opportunities" />
             <NavItem to="/matches" label="✨ My Matches" />
             <NavItem to="/faq" label="❓ FAQ" />
