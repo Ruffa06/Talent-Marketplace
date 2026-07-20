@@ -9,6 +9,8 @@ import MyMatches from './pages/MyMatches'
 import Dashboard from './pages/Dashboard'
 import Feedback from './pages/Feedback'
 import FAQ from './pages/FAQ'
+import Notifications from './pages/Notifications'
+import Applicants from './pages/Applicants'
 
 export default function App() {
   return (
@@ -17,12 +19,14 @@ export default function App() {
         <Route index element={<Home />} />
         <Route path="opportunities" element={<Opportunities />} />
         <Route path="opportunities/:id" element={<OpportunityDetail />} />
+        <Route path="opportunities/:id/applicants" element={<Applicants />} />
         <Route path="post" element={<PostOpportunity />} />
         <Route path="profile" element={<Profile />} />
         <Route path="matches" element={<MyMatches />} />
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="feedback" element={<Feedback />} />
         <Route path="faq" element={<FAQ />} />
+        <Route path="notifications" element={<Notifications />} />
       </Route>
     </Routes>
   )

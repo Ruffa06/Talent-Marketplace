@@ -2,31 +2,42 @@ import { useEffect, useState } from 'react'
 import api from '../api'
 import { useUser } from '../context/UserContext'
 
+const MAX_SKILLS = 8
+
 function TagInput({ label, value, onChange, placeholder }) {
   const [input, setInput] = useState('')
   function add() {
     const v = input.trim()
-    if (v && !value.includes(v)) { onChange([...value, v]); setInput('') }
+    if (v && !value.includes(v) && value.length < MAX_SKILLS) {
+      onChange([...value, v]); setInput('')
+    }
   }
   return (
     <div>
-      <label className="block text-sm font-medium text-brand-ink mb-1">{label}</label>
-      <div className="flex flex-wrap gap-1.5 mb-2">
+      <label className="block text-sm font-medium text-brand-ink mb-1">
+        {label} <span className="text-brand-muted font-normal text-xs">({value.length}/{MAX_SKILLS})</span>
+      </label>
+      <div className="flex flex-wrap gap-1.5 mb-2 min-h-[28px]">
         {value.map(s => (
           <span key={s} className="flex items-center gap-1 bg-indigo-50 text-indigo-700 text-xs px-2 py-0.5 rounded-full">
             {s}
-            <button onClick={() => onChange(value.filter(x => x !== s))} className="text-indigo-400 hover:text-indigo-700 font-bold">×</button>
+            <button type="button" onClick={() => onChange(value.filter(x => x !== s))}
+              className="text-indigo-400 hover:text-indigo-700 font-bold leading-none">×</button>
           </span>
         ))}
       </div>
-      <div className="flex gap-2">
-        <input value={input} onChange={e => setInput(e.target.value)}
-          onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); add() } }}
-          placeholder={placeholder}
-          className="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-400" />
-        <button type="button" onClick={add}
-          className="px-3 py-2 text-sm rounded-lg text-white" style={{ backgroundColor: '#C00000' }}>Add</button>
-      </div>
+      {value.length < MAX_SKILLS ? (
+        <div className="flex gap-2">
+          <input value={input} onChange={e => setInput(e.target.value)}
+            onKeyDown={e => { if (e.key === 'Enter') { e.preventDefault(); add() } }}
+            placeholder={placeholder}
+            className="flex-1 border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-400" />
+          <button type="button" onClick={add}
+            className="px-3 py-2 text-sm rounded-lg text-white" style={{ backgroundColor: '#C00000' }}>Add</button>
+        </div>
+      ) : (
+        <p className="text-xs text-brand-muted">Maximum {MAX_SKILLS} skills reached.</p>
+      )}
     </div>
   )
 }
@@ -34,25 +45,17 @@ function TagInput({ label, value, onChange, placeholder }) {
 export default function Profile() {
   const { user, showToast } = useUser()
   const [form, setForm] = useState({
-    aspiration_text: '', current_skills: [], skills_to_develop: [],
-    career_direction: 'Cross-functional', is_open_to_opportunities: true,
+    aspiration_text: '', current_skills: [], skills_to_develop: [], is_open_to_opportunities: true,
   })
-  const [saved, setSaved] = useState(false)
 
   useEffect(() => {
     if (!user) return
-    api.get(`/profiles/${user.id}`).then(r => {
-      setForm({ ...r.data })
-    }).catch(() => {})
+    api.get(`/profiles/${user.id}`).then(r => setForm({ ...r.data })).catch(() => {})
   }, [user])
 
   function save(e) {
     e.preventDefault()
-    api.put(`/profiles/${user.id}`, form).then(() => {
-      showToast('Profile updated.')
-      setSaved(true)
-      setTimeout(() => setSaved(false), 2000)
-    })
+    api.put(`/profiles/${user.id}`, form).then(() => showToast('Profile updated.'))
   }
 
   if (!user) return null
@@ -60,7 +63,7 @@ export default function Profile() {
   return (
     <div className="max-w-2xl mx-auto px-6 py-8">
       <h1 className="text-2xl font-bold text-brand-ink mb-1">My Profile</h1>
-      <p className="text-sm text-brand-muted mb-6">This is what the matching engine uses to find your best opportunities.</p>
+      <p className="text-sm text-brand-muted mb-6">This is what the AI uses to match you to opportunities.</p>
 
       <form onSubmit={save} className="bg-white rounded-2xl border border-gray-200 shadow-sm p-8 space-y-6">
         <div className="flex items-center gap-4 pb-4 border-b border-gray-100">
@@ -69,7 +72,7 @@ export default function Profile() {
           </div>
           <div>
             <p className="font-semibold text-brand-ink">{user.name}</p>
-            <p className="text-sm text-brand-muted">{user.department} · {user.role}</p>
+            <p className="text-sm text-brand-muted">{user.department}</p>
           </div>
         </div>
 
@@ -80,8 +83,13 @@ export default function Profile() {
             className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-400" />
         </div>
 
-        <TagInput label="My top skills" value={form.current_skills} onChange={v => setForm(f => ({ ...f, current_skills: v }))} placeholder="e.g. data analysis (press Enter or Add)" />
-        <TagInput label="Skills I want to develop" value={form.skills_to_develop} onChange={v => setForm(f => ({ ...f, skills_to_develop: v }))} placeholder="e.g. facilitation" />
+        <TagInput label="My top skills" value={form.current_skills}
+          onChange={v => setForm(f => ({ ...f, current_skills: v }))}
+          placeholder="e.g. data analysis (press Enter or Add)" />
+
+        <TagInput label="Skills I want to develop" value={form.skills_to_develop}
+          onChange={v => setForm(f => ({ ...f, skills_to_develop: v }))}
+          placeholder="e.g. facilitation" />
 
         <div className="flex items-center justify-between p-4 bg-brand-grey rounded-xl">
           <div>
@@ -97,7 +105,7 @@ export default function Profile() {
         </div>
 
         <button type="submit" className="w-full py-3 rounded-xl text-white font-semibold text-sm" style={{ backgroundColor: '#C00000' }}>
-          {saved ? '✓ Saved!' : 'Save Profile'}
+          Save Profile
         </button>
       </form>
     </div>

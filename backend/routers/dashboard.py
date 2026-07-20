@@ -1,16 +1,17 @@
-from fastapi import APIRouter, Depends
+from fastapi import APIRouter, Depends, Request
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 from database import get_db
-import models, json
+import models
 
 router = APIRouter()
 
 @router.get("/dashboard/summary")
-def get_summary(db: Session = Depends(get_db)):
+def get_summary(request: Request, db: Session = Depends(get_db)):
+    user_id = request.headers.get("X-User-Id")
+
     total_matches = db.query(models.Match).count() or 42
     total_profiles = db.query(models.Profile).count() or 28
-    open_opps = db.query(models.Opportunity).filter(models.Opportunity.status == "live").count()
     feedbacks = db.query(models.Feedback).all()
     avg_rating = round(sum(f.rating for f in feedbacks) / len(feedbacks), 1) if feedbacks else 4.2
 
@@ -38,11 +39,36 @@ def get_summary(db: Session = Depends(get_db)):
         for t, v in feedback_by_type.items()
     ]
 
+    # Pending approvals (postings)
+    pending_opps = db.query(models.Opportunity).filter(
+        models.Opportunity.status == "pending_review"
+    ).all()
+    pending_opps_out = [{
+        "id": o.id, "title": o.title, "type": o.type, "department": o.department,
+        "poster_name": o.poster.name if o.poster else "",
+        "created_at": o.created_at.isoformat(),
+    } for o in pending_opps]
+
+    # Application stats per type
+    app_stats = {"gig": {}, "vacancy": {}, "immersion": {}}
+    all_matches = db.query(models.Match).all()
+    for m in all_matches:
+        if not m.opportunity:
+            continue
+        t = m.opportunity.type
+        if t not in app_stats:
+            continue
+        s = m.status
+        if s in ("interested", "pending_approval"):
+            app_stats[t]["pending"] = app_stats[t].get("pending", 0) + 1
+        elif s == "accepted":
+            app_stats[t]["approved"] = app_stats[t].get("approved", 0) + 1
+        elif s == "completed":
+            app_stats[t]["done"] = app_stats[t].get("done", 0) + 1
+
     return {
         "total_matches": max(total_matches, 42),
-        "match_rate": 71,
-        "avg_match_score": 76,
-        "nps_rate": 82,
+        "match_rate": 71, "avg_match_score": 76, "nps_rate": 82,
         "opportunities_by_type": [{"type": k, "count": v} for k, v in by_type.items()],
         "top_skills": [{"skill": s, "count": c} for s, c in top_skills],
         "avg_feedback_by_type": avg_feedback_by_type or [
@@ -55,5 +81,9 @@ def get_summary(db: Session = Depends(get_db)):
             {"stage": "Matched ≥1", "count": 22},
             {"stage": "Accepted", "count": 15},
             {"stage": "Feedback Done", "count": max(len(feedbacks), 11)}
-        ]
+        ],
+        "pending_approvals": pending_opps_out,
+        "application_stats": [
+            {"type": t, **app_stats.get(t, {})} for t in ["gig", "vacancy", "immersion"]
+        ],
     }

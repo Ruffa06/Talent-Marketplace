@@ -8,13 +8,12 @@ export default function PostOpportunity() {
   const navigate = useNavigate()
   const [form, setForm] = useState({
     type: 'gig', title: '', department: '', description: '',
-    skills_needed: '', duration_days: '', bandwidth: 'Part-time', slots: 1,
+    skills_needed: '', duration_from: '', duration_to: '', bandwidth: 'Part-time', slots: 1,
   })
   const [attachedFile, setAttachedFile] = useState(null)
 
   const isHR = user?.role === 'hr_admin'
   const isManager = user?.role === 'manager' || isHR
-
   if (!isManager) return <div className="p-8 text-brand-muted">Access restricted to managers and HR admins.</div>
 
   function submit(e) {
@@ -22,12 +21,13 @@ export default function PostOpportunity() {
     const payload = {
       ...form,
       skills_needed: form.skills_needed.split(',').map(s => s.trim()).filter(Boolean),
-      duration_days: form.duration_days ? Number(form.duration_days) : null,
       slots: Number(form.slots),
+      duration_from: form.duration_from || null,
+      duration_to: form.duration_to || null,
     }
     api.post('/opportunities', payload).then(() => {
-      showToast('Posted to the HR admin review queue. Once approved it goes live and matching runs automatically.')
-      navigate('/opportunities')
+      showToast('Submitted for HR admin review. Once approved it goes live and matching runs automatically.')
+      navigate('/matches')
     }).catch(() => showToast('Error posting opportunity.', 'error'))
   }
 
@@ -45,17 +45,17 @@ export default function PostOpportunity() {
 
   return (
     <div className="max-w-2xl mx-auto px-6 py-8">
-      <h1 className="text-2xl font-bold text-brand-ink mb-6">Post an Opportunity</h1>
+      <h1 className="text-2xl font-bold text-brand-ink mb-1">Post an Opportunity</h1>
+      <p className="text-sm text-brand-muted mb-6">All postings go to HR admin for review before becoming visible to employees.</p>
       <form onSubmit={submit} className="bg-white rounded-2xl border border-gray-200 shadow-sm p-8 space-y-5">
 
         <div>
           <label className="block text-sm font-medium text-brand-ink mb-1">Opportunity Type</label>
           <select value={form.type} onChange={e => setForm(f => ({ ...f, type: e.target.value }))}
             className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none">
-            {user?.role !== 'hr_admin' ? null : <option value="vacancy">Vacancy</option>}
             <option value="gig">Gig</option>
             <option value="immersion">Developmental Job Immersion</option>
-            {user?.role === 'hr_admin' && <option value="vacancy">Vacancy</option>}
+            {isHR && <option value="vacancy">Vacancy</option>}
           </select>
         </div>
 
@@ -75,18 +75,28 @@ export default function PostOpportunity() {
         {field('Key Skills Needed (comma-separated)', 'skills_needed', 'text', { placeholder: 'e.g. data visualization, python, stakeholder management' })}
 
         <div className="grid grid-cols-2 gap-4">
-          {field('Duration (days)', 'duration_days', 'number', { placeholder: form.type === 'vacancy' ? 'Leave blank for permanent' : '30' })}
+          <div>
+            <label className="block text-sm font-medium text-brand-ink mb-1">Start Date</label>
+            <input type="date" value={form.duration_from} onChange={e => setForm(f => ({ ...f, duration_from: e.target.value }))}
+              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-400" />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-brand-ink mb-1">End Date <span className="text-brand-muted font-normal">(leave blank if permanent)</span></label>
+            <input type="date" value={form.duration_to} onChange={e => setForm(f => ({ ...f, duration_to: e.target.value }))}
+              className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:border-red-400" />
+          </div>
+        </div>
+
+        <div className="grid grid-cols-2 gap-4">
           <div>
             <label className="block text-sm font-medium text-brand-ink mb-1">Bandwidth</label>
             <select value={form.bandwidth} onChange={e => setForm(f => ({ ...f, bandwidth: e.target.value }))}
               className="w-full border border-gray-200 rounded-lg px-3 py-2 text-sm bg-white focus:outline-none">
-              <option>Part-time</option>
-              <option>Full-time</option>
-              <option>Flexible</option>
+              <option>Part-time</option><option>Full-time</option><option>Flexible</option>
             </select>
           </div>
+          {field('Available Slots', 'slots', 'number', { min: 1 })}
         </div>
-        {field('Available Slots', 'slots', 'number', { min: 1 })}
 
         <div>
           <label className="block text-sm font-medium text-brand-ink mb-1">
@@ -108,6 +118,10 @@ export default function PostOpportunity() {
             )}
             <input type="file" className="hidden" onChange={e => setAttachedFile(e.target.files[0] || null)} />
           </label>
+        </div>
+
+        <div className="bg-amber-50 border border-amber-200 rounded-lg px-4 py-3 text-sm text-amber-800">
+          ⏳ After submission, your posting will show as <strong>Pending Admin Approval</strong> until HR reviews it.
         </div>
 
         <button type="submit" className="w-full py-3 rounded-xl text-white font-semibold text-sm" style={{ backgroundColor: '#C00000' }}>

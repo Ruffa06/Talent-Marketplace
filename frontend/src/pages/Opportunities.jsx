@@ -35,6 +35,12 @@ export default function Opportunities() {
     })
   }
 
+  function reject(id) {
+    api.put(`/opportunities/${id}/reject`).then(() => {
+      setOpps(prev => prev.filter(o => o.id !== id))
+    })
+  }
+
   function getScore(oppId) {
     const m = matches.find(m => m.opp_id === oppId)
     return m ? m.match_score : null
@@ -108,13 +114,25 @@ export default function Opportunities() {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
         {filtered.map(o => (
           <div key={o.id}>
+            {o.status === 'pending_review' && (
+              <div className="mb-1 flex items-center gap-1.5 bg-amber-50 border border-amber-200 rounded-lg px-3 py-1.5 text-xs text-amber-800 font-medium">
+                ⏳ Pending Admin Approval
+              </div>
+            )}
             <OpportunityCard opp={o} matchScore={getScore(o.id)} />
             {tab === 'pending' && isHR && (
-              <button onClick={() => approve(o.id)}
-                className="mt-2 w-full text-sm font-medium py-2 rounded-lg text-white"
-                style={{ backgroundColor: '#1B7A43' }}>
-                ✓ Approve & Go Live
-              </button>
+              <div className="flex gap-2 mt-2">
+                <button onClick={() => approve(o.id)}
+                  className="flex-1 text-sm font-medium py-2 rounded-lg text-white"
+                  style={{ backgroundColor: '#1B7A43' }}>
+                  ✓ Approve & Go Live
+                </button>
+                <button onClick={() => reject(o.id)}
+                  className="flex-1 text-sm font-medium py-2 rounded-lg text-white"
+                  style={{ backgroundColor: '#C00000' }}>
+                  ✕ Reject
+                </button>
+              </div>
             )}
           </div>
         ))}
