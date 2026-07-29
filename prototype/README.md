@@ -61,4 +61,3 @@ State is in-memory only. Reloading the page resets everything, and nothing
 persists between roles — submitting feedback as the employee does not change
 what the manager sees. That is fine for walking someone through the flows and
 wrong for anything else.
-
