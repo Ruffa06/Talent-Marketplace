@@ -1273,9 +1273,9 @@
       <div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:10px;padding:16px 18px;margin-bottom:20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
         <div style="flex:1;min-width:250px;">
           <div style="font-size:13px;font-weight:700;color:#92400E;margin-bottom:3px;">⭐ Feedback due — Process Automation Gig (Finance Ops)</div>
-          <div style="font-size:12px;color:#92400E;line-height:1.55;">This gig ended on <strong>Jul 14</strong>, two weeks ago. Emma Watson has already rated you. Complete yours to release both ratings — takes under two minutes, and it's what puts this on your permanent record.</div>
+          <div style="font-size:12px;color:#92400E;line-height:1.55;">This gig ended on <strong>Jul 14</strong>, two weeks ago. Your manager <strong>Taylor Swift</strong> hosted it and hasn't completed hers either. Both ratings release once you both do — takes under two minutes, and it's what puts this on your permanent record.</div>
         </div>
-        <button class="btn btn-amber btn-sm" onclick="openFeedbackDialog('Process Automation Gig — Finance Ops','Emma Watson')">Rate this gig →</button>
+        <button class="btn btn-amber btn-sm" onclick="openFeedbackDialog('Process Automation Gig — Finance Ops','Taylor Swift')">Rate this gig →</button>
       </div>
 
       <!-- Summary strip -->
@@ -1335,7 +1335,7 @@
         <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:6px;">
           <div style="flex:1;min-width:220px;">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;"><span class="badge badge-vacancy">Vacancy</span><span style="font-size:14px;font-weight:700;color:#111827;">Business Intelligence Analyst — FP&amp;A Team</span></div>
-            <div style="font-size:11px;color:#9CA3AF;">Finance · Permanent · Posted by Roger Federer</div>
+            <div style="font-size:11px;color:#9CA3AF;">Finance · Permanent · Posted by Taylor Swift</div>
           </div>
           <span style="background:#DBEAFE;color:#1E40AF;font-size:11px;font-weight:700;padding:4px 11px;border-radius:6px;border:1px solid #BFDBFE;">💬 Conversation scheduled</span>
         </div>
@@ -1395,7 +1395,7 @@
       <div data-pending="1" style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:10px;padding:16px 18px;margin-bottom:20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
         <div style="flex:1;min-width:250px;">
           <div style="font-size:13px;font-weight:700;color:#92400E;margin-bottom:3px;">⭐ Post-activity survey due — Process Automation Gig (Finance Ops)</div>
-          <div style="font-size:12px;color:#92400E;line-height:1.55;">This gig ended on <strong>Jul 14</strong>. You hosted <strong>Cristiano Ronaldo</strong>, and he has already completed his. Yours releases both ratings — and your three answers are what tell PCD whether hosting was worth it.</div>
+          <div style="font-size:12px;color:#92400E;line-height:1.55;">This gig ended on <strong>Jul 14</strong>. You hosted <strong>Cristiano Ronaldo</strong>, one of your direct reports, and he hasn't completed his yet either. Both ratings release once you both do — and your three answers are what tell PCD whether hosting was worth it.</div>
         </div>
         <button class="btn btn-amber btn-sm" onclick="openFeedbackDialog('Process Automation Gig — Finance Ops','Cristiano Ronaldo','host')">Complete survey →</button>
       </div>
@@ -1407,9 +1407,23 @@
                 <span class="badge badge-vacancy">Vacancy</span>
                 <span style="font-size:14px;font-weight:700;color:#111827;">Business Intelligence Analyst — FP&A Team</span>
               </div>
-              <div style="font-size:12px;color:#9CA3AF;">Finance Department · 3 applicants · 1 slot remaining</div>
+              <div style="font-size:12px;color:#9CA3AF;">Finance Department · 4 applicants · 1 slot remaining</div>
             </div>
             <span class="badge badge-approved">Approved</span>
+          </div>
+        </div>
+        <div class="applicant-row">
+          <div class="app-avatar" style="background:#166534;">CR</div>
+          <div style="flex:1;">
+            <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;">
+              <span style="font-size:13px;font-weight:700;color:#111827;">Cristiano Ronaldo</span>
+              <span class="badge" style="background:#DCFCE7;color:#166534;border:1px solid #BBF7D0;">Your direct report</span>
+            </div>
+            <div style="font-size:11px;color:#9CA3AF;">Finance · SQL, Excel, Financial Modelling · <strong style="color:#16A34A;">88% match</strong> · <em>Conversation scheduled</em></div>
+          </div>
+          <div id="actions-cr" style="display:flex;gap:7px;">
+            <button class="btn btn-green btn-sm" onclick="acceptApplicant(this,'Cristiano Ronaldo')">✓ Accept</button>
+            <button class="btn btn-outline btn-sm" onclick="declineApplicant(this,'Cristiano Ronaldo')">✕ Decline</button>
           </div>
         </div>
         <div class="applicant-row">
@@ -1473,6 +1487,21 @@
           </thead>
           <tbody>
             <tr>
+              <td><span class="team-avatar" style="background:#166534;">CR</span>Cristiano Ronaldo</td>
+              <td>Finance</td><td>DJI: Digital Transformation Office — Strategy</td>
+              <td><span class="badge badge-dji">DJI</span></td><td><span class="badge badge-applied">Applied</span></td>
+            </tr>
+            <tr>
+              <td><span class="team-avatar" style="background:#166534;">CR</span>Cristiano Ronaldo</td>
+              <td>Finance</td><td>Business Intelligence Analyst — FP&amp;A Team</td>
+              <td><span class="badge badge-vacancy">Vacancy</span></td><td><span class="badge badge-applied">Applied</span></td>
+            </tr>
+            <tr>
+              <td><span class="team-avatar" style="background:#166534;">CR</span>Cristiano Ronaldo</td>
+              <td>Finance</td><td>Process Automation Gig — Finance Ops</td>
+              <td><span class="badge badge-gig">Gig</span></td><td><span class="badge badge-accepted">Completed ✓</span></td>
+            </tr>
+            <tr>
               <td><span class="team-avatar" style="background:#C00000;">BK</span>Beyoncé Knowles</td>
               <td>Operations</td><td>HR Analytics Gig — Workforce Planning</td>
               <td><span class="badge badge-gig">Gig</span></td><td><span class="badge badge-accepted">Accepted ✓</span></td>
@@ -1513,8 +1542,8 @@
         <div>
           <div class="section-h2" style="margin-bottom:12px;">Team Participation Summary</div>
           <div class="stat-grid" style="grid-template-columns:repeat(2,1fr);margin-bottom:0;">
-            <div class="card stat-card"><div class="stat-val" style="color:#16A34A;">2</div><div class="stat-lbl">Accepted</div><div class="stat-sub">Active now</div></div>
-            <div class="card stat-card"><div class="stat-val" style="color:#5B21B6;">2</div><div class="stat-lbl">Applied</div><div class="stat-sub">Awaiting decision</div></div>
+            <div class="card stat-card"><div class="stat-val" style="color:#16A34A;">3</div><div class="stat-lbl">Accepted</div><div class="stat-sub">Active now</div></div>
+            <div class="card stat-card"><div class="stat-val" style="color:#5B21B6;">4</div><div class="stat-lbl">Applied</div><div class="stat-sub">Awaiting decision</div></div>
             <div class="card stat-card"><div class="stat-val" style="color:#C00000;">1</div><div class="stat-lbl">Declined</div><div class="stat-sub">Not selected</div></div>
             <div class="card stat-card"><div class="stat-val" style="color:#9CA3AF;">2</div><div class="stat-lbl">Not Yet Active</div><div class="stat-sub">Consider a nudge</div></div>
           </div>
@@ -1614,7 +1643,8 @@
               <div class="field"><label>First Name</label><input id="profileFirst" value="Oprah"></div>
               <div class="field"><label>Last Name</label><input id="profileLast" value="Winfrey"></div>
             </div>
-            <div class="field"><label>Department</label><input value="People & Culture"></div>
+            <div class="field"><label>Department</label><input id="profileDeptInput" value="People & Culture"></div>
+            <div class="field"><label>Reports To (Direct Manager)</label><input id="profileReportsTo" value="Roger Federer" readonly style="background:#F9FAFB;color:#6B7280;"></div>
             <div class="field"><label>About You</label><textarea>HR professional passionate about talent development and organizational effectiveness. Firm believer that the right opportunity at the right time changes everything.</textarea></div>
           </div>
           <div class="card form-card">
@@ -2158,6 +2188,11 @@ function setRole(role) {
   document.getElementById('profileName').textContent = r.name
   const deptMap = { recruiter: 'People & Culture · Recruiter', manager: 'People & Culture · Manager', employee: 'Finance · Employee', admin: 'HR Admin · Administrator' }
   document.getElementById('profileDept').textContent = deptMap[role]
+  // Reporting line — Cristiano Ronaldo reports to Taylor Swift, which is what
+  // puts his activity in her My Team Activity view.
+  const reportsToMap = { recruiter: 'Roger Federer', manager: 'Beyoncé Knowles', employee: 'Taylor Swift', admin: 'Roger Federer' }
+  document.getElementById('profileDeptInput').value = deptMap[role].split(' · ')[0]
+  document.getElementById('profileReportsTo').value = reportsToMap[role]
   renderNav(role)
   navigate(r.nav[0].id)
 }
