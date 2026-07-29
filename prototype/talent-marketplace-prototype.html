@@ -1,0 +1,2611 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Talent Marketplace — LIFT Holdings</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: Arial, system-ui, -apple-system, sans-serif;
+    background: #F4F5F7;
+    color: #1F2937;
+    display: flex;
+    height: 100vh;
+    overflow: hidden;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  /* ── Sidebar — clean white ── */
+  .sidebar {
+    width: 228px;
+    background: #fff;
+    border-right: 1px solid #E5E7EB;
+    display: flex;
+    flex-direction: column;
+    flex-shrink: 0;
+    overflow-y: auto;
+  }
+
+  .sidebar-logo {
+    padding: 18px 16px 14px;
+    border-bottom: 1px solid #F3F4F6;
+  }
+
+  .logo-row {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+  }
+
+  .logo-emoji { font-size: 18px; }
+  .logo-text { font-size: 13px; font-weight: 700; color: #111827; line-height: 1.2; }
+  .logo-pill {
+    display: inline-block;
+    background: #C00000;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 2px 8px;
+    border-radius: 20px;
+  }
+
+  .role-switcher {
+    padding: 10px 12px;
+    border-bottom: 1px solid #F3F4F6;
+  }
+
+  .role-switcher label { font-size: 10px; color: #9CA3AF; display: block; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
+
+  .role-select {
+    width: 100%;
+    background: #F9FAFB;
+    color: #374151;
+    font-size: 12px;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    padding: 6px 8px;
+    outline: none;
+    cursor: pointer;
+    font-family: inherit;
+  }
+
+  .role-select:focus { border-color: #C00000; }
+
+  nav { flex: 1; padding: 10px 10px; }
+
+  .nav-section-label {
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #9CA3AF;
+    padding: 0 10px;
+    margin: 12px 0 4px;
+  }
+
+  .nav-item {
+    display: block;
+    width: 100%;
+    text-align: left;
+    padding: 8px 10px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 500;
+    color: #6B7280;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    transition: background 0.1s, color 0.1s;
+    margin-bottom: 1px;
+    position: relative;
+  }
+
+  .nav-item:hover { background: #FEF2F2; color: #C00000; }
+  .nav-item.active { background: #FEF2F2; color: #C00000; font-weight: 700; }
+
+  .nav-badge {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #C00000;
+    color: #fff;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 1px 6px;
+    border-radius: 20px;
+    min-width: 18px;
+    text-align: center;
+  }
+
+  .sidebar-user {
+    padding: 12px 14px;
+    border-top: 1px solid #F3F4F6;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .user-avatar {
+    width: 32px; height: 32px;
+    background: #C00000;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 12px; color: #fff;
+    flex-shrink: 0;
+  }
+
+  .user-name { font-size: 12px; font-weight: 700; color: #111827; }
+  .user-role { font-size: 10px; color: #9CA3AF; text-transform: capitalize; }
+
+  /* ── Main ── */
+  .main { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
+
+  .topbar {
+    height: 52px;
+    background: #C00000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 24px;
+    flex-shrink: 0;
+    box-shadow: 0 1px 3px rgba(192,0,0,0.25);
+  }
+
+  .topbar-title { font-size: 14px; font-weight: 700; color: #fff; letter-spacing: 0.3px; }
+  .topbar-right { display: flex; align-items: center; gap: 12px; }
+  .topbar-user { font-size: 13px; color: rgba(255,255,255,0.88); }
+  .topbar-avatar {
+    width: 32px; height: 32px;
+    background: rgba(255,255,255,0.22);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 700; font-size: 12px; color: #fff;
+  }
+
+  .content { flex: 1; overflow-y: auto; padding: 28px; }
+
+  /* ── Page ── */
+  .page { display: none; }
+  .page.active { display: block; }
+
+  .page-header { margin-bottom: 24px; }
+  .page-title { font-size: 22px; font-weight: 700; color: #111827; margin-bottom: 4px; }
+  .page-sub { font-size: 13px; color: #6B7280; }
+
+  /* ── Cards ── */
+  .card {
+    background: #fff;
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  }
+
+  /* ── Stat grid ── */
+  .stat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 28px; }
+  .stat-card { padding: 20px; }
+  .stat-val { font-size: 32px; font-weight: 700; color: #111827; line-height: 1; margin-bottom: 6px; font-variant-numeric: tabular-nums; }
+  .stat-lbl { font-size: 13px; font-weight: 600; color: #374151; margin-bottom: 2px; }
+  .stat-sub { font-size: 11px; color: #9CA3AF; }
+
+  /* ── Buttons ── */
+  .btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 8px 16px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    border: none;
+    font-family: inherit;
+    transition: opacity 0.12s;
+    line-height: 1;
+  }
+  .btn:hover { opacity: 0.88; }
+  .btn-red { background: #C00000; color: #fff; }
+  .btn-green { background: #16A34A; color: #fff; }
+  .btn-outline { background: transparent; border: 1px solid #D1D5DB; color: #374151; }
+  .btn-amber { background: #D97706; color: #fff; }
+  .btn-sm { padding: 5px 12px; font-size: 12px; border-radius: 6px; }
+
+  /* ── Badges ── */
+  .badge {
+    display: inline-block;
+    font-size: 10px; font-weight: 700;
+    padding: 2px 9px;
+    border-radius: 20px;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
+  }
+  .badge-gig      { background: #FEE2E2; color: #991B1B; }
+  .badge-vacancy  { background: #DBEAFE; color: #1E40AF; }
+  .badge-dji      { background: #D1FAE5; color: #065F46; }
+  .badge-offer    { background: #EDE9FE; color: #5B21B6; }
+  .badge-nominated{ background: #FFE4E6; color: #9F1239; }
+  .badge-pending  { background: #FEF3C7; color: #92400E; }
+  .badge-approved { background: #D1FAE5; color: #065F46; }
+  .badge-rejected { background: #FEE2E2; color: #991B1B; }
+  .badge-applied  { background: #EDE9FE; color: #5B21B6; }
+  .badge-stale    { background: #FEF3C7; color: #92400E; }
+  .badge-accepted { background: #D1FAE5; color: #065F46; }
+  .badge-declined { background: #FEE2E2; color: #991B1B; }
+  .badge-notyet   { background: #F3F4F6; color: #6B7280; }
+
+  /* ── Skill chip ── */
+  .skill-chip {
+    display: inline-block;
+    background: #F3F4F6; color: #374151;
+    font-size: 11px; font-weight: 500;
+    padding: 3px 9px; border-radius: 6px;
+    border: 1px solid #E5E7EB;
+  }
+
+  /* ── Match bar ── */
+  .match-bar-wrap { margin-top: 10px; }
+  .match-bar-top { display: flex; justify-content: space-between; font-size: 11px; margin-bottom: 4px; }
+  .match-bar-label { color: #9CA3AF; }
+  .match-bar-track { height: 6px; background: #F3F4F6; border-radius: 3px; overflow: hidden; }
+  .match-bar-fill { height: 100%; border-radius: 3px; transition: width 0.4s; }
+
+  /* ── Opportunity card ── */
+  .opp-card { padding: 20px; cursor: pointer; transition: box-shadow 0.12s; }
+  .opp-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+  .opp-card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 10px; margin-bottom: 6px; }
+  .opp-title { font-size: 15px; font-weight: 700; color: #111827; margin-bottom: 4px; line-height: 1.3; }
+  .opp-meta { font-size: 12px; color: #9CA3AF; margin-bottom: 10px; }
+  .chip-row { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 4px; }
+
+  /* ── Two-col ── */
+  .two-col { display: grid; grid-template-columns: 1fr 300px; gap: 20px; }
+
+  /* ── Section heading ── */
+  .section-hd { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .section-h2 { font-size: 15px; font-weight: 700; color: #111827; }
+  .section-link { font-size: 12px; color: #C00000; text-decoration: none; font-weight: 600; cursor: pointer; }
+
+  /* ── Hero ── */
+  .hero {
+    background: linear-gradient(135deg, #0F172A 0%, #1E3A5F 60%, #0F172A 100%);
+    position: relative;
+    overflow: hidden;
+    padding: 48px 48px 48px 52px;
+    margin-bottom: 28px;
+    border-radius: 14px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.18);
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 5px;
+    background: #C00000;
+  }
+
+  /* subtle circle decoration */
+  .hero::after {
+    content: '';
+    position: absolute;
+    right: -60px; top: -60px;
+    width: 260px; height: 260px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.03);
+    pointer-events: none;
+  }
+
+  .hero-eyebrow { font-size: 10px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: #FCA5A5; margin-bottom: 14px; }
+  .hero-title { font-size: 28px; font-weight: 700; color: #fff; margin-bottom: 14px; line-height: 1.3; }
+  .hero-body { font-size: 14px; color: rgba(255,255,255,0.78); max-width: 520px; line-height: 1.7; margin-bottom: 24px; }
+
+  .hero-pills { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 24px; }
+  .hero-pill {
+    display: flex; align-items: center; gap: 10px;
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 10px;
+    padding: 10px 16px;
+  }
+  .hero-pill-icon { font-size: 20px; }
+  .hero-pill-title { font-size: 13px; font-weight: 700; color: #fff; }
+  .hero-pill-sub { font-size: 11px; color: rgba(255,255,255,0.55); }
+
+  /* ── Why apply grid ── */
+  .why-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-bottom: 28px; }
+  .why-card { padding: 18px; border-radius: 12px; background: #fff; border: 1px solid #E5E7EB; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+  .why-icon { font-size: 22px; margin-bottom: 8px; }
+  .why-title { font-size: 13px; font-weight: 700; color: #111827; margin-bottom: 4px; }
+  .why-body { font-size: 12px; color: #6B7280; line-height: 1.55; }
+
+  /* ── Growth type cards ── */
+  .growth-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 28px; }
+  .growth-grid-4 { grid-template-columns: repeat(4, 1fr); align-items: start; }
+  @media (max-width: 1150px) { .growth-grid-4 { grid-template-columns: repeat(2, 1fr); } }
+  .growth-card { padding: 22px; position: relative; overflow: hidden; }
+
+  /* DJI policy callout */
+  .dji-policy-box {
+    margin-top: 12px;
+    background: #F0FDF4;
+    border: 1px solid #BBF7D0;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 11px;
+    color: #065F46;
+    line-height: 1.5;
+  }
+  .dji-policy-box strong { display: block; margin-bottom: 3px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.3px; }
+
+  /* ── Stale alert ── */
+  .stale-section {
+    background: #FFFBEB;
+    border: 1px solid #FDE68A;
+    border-radius: 12px;
+    padding: 18px 20px;
+    margin-bottom: 24px;
+  }
+  .stale-header { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+  .stale-h2 { font-size: 15px; font-weight: 700; color: #92400E; }
+  .stale-row {
+    display: flex; align-items: center; gap: 14px;
+    background: #fff; border: 1px solid #FDE68A;
+    border-radius: 10px; padding: 12px 16px; margin-bottom: 8px;
+  }
+  .stale-row:last-child { margin-bottom: 0; }
+
+  /* ── Team table ── */
+  .team-table { width: 100%; border-collapse: collapse; }
+  .team-table th { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: #9CA3AF; padding: 10px 14px; text-align: left; border-bottom: 2px solid #F3F4F6; }
+  .team-table td { padding: 12px 14px; font-size: 13px; color: #111827; border-bottom: 1px solid #F9FAFB; vertical-align: middle; }
+  .team-table tr:last-child td { border-bottom: none; }
+  .team-table tr:hover td { background: #FAFAFA; }
+  .team-avatar { width: 28px; height: 28px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-weight: 700; font-size: 10px; color: #fff; margin-right: 8px; vertical-align: middle; }
+
+  /* ── Applicant row ── */
+  .applicant-row { padding: 14px 20px; border-bottom: 1px solid #F9FAFB; display: flex; align-items: center; gap: 14px; }
+  .applicant-row:last-child { border-bottom: none; }
+  .app-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 13px; color: #fff; flex-shrink: 0; }
+
+  /* ── Skill bar ── */
+  .skill-bar-row { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .skill-bar-lbl { font-size: 12px; color: #374151; width: 110px; flex-shrink: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .skill-bar-track2 { flex: 1; height: 8px; background: #F3F4F6; border-radius: 4px; overflow: hidden; }
+  .skill-bar-fill2 { height: 100%; background: #C00000; border-radius: 4px; }
+  .skill-bar-n { font-size: 12px; color: #9CA3AF; width: 22px; text-align: right; font-variant-numeric: tabular-nums; }
+
+  /* ── Tabs ── */
+  .tab-bar { display: flex; border-bottom: 2px solid #E5E7EB; margin-bottom: 20px; }
+  .tab { padding: 8px 16px; font-size: 13px; font-weight: 600; color: #9CA3AF; border: none; background: transparent; cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px; font-family: inherit; }
+  .tab.active { color: #C00000; border-bottom-color: #C00000; }
+
+  /* ── Widget ── */
+  .widget { padding: 18px; }
+
+  /* ── Notif ── */
+  .notif-item { display: flex; gap: 10px; padding: 10px 0; border-bottom: 1px solid #F9FAFB; }
+  .notif-item:last-child { border-bottom: none; }
+  .notif-dot { width: 8px; height: 8px; border-radius: 50%; background: #C00000; margin-top: 5px; flex-shrink: 0; }
+  .notif-dot.read { background: #D1D5DB; }
+  .notif-text { font-size: 12px; color: #374151; line-height: 1.5; }
+  .notif-time { font-size: 10px; color: #9CA3AF; margin-top: 2px; }
+
+  /* ── Pending queue ── */
+  .pending-item {
+    background: #fff; border: 1px solid #FDE68A; border-radius: 12px;
+    padding: 16px 18px; display: flex; align-items: center; gap: 14px; margin-bottom: 10px;
+  }
+
+  /* ── Profile ── */
+  .profile-grid { display: grid; grid-template-columns: 220px 1fr; gap: 20px; }
+  .profile-sidebar-card { padding: 24px; text-align: center; }
+  .profile-avatar-lg {
+    width: 72px; height: 72px; background: #C00000;
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 26px; font-weight: 700; color: #fff; margin: 0 auto 12px;
+  }
+  .profile-name { font-size: 16px; font-weight: 700; color: #111827; }
+  .profile-dept { font-size: 12px; color: #9CA3AF; margin-top: 2px; margin-bottom: 18px; }
+  .profile-stat-row { display: flex; justify-content: center; gap: 24px; padding: 14px 0; border-top: 1px solid #F3F4F6; border-bottom: 1px solid #F3F4F6; margin-bottom: 16px; }
+  .profile-stat-val { font-size: 20px; font-weight: 700; color: #111827; text-align: center; font-variant-numeric: tabular-nums; }
+  .profile-stat-lbl { font-size: 10px; color: #9CA3AF; text-transform: uppercase; font-weight: 600; text-align: center; letter-spacing: 0.3px; }
+
+  /* ── Form ── */
+  .form-card { padding: 20px; margin-bottom: 14px; }
+  .form-card h3 { font-size: 14px; font-weight: 700; color: #111827; margin-bottom: 16px; }
+  .field { margin-bottom: 14px; }
+  .field label { font-size: 11px; font-weight: 700; color: #374151; text-transform: uppercase; letter-spacing: 0.3px; display: block; margin-bottom: 5px; }
+  .field input, .field textarea, .field select {
+    width: 100%; padding: 9px 11px; border: 1px solid #E5E7EB; border-radius: 8px;
+    background: #fff; color: #111827; font-size: 13px; font-family: inherit; outline: none;
+  }
+  .field input:focus, .field textarea:focus, .field select:focus { border-color: #C00000; }
+  .field textarea { resize: vertical; min-height: 80px; }
+
+  /* ── FAQ ── */
+  details { background: #fff; border: 1px solid #E5E7EB; border-radius: 12px; overflow: hidden; margin-bottom: 8px; }
+  summary { padding: 16px 18px; font-size: 13px; font-weight: 700; color: #111827; cursor: pointer; list-style: none; display: flex; justify-content: space-between; }
+  summary::-webkit-details-marker { display: none; }
+  .faq-body { padding: 0 18px 16px; font-size: 13px; color: #6B7280; line-height: 1.7; border-top: 1px solid #F9FAFB; }
+  .faq-policy-link {
+    display: inline-block; margin-top: 10px;
+    background: #D1FAE5; color: #065F46; font-size: 11px; font-weight: 700;
+    padding: 3px 10px; border-radius: 6px; border: 1px solid #A7F3D0;
+  }
+
+  /* ── Testimonial ── */
+  .testimonial-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+  .testimonial-card { padding: 20px; }
+  .testimonial-quote { font-size: 13px; color: #374151; line-height: 1.6; font-style: italic; margin-bottom: 14px; }
+  .testimonial-author { display: flex; align-items: center; gap: 8px; }
+  .testimonial-avatar { width: 32px; height: 32px; background: #C00000; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 12px; color: #fff; }
+
+  /* ── Login ── */
+  .login-shell {
+    display: none; position: fixed; inset: 0;
+    background: #F4F5F7; align-items: center; justify-content: center; z-index: 200;
+  }
+  .login-shell.visible { display: flex; }
+  .login-card { background: #fff; border: 1px solid #E5E7EB; border-radius: 16px; padding: 40px; width: 380px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
+  .login-logo-row { display: flex; align-items: center; gap: 10px; margin-bottom: 28px; }
+  .login-logo-icon { width: 40px; height: 40px; background: #C00000; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+  .login-appname { font-size: 16px; font-weight: 700; color: #111827; }
+  .login-appsub { font-size: 11px; color: #9CA3AF; }
+  .login-title { font-size: 20px; font-weight: 700; color: #111827; margin-bottom: 4px; }
+  .login-sub { font-size: 13px; color: #6B7280; margin-bottom: 24px; }
+  .input-group { margin-bottom: 14px; }
+  .input-group label { font-size: 11px; font-weight: 700; color: #374151; text-transform: uppercase; letter-spacing: 0.4px; display: block; margin-bottom: 5px; }
+  .input-group input { width: 100%; padding: 10px 12px; border: 1px solid #E5E7EB; border-radius: 8px; background: #F9FAFB; color: #111827; font-size: 13px; font-family: inherit; outline: none; }
+  .input-group input:focus { border-color: #C00000; background: #fff; }
+  .btn-login { width: 100%; padding: 11px; background: #C00000; color: #fff; border: none; border-radius: 8px; font-size: 14px; font-weight: 700; cursor: pointer; margin-top: 8px; font-family: inherit; }
+  .btn-login:hover { opacity: 0.9; }
+  .login-footer { font-size: 12px; color: #9CA3AF; text-align: center; margin-top: 20px; }
+  .login-footer a { color: #C00000; text-decoration: none; font-weight: 600; cursor: pointer; }
+
+  .opp-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px; }
+
+  /* ── Match score explainer ── */
+  .why-match {
+    position: relative; display: inline-flex; align-items: center; gap: 3px;
+    cursor: help; border-bottom: 1px dotted #9CA3AF;
+  }
+  .why-match .why-match-pop {
+    visibility: hidden; opacity: 0; transition: opacity .15s;
+    position: absolute; bottom: calc(100% + 8px); right: 0; z-index: 60;
+    width: 234px; background: #111827; color: #fff;
+    border-radius: 9px; padding: 11px 12px; font-size: 11px;
+    line-height: 1.55; font-weight: 400; text-align: left;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.22);
+  }
+  .why-match:hover .why-match-pop, .why-match:focus-within .why-match-pop { visibility: visible; opacity: 1; }
+  .why-match-pop b { color: #fff; display: block; margin-bottom: 5px; font-size: 11px; }
+  .why-match-pop .m-row { display: flex; justify-content: space-between; gap: 8px; padding: 2px 0; color: #D1D5DB; }
+  .why-match-pop .m-yes { color: #4ADE80; font-weight: 700; }
+  .why-match-pop .m-part { color: #FBBF24; font-weight: 700; }
+  .why-match-pop .m-no { color: #9CA3AF; font-weight: 700; }
+  .why-match-pop .m-note { margin-top: 7px; padding-top: 7px; border-top: 1px solid #374151; color: #9CA3AF; font-size: 10px; }
+
+  @media (max-width: 900px) {
+    .stat-grid { grid-template-columns: repeat(2, 1fr); }
+    .two-col { grid-template-columns: 1fr; }
+    .profile-grid { grid-template-columns: 1fr; }
+    .opp-grid { grid-template-columns: 1fr; }
+    .testimonial-grid { grid-template-columns: 1fr; }
+    .why-grid { grid-template-columns: repeat(2, 1fr); }
+    .growth-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Login -->
+<div class="login-shell" id="loginShell">
+  <div class="login-card">
+    <div class="login-logo-row">
+      <div class="login-logo-icon">🏪</div>
+      <div><div class="login-appname">Talent Marketplace</div><div class="login-appsub">LIFT Holdings Internal</div></div>
+    </div>
+    <div class="login-title">Welcome back</div>
+    <div class="login-sub">Sign in to explore opportunities across the company</div>
+    <div class="input-group"><label>Email address</label><input type="email" value="oprah.winfrey@abc.com"></div>
+    <div class="input-group"><label>Password</label><input type="password" value="password"></div>
+    <button class="btn-login" onclick="closeLogin()">Sign in</button>
+    <div class="login-footer">No account? <a onclick="closeLogin()">Register here</a> &nbsp;·&nbsp; <a onclick="closeLogin()">Forgot password?</a></div>
+  </div>
+</div>
+
+<!-- App shell -->
+<div class="sidebar">
+  <div class="sidebar-logo">
+    <div class="logo-row">
+      <span class="logo-emoji">🏪</span>
+      <span class="logo-text">Talent Marketplace</span>
+    </div>
+    <span class="logo-pill">LIFT Holdings · Pilot</span>
+  </div>
+
+  <div class="role-switcher">
+    <label>Switch Role / User</label>
+    <select class="role-select" onchange="setRole(this.value)">
+      <option value="recruiter">Oprah Winfrey (Recruiter)</option>
+      <option value="manager">Taylor Swift (Manager)</option>
+      <option value="employee">Cristiano Ronaldo (Employee)</option>
+      <option value="admin">Beyoncé Knowles (Admin)</option>
+    </select>
+  </div>
+
+  <nav id="navItems"></nav>
+
+  <div class="sidebar-user">
+    <div class="user-avatar" id="userInitials">OW</div>
+    <div>
+      <div class="user-name" id="userName">Oprah Winfrey</div>
+      <div class="user-role" id="userRole">Recruiter</div>
+    </div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="topbar">
+    <div class="topbar-title">Talent Marketplace</div>
+    <div class="topbar-right">
+      <span class="topbar-user" id="topbarUser">Oprah Winfrey · Recruiter</span>
+      <div class="topbar-avatar" id="topbarAvatar">OW</div>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <!-- ══ HOME ══ -->
+    <div class="page active" id="page-home">
+      <div class="hero">
+        <div class="hero-eyebrow">LIFT Holdings Internal Opportunity Hub</div>
+        <div class="hero-title">Find your next move — without leaving.</div>
+        <div class="hero-body">Talent Marketplace connects you to gigs, projects, and immersions across the company that match your skills and career goals — and matches you to them automatically. Instead of waiting for your next promotion, explore real opportunities happening inside LIFT Holdings right now.</div>
+        <div class="hero-pills">
+          <div class="hero-pill"><div class="hero-pill-icon">🔍</div><div><div class="hero-pill-title">Discover</div><div class="hero-pill-sub">Internal moves you didn't know existed</div></div></div>
+          <div class="hero-pill"><div class="hero-pill-icon">🌱</div><div><div class="hero-pill-title">Grow</div><div class="hero-pill-sub">Without leaving LIFT Holdings</div></div></div>
+          <div class="hero-pill"><div class="hero-pill-icon">🤝</div><div><div class="hero-pill-title">Get matched</div><div class="hero-pill-sub">AI surfaces your best-fit opportunities</div></div></div>
+        </div>
+        <button class="btn btn-red" onclick="navigate('profile')">Build my profile →</button>
+      </div>
+
+      <!-- Why apply -->
+      <div style="margin-bottom:28px;">
+        <div style="font-size:16px;font-weight:700;color:#111827;margin-bottom:5px;">7 real reasons to apply</div>
+        <div style="font-size:13px;color:#6B7280;margin-bottom:16px;">Marketplace work doesn't come with extra pay — it comes with a formal commitment from LIFT Holdings in return. Here's what's in it for you.</div>
+        <div class="why-grid">
+          <div class="why-card"><div class="why-icon">📋</div><div class="why-title">Fulfill your IDP</div><div class="why-body">Turn your Individual Development Plan from a paper exercise into a real, visible action your manager can endorse.</div></div>
+          <div class="why-card"><div class="why-icon">🎨</div><div class="why-title">Creative outlet</div><div class="why-body">If your current role doesn't let you flex certain muscles, a gig will. Work on problems that genuinely energize you.</div></div>
+          <div class="why-card"><div class="why-icon">❤️</div><div class="why-title">Because you love it</div><div class="why-body">Some people love certain kinds of problems. If a gig matches what energizes you, that's reason enough.</div></div>
+          <div class="why-card"><div class="why-icon">🧭</div><div class="why-title">Career pivot test drive</div><div class="why-body">Curious about another function? A gig or DJI lets you try a different career path with zero risk before committing.</div></div>
+          <div class="why-card"><div class="why-icon">👁️</div><div class="why-title">Visibility with leaders</div><div class="why-body">Work with leaders outside your chain. New sponsors who can advocate for you is one of the fastest career accelerators.</div></div>
+          <div class="why-card"><div class="why-icon">🌐</div><div class="why-title">Build your network</div><div class="why-body">Most opportunities inside companies are word-of-mouth. Cross-functional relationships now compound for your entire career here.</div></div>
+          <div class="why-card"><div class="why-icon">🚀</div><div class="why-title">Move into a new role</div><div class="why-body">Internal vacancies come with a shorter learning curve — you already know our systems, our people, and how things get done. You start contributing on day one, not month three.</div></div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;">
+          <button class="btn btn-red" onclick="navigate('profile')">👤 Build my profile →</button>
+          <span style="font-size:11px;color:#9CA3AF;align-self:center;line-height:1.5;max-width:340px;">None of this reaches you until your skills are on your profile. It takes about five minutes.</span>
+        </div>
+      </div>
+
+      <!-- What LIFT commits in return -->
+      <div style="background:#0F172A;border-radius:12px;padding:24px 26px;margin-bottom:28px;color:#fff;">
+        <div style="font-size:16px;font-weight:700;margin-bottom:5px;">What LIFT Holdings commits to in return</div>
+        <div style="font-size:12px;color:#94A3B8;margin-bottom:18px;line-height:1.6;">Marketplace work is unpaid, so the exchange has to be honest. These four commitments are not goodwill — they are policy, and the <strong style="color:#E2E8F0;">People &amp; Culture Department (PCD)</strong> is accountable for delivering each one. Not your manager, not the host manager, not you — PCD owns it centrally, which is why it holds even if the people around you change.</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
+          <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:9px;padding:15px;">
+            <div style="font-size:19px;margin-bottom:7px;">📁</div>
+            <div style="font-size:12px;font-weight:700;margin-bottom:5px;">A formal record on your file</div>
+            <div style="font-size:11px;color:#CBD5E1;line-height:1.55;">Every completed gig, DJI, and service offer is logged permanently in your HR record with the host manager's rating — not a favour someone might remember, a document.</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:9px;padding:15px;">
+            <div style="font-size:19px;margin-bottom:7px;">🎯</div>
+            <div style="font-size:12px;font-weight:700;margin-bottom:5px;">Inclusion in the talent review</div>
+            <div style="font-size:11px;color:#CBD5E1;line-height:1.55;">Your marketplace contributions are tabled at the annual talent review and succession planning discussion — the room where promotions and successor slates are decided.</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:9px;padding:15px;">
+            <div style="font-size:19px;margin-bottom:7px;">📝</div>
+            <div style="font-size:12px;font-weight:700;margin-bottom:5px;">A post-activity survey, sent immediately</div>
+            <div style="font-size:11px;color:#CBD5E1;line-height:1.55;">The moment the engagement ends, PCD sends you the post-activity survey — what you learned, what you'd change, where you want this to lead. It goes out automatically, while the work is still fresh, and your answers route straight to PCD.</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:9px;padding:15px;">
+            <div style="font-size:19px;margin-bottom:7px;">⭐</div>
+            <div style="font-size:12px;font-weight:700;margin-bottom:5px;">First look at related roles</div>
+            <div style="font-size:11px;color:#CBD5E1;line-height:1.55;">Complete work in a function and you are flagged as a priority internal candidate when a vacancy opens there. Proven contribution counts ahead of a fresh application.</div>
+          </div>
+        </div>
+        <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.1);font-size:11px;color:#94A3B8;line-height:1.6;">
+          <strong style="color:#E2E8F0;">On work hours and workload.</strong> Gigs are done outside office hours, or during office hours only with your manager's written permission. DJIs follow an agreed role split under Policy 211_2021. Your primary role and KPIs are never expected to absorb the difference — if a marketplace commitment starts to compromise your core work, raise it with your manager or PCD and it will be adjusted or ended. No one is penalised for that conversation.
+        </div>
+      </div>
+
+      <!-- Why post -->
+      <div style="margin-bottom:28px;">
+        <div style="font-size:16px;font-weight:700;color:#111827;margin-bottom:5px;">Thinking of posting? 3 reasons to open it up here first</div>
+        <div style="font-size:13px;color:#6B7280;margin-bottom:16px;">For managers and employees with work that needs doing, a role to fill, or a skill to share.</div>
+        <div class="growth-grid">
+          <div class="why-card"><div class="why-icon">⚡</div><div class="why-title">Talent in days, not months</div><div class="why-body">The average internal placement here takes <strong>21 days</strong> against 58 for an external hire — and the person already knows our systems, our data, and our customers. No agency fee, no onboarding runway.</div></div>
+          <div class="why-card"><div class="why-icon">🔍</div><div class="why-title">Reach the people you'd never meet</div><div class="why-body">Your network is a fraction of the company. Posting here puts your work in front of everyone whose skills actually fit — including the person three floors up you'd never have thought to ask.</div></div>
+          <div class="why-card"><div class="why-icon">🏆</div><div class="why-title">Build a reputation as a talent magnet</div><div class="why-body">Managers who host gigs and DJIs become known as places people grow. That reputation compounds — it's what makes strong candidates say yes when you have a real vacancy to fill.</div></div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;">
+          <button class="btn btn-red" onclick="navigate('post')">➕ Post an opportunity →</button>
+          <span style="font-size:11px;color:#9CA3AF;align-self:center;line-height:1.5;max-width:340px;">Posts go live once approved — usually within two working days.</span>
+        </div>
+      </div>
+
+      <!-- Four ways to grow -->
+      <div style="font-size:16px;font-weight:700;color:#111827;margin-bottom:4px;">Four ways to grow here</div>
+      <div style="font-size:13px;color:#6B7280;margin-bottom:16px;">Three you apply for. One you offer.</div>
+      <div class="growth-grid growth-grid-4">
+        <div class="card" style="padding:22px;">
+          <div style="font-size:26px;margin-bottom:10px;">⚡</div>
+          <div style="margin-bottom:8px;"><span class="badge badge-gig">Gig</span></div>
+          <div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:6px;">Gig</div>
+          <div style="font-size:12px;color:#6B7280;line-height:1.6;">Short-term project, <strong>a few hours to a few weeks</strong>. Work on real initiatives without changing roles. Done outside work hours or with your manager's written permission.</div>
+        </div>
+        <div class="card" style="padding:22px;">
+          <div style="font-size:26px;margin-bottom:10px;">🏢</div>
+          <div style="margin-bottom:8px;"><span class="badge badge-vacancy">Vacancy</span></div>
+          <div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:6px;">Vacancy</div>
+          <div style="font-size:12px;color:#6B7280;line-height:1.6;">Open internal role, permanent. A formal internal move to a new team or department.</div>
+        </div>
+        <div class="card" style="padding:22px;">
+          <div style="font-size:26px;margin-bottom:10px;">🌱</div>
+          <div style="margin-bottom:8px;"><span class="badge badge-dji">DJI</span></div>
+          <div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:6px;">Developmental Job Immersion</div>
+          <div style="font-size:12px;color:#6B7280;line-height:1.6;">Temporary assignment to another role or function, <strong>3 – 9 months</strong>. Develop yourself for a future role, or be assessed for a target position — without leaving the company.</div>
+          <div class="dji-policy-box">
+            <strong>📄 Policy 211_2021 v1.0 applies</strong>
+            Before starting, you, your Direct Manager, and the Host Manager co-design a DJI Plan: goals, degree of immersion (100% full or partial split), expected outputs, and how performance will be evaluated. All four parties — employee, Direct Manager, Host Manager, and HR People Partner — sign off using the official DJI Form. Your headcount, salary, and benefits remain with your home department throughout.
+          </div>
+        </div>
+        <div class="card" style="padding:22px;border:1px solid #DDD6FE;">
+          <div style="font-size:26px;margin-bottom:10px;">🎁</div>
+          <div style="margin-bottom:8px;"><span class="badge badge-offer">Offer</span></div>
+          <div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:6px;">Service Offer</div>
+          <div style="font-size:12px;color:#6B7280;line-height:1.6;">The only one that works in reverse. Instead of applying for work, you <strong>publish what you're willing to help with</strong> — mentoring on product and customer segments, vibe-coding a prototype, reviewing a pricing model, coaching a first-time presenter. Teams come to you.</div>
+          <div style="margin-top:12px;background:#F5F3FF;border:1px solid #DDD6FE;border-radius:8px;padding:10px 12px;font-size:11px;color:#5B21B6;line-height:1.5;">
+            <strong>Usually an hour or two at a time.</strong> You set your own capacity and can pause any time. Every completed request is logged on your profile — the fastest way to build an internal reputation for what you're genuinely good at.
+          </div>
+        </div>
+      </div>
+
+      <!-- Testimonials -->
+      <div style="font-size:16px;font-weight:700;color:#111827;margin-bottom:16px;">Stories from inside LIFT Holdings</div>
+      <div class="testimonial-grid">
+        <div class="card testimonial-card">
+          <div class="testimonial-quote">"I moved from Finance to IT through a 2-month analytics gig. The match score gave me the push I needed — and I got visibility with an Exco I'd never have had otherwise."</div>
+          <div class="testimonial-author"><div class="testimonial-avatar">MS</div><div><div style="font-size:12px;font-weight:700;color:#111827;">Maria Santos</div><div style="font-size:11px;color:#9CA3AF;">IT & Innovation</div></div></div>
+        </div>
+        <div class="card testimonial-card">
+          <div class="testimonial-quote">"I posted a gig for a risk reporting dashboard and got 4 strong internal matches in 2 days. Saved us an external hire — the talent was here the whole time."</div>
+          <div class="testimonial-author"><div class="testimonial-avatar">RF</div><div><div style="font-size:12px;font-weight:700;color:#111827;">Roger Federer</div><div style="font-size:11px;color:#9CA3AF;">Risk Management</div></div></div>
+        </div>
+        <div class="card testimonial-card">
+          <div class="testimonial-quote">"The DJI in IT changed how I think about our customers. I came back to Operations with new ideas, new energy — and a network I still rely on every week."</div>
+          <div class="testimonial-author"><div class="testimonial-avatar">PC</div><div><div style="font-size:12px;font-weight:700;color:#111827;">Priyanka Chopra</div><div style="font-size:11px;color:#9CA3AF;">Operations</div></div></div>
+        </div>
+      </div>
+
+      <!-- Closing CTA -->
+      <div style="background:#FEF2F2;border:1px solid #FECACA;border-radius:12px;padding:24px 26px;margin-top:24px;text-align:center;">
+        <div style="font-size:16px;font-weight:700;color:#111827;margin-bottom:5px;">Both doors are open. Pick one.</div>
+        <div style="font-size:12px;color:#7F1D1D;line-height:1.6;margin-bottom:16px;max-width:560px;margin-left:auto;margin-right:auto;">Every story above started with someone doing one of these two things. You don't have to choose forever — most people here end up doing both.</div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
+          <button class="btn btn-red" onclick="navigate('profile')">👤 Build my profile →</button>
+          <button class="btn btn-outline" onclick="navigate('post')">➕ Post an opportunity →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ MATCHES ══ -->
+    <div class="page" id="page-matches">
+      <div class="page-header">
+        <div class="page-title">✨ My Matches</div>
+        <div class="page-sub">Opportunities ≥ 70% match with your current skills</div>
+      </div>
+
+      <!-- Skills invitation banner -->
+      <div style="background:linear-gradient(135deg,#0F172A 0%,#1E3A5F 60%,#0F172A 100%);border-radius:12px;padding:20px 24px;margin-bottom:20px;color:#fff;display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:260px;">
+          <div style="font-size:15px;font-weight:700;margin-bottom:5px;">You're matching on 4 skills. There are 28 live opportunities.</div>
+          <div style="font-size:12px;color:#CBD5E1;line-height:1.6;">Every skill you add opens a door you can't currently see. People who list <strong style="color:#fff;">8 or more skills</strong> get matched to roughly three times as many opportunities — including the ones in functions they'd never have thought to look at.</div>
+          <div style="margin-top:11px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
+            <div style="flex:1;min-width:150px;max-width:260px;height:6px;background:rgba(255,255,255,0.15);border-radius:4px;overflow:hidden;">
+              <div style="width:50%;height:100%;background:#4ADE80;border-radius:4px;"></div>
+            </div>
+            <span style="font-size:11px;color:#94A3B8;">4 of 8 · profile 50% complete</span>
+          </div>
+        </div>
+        <button class="btn btn-red" onclick="navigate('profile')">Add my skills →</button>
+      </div>
+      <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
+        <select style="padding:7px 11px;border:1px solid #E5E7EB;border-radius:8px;background:#fff;color:#374151;font-size:13px;font-family:inherit;outline:none;">
+          <option>All Types</option><option>Gig</option><option>Vacancy</option><option>DJI</option>
+        </select>
+        <select style="padding:7px 11px;border:1px solid #E5E7EB;border-radius:8px;background:#fff;color:#374151;font-size:13px;font-family:inherit;outline:none;">
+          <option>All Departments</option><option>Finance</option><option>People & Culture</option><option>IT & Innovation</option>
+        </select>
+        <input placeholder="🔍  Search opportunities…" style="padding:7px 11px;border:1px solid #E5E7EB;border-radius:8px;background:#fff;color:#374151;font-size:13px;font-family:inherit;outline:none;flex:1;min-width:180px;">
+      </div>
+      <div class="opp-grid">
+        <div class="card"><div class="opp-card">
+          <div class="opp-card-header"><span class="badge badge-vacancy">Vacancy</span><span style="font-size:11px;color:#9CA3AF;">Permanent</span></div>
+          <div class="opp-title">Business Intelligence Analyst — FP&A Team</div>
+          <div class="opp-meta">Finance Department · Full-time · 1 slot</div>
+          <div style="font-size:11px;color:#9CA3AF;margin-top:2px;">👤 Posted by <strong style="color:#6B7280;">Roger Federer</strong> · Finance</div>
+          <div class="chip-row"><span class="skill-chip">Power BI</span><span class="skill-chip">SQL</span><span class="skill-chip">Financial Modeling</span></div>
+          <div class="match-bar-wrap">
+            <div class="match-bar-top">
+              <span class="match-bar-label">Match score</span>
+              <span class="why-match" tabindex="0" style="font-weight:700;color:#16A34A;">90% <span style="font-size:10px;color:#9CA3AF;">ⓘ</span>
+                <span class="why-match-pop">
+                  <b>Why 90%?</b>
+                  <span class="m-row"><span>Power BI</span><span class="m-yes">✓ matched</span></span>
+                  <span class="m-row"><span>SQL</span><span class="m-yes">✓ matched</span></span>
+                  <span class="m-row"><span>Financial Modeling</span><span class="m-part">◐ partial</span></span>
+                  <span class="m-note">Based on skills you listed in your profile. Not an assessment of your performance — the hiring manager makes the final call.</span>
+                </span>
+              </span>
+            </div>
+            <div class="match-bar-track"><div class="match-bar-fill" style="width:90%;background:#16A34A;"></div></div>
+          </div>
+          <div style="margin-top:12px;"><button class="btn btn-red btn-sm" onclick="openApplyDialog('Business Intelligence Analyst — FP&A Team')">Apply Now →</button></div>
+        </div></div>
+        <div class="card"><div class="opp-card">
+          <div class="opp-card-header"><span class="badge badge-gig">Gig</span><span style="font-size:11px;color:#9CA3AF;">Ad-hoc</span></div>
+          <div class="opp-title">HR Analytics Gig — Workforce Planning</div>
+          <div class="opp-meta">People & Culture · Ad-hoc · 2 slots</div>
+          <div style="font-size:11px;color:#9CA3AF;margin-top:2px;">👤 Posted by <strong style="color:#6B7280;">Oprah Winfrey</strong> · People & Culture</div>
+          <div class="chip-row"><span class="skill-chip">Excel</span><span class="skill-chip">Data Analysis</span></div>
+          <div class="match-bar-wrap">
+            <div class="match-bar-top">
+              <span class="match-bar-label">Match score</span>
+              <span class="why-match" tabindex="0" style="font-weight:700;color:#16A34A;">80% <span style="font-size:10px;color:#9CA3AF;">ⓘ</span>
+                <span class="why-match-pop">
+                  <b>Why 80%?</b>
+                  <span class="m-row"><span>Excel</span><span class="m-yes">✓ matched</span></span>
+                  <span class="m-row"><span>Data Analysis</span><span class="m-yes">✓ matched</span></span>
+                  <span class="m-row"><span>Stakeholder Mgmt</span><span class="m-no">— not listed</span></span>
+                  <span class="m-note">Based on skills you listed in your profile. Not an assessment of your performance — the hiring manager makes the final call.</span>
+                </span>
+              </span>
+            </div>
+            <div class="match-bar-track"><div class="match-bar-fill" style="width:80%;background:#16A34A;"></div></div>
+          </div>
+          <div style="margin-top:12px;"><button class="btn btn-red btn-sm" onclick="openApplyDialog('HR Analytics Gig — Workforce Planning')">Apply Now →</button></div>
+        </div></div>
+        <div class="card"><div class="opp-card">
+          <div class="opp-card-header"><span class="badge badge-dji">DJI</span><span style="font-size:11px;color:#9CA3AF;">3 months</span></div>
+          <div class="opp-title">DJI: Digital Transformation Office — Strategy</div>
+          <div class="opp-meta">IT & Innovation · 3 months · 3 slots</div>
+          <div style="font-size:11px;color:#9CA3AF;margin-top:2px;">👤 Posted by <strong style="color:#6B7280;">Taylor Swift</strong> · IT & Innovation</div>
+          <div class="chip-row"><span class="skill-chip">Change Mgmt</span><span class="skill-chip">Agile</span></div>
+          <div class="match-bar-wrap">
+            <div class="match-bar-top">
+              <span class="match-bar-label">Match score</span>
+              <span class="why-match" tabindex="0" style="font-weight:700;color:#D97706;">70% <span style="font-size:10px;color:#9CA3AF;">ⓘ</span>
+                <span class="why-match-pop">
+                  <b>Why 70%?</b>
+                  <span class="m-row"><span>Change Mgmt</span><span class="m-part">◐ partial</span></span>
+                  <span class="m-row"><span>Agile</span><span class="m-no">— not listed</span></span>
+                  <span class="m-row"><span>Stakeholder Mgmt</span><span class="m-yes">✓ matched</span></span>
+                  <span class="m-note">This is a stretch match — a good fit if you want to build these skills. Add Agile to your <em>Skills to Develop</em> to see more like this.</span>
+                </span>
+              </span>
+            </div>
+            <div class="match-bar-track"><div class="match-bar-fill" style="width:70%;background:#D97706;"></div></div>
+          </div>
+          <div style="margin-top:12px;"><span class="badge badge-applied">Applied ✓</span></div>
+        </div></div>
+        <div class="card"><div class="opp-card">
+          <div class="opp-card-header"><span class="badge badge-gig">Gig</span><span style="font-size:11px;color:#9CA3AF;">2 weeks</span></div>
+          <div class="opp-title">Supply Chain Analytics — Q4 Review</div>
+          <div class="opp-meta">Operations · Ad-hoc · 1 slot</div>
+          <div style="font-size:11px;color:#9CA3AF;margin-top:2px;">👤 Posted by <strong style="color:#6B7280;">Priyanka Chopra</strong> · Operations</div>
+          <div class="chip-row"><span class="skill-chip">Excel</span><span class="skill-chip">SAP</span></div>
+          <div class="match-bar-wrap">
+            <div class="match-bar-top">
+              <span class="match-bar-label">Match score</span>
+              <span class="why-match" tabindex="0" style="font-weight:700;color:#D97706;">72% <span style="font-size:10px;color:#9CA3AF;">ⓘ</span>
+                <span class="why-match-pop">
+                  <b>Why 72%?</b>
+                  <span class="m-row"><span>Excel</span><span class="m-yes">✓ matched</span></span>
+                  <span class="m-row"><span>SAP</span><span class="m-no">— not listed</span></span>
+                  <span class="m-row"><span>Data Analysis</span><span class="m-yes">✓ matched</span></span>
+                  <span class="m-note">Based on skills you listed in your profile. Not an assessment of your performance — the hiring manager makes the final call.</span>
+                </span>
+              </span>
+            </div>
+            <div class="match-bar-track"><div class="match-bar-fill" style="width:72%;background:#D97706;"></div></div>
+          </div>
+          <div style="margin-top:12px;"><button class="btn btn-red btn-sm" onclick="openApplyDialog('Supply Chain Analytics — Q4 Review')">Apply Now →</button></div>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- ══ ALL OPPORTUNITIES ══ -->
+    <div class="page" id="page-all-opps">
+      <div class="page-header">
+        <div class="page-title">🔎 All Opportunities</div>
+        <div class="page-sub">Everything live across LIFT Holdings — including the ones outside your current skill set</div>
+      </div>
+
+      <div style="background:#F5F3FF;border:1px solid #DDD6FE;border-radius:10px;padding:12px 16px;margin-bottom:18px;font-size:12px;color:#5B21B6;line-height:1.6;">
+        💡 <strong>No match score filter here — that's deliberate.</strong> If you want to pivot, the opportunities that grow you most are the ones you don't already match. You can also <strong>nominate a colleague</strong> for anything you see.
+      </div>
+
+      <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
+        <select id="filterType" onchange="filterAllOpps()" style="padding:7px 11px;border:1px solid #E5E7EB;border-radius:8px;background:#fff;color:#374151;font-size:13px;font-family:inherit;outline:none;">
+          <option value="">All Types</option><option>Gig</option><option>Vacancy</option><option>DJI</option><option>Service Offer</option><option>Service Request</option>
+        </select>
+        <select id="filterDept" onchange="filterAllOpps()" style="padding:7px 11px;border:1px solid #E5E7EB;border-radius:8px;background:#fff;color:#374151;font-size:13px;font-family:inherit;outline:none;">
+          <option value="">All Departments</option><option>Finance</option><option>People &amp; Culture</option><option>IT &amp; Innovation</option><option>Operations</option><option>Legal &amp; Compliance</option><option>Commercial Planning</option>
+        </select>
+        <select id="filterScore" onchange="filterAllOpps()" style="padding:7px 11px;border:1px solid #E5E7EB;border-radius:8px;background:#fff;color:#374151;font-size:13px;font-family:inherit;outline:none;">
+          <option value="">Any match score</option><option value="stretch">Stretch roles (&lt;70%)</option><option value="strong">Strong fit (≥70%)</option>
+        </select>
+        <input id="filterSearch" oninput="filterAllOpps()" placeholder="🔍  Search all opportunities…" style="padding:7px 11px;border:1px solid #E5E7EB;border-radius:8px;background:#fff;color:#374151;font-size:13px;font-family:inherit;outline:none;flex:1;min-width:180px;">
+        <button class="btn btn-outline btn-sm" onclick="resetAllOppsFilters()">Clear</button>
+      </div>
+
+      <div style="font-size:12px;color:#6B7280;margin-bottom:12px;">Showing <strong id="oppCount" style="color:#374151;">6 of 28</strong> live opportunities</div>
+
+      <div id="oppEmpty" style="display:none;background:#FFF7ED;border:1px solid #FED7AA;border-radius:10px;padding:20px;text-align:center;font-size:13px;color:#92400E;margin-bottom:16px;">
+        <div style="font-size:22px;margin-bottom:6px;">🔎</div>
+        <strong>Nothing matches those filters.</strong><div style="margin-top:4px;font-size:12px;">Try widening the department or clearing the search — the stretch roles are often filed somewhere you wouldn’t look.</div>
+      </div>
+
+      <div class="opp-grid">
+        <div class="card opp-item" data-type="Vacancy" data-dept="Legal &amp; Compliance" data-score="34"><div class="opp-card">
+          <div class="opp-card-header"><span class="badge badge-vacancy">Vacancy</span><span style="font-size:11px;color:#6B7280;">Permanent</span></div>
+          <div class="opp-title">Sustainability Reporting Lead — ESG</div>
+          <div class="opp-meta">Legal &amp; Compliance · Full-time · 1 slot</div>
+          <div style="font-size:11px;color:#6B7280;margin-top:2px;">👤 Posted by <strong>Adele Adkins</strong> · Legal &amp; Compliance</div>
+          <div style="font-size:11px;color:#6B7280;margin-top:6px;">📅 Aug 15 → Ongoing · Apply by Aug 8</div>
+          <div class="chip-row"><span class="skill-chip">ESG Reporting</span><span class="skill-chip">Regulatory</span></div>
+          <div class="match-bar-wrap">
+            <div class="match-bar-top"><span class="match-bar-label">Match score</span><span style="font-weight:700;color:#6B7280;">34% · stretch</span></div>
+            <div class="match-bar-track"><div class="match-bar-fill" style="width:34%;background:#9CA3AF;"></div></div>
+          </div>
+          <div style="margin-top:12px;display:flex;gap:7px;flex-wrap:wrap;">
+            <button class="btn btn-red btn-sm" onclick="openApplyDialog('Sustainability Reporting Lead — ESG')">Apply Anyway →</button>
+            <button class="btn btn-outline btn-sm" onclick="openNominateDialog('Sustainability Reporting Lead — ESG')">🤝 Nominate</button>
+          </div>
+        </div></div>
+
+        <div class="card opp-item" data-type="Service Offer" data-dept="Commercial Planning" data-score="81"><div class="opp-card">
+          <div class="opp-card-header"><span class="badge badge-offer">Service Offer</span><span style="font-size:11px;color:#6B7280;">~4 hours</span></div>
+          <div class="opp-title">I'll mentor you: pricing for new customer segments</div>
+          <div class="opp-meta">Commercial Planning · Offered by an employee · 2 places left</div>
+          <div style="font-size:11px;color:#6B7280;margin-top:2px;">🤝 Offered by <strong>Harry Styles</strong> · Commercial Planning</div>
+          <div style="font-size:11px;color:#6B7280;margin-top:6px;">📅 Available Aug 1 → Aug 29 · Flexible sessions · ⭐ 4.8 from 6 people</div>
+          <div class="chip-row"><span class="skill-chip">Pricing</span><span class="skill-chip">Segmentation</span><span class="skill-chip">Mentoring</span></div>
+          <div class="match-bar-wrap">
+            <div class="match-bar-top"><span class="match-bar-label">Relevance to your profile</span><span style="font-weight:700;color:#16A34A;">81%</span></div>
+            <div class="match-bar-track"><div class="match-bar-fill" style="width:81%;background:#16A34A;"></div></div>
+          </div>
+          <div style="margin-top:12px;display:flex;gap:7px;flex-wrap:wrap;">
+            <button class="btn btn-red btn-sm" onclick="openApplyDialog('Mentoring from Harry Styles: pricing for new customer segments')">Request this mentoring →</button>
+            <button class="btn btn-outline btn-sm" onclick="openNominateDialog('Mentoring from Harry Styles: pricing for new customer segments')">🤝 Nominate someone</button>
+          </div>
+        </div></div>
+
+        <div class="card opp-item" data-type="Gig" data-dept="IT &amp; Innovation" data-score="58"><div class="opp-card">
+          <div class="opp-card-header"><span class="badge badge-gig">Gig</span><span style="font-size:11px;color:#6B7280;">~12 hours</span></div>
+          <div class="opp-title">Vibe-code a prototype: branch queue tracker</div>
+          <div class="opp-meta">IT &amp; Innovation · Ad-hoc · 2 slots</div>
+          <div style="font-size:11px;color:#6B7280;margin-top:2px;">👤 Posted by <strong>Selena Gomez</strong> · IT &amp; Innovation</div>
+          <div style="font-size:11px;color:#6B7280;margin-top:6px;">📅 Aug 4 → Aug 22 · Apply by Aug 1</div>
+          <div class="chip-row"><span class="skill-chip">Prototyping</span><span class="skill-chip">AI Tools</span></div>
+          <div class="match-bar-wrap">
+            <div class="match-bar-top"><span class="match-bar-label">Match score</span><span style="font-weight:700;color:#D97706;">58% · stretch</span></div>
+            <div class="match-bar-track"><div class="match-bar-fill" style="width:58%;background:#D97706;"></div></div>
+          </div>
+          <div style="margin-top:12px;display:flex;gap:7px;flex-wrap:wrap;">
+            <button class="btn btn-red btn-sm" onclick="openApplyDialog('Vibe-code a prototype: branch queue tracker')">Apply Anyway →</button>
+            <button class="btn btn-outline btn-sm" onclick="openNominateDialog('Vibe-code a prototype: branch queue tracker')">🤝 Nominate</button>
+          </div>
+        </div></div>
+
+        <div class="card opp-item" data-type="DJI" data-dept="Operations" data-score="45"><div class="opp-card">
+          <div class="opp-card-header"><span class="badge badge-dji">DJI</span><span style="font-size:11px;color:#6B7280;">6 months</span></div>
+          <div class="opp-title">DJI: Customer Experience — Journey Redesign</div>
+          <div class="opp-meta">Operations · 6 months · 2 slots</div>
+          <div style="font-size:11px;color:#6B7280;margin-top:2px;">👤 Posted by <strong>Priyanka Chopra</strong> · Operations</div>
+          <div style="font-size:11px;color:#6B7280;margin-top:6px;">📅 Sep 1 → Feb 28 · Apply by Aug 12</div>
+          <div class="chip-row"><span class="skill-chip">Journey Mapping</span><span class="skill-chip">Design Thinking</span></div>
+          <div class="match-bar-wrap">
+            <div class="match-bar-top"><span class="match-bar-label">Match score</span><span style="font-weight:700;color:#6B7280;">45% · stretch</span></div>
+            <div class="match-bar-track"><div class="match-bar-fill" style="width:45%;background:#9CA3AF;"></div></div>
+          </div>
+          <div style="margin-top:12px;display:flex;gap:7px;flex-wrap:wrap;">
+            <button class="btn btn-red btn-sm" onclick="openApplyDialog('DJI: Customer Experience — Journey Redesign')">Apply Anyway →</button>
+            <button class="btn btn-outline btn-sm" onclick="openNominateDialog('DJI: Customer Experience — Journey Redesign')">🤝 Nominate</button>
+          </div>
+        </div></div>
+
+        <div class="card opp-item" data-type="Vacancy" data-dept="Finance" data-score="90"><div class="opp-card">
+          <div class="opp-card-header"><span class="badge badge-vacancy">Vacancy</span><span style="font-size:11px;color:#6B7280;">Permanent</span></div>
+          <div class="opp-title">Business Intelligence Analyst — FP&amp;A Team</div>
+          <div class="opp-meta">Finance · Full-time · 1 slot</div>
+          <div style="font-size:11px;color:#6B7280;margin-top:2px;">👤 Posted by <strong>Roger Federer</strong> · Finance</div>
+          <div style="font-size:11px;color:#6B7280;margin-top:6px;">📅 Sep 1 → Ongoing · Apply by Aug 10</div>
+          <div class="chip-row"><span class="skill-chip">Power BI</span><span class="skill-chip">SQL</span></div>
+          <div class="match-bar-wrap">
+            <div class="match-bar-top"><span class="match-bar-label">Match score</span><span style="font-weight:700;color:#16A34A;">90%</span></div>
+            <div class="match-bar-track"><div class="match-bar-fill" style="width:90%;background:#16A34A;"></div></div>
+          </div>
+          <div style="margin-top:12px;"><span class="badge badge-applied">Applied ✓</span></div>
+        </div></div>
+
+        <div class="card opp-item" data-type="Gig" data-dept="People &amp; Culture" data-score="66"><div class="opp-card">
+          <div class="opp-card-header"><span class="badge badge-gig">Gig</span><span style="font-size:11px;color:#6B7280;">~6 hours</span></div>
+          <div class="opp-title">Coach a first-time presenter — Exco readout</div>
+          <div class="opp-meta">People &amp; Culture · Ad-hoc · 3 slots</div>
+          <div style="font-size:11px;color:#6B7280;margin-top:2px;">👤 Posted by <strong>Oprah Winfrey</strong> · People &amp; Culture</div>
+          <div style="font-size:11px;color:#6B7280;margin-top:6px;">📅 Aug 5 → Aug 26 · Rolling</div>
+          <div class="chip-row"><span class="skill-chip">Coaching</span><span class="skill-chip">Presentation</span></div>
+          <div class="match-bar-wrap">
+            <div class="match-bar-top"><span class="match-bar-label">Match score</span><span style="font-weight:700;color:#D97706;">66% · stretch</span></div>
+            <div class="match-bar-track"><div class="match-bar-fill" style="width:66%;background:#D97706;"></div></div>
+          </div>
+          <div style="margin-top:12px;display:flex;gap:7px;flex-wrap:wrap;">
+            <button class="btn btn-red btn-sm" onclick="openApplyDialog('Coach a first-time presenter — Exco readout')">Apply Anyway →</button>
+            <button class="btn btn-outline btn-sm" onclick="openNominateDialog('Coach a first-time presenter — Exco readout')">🤝 Nominate</button>
+          </div>
+        </div></div>
+      </div>
+    </div>
+
+    <!-- ══ MY SERVICE OFFERS ══ -->
+    <div class="page" id="page-my-offers">
+      <div class="page-header">
+        <div class="page-title">🎁 My Service Offers</div>
+        <div class="page-sub">What you've offered to help with — and who's asking</div>
+      </div>
+
+      <div style="background:#F5F3FF;border:1px solid #DDD6FE;border-radius:10px;padding:14px 18px;margin-bottom:20px;font-size:12px;color:#5B21B6;line-height:1.6;">
+        🎁 <strong>Service Offers work in reverse.</strong> You publish what you're good at and willing to help with; teams across LIFT Holdings request your time. You set your own capacity, accept only what fits, and pause any time. Every completed request is logged on your profile.
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:22px;">
+        <div class="card" style="padding:14px 16px;"><div style="font-size:22px;font-weight:700;color:#111827;font-variant-numeric:tabular-nums;">2</div><div style="font-size:11px;color:#6B7280;font-weight:600;">Active offers</div></div>
+        <div class="card" style="padding:14px 16px;"><div style="font-size:22px;font-weight:700;color:#D97706;font-variant-numeric:tabular-nums;">3</div><div style="font-size:11px;color:#6B7280;font-weight:600;">Open requests</div></div>
+        <div class="card" style="padding:14px 16px;"><div style="font-size:22px;font-weight:700;color:#16A34A;font-variant-numeric:tabular-nums;">7</div><div style="font-size:11px;color:#6B7280;font-weight:600;">Completed</div></div>
+        <div class="card" style="padding:14px 16px;"><div style="font-size:22px;font-weight:700;color:#16A34A;font-variant-numeric:tabular-nums;">4.9</div><div style="font-size:11px;color:#6B7280;font-weight:600;">Avg. rating ★</div></div>
+      </div>
+
+      <!-- Offer 1 -->
+      <div class="card" style="padding:20px;margin-bottom:14px;border-left:3px solid #7C3AED;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:10px;">
+          <div style="flex:1;min-width:220px;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;"><span class="badge badge-offer">Offer</span><span style="font-size:14px;font-weight:700;color:#111827;">Mentoring on product &amp; customer segments</span></div>
+            <div style="font-size:11px;color:#6B7280;">Up to 4 hours / month · 12 people reached · ★ 5.0 average</div>
+          </div>
+          <span class="badge badge-accepted" style="padding:4px 11px;">● Active</span>
+        </div>
+        <div style="font-size:12px;color:#4B5563;line-height:1.6;margin-bottom:14px;">Happy to walk anyone through how we segment customers, how pricing decisions get made, and how to read the segment P&amp;L. Best for people moving into commercial roles or preparing a business case.</div>
+
+        <div style="font-size:11px;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:8px;">2 open requests</div>
+        <div class="applicant-row" style="border-radius:8px;background:#F9FAFB;margin-bottom:7px;">
+          <div class="app-avatar" style="background:#7C3AED;">EW</div>
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:700;color:#111827;">Emma Watson</div>
+            <div style="font-size:11px;color:#6B7280;">Finance · <em>"Preparing a business case for a new segment — would value 45 mins."</em></div>
+          </div>
+          <div style="display:flex;gap:7px;">
+            <button class="btn btn-green btn-sm" onclick="acceptServiceRequest(this,'Emma Watson')">✓ Accept</button>
+            <button class="btn btn-outline btn-sm" onclick="declineApplicant(this,'Emma Watson')">✕ Decline</button>
+          </div>
+        </div>
+        <div class="applicant-row" style="border-radius:8px;background:#F9FAFB;">
+          <div class="app-avatar" style="background:#0891B2;">HS</div>
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:700;color:#111827;">Harry Styles</div>
+            <div style="font-size:11px;color:#6B7280;">Commercial Planning · <em>"New to segment P&amp;L, need a walkthrough before Q4 planning."</em></div>
+          </div>
+          <div style="display:flex;gap:7px;">
+            <button class="btn btn-green btn-sm" onclick="acceptServiceRequest(this,'Harry Styles')">✓ Accept</button>
+            <button class="btn btn-outline btn-sm" onclick="declineApplicant(this,'Harry Styles')">✕ Decline</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Offer 2 -->
+      <div class="card" style="padding:20px;margin-bottom:14px;border-left:3px solid #7C3AED;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:10px;">
+          <div style="flex:1;min-width:220px;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;"><span class="badge badge-offer">Offer</span><span style="font-size:14px;font-weight:700;color:#111827;">Vibe-coding: quick prototypes &amp; automations</span></div>
+            <div style="font-size:11px;color:#6B7280;">Up to 6 hours / month · 5 people reached · ★ 4.8 average</div>
+          </div>
+          <span class="badge badge-accepted" style="padding:4px 11px;">● Active</span>
+        </div>
+        <div style="font-size:12px;color:#4B5563;line-height:1.6;margin-bottom:14px;">If you have a manual process or a rough idea and want to see it working by Friday, bring it. I'll pair with you using AI tooling to get a working prototype — you keep it and can hand it to IT if it proves out.</div>
+        <div style="font-size:11px;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:0.4px;margin-bottom:8px;">1 open request</div>
+        <div class="applicant-row" style="border-radius:8px;background:#F9FAFB;">
+          <div class="app-avatar" style="background:#C00000;">DL</div>
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:700;color:#111827;">Dua Lipa</div>
+            <div style="font-size:11px;color:#6B7280;">IT Risk · <em>"Want to automate our weekly control-testing report."</em></div>
+          </div>
+          <div style="display:flex;gap:7px;">
+            <button class="btn btn-green btn-sm" onclick="acceptServiceRequest(this,'Dua Lipa')">✓ Accept</button>
+            <button class="btn btn-outline btn-sm" onclick="declineApplicant(this,'Dua Lipa')">✕ Decline</button>
+          </div>
+        </div>
+      </div>
+
+      <button class="btn btn-red" onclick="navigate('profile');toast('Add a new service offer in your profile.')">＋ Add a service offer</button>
+    </div>
+
+    <!-- ══ MY NOMINATIONS ══ -->
+    <div class="page" id="page-nominations">
+      <div class="page-header">
+        <div class="page-title">🤝 My Nominations</div>
+        <div class="page-sub">People you put forward — and how they did</div>
+      </div>
+
+      <div style="background:linear-gradient(135deg,#0F172A 0%,#1E3A5F 60%,#0F172A 100%);border-radius:12px;padding:20px 24px;margin-bottom:20px;color:#fff;display:flex;align-items:center;gap:22px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:240px;">
+          <div style="font-size:15px;font-weight:700;margin-bottom:5px;">You're the #2 nominator at LIFT Holdings this quarter</div>
+          <div style="font-size:12px;color:#CBD5E1;line-height:1.6;">4 nominations, 3 of them selected — a 75% hit rate against a 41% company average. Spotting talent that other people miss is a leadership signal, and it's recognised at the quarterly Exco review.</div>
+        </div>
+        <div style="display:flex;gap:22px;">
+          <div style="text-align:center;"><div style="font-size:26px;font-weight:700;color:#4ADE80;font-variant-numeric:tabular-nums;">3</div><div style="font-size:10px;color:#94A3B8;font-weight:600;">SELECTED</div></div>
+          <div style="text-align:center;"><div style="font-size:26px;font-weight:700;font-variant-numeric:tabular-nums;">75%</div><div style="font-size:10px;color:#94A3B8;font-weight:600;">HIT RATE</div></div>
+        </div>
+      </div>
+
+      <div class="card" style="overflow:hidden;">
+        <div style="padding:14px 16px;border-bottom:1px solid #F3F4F6;font-size:14px;font-weight:700;color:#111827;">Nominations you've made</div>
+        <div style="overflow-x:auto;">
+          <table class="team-table">
+            <thead><tr><th>Nominee</th><th>Opportunity</th><th>Type</th><th>Nominated</th><th>Outcome</th></tr></thead>
+            <tbody>
+              <tr>
+                <td><strong>Zendaya Coleman</strong><br><span style="font-size:11px;color:#6B7280;">Finance</span></td>
+                <td>BI Analyst — FP&amp;A Team</td>
+                <td><span class="badge badge-vacancy">Vacancy</span></td>
+                <td>Jul 2</td>
+                <td><span class="badge badge-accepted">Selected ✓</span></td>
+              </tr>
+              <tr>
+                <td><strong>Ed Sheeran</strong><br><span style="font-size:11px;color:#6B7280;">IT &amp; Innovation</span></td>
+                <td>Vibe-code prototype: queue tracker</td>
+                <td><span class="badge badge-gig">Gig</span></td>
+                <td>Jul 9</td>
+                <td><span class="badge badge-accepted">Selected ✓</span></td>
+              </tr>
+              <tr>
+                <td><strong>Lionel Messi</strong><br><span style="font-size:11px;color:#6B7280;">Operations</span></td>
+                <td>DJI: Customer Experience</td>
+                <td><span class="badge badge-dji">DJI</span></td>
+                <td>Jul 15</td>
+                <td><span class="badge badge-accepted">Selected ✓</span></td>
+              </tr>
+              <tr>
+                <td><strong>Jennifer Lopez</strong><br><span style="font-size:11px;color:#6B7280;">People &amp; Culture</span></td>
+                <td>Coach a first-time presenter</td>
+                <td><span class="badge badge-gig">Gig</span></td>
+                <td>Jul 21</td>
+                <td><span class="badge badge-pending">Under review</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:10px;padding:13px 16px;margin-top:16px;font-size:12px;color:#92400E;line-height:1.6;">
+        💡 <strong>Nominating well is a skill.</strong> The nominations that get selected are the ones with a specific reason — what you've actually seen this person do. "She'd be great" loses to "she rebuilt our reconciliation model in two weeks and taught the rest of the team to use it."
+      </div>
+    </div>
+
+    <!-- ══ ADMIN — NOMINATIONS ══ -->
+    <div class="page" id="page-admin-noms">
+      <div class="page-header">
+        <div class="page-title">🏆 Nomination Dashboard</div>
+        <div class="page-sub">Who is spotting talent — and whose nominees actually get selected</div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:22px;">
+        <div class="card" style="padding:16px 18px;"><div style="font-size:24px;font-weight:700;color:#111827;font-variant-numeric:tabular-nums;">63</div><div style="font-size:11px;color:#6B7280;font-weight:600;">Nominations this quarter</div><div style="font-size:10px;color:#9CA3AF;">vs. 19 last quarter</div></div>
+        <div class="card" style="padding:16px 18px;"><div style="font-size:24px;font-weight:700;color:#16A34A;font-variant-numeric:tabular-nums;">26</div><div style="font-size:11px;color:#6B7280;font-weight:600;">Nominees selected</div><div style="font-size:10px;color:#9CA3AF;">41% overall hit rate</div></div>
+        <div class="card" style="padding:16px 18px;"><div style="font-size:24px;font-weight:700;color:#111827;font-variant-numeric:tabular-nums;">31</div><div style="font-size:11px;color:#6B7280;font-weight:600;">Active nominators</div><div style="font-size:10px;color:#9CA3AF;">Across 7 departments</div></div>
+        <div class="card" style="padding:16px 18px;"><div style="font-size:24px;font-weight:700;color:#7C3AED;font-variant-numeric:tabular-nums;">44%</div><div style="font-size:11px;color:#6B7280;font-weight:600;">Placements via nomination</div><div style="font-size:10px;color:#9CA3AF;">Rest are self-applied</div></div>
+      </div>
+
+      <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:10px;padding:13px 16px;margin-bottom:20px;font-size:12px;color:#065F46;line-height:1.6;">
+        🎁 <strong>Reward shortlist.</strong> Ranked by <em>selected</em> nominations, not volume — this deliberately rewards judgement over spraying names. Minimum 3 nominations to qualify, so a single lucky hit doesn't top the table.
+      </div>
+
+      <div class="card" style="overflow:hidden;margin-bottom:20px;">
+        <div style="padding:14px 16px;border-bottom:1px solid #F3F4F6;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;">
+          <div style="font-size:14px;font-weight:700;color:#111827;">Top Nominators — Q3 2026</div>
+          <button class="btn btn-outline btn-sm" onclick="toast('Leaderboard exported to CSV.')">⬇ Export for rewards</button>
+        </div>
+        <div style="overflow-x:auto;">
+          <table class="team-table">
+            <thead><tr><th>#</th><th>Nominator</th><th>Department</th><th>Nominations</th><th>Selected</th><th>Hit rate</th><th></th></tr></thead>
+            <tbody>
+              <tr style="background:#FFFBEB;">
+                <td style="font-weight:700;font-size:15px;color:#B45309;">🥇</td>
+                <td><strong>Priyanka Chopra</strong></td><td>Operations</td>
+                <td style="font-variant-numeric:tabular-nums;">7</td>
+                <td style="font-variant-numeric:tabular-nums;font-weight:700;color:#16A34A;">6</td>
+                <td><span class="badge badge-accepted">86%</span></td>
+                <td><button class="btn btn-outline btn-sm" onclick="toast('Priyanka Chopra flagged for Q3 recognition.')">🎁 Reward</button></td>
+              </tr>
+              <tr style="background:#FFFBEB;">
+                <td style="font-weight:700;font-size:15px;color:#6B7280;">🥈</td>
+                <td><strong>Taylor Swift</strong></td><td>People &amp; Culture</td>
+                <td style="font-variant-numeric:tabular-nums;">4</td>
+                <td style="font-variant-numeric:tabular-nums;font-weight:700;color:#16A34A;">3</td>
+                <td><span class="badge badge-accepted">75%</span></td>
+                <td><button class="btn btn-outline btn-sm" onclick="toast('Taylor Swift flagged for Q3 recognition.')">🎁 Reward</button></td>
+              </tr>
+              <tr style="background:#FFFBEB;">
+                <td style="font-weight:700;font-size:15px;color:#92400E;">🥉</td>
+                <td><strong>Roger Federer</strong></td><td>Finance</td>
+                <td style="font-variant-numeric:tabular-nums;">5</td>
+                <td style="font-variant-numeric:tabular-nums;font-weight:700;color:#16A34A;">3</td>
+                <td><span class="badge badge-accepted">60%</span></td>
+                <td><button class="btn btn-outline btn-sm" onclick="toast('Roger Federer flagged for Q3 recognition.')">🎁 Reward</button></td>
+              </tr>
+              <tr>
+                <td style="color:#9CA3AF;font-weight:700;">4</td>
+                <td><strong>Selena Gomez</strong></td><td>IT &amp; Innovation</td>
+                <td style="font-variant-numeric:tabular-nums;">6</td>
+                <td style="font-variant-numeric:tabular-nums;font-weight:700;color:#16A34A;">3</td>
+                <td><span class="badge badge-pending">50%</span></td>
+                <td><button class="btn btn-outline btn-sm" onclick="toast('Selena Gomez flagged for Q3 recognition.')">🎁 Reward</button></td>
+              </tr>
+              <tr>
+                <td style="color:#9CA3AF;font-weight:700;">5</td>
+                <td><strong>Emma Watson</strong></td><td>Finance</td>
+                <td style="font-variant-numeric:tabular-nums;">3</td>
+                <td style="font-variant-numeric:tabular-nums;font-weight:700;color:#16A34A;">2</td>
+                <td><span class="badge badge-pending">67%</span></td>
+                <td><button class="btn btn-outline btn-sm" onclick="toast('Emma Watson flagged for Q3 recognition.')">🎁 Reward</button></td>
+              </tr>
+              <tr>
+                <td style="color:#9CA3AF;font-weight:700;">6</td>
+                <td><strong>Harry Styles</strong></td><td>Commercial Planning</td>
+                <td style="font-variant-numeric:tabular-nums;">9</td>
+                <td style="font-variant-numeric:tabular-nums;font-weight:700;color:#D97706;">2</td>
+                <td><span class="badge badge-declined">22%</span></td>
+                <td><span style="font-size:11px;color:#9CA3AF;">High volume, low precision</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <div class="card" style="padding:18px 20px;">
+        <div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:4px;">Why this matters</div>
+        <div style="font-size:12px;color:#4B5563;line-height:1.7;">Nominated candidates are selected at <strong style="color:#111827;">41%</strong> against <strong style="color:#111827;">23%</strong> for self-applications — someone who knows the work vouching for a specific person is a stronger signal than a self-assessment. Nomination is also how the marketplace reaches people who would never put themselves forward, which is exactly the group that formal posting alone tends to miss.</div>
+      </div>
+    </div>
+
+    <!-- ══ MY APPLICATIONS ══ -->
+    <div class="page" id="page-applications">
+      <div class="page-header">
+        <div class="page-title">📨 My Applications</div>
+        <div class="page-sub">Track where every application stands — no guessing</div>
+      </div>
+
+      <!-- Feedback due prompt -->
+      <div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:10px;padding:16px 18px;margin-bottom:20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:250px;">
+          <div style="font-size:13px;font-weight:700;color:#92400E;margin-bottom:3px;">⭐ Feedback due — Process Automation Gig (Finance Ops)</div>
+          <div style="font-size:12px;color:#92400E;line-height:1.55;">This gig ended on <strong>Jul 14</strong>, two weeks ago. Emma Watson has already rated you. Complete yours to release both ratings — takes under two minutes, and it's what puts this on your permanent record.</div>
+        </div>
+        <button class="btn btn-amber btn-sm" onclick="openFeedbackDialog('Process Automation Gig — Finance Ops','Emma Watson')">Rate this gig →</button>
+      </div>
+
+      <!-- Summary strip -->
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:22px;">
+        <div class="card" style="padding:14px 16px;"><div style="font-size:22px;font-weight:700;color:#111827;font-variant-numeric:tabular-nums;">4</div><div style="font-size:11px;color:#9CA3AF;font-weight:600;">Total applied</div></div>
+        <div class="card" style="padding:14px 16px;"><div style="font-size:22px;font-weight:700;color:#D97706;font-variant-numeric:tabular-nums;">2</div><div style="font-size:11px;color:#9CA3AF;font-weight:600;">In progress</div></div>
+        <div class="card" style="padding:14px 16px;"><div style="font-size:22px;font-weight:700;color:#16A34A;font-variant-numeric:tabular-nums;">1</div><div style="font-size:11px;color:#9CA3AF;font-weight:600;">Accepted</div></div>
+        <div class="card" style="padding:14px 16px;"><div style="font-size:22px;font-weight:700;color:#9CA3AF;font-variant-numeric:tabular-nums;">1</div><div style="font-size:11px;color:#9CA3AF;font-weight:600;">Not selected</div></div>
+      </div>
+
+      <!-- App 1: Under review, with timeline -->
+      <div class="card" style="padding:20px;margin-bottom:14px;border-left:3px solid #D97706;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:6px;">
+          <div style="flex:1;min-width:220px;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;"><span class="badge badge-dji">DJI</span><span style="font-size:14px;font-weight:700;color:#111827;">DJI: Digital Transformation Office — Strategy</span></div>
+            <div style="font-size:11px;color:#9CA3AF;">IT &amp; Innovation · 3 months · Posted by Taylor Swift</div>
+          </div>
+          <span style="background:#FEF3C7;color:#92400E;font-size:11px;font-weight:700;padding:4px 11px;border-radius:6px;border:1px solid #FDE68A;">⏳ Under review</span>
+        </div>
+        <!-- Timeline -->
+        <div style="display:flex;align-items:center;gap:0;margin:16px 0 12px;flex-wrap:wrap;">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:78px;">
+            <div style="width:22px;height:22px;border-radius:50%;background:#16A34A;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">✓</div>
+            <div style="font-size:10px;color:#374151;font-weight:600;text-align:center;">Applied</div>
+            <div style="font-size:9px;color:#9CA3AF;">Jul 12</div>
+          </div>
+          <div style="flex:1;height:2px;background:#16A34A;min-width:20px;margin-bottom:26px;"></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:78px;">
+            <div style="width:22px;height:22px;border-radius:50%;background:#16A34A;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">✓</div>
+            <div style="font-size:10px;color:#374151;font-weight:600;text-align:center;">Manager notified</div>
+            <div style="font-size:9px;color:#9CA3AF;">Jul 12</div>
+          </div>
+          <div style="flex:1;height:2px;background:#D97706;min-width:20px;margin-bottom:26px;"></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:78px;">
+            <div style="width:22px;height:22px;border-radius:50%;background:#D97706;color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">●</div>
+            <div style="font-size:10px;color:#92400E;font-weight:700;text-align:center;">Being reviewed</div>
+            <div style="font-size:9px;color:#9CA3AF;">In progress</div>
+          </div>
+          <div style="flex:1;height:2px;background:#E5E7EB;min-width:20px;margin-bottom:26px;"></div>
+          <div style="display:flex;flex-direction:column;align-items:center;gap:4px;min-width:78px;">
+            <div style="width:22px;height:22px;border-radius:50%;background:#E5E7EB;color:#9CA3AF;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;">4</div>
+            <div style="font-size:10px;color:#9CA3AF;font-weight:600;text-align:center;">Decision</div>
+            <div style="font-size:9px;color:#D1D5DB;">Pending</div>
+          </div>
+        </div>
+        <div style="background:#F9FAFB;border-radius:7px;padding:9px 12px;font-size:11px;color:#6B7280;margin-bottom:12px;">
+          📅 <strong style="color:#374151;">Expected decision by Aug 5</strong> — Taylor Swift typically responds within 3 weeks. You'll be notified either way.
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-outline btn-sm" onclick="toast('Reminder sent to Taylor Swift.')">🔔 Send polite nudge</button>
+          <button class="btn btn-outline btn-sm" style="color:#C00000;" onclick="withdrawApplication(this,'DJI: Digital Transformation Office')">Withdraw application</button>
+        </div>
+      </div>
+
+      <!-- App 2: Interview scheduled -->
+      <div class="card" style="padding:20px;margin-bottom:14px;border-left:3px solid #1D4ED8;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:6px;">
+          <div style="flex:1;min-width:220px;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;"><span class="badge badge-vacancy">Vacancy</span><span style="font-size:14px;font-weight:700;color:#111827;">Business Intelligence Analyst — FP&amp;A Team</span></div>
+            <div style="font-size:11px;color:#9CA3AF;">Finance · Permanent · Posted by Roger Federer</div>
+          </div>
+          <span style="background:#DBEAFE;color:#1E40AF;font-size:11px;font-weight:700;padding:4px 11px;border-radius:6px;border:1px solid #BFDBFE;">💬 Conversation scheduled</span>
+        </div>
+        <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:7px;padding:11px 13px;font-size:12px;color:#1E40AF;margin:14px 0 12px;">
+          📅 <strong>Aug 2, 2:00 PM</strong> — 45-min conversation with Roger Federer (Finance). Calendar invite sent to your email.
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-outline btn-sm" onclick="toast('Opening calendar…')">📅 Add to calendar</button>
+          <button class="btn btn-outline btn-sm" style="color:#C00000;" onclick="withdrawApplication(this,'Business Intelligence Analyst')">Withdraw application</button>
+        </div>
+      </div>
+
+      <!-- App 3: Accepted -->
+      <div class="card" style="padding:20px;margin-bottom:14px;border-left:3px solid #16A34A;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:6px;">
+          <div style="flex:1;min-width:220px;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;"><span class="badge badge-gig">Gig</span><span style="font-size:14px;font-weight:700;color:#111827;">HR Analytics Gig — Workforce Planning</span></div>
+            <div style="font-size:11px;color:#9CA3AF;">People &amp; Culture · 3 weeks · Posted by Oprah Winfrey</div>
+          </div>
+          <span class="badge badge-accepted" style="padding:4px 11px;">✓ Accepted</span>
+        </div>
+        <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:7px;padding:11px 13px;font-size:12px;color:#065F46;margin:14px 0 12px;line-height:1.6;">
+          🎉 <strong>You're in!</strong> Starts Aug 4. Oprah will send the kickoff details this week.<br>
+          <span style="font-size:11px;color:#047857;">This gig will appear on your profile and in your next talent review. A short feedback form is due when it wraps.</span>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="toast('Opening gig details…')">View gig details</button>
+      </div>
+
+      <!-- App 4: Not selected, WITH feedback -->
+      <div class="card" style="padding:20px;border-left:3px solid #D1D5DB;">
+        <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:6px;">
+          <div style="flex:1;min-width:220px;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;"><span class="badge badge-gig">Gig</span><span style="font-size:14px;font-weight:700;color:#6B7280;">Supply Chain Analytics — Q4 Review</span></div>
+            <div style="font-size:11px;color:#9CA3AF;">Operations · Posted by Priyanka Chopra</div>
+          </div>
+          <span class="badge badge-declined" style="padding:4px 11px;">Not selected</span>
+        </div>
+        <div style="background:#F9FAFB;border:1px solid #E5E7EB;border-radius:7px;padding:12px 14px;margin:14px 0 12px;">
+          <div style="font-size:11px;font-weight:700;color:#374151;margin-bottom:6px;">💬 Feedback from Priyanka Chopra</div>
+          <div style="font-size:12px;color:#4B5563;line-height:1.6;font-style:italic;">"Strong Excel and analysis background — you were a close second. We went with someone who had hands-on SAP experience, which was critical for this scope. Please do apply again; I'd genuinely like to work with you."</div>
+          <div style="margin-top:10px;padding-top:10px;border-top:1px solid #E5E7EB;font-size:11px;color:#6B7280;">
+            <strong style="color:#374151;">Suggested next step:</strong> Add <em>SAP</em> to your Skills to Develop — we'll surface SAP-related gigs and training to you first.
+          </div>
+        </div>
+        <button class="btn btn-outline btn-sm" onclick="navigate('profile');toast('Add SAP under Skills to Develop.')">Add SAP to my goals →</button>
+      </div>
+    </div>
+
+    <!-- ══ MY OPENINGS ══ -->
+    <div class="page" id="page-openings">
+      <div class="page-header">
+        <div class="page-title">📋 My Openings</div>
+        <div class="page-sub">Review applicants for your posted opportunities</div>
+      </div>
+
+      <!-- Host-side post-activity survey -->
+      <div data-pending="1" style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:10px;padding:16px 18px;margin-bottom:20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
+        <div style="flex:1;min-width:250px;">
+          <div style="font-size:13px;font-weight:700;color:#92400E;margin-bottom:3px;">⭐ Post-activity survey due — Process Automation Gig (Finance Ops)</div>
+          <div style="font-size:12px;color:#92400E;line-height:1.55;">This gig ended on <strong>Jul 14</strong>. You hosted <strong>Cristiano Ronaldo</strong>, and he has already completed his. Yours releases both ratings — and your three answers are what tell PCD whether hosting was worth it.</div>
+        </div>
+        <button class="btn btn-amber btn-sm" onclick="openFeedbackDialog('Process Automation Gig — Finance Ops','Cristiano Ronaldo','host')">Complete survey →</button>
+      </div>
+      <div class="card" style="margin-bottom:14px;">
+        <div style="padding:16px 20px;border-bottom:1px solid #F9FAFB;">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
+            <div>
+              <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+                <span class="badge badge-vacancy">Vacancy</span>
+                <span style="font-size:14px;font-weight:700;color:#111827;">Business Intelligence Analyst — FP&A Team</span>
+              </div>
+              <div style="font-size:12px;color:#9CA3AF;">Finance Department · 3 applicants · 1 slot remaining</div>
+            </div>
+            <span class="badge badge-approved">Approved</span>
+          </div>
+        </div>
+        <div class="applicant-row">
+          <div class="app-avatar" style="background:#C00000;">LJ</div>
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:700;color:#111827;">LeBron James</div>
+            <div style="font-size:11px;color:#9CA3AF;">Operations · Power BI, SQL, Excel · <strong style="color:#16A34A;">85% match</strong></div>
+          </div>
+          <div id="actions-lj" style="display:flex;gap:7px;">
+            <button class="btn btn-green btn-sm" onclick="acceptApplicant(this,'LeBron James')">✓ Accept</button>
+            <button class="btn btn-outline btn-sm" onclick="declineApplicant(this,'LeBron James')">✕ Decline</button>
+          </div>
+        </div>
+        <div class="applicant-row" style="background:#FFF1F2;">
+          <div class="app-avatar" style="background:#1E40AF;">ZE</div>
+          <div style="flex:1;">
+            <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;">
+              <span style="font-size:13px;font-weight:700;color:#111827;">Zendaya Coleman</span>
+              <span class="badge badge-nominated">🤝 Nominated</span>
+            </div>
+            <div style="font-size:11px;color:#6B7280;">Finance · Financial Modeling, SQL · <strong style="color:#16A34A;">78% match</strong></div>
+            <div style="font-size:11px;color:#9F1239;margin-top:3px;line-height:1.5;font-style:italic;">"Nominated by <strong>Taylor Swift</strong> — she rebuilt our reconciliation model in two weeks and then trained the whole team to run it. She won't put herself forward, so I'm doing it."</div>
+          </div>
+          <div id="actions-ze" style="display:flex;gap:7px;">
+            <button class="btn btn-green btn-sm" onclick="acceptApplicant(this,'Zendaya')">✓ Accept</button>
+            <button class="btn btn-outline btn-sm" onclick="declineApplicant(this,'Zendaya')">✕ Decline</button>
+          </div>
+        </div>
+        <div class="applicant-row">
+          <div class="app-avatar" style="background:#7C3AED;">ES</div>
+          <div style="flex:1;">
+            <div style="font-size:13px;font-weight:700;color:#111827;">Ed Sheeran</div>
+            <div style="font-size:11px;color:#9CA3AF;">IT · Power BI, Data Analysis · <strong style="color:#D97706;">72% match</strong></div>
+          </div>
+          <div id="actions-es" style="display:flex;gap:7px;">
+            <button class="btn btn-green btn-sm" onclick="acceptApplicant(this,'Ed Sheeran')">✓ Accept</button>
+            <button class="btn btn-outline btn-sm" onclick="declineApplicant(this,'Ed Sheeran')">✕ Decline</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ MY TEAM ACTIVITY ══ -->
+    <div class="page" id="page-team">
+      <div class="page-header">
+        <div class="page-title">👥 My Team Activity</div>
+        <div class="page-sub">See how your direct reports are engaging with Talent Marketplace</div>
+      </div>
+      <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:10px;padding:12px 16px;margin-bottom:20px;font-size:12px;color:#1E40AF;">
+        💡 <strong>Manager tip:</strong> Supporting your team's growth builds loyalty and bench strength. Reach out to anyone with a pending application to show your support.
+      </div>
+      <div class="card" style="overflow:hidden;margin-bottom:20px;">
+        <div style="padding:14px 16px;border-bottom:1px solid #F9FAFB;display:flex;justify-content:space-between;align-items:center;">
+          <div style="font-size:14px;font-weight:700;color:#111827;">Direct Reports — Marketplace Activity</div>
+          <div style="font-size:12px;color:#9CA3AF;">Pilot · July 2026</div>
+        </div>
+        <table class="team-table">
+          <thead>
+            <tr><th>Name</th><th>Department</th><th>Opportunity Applied For</th><th>Type</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="team-avatar" style="background:#C00000;">BK</span>Beyoncé Knowles</td>
+              <td>Operations</td><td>HR Analytics Gig — Workforce Planning</td>
+              <td><span class="badge badge-gig">Gig</span></td><td><span class="badge badge-accepted">Accepted ✓</span></td>
+            </tr>
+            <tr>
+              <td><span class="team-avatar" style="background:#1E40AF;">LM</span>Lionel Messi</td>
+              <td>Finance</td><td>BI Analyst — FP&A Team</td>
+              <td><span class="badge badge-vacancy">Vacancy</span></td><td><span class="badge badge-applied">Applied</span></td>
+            </tr>
+            <tr>
+              <td><span class="team-avatar" style="background:#065F46;">JL</span>Jennifer Lopez</td>
+              <td>IT & Innovation</td><td>DJI: Digital Transformation — Strategy</td>
+              <td><span class="badge badge-dji">DJI</span></td><td><span class="badge badge-accepted">Accepted ✓</span></td>
+            </tr>
+            <tr>
+              <td><span class="team-avatar" style="background:#7C3AED;">RH</span>Rihanna</td>
+              <td>Operations</td><td>Supply Chain Analytics — Q4 Review</td>
+              <td><span class="badge badge-gig">Gig</span></td><td><span class="badge badge-declined">Declined</span></td>
+            </tr>
+            <tr>
+              <td><span class="team-avatar" style="background:#D97706;">WS</span>Will Smith</td>
+              <td>Finance</td><td>Innovation Lab — Product Design DJI</td>
+              <td><span class="badge badge-dji">DJI</span></td><td><span class="badge badge-applied">Applied</span></td>
+            </tr>
+            <tr>
+              <td><span class="team-avatar" style="background:#0F766E;">AG</span>Ariana Grande</td>
+              <td>People & Culture</td><td>—</td><td>—</td><td><span class="badge badge-notyet">Not Yet Active</span></td>
+            </tr>
+            <tr>
+              <td><span class="team-avatar" style="background:#9D174D;">SW</span>Serena Williams</td>
+              <td>Operations</td><td>—</td><td>—</td><td><span class="badge badge-notyet">Not Yet Active</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="two-col">
+        <div>
+          <div class="section-h2" style="margin-bottom:12px;">Team Participation Summary</div>
+          <div class="stat-grid" style="grid-template-columns:repeat(2,1fr);margin-bottom:0;">
+            <div class="card stat-card"><div class="stat-val" style="color:#16A34A;">2</div><div class="stat-lbl">Accepted</div><div class="stat-sub">Active now</div></div>
+            <div class="card stat-card"><div class="stat-val" style="color:#5B21B6;">2</div><div class="stat-lbl">Applied</div><div class="stat-sub">Awaiting decision</div></div>
+            <div class="card stat-card"><div class="stat-val" style="color:#C00000;">1</div><div class="stat-lbl">Declined</div><div class="stat-sub">Not selected</div></div>
+            <div class="card stat-card"><div class="stat-val" style="color:#9CA3AF;">2</div><div class="stat-lbl">Not Yet Active</div><div class="stat-sub">Consider a nudge</div></div>
+          </div>
+        </div>
+        <div>
+          <div class="section-h2" style="margin-bottom:12px;">Consider a nudge</div>
+          <div class="card" style="padding:18px;">
+            <div style="font-size:13px;color:#374151;line-height:1.6;margin-bottom:14px;">These team members haven't engaged yet. A quick conversation about growth goals could be all it takes:</div>
+            <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #F9FAFB;">
+              <span class="team-avatar" style="background:#0F766E;display:inline-flex;">AG</span>
+              <div><div style="font-size:13px;font-weight:700;color:#111827;">Ariana Grande</div><div style="font-size:11px;color:#9CA3AF;">People & Culture</div></div>
+              <button class="btn btn-outline btn-sm" style="margin-left:auto;" onclick="toast('Nudge sent to Ariana Grande.')">Nudge</button>
+            </div>
+            <div style="display:flex;align-items:center;gap:10px;padding:10px 0;">
+              <span class="team-avatar" style="background:#9D174D;display:inline-flex;">SW</span>
+              <div><div style="font-size:13px;font-weight:700;color:#111827;">Serena Williams</div><div style="font-size:11px;color:#9CA3AF;">Operations</div></div>
+              <button class="btn btn-outline btn-sm" style="margin-left:auto;" onclick="toast('Nudge sent to Serena Williams.')">Nudge</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ POST OPPORTUNITY ══ -->
+    <div class="page" id="page-post">
+      <div class="page-header">
+        <div class="page-title">➕ Post Opportunity</div>
+        <div class="page-sub">Create a new opportunity for your team</div>
+      </div>
+      <div style="max-width:640px;">
+        <div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:10px;padding:12px 16px;margin-bottom:20px;font-size:12px;color:#92400E;">
+          ⏳ Opportunities require admin approval before becoming visible to applicants.
+        </div>
+        <div class="card form-card">
+          <h3>Opportunity Details</h3>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div class="field"><label>Type</label><select><option>Gig</option><option>Vacancy</option><option>Developmental Job Immersion</option><option>Service Request</option></select></div>
+            <div class="field"><label>Department</label><select><option selected>People & Culture</option><option>Finance</option><option>IT & Innovation</option><option>Operations</option></select></div>
+          </div>
+          <div class="field"><label>Title</label><input placeholder="e.g. HR Analytics Gig — Q4 Workforce Review"></div>
+          <div class="field"><label>Description</label><textarea placeholder="What will the person be doing? What problem are we solving?"></textarea></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+            <div class="field"><label>Bandwidth</label><select><option>Ad-hoc</option><option>30% allocation</option><option>50% allocation</option><option>Full-time</option></select></div>
+            <div class="field"><label>Estimated effort</label><input placeholder="e.g. ~8 hours total"></div>
+            <div class="field"><label>Slots</label><input type="number" value="2" min="1"></div>
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
+            <div class="field"><label>Start date <span style="color:#C00000;">*</span></label><input type="date" value="2026-08-04"></div>
+            <div class="field"><label>End date <span style="color:#C00000;">*</span></label><input type="date" value="2026-08-22"></div>
+            <div class="field"><label>Applications close</label><input type="date" value="2026-08-01"></div>
+          </div>
+          <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:8px;padding:10px 12px;font-size:11px;color:#065F46;line-height:1.55;margin-bottom:16px;">
+            📅 <strong>Why the end date matters.</strong> Two weeks after it passes, both you and the participant are automatically asked for a short rating and comment. That feedback lands on their permanent record and feeds the talent review — it's the commitment we make in exchange for unpaid work, so the date needs to be real.
+          </div>
+          <div class="field">
+            <label>Key Skills Required</label>
+            <div class="chip-row" style="margin-bottom:8px;"><span class="skill-chip">Excel</span><span class="skill-chip">Data Analysis</span><span class="skill-chip">HR Analytics</span></div>
+            <input placeholder="Type a skill and press Enter…">
+          </div>
+          <div class="field">
+            <label>Attachments <span style="font-weight:400;color:#9CA3AF;">(optional)</span></label>
+            <div id="attach-drop" ondragover="event.preventDefault();this.style.borderColor='#C00000'" ondragleave="this.style.borderColor='#E5E7EB'" ondrop="handleFileDrop(event)" style="border:2px dashed #E5E7EB;border-radius:8px;padding:18px;text-align:center;cursor:pointer;transition:border-color .2s;" onclick="document.getElementById('attach-input').click()">
+              <div style="font-size:22px;margin-bottom:4px;">📎</div>
+              <div style="font-size:12px;color:#6B7280;">Drag & drop files here, or <span style="color:#C00000;font-weight:600;">browse</span></div>
+              <div style="font-size:11px;color:#9CA3AF;margin-top:2px;">JD, scope doc, role brief — any format up to 10 MB</div>
+              <input id="attach-input" type="file" multiple style="display:none" onchange="handleFileSelect(this)">
+            </div>
+            <div id="attach-list" style="margin-top:8px;display:flex;flex-direction:column;gap:6px;"></div>
+          </div>
+        </div>
+        <button class="btn btn-red" onclick="submitOpportunity()">Submit for Approval</button>
+      </div>
+    </div>
+
+    <!-- ══ PROFILE ══ -->
+    <div class="page" id="page-profile">
+      <div class="page-header">
+        <div class="page-title">👤 My Profile</div>
+        <div class="page-sub">Keep your skills and career goals up to date</div>
+      </div>
+      <div class="profile-grid">
+        <div>
+          <div class="card profile-sidebar-card">
+            <div class="profile-avatar-lg" id="profileAvatarLg">OW</div>
+            <div class="profile-name" id="profileName">Oprah Winfrey</div>
+            <div class="profile-dept" id="profileDept">People & Culture · Recruiter</div>
+            <div class="profile-stat-row">
+              <div><div class="profile-stat-val">3</div><div class="profile-stat-lbl">Openings</div></div>
+              <div><div class="profile-stat-val">5</div><div class="profile-stat-lbl">Applicants</div></div>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="card form-card">
+            <h3>Basic Info</h3>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <div class="field"><label>First Name</label><input id="profileFirst" value="Oprah"></div>
+              <div class="field"><label>Last Name</label><input id="profileLast" value="Winfrey"></div>
+            </div>
+            <div class="field"><label>Department</label><input value="People & Culture"></div>
+            <div class="field"><label>About You</label><textarea>HR professional passionate about talent development and organizational effectiveness. Firm believer that the right opportunity at the right time changes everything.</textarea></div>
+          </div>
+          <div class="card form-card">
+            <h3>Skills</h3>
+            <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;padding:11px 13px;font-size:11px;color:#1E40AF;line-height:1.6;margin-bottom:14px;">
+              ✅ <strong>How skills get verified.</strong> Anyone can claim a skill — so claims alone don't carry much weight here. A skill becomes <strong>Verified</strong> three ways: your manager endorses it, a host manager rates you 4★+ on marketplace work using it, or you complete a certification logged in the LMS. Verified skills rank higher in matching and are the only ones shown to posters by default.
+            </div>
+            <div class="field">
+              <label>Current Skills</label>
+              <div id="current-skills" class="chip-row" style="margin-bottom:8px;">
+                <span class="skill-chip removable" onclick="removeSkill(this)" style="background:#D1FAE5;border-color:#A7F3D0;color:#065F46;" title="Verified — endorsed by your manager">✅ Talent Acquisition ×</span>
+                <span class="skill-chip removable" onclick="removeSkill(this)" style="background:#D1FAE5;border-color:#A7F3D0;color:#065F46;" title="Verified — 5★ from host manager, HR Analytics Gig">✅ HRBP ×</span>
+                <span class="skill-chip removable" onclick="removeSkill(this)">Labor Relations ×</span>
+                <span class="skill-chip removable" onclick="removeSkill(this)">Excel ×</span>
+              </div>
+              <div style="display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:#6B7280;margin-bottom:10px;">
+                <span>✅ <strong style="color:#065F46;">2 verified</strong></span>
+                <span>◻️ 2 self-declared — <a onclick="toast('Endorsement request sent to Taylor Swift.')" style="color:#C00000;font-weight:600;cursor:pointer;text-decoration:underline;">ask my manager to endorse</a></span>
+              </div>
+              <div style="display:flex;gap:7px;">
+                <input id="current-skill-input" placeholder="Type a skill…" style="flex:1;padding:7px 10px;border:1px solid #E5E7EB;border-radius:7px;font-size:13px;font-family:inherit;outline:none;" onkeydown="if(event.key==='Enter'){addSkill('current');event.preventDefault()}">
+                <button class="btn btn-outline btn-sm" onclick="addSkill('current')">+ Add</button>
+              </div>
+            </div>
+            <div class="field">
+              <label>Skills I Want to Develop</label>
+              <div id="develop-skills" class="chip-row" style="margin-bottom:8px;">
+                <span class="skill-chip removable" onclick="removeSkill(this)">People Analytics ×</span>
+                <span class="skill-chip removable" onclick="removeSkill(this)">OD Design ×</span>
+                <span class="skill-chip removable" onclick="removeSkill(this)">Change Management ×</span>
+              </div>
+              <div style="display:flex;gap:7px;">
+                <input id="develop-skill-input" placeholder="Type a skill…" style="flex:1;padding:7px 10px;border:1px solid #E5E7EB;border-radius:7px;font-size:13px;font-family:inherit;outline:none;" onkeydown="if(event.key==='Enter'){addSkill('develop');event.preventDefault()}">
+                <button class="btn btn-outline btn-sm" onclick="addSkill('develop')">+ Add</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Service Offers -->
+          <div class="card form-card" style="border:1px solid #DDD6FE;">
+            <h3>🎁 What I can help others with <span style="font-weight:400;color:#9CA3AF;font-size:12px;">— Service Offers</span></h3>
+            <div style="background:#F5F3FF;border:1px solid #DDD6FE;border-radius:8px;padding:11px 13px;font-size:11px;color:#5B21B6;line-height:1.6;margin-bottom:16px;">
+              This is the one part of the marketplace that works in reverse. Rather than applying for work, you publish what you're willing to help with and teams come to you. Mentoring, a second opinion, a prototype, a walkthrough of something you know well — usually an hour or two at a time.
+            </div>
+
+            <div style="border:1px solid #E5E7EB;border-radius:9px;padding:14px;margin-bottom:10px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;">
+                <div style="font-size:13px;font-weight:700;color:#111827;">Mentoring on product &amp; customer segments</div>
+                <span class="badge badge-accepted">● Active</span>
+              </div>
+              <div style="font-size:12px;color:#4B5563;line-height:1.55;margin-bottom:9px;">Happy to walk anyone through how we segment customers, how pricing decisions get made, and how to read the segment P&amp;L.</div>
+              <div style="display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:#6B7280;">
+                <span>⏱ Up to <strong>4 hrs / month</strong></span><span>👥 12 people reached</span><span>★ 5.0 rating</span>
+              </div>
+            </div>
+
+            <div style="border:1px solid #E5E7EB;border-radius:9px;padding:14px;margin-bottom:14px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;">
+                <div style="font-size:13px;font-weight:700;color:#111827;">Vibe-coding: quick prototypes &amp; automations</div>
+                <span class="badge badge-accepted">● Active</span>
+              </div>
+              <div style="font-size:12px;color:#4B5563;line-height:1.55;margin-bottom:9px;">Bring a manual process or a rough idea and we'll pair with AI tooling to get something working by Friday.</div>
+              <div style="display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:#6B7280;">
+                <span>⏱ Up to <strong>6 hrs / month</strong></span><span>👥 5 people reached</span><span>★ 4.8 rating</span>
+              </div>
+            </div>
+
+            <div style="border:1px dashed #DDD6FE;border-radius:9px;padding:16px;background:#FAFAFF;">
+              <div style="font-size:12px;font-weight:700;color:#5B21B6;margin-bottom:12px;">＋ Add another service offer</div>
+              <div class="field"><label>What can you help with?</label><input placeholder="e.g. Reviewing a pricing model, coaching a first-time presenter…"></div>
+              <div class="field"><label>Describe it briefly</label><textarea placeholder="Who is this for, and what will they walk away with?" style="min-height:70px;"></textarea></div>
+              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+                <div class="field"><label>Capacity</label><select><option>Up to 2 hrs / month</option><option selected>Up to 4 hrs / month</option><option>Up to 6 hrs / month</option><option>Ad-hoc — ask me</option></select></div>
+                <div class="field"><label>Format</label><select><option>Either</option><option>1-on-1</option><option>Small group</option></select></div>
+              </div>
+              <button class="btn btn-outline btn-sm" onclick="toast('✓ Service offer published. It’s now live in All Opportunities.')">Publish offer</button>
+            </div>
+          </div>
+
+          <button class="btn btn-red" onclick="saveProfile()">Save Profile</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ ADMIN DASHBOARD ══ -->
+    <div class="page" id="page-dashboard">
+      <div class="page-header">
+        <div class="page-title">📊 HR Analytics Dashboard</div>
+        <div class="page-sub">Pilot overview — July 2026</div>
+      </div>
+
+      <!-- Business Impact / ROI -->
+      <div style="background:linear-gradient(135deg,#0F172A 0%,#1E3A5F 60%,#0F172A 100%);border-radius:12px;padding:22px 24px;margin-bottom:24px;color:#fff;">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+          <span style="font-size:18px;">💡</span>
+          <span style="font-size:15px;font-weight:700;">Business Impact — Pilot to Date</span>
+        </div>
+        <div style="font-size:12px;color:#94A3B8;margin-bottom:18px;">Internal placements filled through Talent Marketplace instead of external hiring</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:18px;">
+          <div>
+            <div style="font-size:26px;font-weight:700;color:#4ADE80;font-variant-numeric:tabular-nums;">₱4.2M</div>
+            <div style="font-size:11px;color:#CBD5E1;font-weight:600;">Recruitment cost avoided</div>
+            <div style="font-size:10px;color:#64748B;">12 roles × ₱350K avg agency fee</div>
+          </div>
+          <div>
+            <div style="font-size:26px;font-weight:700;color:#fff;font-variant-numeric:tabular-nums;">12</div>
+            <div style="font-size:11px;color:#CBD5E1;font-weight:600;">Internal placements</div>
+            <div style="font-size:10px;color:#64748B;">vs. 3 in same period last year</div>
+          </div>
+          <div>
+            <div style="font-size:26px;font-weight:700;color:#fff;font-variant-numeric:tabular-nums;">21 <span style="font-size:14px;">days</span></div>
+            <div style="font-size:11px;color:#CBD5E1;font-weight:600;">Avg. time to fill</div>
+            <div style="font-size:10px;color:#64748B;">vs. 58 days external hire</div>
+          </div>
+          <div>
+            <div style="font-size:26px;font-weight:700;color:#4ADE80;font-variant-numeric:tabular-nums;">94%</div>
+            <div style="font-size:11px;color:#CBD5E1;font-weight:600;">Retention — participants</div>
+            <div style="font-size:10px;color:#64748B;">vs. 81% company average</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stale posts -->
+      <div class="stale-section">
+        <div class="stale-header">
+          <span style="font-size:20px;">⚠️</span>
+          <div class="stale-h2">Needs Attention — No Applications in 3+ Weeks</div>
+          <span class="badge badge-stale">3 posts</span>
+        </div>
+        <div style="font-size:12px;color:#92400E;margin-bottom:12px;">These posts have been live for 3+ weeks with zero applicants. Message the poster directly — tell them what you think is wrong with the post rather than just poking them — or close it if the need has passed.</div>
+        <div class="stale-row">
+          <div style="flex:1;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px;"><span class="badge badge-gig">Gig</span><span style="font-size:13px;font-weight:700;color:#111827;">Process Automation Gig — Finance Ops</span></div>
+            <div style="font-size:11px;color:#9CA3AF;">Finance · Posted by Drake · <strong style="color:#92400E;">32 days, 0 applications</strong></div>
+          </div>
+          <button class="btn btn-amber btn-sm" onclick="openNudgeDialog('Drake', &quot;Process Automation Gig — Finance Ops&quot;)">✉️ Message Poster</button>
+          <button class="btn btn-outline btn-sm" style="color:#C00000;" onclick="closeStalePost(this,'Process Automation Gig')">Close Post</button>
+        </div>
+        <div class="stale-row">
+          <div style="flex:1;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px;"><span class="badge badge-dji">DJI</span><span style="font-size:13px;font-weight:700;color:#111827;">DJI: Legal & Compliance — Contract Review</span></div>
+            <div style="font-size:11px;color:#9CA3AF;">Legal · Posted by Adele · <strong style="color:#92400E;">28 days, 0 applications</strong></div>
+          </div>
+          <button class="btn btn-amber btn-sm" onclick="openNudgeDialog('Adele', &quot;DJI: Legal & Compliance — Contract Review&quot;)">✉️ Message Poster</button>
+          <button class="btn btn-outline btn-sm" style="color:#C00000;" onclick="closeStalePost(this,'DJI: Legal & Compliance')">Close Post</button>
+        </div>
+        <div class="stale-row">
+          <div style="flex:1;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px;"><span class="badge badge-vacancy">Vacancy</span><span style="font-size:13px;font-weight:700;color:#111827;">Data Governance Analyst — IT Risk</span></div>
+            <div style="font-size:11px;color:#9CA3AF;">IT & Innovation · Posted by Dua Lipa · <strong style="color:#92400E;">24 days, 0 applications</strong></div>
+          </div>
+          <button class="btn btn-amber btn-sm" onclick="openNudgeDialog('Dua Lipa', &quot;Data Governance Analyst — IT Risk&quot;)">✉️ Message Poster</button>
+          <button class="btn btn-outline btn-sm" style="color:#C00000;" onclick="closeStalePost(this,'Data Governance Analyst')">Close Post</button>
+        </div>
+      </div>
+
+      <!-- Pending -->
+      <div style="margin-bottom:24px;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px;">
+          <div class="section-h2">⏳ Pending Your Approval</div>
+          <span class="badge badge-pending" id="pendingBadge">3</span>
+        </div>
+        <div class="pending-item" id="pi-1">
+          <div style="flex:1;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;"><span class="badge badge-gig">Gig</span><span style="font-size:13px;font-weight:700;color:#111827;">Supply Chain Analytics Gig</span></div>
+            <div style="font-size:12px;color:#9CA3AF;">Operations · Posted by Harry Styles</div>
+          </div>
+          <div style="display:flex;gap:7px;">
+            <button class="btn btn-outline btn-sm" onclick="navigate('admin-opps')">View</button>
+            <button class="btn btn-green btn-sm" onclick="approvePending(this,'Supply Chain Analytics Gig')">✓ Approve</button>
+            <button class="btn btn-outline btn-sm" style="color:#C00000;border-color:#FECACA;" onclick="rejectPending(this,'Supply Chain Analytics Gig')">✕ Reject</button>
+          </div>
+        </div>
+        <div class="pending-item" id="pi-2">
+          <div style="flex:1;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;"><span class="badge badge-vacancy">Vacancy</span><span style="font-size:13px;font-weight:700;color:#111827;">Senior Accountant — Tax &amp; Compliance</span></div>
+            <div style="font-size:12px;color:#9CA3AF;">Finance · Posted by Emma Watson</div>
+          </div>
+          <div style="display:flex;gap:7px;">
+            <button class="btn btn-outline btn-sm" onclick="navigate('admin-opps')">View</button>
+            <button class="btn btn-green btn-sm" onclick="approvePending(this,'Senior Accountant')">✓ Approve</button>
+            <button class="btn btn-outline btn-sm" style="color:#C00000;border-color:#FECACA;" onclick="rejectPending(this,'Senior Accountant')">✕ Reject</button>
+          </div>
+        </div>
+        <div class="pending-item" id="pi-3">
+          <div style="flex:1;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;"><span class="badge badge-dji">DJI</span><span style="font-size:13px;font-weight:700;color:#111827;">DJI: Innovation Lab — Product Design</span></div>
+            <div style="font-size:12px;color:#9CA3AF;">IT &amp; Innovation · Posted by Selena Gomez</div>
+          </div>
+          <div style="display:flex;gap:7px;">
+            <button class="btn btn-outline btn-sm" onclick="navigate('admin-opps')">View</button>
+            <button class="btn btn-green btn-sm" onclick="approvePending(this,'DJI: Innovation Lab')">✓ Approve</button>
+            <button class="btn btn-outline btn-sm" style="color:#C00000;border-color:#FECACA;" onclick="rejectPending(this,'DJI: Innovation Lab')">✕ Reject</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stat-grid" style="margin-bottom:24px;">
+        <div class="card stat-card"><div class="stat-val">47</div><div class="stat-lbl">Total Opportunities</div><div class="stat-sub">All time</div></div>
+        <div class="card stat-card"><div class="stat-val" style="color:#C00000;">12</div><div class="stat-lbl">Pending Review</div><div class="stat-sub">Needs action</div></div>
+        <div class="card stat-card"><div class="stat-val" style="color:#16A34A;">28</div><div class="stat-lbl">Active & Approved</div><div class="stat-sub">Live now</div></div>
+        <div class="card stat-card"><div class="stat-val">134</div><div class="stat-lbl">Total Applications</div><div class="stat-sub">Across all types</div></div>
+      </div>
+
+      <div class="two-col">
+        <div>
+          <div class="section-hd"><div class="section-h2">By Opportunity Type</div></div>
+          <div class="card widget" style="margin-bottom:14px;">
+            <div class="skill-bar-row"><div class="skill-bar-lbl">⚡ Gig</div><div class="skill-bar-track2"><div class="skill-bar-fill2" style="width:78%;background:#C00000;"></div></div><div class="skill-bar-n">22</div></div>
+            <div class="skill-bar-row"><div class="skill-bar-lbl">🏢 Vacancy</div><div class="skill-bar-track2"><div class="skill-bar-fill2" style="width:53%;background:#1D4ED8;"></div></div><div class="skill-bar-n">15</div></div>
+            <div class="skill-bar-row"><div class="skill-bar-lbl">🌱 DJI</div><div class="skill-bar-track2"><div class="skill-bar-fill2" style="width:36%;background:#16A34A;"></div></div><div class="skill-bar-n">10</div></div>
+          </div>
+          <div class="section-hd"><div class="section-h2">Trending Opportunities</div></div>
+          <div style="display:flex;flex-direction:column;gap:8px;">
+            <div class="card" style="padding:14px 18px;display:flex;align-items:center;gap:14px;">
+              <div style="font-size:22px;font-weight:700;color:#C00000;width:32px;">#1</div>
+              <div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#111827;">BI Analyst — FP&A</div><div style="font-size:11px;color:#9CA3AF;">Finance · 18 applications</div></div>
+              <span class="badge badge-vacancy">Vacancy</span>
+            </div>
+            <div class="card" style="padding:14px 18px;display:flex;align-items:center;gap:14px;">
+              <div style="font-size:22px;font-weight:700;color:#9CA3AF;width:32px;">#2</div>
+              <div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#111827;">Digital Transformation DJI</div><div style="font-size:11px;color:#9CA3AF;">IT · 14 applications</div></div>
+              <span class="badge badge-dji">DJI</span>
+            </div>
+            <div class="card" style="padding:14px 18px;display:flex;align-items:center;gap:14px;">
+              <div style="font-size:22px;font-weight:700;color:#9CA3AF;width:32px;">#3</div>
+              <div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#111827;">HR Analytics Gig</div><div style="font-size:11px;color:#9CA3AF;">P&C · 11 applications</div></div>
+              <span class="badge badge-gig">Gig</span>
+            </div>
+          </div>
+        </div>
+        <div>
+          <div class="section-hd"><div class="section-h2">In-Demand Skills</div></div>
+          <div class="card widget" style="margin-bottom:14px;">
+            <div class="skill-bar-row"><div class="skill-bar-lbl">Data Analysis</div><div class="skill-bar-track2"><div class="skill-bar-fill2" style="width:88%"></div></div><div class="skill-bar-n">22</div></div>
+            <div class="skill-bar-row"><div class="skill-bar-lbl">SQL</div><div class="skill-bar-track2"><div class="skill-bar-fill2" style="width:76%"></div></div><div class="skill-bar-n">19</div></div>
+            <div class="skill-bar-row"><div class="skill-bar-lbl">Power BI</div><div class="skill-bar-track2"><div class="skill-bar-fill2" style="width:64%"></div></div><div class="skill-bar-n">16</div></div>
+            <div class="skill-bar-row"><div class="skill-bar-lbl">Change Mgmt</div><div class="skill-bar-track2"><div class="skill-bar-fill2" style="width:52%"></div></div><div class="skill-bar-n">13</div></div>
+            <div class="skill-bar-row"><div class="skill-bar-lbl">Agile</div><div class="skill-bar-track2"><div class="skill-bar-fill2" style="width:48%"></div></div><div class="skill-bar-n">12</div></div>
+            <div class="skill-bar-row"><div class="skill-bar-lbl">Excel</div><div class="skill-bar-track2"><div class="skill-bar-fill2" style="width:40%"></div></div><div class="skill-bar-n">10</div></div>
+          </div>
+          <div class="section-hd"><div class="section-h2">Feedback Rating</div></div>
+          <div class="card widget">
+            <div style="text-align:center;margin-bottom:14px;">
+              <div style="font-size:40px;font-weight:700;color:#111827;">4.3</div>
+              <div style="color:#D97706;font-size:18px;letter-spacing:2px;">★★★★☆</div>
+              <div style="font-size:11px;color:#9CA3AF;margin-top:4px;">Based on 38 reviews</div>
+            </div>
+            <div class="skill-bar-row"><div class="skill-bar-lbl">5 stars</div><div class="skill-bar-track2"><div class="skill-bar-fill2" style="width:52%;background:#D97706;"></div></div><div class="skill-bar-n">20</div></div>
+            <div class="skill-bar-row"><div class="skill-bar-lbl">4 stars</div><div class="skill-bar-track2"><div class="skill-bar-fill2" style="width:29%;background:#D97706;"></div></div><div class="skill-bar-n">11</div></div>
+            <div class="skill-bar-row"><div class="skill-bar-lbl">3 stars</div><div class="skill-bar-track2"><div class="skill-bar-fill2" style="width:13%;background:#D97706;"></div></div><div class="skill-bar-n">5</div></div>
+            <div class="skill-bar-row"><div class="skill-bar-lbl">2 stars</div><div class="skill-bar-track2"><div class="skill-bar-fill2" style="width:5%;background:#D97706;"></div></div><div class="skill-bar-n">2</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ ADMIN OPPORTUNITIES ══ -->
+    <div class="page" id="page-admin-opps">
+      <div class="page-header">
+        <div class="page-title">📋 All Opportunities</div>
+        <div class="page-sub">Review, approve or reject posted opportunities</div>
+      </div>
+      <div class="tab-bar">
+        <button class="tab active" onclick="switchTab(this)">Pending (12)</button>
+        <button class="tab" onclick="switchTab(this)">Approved (28)</button>
+        <button class="tab" onclick="switchTab(this)">Rejected (7)</button>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px;">
+        <div class="card" style="padding:18px 20px;display:flex;align-items:center;gap:14px;">
+          <div style="flex:1;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><span class="badge badge-gig">Gig</span><span style="font-size:14px;font-weight:700;color:#111827;">Supply Chain Analytics Gig</span></div>
+            <div style="font-size:12px;color:#9CA3AF;margin-bottom:8px;">Operations · Ad-hoc · Skills: Excel, SAP, Logistics</div>
+            <div class="chip-row"><span class="skill-chip">Excel</span><span class="skill-chip">SAP</span><span class="skill-chip">Logistics</span></div>
+          </div>
+          <div style="display:flex;gap:7px;flex-shrink:0;">
+            <button class="btn btn-green btn-sm" onclick="approveOpp(this,'Supply Chain Analytics Gig')">✓ Approve</button>
+            <button class="btn btn-outline btn-sm" style="color:#C00000;" onclick="rejectOpp(this,'Supply Chain Analytics Gig')">✕ Reject</button>
+          </div>
+        </div>
+        <div class="card" style="padding:18px 20px;display:flex;align-items:center;gap:14px;">
+          <div style="flex:1;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><span class="badge badge-vacancy">Vacancy</span><span style="font-size:14px;font-weight:700;color:#111827;">Senior Accountant — Tax &amp; Compliance</span></div>
+            <div style="font-size:12px;color:#9CA3AF;margin-bottom:8px;">Finance · Full-time · Skills: CPA, Tax Law, SAP</div>
+            <div class="chip-row"><span class="skill-chip">CPA</span><span class="skill-chip">Tax Law</span><span class="skill-chip">SAP</span></div>
+          </div>
+          <div style="display:flex;gap:7px;flex-shrink:0;">
+            <button class="btn btn-green btn-sm" onclick="approveOpp(this,'Senior Accountant')">✓ Approve</button>
+            <button class="btn btn-outline btn-sm" style="color:#C00000;" onclick="rejectOpp(this,'Senior Accountant')">✕ Reject</button>
+          </div>
+        </div>
+        <div class="card" style="padding:18px 20px;display:flex;align-items:center;gap:14px;">
+          <div style="flex:1;">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;"><span class="badge badge-dji">DJI</span><span style="font-size:14px;font-weight:700;color:#111827;">DJI: Innovation Lab — Product Design</span></div>
+            <div style="font-size:12px;color:#9CA3AF;margin-bottom:8px;">IT &amp; Innovation · 6 months · Skills: UX Design, Figma</div>
+            <div class="chip-row"><span class="skill-chip">UX Design</span><span class="skill-chip">Figma</span><span class="skill-chip">User Research</span></div>
+          </div>
+          <div style="display:flex;gap:7px;flex-shrink:0;">
+            <button class="btn btn-green btn-sm" onclick="approveOpp(this,'DJI: Innovation Lab')">✓ Approve</button>
+            <button class="btn btn-outline btn-sm" style="color:#C00000;" onclick="rejectOpp(this,'DJI: Innovation Lab')">✕ Reject</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ══ NOTIFICATIONS ══ -->
+    <div class="page" id="page-notifications">
+      <div class="page-header">
+        <div class="page-title">🔔 Notifications</div>
+        <div class="page-sub">Your recent activity</div>
+      </div>
+      <div style="display:flex;justify-content:flex-end;margin-bottom:12px;">
+        <button class="btn btn-outline btn-sm" onclick="markAllRead()">Mark all as read</button>
+      </div>
+      <div class="card">
+        <div class="notif-item" style="padding:14px 20px;"><div class="notif-dot"></div><div><div class="notif-text">LeBron James expressed interest in <strong>BI Analyst — FP&A Team</strong></div><div class="notif-time">2 hours ago</div></div></div>
+        <div class="notif-item" style="padding:14px 20px;"><div class="notif-dot"></div><div><div class="notif-text">Your opportunity <strong>HR Analytics Gig</strong> has been <span style="color:#16A34A;font-weight:600;">approved</span> by Admin</div><div class="notif-time">Yesterday at 3:24 PM</div></div></div>
+        <div class="notif-item" style="padding:14px 20px;"><div class="notif-dot read"></div><div><div class="notif-text" style="color:#9CA3AF;">New applicant for <strong>Supply Chain Gig</strong> — Zendaya</div><div class="notif-time">3 days ago</div></div></div>
+        <div class="notif-item" style="padding:14px 20px;"><div class="notif-dot read"></div><div><div class="notif-text" style="color:#9CA3AF;">Your application for <strong>DJI: Digital Transformation</strong> was accepted</div><div class="notif-time">1 week ago</div></div></div>
+      </div>
+    </div>
+
+    <!-- ══ FAQ ══ -->
+    <div class="page" id="page-faq">
+      <div class="page-header">
+        <div class="page-title">❓ FAQ</div>
+        <div class="page-sub">Frequently asked questions about Talent Marketplace</div>
+      </div>
+      <div style="max-width:680px;">
+        <h3 style="font-size:14px;font-weight:700;color:#111827;margin:0 0 10px;text-transform:uppercase;letter-spacing:0.5px;">For Employees</h3>
+
+        <details><summary>Will joining a gig or immersion affect my KPIs or salary? <span>+</span></summary>
+          <div class="faq-body">No. Participation is ad-hoc and voluntary. Your core role, KPIs, and compensation remain unchanged. Per Policy 211_2021, an employee undergoing DJI is not eligible for incentives, bonuses, or allowances specific to the host department — and no additional bonuses are provided for being in a DJI. Your headcount stays in your home department throughout.</div>
+        </details>
+
+        <details open><summary>What are the work hours arrangements? <span>+</span></summary>
+          <div class="faq-body">
+            <strong>For Gigs:</strong> Gig work should be done outside regular office hours, or during office hours only with your manager's written permission. Your primary role and KPIs must not be disrupted.<br><br>
+            <strong>For Developmental Job Immersions (DJI)</strong> — per <strong>Policy 211_2021</strong>, the <em>degree of immersion</em> is agreed upon and documented in the DJI Plan before the immersion begins:<br>
+            &nbsp;&nbsp;• <strong>Full immersion (100%)</strong> — you are fully released to the Host Department for the duration<br>
+            &nbsp;&nbsp;• <strong>Partial immersion</strong> — the new role is performed alongside your current role at an agreed split<br><br>
+            This is co-designed by you, your Direct Manager, and the Host Manager, then signed off by all three plus your HR People Partner (HRPP) using the official DJI Form.
+            <div class="faq-policy-link">📄 Policy 211_2021 v1.0 — Section 5.4.2 Goal and Expectation Setting</div>
+          </div>
+        </details>
+
+        <details><summary>Who is eligible to join? <span>+</span></summary>
+          <div class="faq-body">
+            <strong>For Gigs and Vacancies:</strong> Most employees in good standing are eligible. Not eligible if on a PIP or performance rating of 2 or lower in the last cycle.<br><br>
+            <strong>For DJI specifically</strong> (per Policy 211_2021), you must meet <em>all</em> of:<br>
+            &nbsp;&nbsp;• Regular employee of the company<br>
+            &nbsp;&nbsp;• At least <strong>12 months</strong> in your current position<br>
+            &nbsp;&nbsp;• No disciplinary action in the last 12 months<br>
+            &nbsp;&nbsp;• PIP/underperformers reviewed on a case-by-case basis with HRPP
+            <div class="faq-policy-link">📄 Policy 211_2021 v1.0 — Section 5.1 Eligibility</div>
+          </div>
+        </details>
+
+        <details><summary>There's no extra pay — so what does the company actually give me in return? <span>+</span></summary>
+          <div class="faq-body">
+            A fair question, and the honest answer is that "exposure" isn't payment. Marketplace work is unpaid, so LIFT Holdings commits to four things in exchange. These are policy, not goodwill, and the People &amp; Culture Department (PCD) is accountable for delivering each — centrally, not devolved to your manager:<br><br>
+            <strong>1. A formal record on your file.</strong> Every completed engagement is logged permanently in your HR record with the host manager's rating. Not a favour someone might remember — a document.<br>
+            <strong>2. Inclusion in the talent review.</strong> Your contributions are tabled at the annual talent review and succession planning discussion — the room where promotions and successor slates are decided.<br>
+            <strong>3. A post-activity survey, immediately.</strong> The moment the engagement ends, PCD sends you the post-activity survey — what you learned, what you'd change, where you want it to lead. Sent automatically while the work is fresh, and it goes to PCD, not into a drawer.<br>
+            <strong>4. First look at related roles.</strong> Complete work in a function and you're flagged as a priority internal candidate when a vacancy opens there.<br><br>
+            <strong>On workload.</strong> Your primary role and KPIs are never expected to absorb the difference. If a marketplace commitment starts compromising your core work, raise it with your manager or HRPP — it will be adjusted or ended, and no one is penalised for that conversation.<br><br>
+            Beyond the commitments, the reasons people actually give: fulfilling your IDP, a creative outlet, genuine love of the work, test-driving a career pivot with zero risk, visibility with leaders outside your chain, a cross-functional network that compounds for your whole career, and a shorter learning curve when you do move roles.
+          </div>
+        </details>
+
+        <details><summary>Can I nominate someone else instead of applying myself? <span>+</span></summary>
+          <div class="faq-body">
+            Yes — and please do. Every opportunity in <strong>All Opportunities</strong> has a <strong>🤝 Nominate</strong> button beside Apply.<br><br>
+            <strong>Why it matters.</strong> Nominated candidates are selected at roughly <strong>41%</strong> against 23% for self-applications. Someone who has seen the work vouching for a specific person is a far stronger signal than a self-assessment. Nomination is also how the marketplace reaches the people who would never put themselves forward — often exactly the people who should.<br><br>
+            <strong>Especially for managers.</strong> You see your team's capability more clearly than they do. Nominating a team member is one of the highest-leverage things you can do in this platform: it costs you nothing, it signals to them that you back their growth, and it's tracked. Managers whose nominees get selected are recognised at the quarterly Exco review.<br><br>
+            <strong>How to nominate well.</strong> You must say why they're the best applicant, and specificity is what gets picked up. "She rebuilt our reconciliation model in two weeks and trained the team on it" lands; "she'd be great" doesn't.<br><br>
+            <strong>The nominee stays in control.</strong> They're notified, they see your reason, and they can accept or decline. Nobody is entered into anything without their consent.
+          </div>
+        </details>
+
+        <details><summary>What is a Service Offer, and how is it different? <span>+</span></summary>
+          <div class="faq-body">
+            It's the one type that works in reverse. Instead of applying for work someone else has posted, you <strong>publish what you're willing to help with</strong> and teams come to you.<br><br>
+            Typical offers: mentoring on product and customer segments, vibe-coding a quick prototype, reviewing a pricing model, coaching a first-time presenter, walking someone through a system you know well.<br><br>
+            <strong>You stay in control.</strong> You set your own capacity (say, up to 4 hours a month), accept only the requests that fit, and pause the offer any time. Most are an hour or two at a time.<br><br>
+            <strong>Why bother.</strong> Every completed request is logged on your profile with a rating. It's the fastest way to build an internal reputation for what you're genuinely good at — and the same four company commitments above apply.<br><br>
+            Set one up under <strong>My Profile → What I can help others with</strong>.
+          </div>
+        </details>
+
+        <details><summary>How are skills on my profile verified? <span>+</span></summary>
+          <div class="faq-body">
+            Anyone can claim a skill, so claims alone don't carry much weight. A skill becomes <strong>✅ Verified</strong> three ways:<br><br>
+            <strong>1. Manager endorsement.</strong> Your direct manager confirms it. Request this from your profile in one click.<br>
+            <strong>2. Marketplace performance.</strong> A host manager rates you <strong>4★ or higher</strong> on work that used the skill — it's verified automatically. This is the strongest form, because it's evidence rather than opinion.<br>
+            <strong>3. Certification.</strong> A completed certification logged in the LMS.<br><br>
+            Verified skills rank higher in matching and are the only ones shown to posters by default. Self-declared skills still count — they just carry a lighter weight until something backs them up. Over time, completed marketplace work becomes the main source of truth about what people here can actually do.
+          </div>
+        </details>
+
+        <details><summary>What happens after an engagement ends? <span>+</span></summary>
+          <div class="faq-body">
+            Two weeks after the end date on the post, both you and the other party are automatically asked for a short rating and comment. Under two minutes.<br><br>
+            <strong>Ratings release simultaneously.</strong> Neither of you sees the other's until both are in, so nobody is anchored by what the other said.<br><br>
+            The rating and comment land on your permanent record, feed skill verification, and are visible in the talent review. PCD then sends you the post-activity survey immediately, so your own account of the work is captured while you still remember it.<br><br>
+            This is the mechanism that turns unpaid work into something that actually counts. Without it, the company's commitments would be a promise with nothing behind them — so the feedback step isn't optional for either side.
+          </div>
+        </details>
+
+        <details><summary>Will my manager see that I'm exploring opportunities? <span>+</span></summary>
+          <div class="faq-body">You control your visibility. Expressing interest in gigs is discreet — your manager is not automatically notified. DJIs require manager approval as part of the process, so they will be involved.</div>
+        </details>
+
+        <details><summary>What happens after I express interest? <span>+</span></summary>
+          <div class="faq-body">The opportunity owner is notified and will review your profile. They may invite you to a conversation, accept, or decline. You will be notified either way.</div>
+        </details>
+
+        <h3 style="font-size:14px;font-weight:700;color:#111827;margin:28px 0 10px;text-transform:uppercase;letter-spacing:0.5px;">For Managers &amp; HR</h3>
+
+        <details open><summary>Why should I allow my team member to apply? <span>+</span></summary>
+          <div class="faq-body">
+            Beyond the right thing to do, here's the business case:<br><br>
+            <strong>Retention.</strong> Employees who feel stuck leave. Giving someone a growth outlet within the company costs nothing — keeping them costs far less than replacing them (estimated 50–200% of annual salary per replacement).<br><br>
+            <strong>Engagement.</strong> People who stretch become more engaged, not less. They return to their core role with new energy, new perspectives, and conviction that you care about their growth.<br><br>
+            <strong>Bench strength.</strong> A broader-skilled team member is more valuable to your team. They can cross-cover and bring back capabilities you don't have to hire for.<br><br>
+            <strong>Employer brand.</strong> Managers who support mobility are the ones top talent wants to work for.<br><br>
+            <strong>The math.</strong> For gigs and DJIs at partial capacity, you still have 50–80% of your team member for the duration. Most managers find this workable — especially versus losing the person entirely.<br><br>
+            <strong>Go further: nominate them.</strong> Allowing someone to apply is passive. Putting their name forward yourself is the strongest development signal a manager can send — it says you see their capability and you're willing to spend your credibility on it. Your nominations and their outcomes are tracked, and managers whose nominees get selected are recognised at the quarterly Exco review.
+          </div>
+        </details>
+
+        <details><summary>What's the difference between a gig, vacancy, and DJI? <span>+</span></summary>
+          <div class="faq-body">
+            <strong>Gig:</strong> Short-term project, a few hours to a few weeks, done part-time. Outside office hours or with written manager permission.<br><br>
+            <strong>Vacancy:</strong> Open permanent role — a formal internal move to a new team.<br><br>
+            <strong>Developmental Job Immersion (DJI)</strong> per Policy 211_2021: Temporary assignment to another role or function, <strong>3 to 9 months</strong>. Two types:<br>
+            &nbsp;&nbsp;• <strong>For Development</strong> — gaining exposure/experience for learning; no open requisition for the target role<br>
+            &nbsp;&nbsp;• <strong>For Job Consideration</strong> — assessing readiness for the role; open requisition exists<br><br>
+            In both types, the employee's headcount, salary, and benefits remain with their home department. No additional allowances or bonuses are provided.<br><br>
+            <strong>Service Offer:</strong> The fourth type, and the only one that works in reverse — an employee publishes what they're willing to help with (mentoring, a prototype, a review) and teams request their time. Usually an hour or two at a stretch, capacity set by the person offering.
+            <div class="faq-policy-link">📄 Policy 211_2021 v1.0 — Sections 5.2, 5.3, 5.4</div>
+          </div>
+        </details>
+
+        <details><summary>What if a team member wants to join a DJI opportunity? <span>+</span></summary>
+          <div class="faq-body">
+            Per Policy 211_2021, you are a core part of the process:<br><br>
+            1. You and the employee, in consultation with the HRPP, agree the DJI is part of their Individual Development Plan<br>
+            2. You co-design the <strong>DJI Plan</strong> with the employee and Host Manager — covering goals, degree of immersion, expected outputs, and performance evaluation impact<br>
+            3. You, the employee, the Host Manager, and the HRPP all sign off using the official DJI Form<br>
+            4. As Direct Manager, you remain responsible for check-ins, evaluation, and formal closure of the DJI<br><br>
+            The employee's headcount and all HR obligations remain with you throughout. The DJI closes at the agreed end date, or at 9 months maximum.
+            <div class="faq-policy-link">📄 Policy 211_2021 v1.0 — Sections 4 &amp; 5.4</div>
+          </div>
+        </details>
+
+        <details><summary>How long does it take to post an opportunity? <span>+</span></summary>
+          <div class="faq-body">Under 5 minutes. Fill in the type, title, department, required skills, duration, and available slots — then submit. The opportunity enters an HR admin review queue before going live.</div>
+        </details>
+
+        <details><summary>Do I have to take whoever the system matches? <span>+</span></summary>
+          <div class="faq-body">No. Matching is a suggestion, not an assignment. You review interested applicants and decide who to accept, invite to a conversation, or decline. The final decision is always yours.</div>
+        </details>
+
+        <details><summary>What's expected after the exposure ends? <span>+</span></summary>
+          <div class="faq-body">Both the opportunity poster and the accepted participant complete a short feedback form — a star rating (1–5) and optional comment. Under 2 minutes, and it helps improve the platform over time.</div>
+        </details>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /main -->
+
+<script>
+const ROLES = {
+  recruiter: {
+    name: 'Oprah Winfrey', initials: 'OW', label: 'Recruiter',
+    nav: [
+      { id: 'home', emoji: '📖', label: 'Introduction' },
+      { id: 'profile', emoji: '👤', label: 'My Profile' },
+      { id: 'matches', emoji: '✨', label: 'My Matches' },
+      { id: 'all-opps', emoji: '🔎', label: 'All Opportunities' },
+      { id: 'openings', emoji: '📋', label: 'My Openings', badge: '3' },
+      { id: 'post', emoji: '➕', label: 'Post Opportunity' },
+      { id: 'faq', emoji: '❓', label: 'FAQ' },
+      { id: 'notifications', emoji: '🔔', label: 'Notifications', badge: '2' },
+    ]
+  },
+  manager: {
+    name: 'Taylor Swift', initials: 'TS', label: 'Manager',
+    nav: [
+      { id: 'home', emoji: '📖', label: 'Introduction' },
+      { id: 'profile', emoji: '👤', label: 'My Profile' },
+      { id: 'matches', emoji: '✨', label: 'My Matches' },
+      { id: 'all-opps', emoji: '🔎', label: 'All Opportunities' },
+      { id: 'openings', emoji: '📋', label: 'My Openings', badge: '2' },
+      { id: 'team', emoji: '👥', label: 'My Team Activity' },
+      { id: 'nominations', emoji: '🤝', label: 'My Nominations', badge: '4' },
+      { id: 'post', emoji: '➕', label: 'Post Opportunity' },
+      { id: 'faq', emoji: '❓', label: 'FAQ' },
+      { id: 'notifications', emoji: '🔔', label: 'Notifications', badge: '1' },
+    ]
+  },
+  employee: {
+    name: 'Cristiano Ronaldo', initials: 'CR', label: 'Employee',
+    nav: [
+      { id: 'home', emoji: '📖', label: 'Introduction' },
+      { id: 'profile', emoji: '👤', label: 'My Profile' },
+      { id: 'matches', emoji: '✨', label: 'My Matches' },
+      { id: 'all-opps', emoji: '🔎', label: 'All Opportunities' },
+      { id: 'applications', emoji: '📨', label: 'My Applications', badge: '3' },
+      { id: 'my-offers', emoji: '🎁', label: 'My Service Offers', badge: '2' },
+      { id: 'nominations', emoji: '🤝', label: 'My Nominations', badge: '2' },
+      { id: 'faq', emoji: '❓', label: 'FAQ' },
+      { id: 'notifications', emoji: '🔔', label: 'Notifications', badge: '1' },
+    ]
+  },
+  admin: {
+    name: 'Beyoncé Knowles', initials: 'BK', label: 'Administrator',
+    nav: [
+      { id: 'dashboard', emoji: '📊', label: 'Dashboard' },
+      { id: 'admin-opps', emoji: '📋', label: 'All Opportunities', badge: '12' },
+      { id: 'admin-noms', emoji: '🏆', label: 'Nomination Dashboard' },
+      { id: 'notifications', emoji: '💬', label: 'Feedbacks' },
+    ]
+  }
+}
+
+let currentRole = 'recruiter'
+
+function setRole(role) {
+  currentRole = role
+  const r = ROLES[role]
+  document.getElementById('userName').textContent = r.name
+  document.getElementById('userInitials').textContent = r.initials
+  document.getElementById('userRole').textContent = r.label
+  document.getElementById('topbarUser').textContent = `${r.name} · ${r.label}`
+  document.getElementById('topbarAvatar').textContent = r.initials
+  document.getElementById('profileAvatarLg').textContent = r.initials
+  document.getElementById('profileName').textContent = r.name
+  const deptMap = { recruiter: 'People & Culture · Recruiter', manager: 'People & Culture · Manager', employee: 'Finance · Employee', admin: 'HR Admin · Administrator' }
+  document.getElementById('profileDept').textContent = deptMap[role]
+  renderNav(role)
+  navigate(r.nav[0].id)
+}
+
+function renderNav(role) {
+  const r = ROLES[role]
+  document.getElementById('navItems').innerHTML = r.nav.map(item => `
+    <button class="nav-item" id="nav-${item.id}" onclick="navigate('${item.id}')">
+      ${item.emoji} ${item.label}
+      ${item.badge ? `<span class="nav-badge">${item.badge}</span>` : ''}
+    </button>
+  `).join('')
+}
+
+function navigate(pageId) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'))
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'))
+  const page = document.getElementById('page-' + pageId)
+  if (page) page.classList.add('active')
+  const nav = document.getElementById('nav-' + pageId)
+  if (nav) nav.classList.add('active')
+}
+
+function filterAllOpps() {
+  const t = document.getElementById('filterType').value
+  const d = document.getElementById('filterDept').value
+  const sc = document.getElementById('filterScore').value
+  const q = document.getElementById('filterSearch').value.trim().toLowerCase()
+  const cards = document.querySelectorAll('#page-all-opps .opp-item')
+  let shown = 0
+  cards.forEach(c => {
+    const score = parseInt(c.dataset.score, 10)
+    const ok = (!t || c.dataset.type === t)
+      && (!d || c.dataset.dept === d)
+      && (!sc || (sc === 'stretch' ? score < 70 : score >= 70))
+      && (!q || c.textContent.toLowerCase().includes(q))
+    c.style.display = ok ? '' : 'none'
+    if (ok) shown++
+  })
+  document.getElementById('oppCount').textContent = shown + ' of 28'
+  document.getElementById('oppEmpty').style.display = shown === 0 ? 'block' : 'none'
+}
+
+function resetAllOppsFilters() {
+  document.getElementById('filterType').value = ''
+  document.getElementById('filterDept').value = ''
+  document.getElementById('filterScore').value = ''
+  document.getElementById('filterSearch').value = ''
+  filterAllOpps()
+}
+
+const NUDGE_TEMPLATES = {
+  refresh: "Hi {name}, your post \"{post}\" has been live for a while with no applications. In my experience that's usually the description rather than the demand — could you rewrite the first two lines to say what the person will actually do and learn? Happy to look over a draft.",
+  skills: "Hi {name}, \"{post}\" isn't reaching anyone, and I think the required skills are drawn too tightly — we're filtering out people who could do this with a week of ramp-up. Could you drop the nice-to-haves and keep only what's genuinely essential?",
+  close: "Hi {name}, \"{post}\" has had no applications for over three weeks. Before I close it: is this still a live need? If it is, let's rework the post together. If it isn't, I'll take it down so the board stays honest.",
+  custom: ""
+}
+
+function setNudgeTemplate(key, name, post) {
+  const box = document.getElementById('nudgeMsg')
+  box.value = (NUDGE_TEMPLATES[key] || '').replace(/\{name\}/g, name.split(' ')[0]).replace(/\{post\}/g, post)
+  document.querySelectorAll('[data-nudge-tpl]').forEach(b => {
+    const on = b.dataset.nudgeTpl === key
+    b.style.background = on ? '#FEF3C7' : '#fff'
+    b.style.borderColor = on ? '#F59E0B' : '#E5E7EB'
+    b.style.color = on ? '#92400E' : '#374151'
+  })
+  box.focus()
+}
+
+function openNudgeDialog(name, post) {
+  const overlay = document.createElement('div')
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;overflow-y:auto;'
+  overlay.innerHTML = `
+    <div style="background:#fff;border-radius:14px;padding:32px;width:540px;max-width:95vw;box-shadow:0 8px 40px rgba(0,0,0,0.14);">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#9CA3AF;margin-bottom:6px;">Message the poster</div>
+      <div style="font-size:17px;font-weight:700;color:#111827;margin-bottom:4px;">To: ${name}</div>
+      <div style="font-size:12px;color:#6B7280;margin-bottom:16px;">Re: ${post}</div>
+
+      <div style="background:#FFF7ED;border:1px solid #FED7AA;border-radius:8px;padding:10px 12px;font-size:11px;color:#92400E;line-height:1.55;margin-bottom:18px;">
+        ⚠️ A bare nudge tells them something is wrong but not what. Say what you'd actually change — posts that get rewritten after a specific message fill roughly twice as often as ones that just get poked.
+      </div>
+
+      <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;color:#374151;display:block;margin-bottom:8px;">Start from a template</label>
+      <div style="display:flex;gap:7px;flex-wrap:wrap;margin-bottom:14px;">
+        <button data-nudge-tpl="refresh" onclick="setNudgeTemplate('refresh','${name}',&quot;${post}&quot;)" style="padding:6px 11px;border:1px solid #E5E7EB;border-radius:7px;background:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;color:#374151;">Rewrite the description</button>
+        <button data-nudge-tpl="skills" onclick="setNudgeTemplate('skills','${name}',&quot;${post}&quot;)" style="padding:6px 11px;border:1px solid #E5E7EB;border-radius:7px;background:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;color:#374151;">Loosen the skills</button>
+        <button data-nudge-tpl="close" onclick="setNudgeTemplate('close','${name}',&quot;${post}&quot;)" style="padding:6px 11px;border:1px solid #E5E7EB;border-radius:7px;background:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;color:#374151;">Still needed?</button>
+        <button data-nudge-tpl="custom" onclick="setNudgeTemplate('custom','${name}',&quot;${post}&quot;)" style="padding:6px 11px;border:1px solid #E5E7EB;border-radius:7px;background:#fff;font-size:12px;font-weight:600;cursor:pointer;font-family:inherit;color:#374151;">Write my own</button>
+      </div>
+
+      <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;color:#374151;display:block;margin-bottom:6px;">Your message <span style="color:#C00000;">*</span></label>
+      <textarea id="nudgeMsg" placeholder="Pick a template above or write your own…" style="width:100%;padding:10px 12px;border:1px solid #E5E7EB;border-radius:8px;font-size:13px;font-family:Arial,system-ui,sans-serif;min-height:140px;resize:vertical;outline:none;color:#111827;margin-bottom:14px;"></textarea>
+
+      <label style="display:flex;gap:8px;align-items:flex-start;cursor:pointer;font-size:12px;color:#374151;margin-bottom:8px;">
+        <input type="checkbox" id="nudgeCopyMgr" style="margin-top:2px;flex-shrink:0;cursor:pointer;">
+        <span>Copy their line manager <span style="color:#9CA3AF;">(use sparingly — it changes the tone of the message)</span></span>
+      </label>
+      <label style="display:flex;gap:8px;align-items:flex-start;cursor:pointer;font-size:12px;color:#374151;margin-bottom:18px;">
+        <input type="checkbox" id="nudgeReminder" checked style="margin-top:2px;flex-shrink:0;cursor:pointer;">
+        <span>Remind me in 7 days if the post still has no applications</span>
+      </label>
+
+      <div style="display:flex;gap:10px;justify-content:flex-end;">
+        <button onclick="this.closest('[data-overlay]').remove()" style="padding:9px 18px;border:1px solid #E5E7EB;border-radius:8px;background:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;color:#374151;">Cancel</button>
+        <button onclick="sendNudgeMessage('${name}',this)" style="padding:9px 18px;background:#C00000;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">Send Message</button>
+      </div>
+    </div>`
+  overlay.setAttribute('data-overlay','1')
+  overlay.addEventListener('click', e => { if(e.target===overlay) overlay.remove() })
+  document.body.appendChild(overlay)
+}
+
+function sendNudgeMessage(name, btn) {
+  const msg = document.getElementById('nudgeMsg').value.trim()
+  if (!msg) { toast('Write a message — a nudge with nothing in it is just noise.','warning'); return }
+  if (msg.length < 30) { toast('Say what you\u2019d actually change, not just that something is wrong.','warning'); return }
+  const cc = document.getElementById('nudgeCopyMgr').checked
+  const rem = document.getElementById('nudgeReminder').checked
+  btn.closest('[data-overlay]').remove()
+  toast(`✓ Message sent to ${name}${cc ? ' (line manager copied)' : ''}.${rem ? ' You\u2019ll be reminded in 7 days if nothing changes.' : ''}`)
+}
+
+function closeLogin() { document.getElementById('loginShell').classList.remove('visible') }
+
+function toast(msg, type = 'success') {
+  const el = document.createElement('div')
+  el.style.cssText = `position:fixed;bottom:24px;right:24px;z-index:9999;background:${type==='error'?'#C00000':type==='warning'?'#92400E':'#16A34A'};color:#fff;padding:12px 18px;border-radius:10px;font-size:13px;font-weight:600;box-shadow:0 4px 16px rgba(0,0,0,0.15);max-width:340px;line-height:1.4;animation:slideIn .2s ease;`
+  el.textContent = msg
+  document.body.appendChild(el)
+  setTimeout(() => { el.style.opacity='0'; el.style.transition='opacity .3s'; setTimeout(()=>el.remove(),300) }, 3200)
+}
+const _s = document.createElement('style')
+_s.textContent = `@keyframes slideIn{from{transform:translateY(10px);opacity:0}to{transform:translateY(0);opacity:1}}`
+document.head.appendChild(_s)
+
+function openApplyDialog(title) {
+  const overlay = document.createElement('div')
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:500;display:flex;align-items:center;justify-content:center;'
+  overlay.innerHTML = `
+    <div style="background:#fff;border-radius:14px;padding:32px;width:480px;max-width:95vw;box-shadow:0 8px 40px rgba(0,0,0,0.14);">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#9CA3AF;margin-bottom:6px;">Apply for Opportunity</div>
+      <div style="font-size:17px;font-weight:700;color:#111827;margin-bottom:20px;">${title}</div>
+      <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;color:#374151;display:block;margin-bottom:6px;">Why are you the best applicant for this opportunity? <span style="color:#C00000;">*</span></label>
+      <textarea id="applyEssay" placeholder="Be specific. What have you actually done that proves you can do this?" style="width:100%;padding:10px 12px;border:1px solid #E5E7EB;border-radius:8px;font-size:13px;font-family:Arial,system-ui,sans-serif;min-height:120px;resize:vertical;outline:none;color:#111827;margin-bottom:8px;"></textarea>
+      <div style="background:#F9FAFB;border-radius:7px;padding:9px 11px;font-size:11px;color:#6B7280;line-height:1.55;margin-bottom:14px;">
+        💡 The applications that get picked name a specific thing you've done — not "I'm a fast learner". Two or three sentences is plenty.
+      </div>
+      <label style="display:flex;gap:8px;align-items:flex-start;cursor:pointer;font-size:12px;color:#374151;margin-bottom:16px;">
+        <input type="checkbox" id="applyMgrAware" style="margin-top:2px;flex-shrink:0;cursor:pointer;">
+        <span>My manager is aware I'm applying, or I understand they will be notified if I'm shortlisted.</span>
+      </label>
+      <div style="display:flex;gap:10px;justify-content:flex-end;">
+        <button onclick="this.closest('[data-overlay]').remove()" style="padding:9px 18px;border:1px solid #E5E7EB;border-radius:8px;background:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;color:#374151;">Cancel</button>
+        <button onclick="submitApplication('${title}',this)" style="padding:9px 18px;background:#C00000;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">Submit Application</button>
+      </div>
+    </div>`
+  overlay.setAttribute('data-overlay','1')
+  overlay.addEventListener('click', e => { if(e.target===overlay) overlay.remove() })
+  document.body.appendChild(overlay)
+}
+
+function submitApplication(title, btn) {
+  const essay = document.getElementById('applyEssay').value.trim()
+  if (!essay) { toast('Tell us why you’re the best applicant before submitting.','warning'); return }
+  if (essay.length < 40) { toast('Add a bit more detail — name something specific you’ve done.','warning'); return }
+  btn.closest('[data-overlay]').remove()
+  toast(`✓ Application submitted for "${title}". Track it under My Applications.`)
+}
+
+function openNominateDialog(title) {
+  const overlay = document.createElement('div')
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;overflow-y:auto;'
+  overlay.innerHTML = `
+    <div style="background:#fff;border-radius:14px;padding:32px;width:480px;max-width:95vw;box-shadow:0 8px 40px rgba(0,0,0,0.14);">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#9CA3AF;margin-bottom:6px;">Nominate someone</div>
+      <div style="font-size:17px;font-weight:700;color:#111827;margin-bottom:6px;">${title}</div>
+      <div style="background:#FFE4E6;border:1px solid #FECDD3;border-radius:8px;padding:10px 12px;font-size:11px;color:#9F1239;line-height:1.55;margin-bottom:18px;">
+        🤝 Some of the best people never put themselves forward. If you've seen someone do this work well, say so — nominated candidates are selected almost twice as often as self-applicants.
+      </div>
+      <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;color:#374151;display:block;margin-bottom:6px;">Who are you nominating? <span style="color:#C00000;">*</span></label>
+      <input id="nomName" placeholder="Search by name or employee ID…" style="width:100%;padding:10px 12px;border:1px solid #E5E7EB;border-radius:8px;font-size:13px;font-family:inherit;outline:none;color:#111827;margin-bottom:16px;">
+      <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;color:#374151;display:block;margin-bottom:6px;">Why are they the best applicant for this opportunity? <span style="color:#C00000;">*</span></label>
+      <textarea id="nomReason" placeholder="What have you personally seen them do that makes them right for this?" style="width:100%;padding:10px 12px;border:1px solid #E5E7EB;border-radius:8px;font-size:13px;font-family:Arial,system-ui,sans-serif;min-height:110px;resize:vertical;outline:none;color:#111827;margin-bottom:8px;"></textarea>
+      <div style="background:#F9FAFB;border-radius:7px;padding:9px 11px;font-size:11px;color:#6B7280;line-height:1.55;margin-bottom:14px;">
+        💡 Specific beats enthusiastic. "She rebuilt our reconciliation model in two weeks and trained the team on it" lands; "she'd be great" doesn't.
+      </div>
+      <label style="display:flex;gap:8px;align-items:flex-start;cursor:pointer;font-size:12px;color:#374151;margin-bottom:16px;">
+        <input type="checkbox" id="nomTold" style="margin-top:2px;flex-shrink:0;cursor:pointer;">
+        <span>I've told them I'm nominating them <span style="color:#9CA3AF;">(optional — they'll be notified either way and can decline)</span></span>
+      </label>
+      <div style="display:flex;gap:10px;justify-content:flex-end;">
+        <button onclick="this.closest('[data-overlay]').remove()" style="padding:9px 18px;border:1px solid #E5E7EB;border-radius:8px;background:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;color:#374151;">Cancel</button>
+        <button onclick="submitNomination('${title}',this)" style="padding:9px 18px;background:#C00000;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">Submit Nomination</button>
+      </div>
+    </div>`
+  overlay.setAttribute('data-overlay','1')
+  overlay.addEventListener('click', e => { if(e.target===overlay) overlay.remove() })
+  document.body.appendChild(overlay)
+}
+
+function submitNomination(title, btn) {
+  const name = document.getElementById('nomName').value.trim()
+  const reason = document.getElementById('nomReason').value.trim()
+  if (!name) { toast('Who are you nominating?','warning'); return }
+  if (!reason) { toast('Please say why they’re the best applicant.','warning'); return }
+  if (reason.length < 40) { toast('Add more detail — name something you’ve seen them do.','warning'); return }
+  btn.closest('[data-overlay]').remove()
+  toast(`✓ ${name} nominated for "${title}". They’ve been notified and can accept or decline.`)
+}
+
+let _fbRating = 0
+
+function openFeedbackDialog(title, counterpart, perspective) {
+  _fbRating = 0
+  const asHost = perspective === 'host'
+  const C = asHost ? {
+    kicker: 'Post-activity survey \u00b7 Host manager',
+    sub: 'Working with',
+    learned: 'What did you learn from hosting this?',
+    learnedPh: 'What did having someone from outside your team show you \u2014 about the work, the process, or your own assumptions?',
+    change: 'What would you change next time?',
+    changePh: 'Scoping, briefing, hours, the hand-off \u2014 what would you do differently if you posted this again?',
+    lead: 'Where do you want this to lead?',
+    leadPh: 'Would you host again, extend this person, open a permanent role, or make this a standing gig?',
+    again: 'Would you work with them again?'
+  } : {
+    kicker: 'Post-activity survey',
+    sub: 'Working with',
+    learned: 'What did you learn?',
+    learnedPh: 'Name something concrete \u2014 a skill, a system, a way of working you didn\u2019t have before this.',
+    change: 'What would you change?',
+    changePh: 'About how the work was set up, briefed, or supported \u2014 not about the people. This is what improves the next one.',
+    lead: 'Where do you want this to lead?',
+    leadPh: 'A move into this function? More work like this? A skill to build on? Say it plainly \u2014 PCD reads this.',
+    again: 'Would you work together again?'
+  }
+  const overlay = document.createElement('div')
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;overflow-y:auto;'
+  overlay.innerHTML = `
+    <div style="background:#fff;border-radius:14px;padding:32px;width:500px;max-width:95vw;box-shadow:0 8px 40px rgba(0,0,0,0.14);">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#9CA3AF;margin-bottom:6px;">${C.kicker}</div>
+      <div style="font-size:17px;font-weight:700;color:#111827;margin-bottom:4px;">${title}</div>
+      <div style="font-size:12px;color:#6B7280;margin-bottom:18px;">Ended Jul 14 · ${C.sub} ${counterpart}</div>
+
+      <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:8px;padding:10px 12px;font-size:11px;color:#065F46;line-height:1.55;margin-bottom:20px;">
+        🔒 <strong>Ratings release simultaneously.</strong> Neither of you sees the other's rating until both are submitted, so nobody is anchored by what the other said.
+      </div>
+
+      <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;color:#374151;display:block;margin-bottom:8px;">Overall experience <span style="color:#C00000;">*</span></label>
+      <div id="starRow" style="display:flex;gap:6px;margin-bottom:6px;">
+        ${[1,2,3,4,5].map(n => `<span onclick="setRating(${n})" onmouseover="hoverRating(${n})" onmouseout="paintStars(_fbRating)" data-star="${n}" style="font-size:30px;cursor:pointer;color:#E5E7EB;line-height:1;user-select:none;transition:color .12s;">★</span>`).join('')}
+      </div>
+      <div id="ratingLabel" style="font-size:12px;color:#9CA3AF;margin-bottom:18px;height:17px;">Tap a star to rate</div>
+
+      <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;color:#374151;display:block;margin-bottom:6px;">What went well? <span style="color:#C00000;">*</span></label>
+      <textarea id="fbComment" placeholder="Be specific and be kind — this goes on the record and helps the next person." style="width:100%;padding:10px 12px;border:1px solid #E5E7EB;border-radius:8px;font-size:13px;font-family:Arial,system-ui,sans-serif;min-height:90px;resize:vertical;outline:none;color:#111827;margin-bottom:18px;"></textarea>
+
+      <div style="border-top:1px solid #F3F4F6;padding-top:18px;margin-bottom:4px;">
+        <div style="font-size:12px;font-weight:700;color:#111827;margin-bottom:3px;">The three questions PCD actually acts on</div>
+        <div style="font-size:11px;color:#6B7280;line-height:1.55;margin-bottom:16px;">The star rating goes to the person you worked with. These three go to PCD — they're how the marketplace gets better, and how anyone knows what you want next.</div>
+
+        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;color:#374151;display:block;margin-bottom:6px;">${C.learned} <span style="color:#C00000;">*</span></label>
+        <textarea id="fbLearned" placeholder="${C.learnedPh}" style="width:100%;padding:10px 12px;border:1px solid #E5E7EB;border-radius:8px;font-size:13px;font-family:Arial,system-ui,sans-serif;min-height:80px;resize:vertical;outline:none;color:#111827;margin-bottom:16px;"></textarea>
+
+        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;color:#374151;display:block;margin-bottom:6px;">${C.change} <span style="color:#C00000;">*</span></label>
+        <textarea id="fbChange" placeholder="${C.changePh}" style="width:100%;padding:10px 12px;border:1px solid #E5E7EB;border-radius:8px;font-size:13px;font-family:Arial,system-ui,sans-serif;min-height:80px;resize:vertical;outline:none;color:#111827;margin-bottom:16px;"></textarea>
+
+        <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;color:#374151;display:block;margin-bottom:6px;">${C.lead} <span style="color:#C00000;">*</span></label>
+        <textarea id="fbLead" placeholder="${C.leadPh}" style="width:100%;padding:10px 12px;border:1px solid #E5E7EB;border-radius:8px;font-size:13px;font-family:Arial,system-ui,sans-serif;min-height:80px;resize:vertical;outline:none;color:#111827;margin-bottom:10px;"></textarea>
+        <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:7px;padding:9px 11px;font-size:11px;color:#1E40AF;line-height:1.55;margin-bottom:18px;">
+          🎯 This answer is the one that travels. It's attached to your record and read at the talent review — saying "I want to move into this function permanently" here is how that becomes someone's job to action.
+        </div>
+      </div>
+
+      <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;color:#374151;display:block;margin-bottom:8px;">${C.again}</label>
+      <div style="display:flex;gap:8px;margin-bottom:20px;flex-wrap:wrap;">
+        <button onclick="pickAgain(this)" class="again-btn" style="padding:7px 14px;border:1px solid #E5E7EB;border-radius:20px;background:#fff;font-size:12px;cursor:pointer;font-family:inherit;color:#374151;">Definitely</button>
+        <button onclick="pickAgain(this)" class="again-btn" style="padding:7px 14px;border:1px solid #E5E7EB;border-radius:20px;background:#fff;font-size:12px;cursor:pointer;font-family:inherit;color:#374151;">Probably</button>
+        <button onclick="pickAgain(this)" class="again-btn" style="padding:7px 14px;border:1px solid #E5E7EB;border-radius:20px;background:#fff;font-size:12px;cursor:pointer;font-family:inherit;color:#374151;">Not this time</button>
+      </div>
+
+      <div style="display:flex;gap:10px;justify-content:flex-end;">
+        <button onclick="this.closest('[data-overlay]').remove()" style="padding:9px 18px;border:1px solid #E5E7EB;border-radius:8px;background:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;color:#374151;">Remind me later</button>
+        <button onclick="submitFeedback('${title}',this,'${perspective || ''}')" style="padding:9px 18px;background:#C00000;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">Submit feedback</button>
+      </div>
+    </div>`
+  overlay.setAttribute('data-overlay','1')
+  overlay.addEventListener('click', e => { if(e.target===overlay) overlay.remove() })
+  document.body.appendChild(overlay)
+}
+
+function paintStars(n) {
+  document.querySelectorAll('[data-star]').forEach(s => {
+    s.style.color = Number(s.dataset.star) <= n ? '#F59E0B' : '#E5E7EB'
+  })
+}
+
+function hoverRating(n) { paintStars(n) }
+
+function setRating(n) {
+  _fbRating = n
+  paintStars(n)
+  const labels = { 1:'Poor — significant issues', 2:'Below expectations', 3:'Met expectations', 4:'Exceeded expectations', 5:'Outstanding — would recommend widely' }
+  const el = document.getElementById('ratingLabel')
+  el.textContent = `${n} of 5 — ${labels[n]}`
+  el.style.color = n >= 4 ? '#16A34A' : n === 3 ? '#6B7280' : '#D97706'
+}
+
+function pickAgain(btn) {
+  document.querySelectorAll('.again-btn').forEach(b => { b.style.background='#fff'; b.style.borderColor='#E5E7EB'; b.style.color='#374151'; b.style.fontWeight='400' })
+  btn.style.background = '#FEF2F2'; btn.style.borderColor = '#C00000'; btn.style.color = '#C00000'; btn.style.fontWeight = '700'
+}
+
+function submitFeedback(title, btn, perspective) {
+  const asHost = perspective === 'host'
+  if (!_fbRating) { toast('Please give a star rating first.','warning'); return }
+  const comment = document.getElementById('fbComment').value.trim()
+  if (!comment) { toast('Please add a short comment — the rating alone isn’t much use.','warning'); return }
+  const fields = [
+    ['fbLearned', 'Tell us what you learned — that’s the part that goes on your record.'],
+    ['fbChange', 'What would you change? Even “nothing” is useful, but say why.'],
+    ['fbLead', 'Where do you want this to lead? Nobody can action what you don’t say.']
+  ]
+  for (const [id, msg] of fields) {
+    const el = document.getElementById(id)
+    if (el && !el.value.trim()) { toast(msg, 'warning'); el.focus(); return }
+  }
+  btn.closest('[data-overlay]').remove()
+  if (asHost) {
+    const hostBanner = document.querySelector('#page-openings > div[data-pending]')
+    if (!hostBanner) return
+    hostBanner.style.background = '#F0FDF4'
+    hostBanner.style.borderColor = '#BBF7D0'
+    hostBanner.innerHTML = `<div style="font-size:13px;font-weight:700;color:#065F46;">✓ Survey submitted — ${title}</div><div style="font-size:12px;color:#047857;margin-top:3px;line-height:1.55;">Both ratings are now released. Your three answers have gone to PCD and are attached to the engagement record.</div>`
+    toast(`✓ Survey submitted. Both ratings released and sent to PCD.`)
+    return
+  }
+  const appBanner = document.querySelector('#page-applications > div[style*="FFFBEB"]')
+  if (appBanner) {
+    appBanner.style.background = '#F0FDF4'
+    appBanner.style.borderColor = '#BBF7D0'
+    appBanner.innerHTML = `<div style="font-size:13px;font-weight:700;color:#065F46;">✓ Survey submitted — ${title}</div><div style="font-size:12px;color:#047857;margin-top:3px;line-height:1.55;">Both ratings are now released and recorded on your profile. Your three survey answers have gone to PCD — what you learned and where you want it to lead are now on your record ahead of the talent review.</div>`
+  }
+  toast(`✓ Feedback submitted. Both ratings released and added to your record.`)
+}
+
+function acceptServiceRequest(btn, name) {
+  btn.closest('div').innerHTML = `<span style="font-size:12px;font-weight:700;color:#16A34A;">✓ Accepted</span>`
+  toast(`✓ You’re helping ${name}. They’ll reach out to schedule.`)
+}
+
+function submitOpportunity() {
+  toast("✓ Opportunity submitted for admin approval. You'll be notified once reviewed.")
+  navigate('openings')
+}
+
+function closeStalePost(btn, title) {
+  const row = btn.closest('.stale-row')
+  row.style.transition = 'opacity .25s'; row.style.opacity = '0'
+  setTimeout(() => { row.remove(); toast(`"${title}" closed.`, 'error') }, 250)
+}
+
+let pendingCount = 3, adminOppCount = 12
+
+function approvePending(btn, title) {
+  const row = btn.closest('.pending-item')
+  row.style.transition='opacity .25s'; row.style.opacity='0'
+  setTimeout(()=>{ row.remove(); pendingCount--; updatePendingBadge(); toast(`✓ "${title}" approved and is now live.`) }, 250)
+}
+
+function rejectPending(btn, title) {
+  const row = btn.closest('.pending-item')
+  row.style.transition='opacity .25s'; row.style.opacity='0'
+  setTimeout(()=>{ row.remove(); pendingCount--; updatePendingBadge(); toast(`"${title}" rejected.`,'error') }, 250)
+}
+
+function approveOpp(btn, title) {
+  const row = btn.closest('.card')
+  row.style.transition='opacity .25s'; row.style.opacity='0'
+  setTimeout(()=>{ row.remove(); adminOppCount--; updateAdminOppBadge(); toast(`✓ "${title}" approved and is now live.`) }, 250)
+}
+
+function rejectOpp(btn, title) {
+  const row = btn.closest('.card')
+  row.style.transition='opacity .25s'; row.style.opacity='0'
+  setTimeout(()=>{ row.remove(); adminOppCount--; updateAdminOppBadge(); toast(`"${title}" rejected.`,'error') }, 250)
+}
+
+function updatePendingBadge() {
+  const b = document.getElementById('pendingBadge'); if(b) b.textContent = pendingCount
+  if (pendingCount <= 0) {
+    const items = document.querySelectorAll('.pending-item')
+    if (items.length === 0) {
+      const hd = document.querySelector('#page-dashboard .section-h2')
+      if (hd) hd.closest('div').innerHTML = '<div style="background:#D1FAE5;border:1px solid #A7F3D0;border-radius:10px;padding:14px 18px;font-size:13px;color:#065F46;font-weight:600;">✓ All caught up — no pending approvals!</div>'
+    }
+  }
+}
+
+function updateAdminOppBadge() {
+  const n = document.getElementById('nav-admin-opps')
+  if (n) { const b = n.querySelector('.nav-badge'); if(b) b.textContent = adminOppCount }
+}
+
+function acceptApplicant(btn, name) {
+  const actionDiv = btn.closest('div')
+  // Show confirmation modal with screening reminder
+  const modal = document.createElement('div')
+  modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;z-index:9999;'
+  modal.innerHTML = `
+    <div style="background:#fff;border-radius:14px;padding:28px;max-width:420px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.2);">
+      <div style="font-size:18px;font-weight:700;color:#111827;margin-bottom:8px;">Before you accept ${name}</div>
+      <div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:8px;padding:13px 14px;margin-bottom:14px;font-size:12px;color:#92400E;line-height:1.5;">
+        ⚠️ <strong>Confirm all three before accepting:</strong>
+        <label style="display:flex;gap:8px;align-items:flex-start;margin-top:9px;cursor:pointer;">
+          <input type="checkbox" class="accept-check" onchange="updateAcceptBtn()" style="margin-top:2px;flex-shrink:0;cursor:pointer;">
+          <span>I have <strong>screened ${name} offline</strong> — interview or conversation held</span>
+        </label>
+        <label style="display:flex;gap:8px;align-items:flex-start;margin-top:7px;cursor:pointer;">
+          <input type="checkbox" class="accept-check" onchange="updateAcceptBtn()" style="margin-top:2px;flex-shrink:0;cursor:pointer;">
+          <span>I have <strong>aligned with their direct manager</strong> on availability and timing</span>
+        </label>
+        <label style="display:flex;gap:8px;align-items:flex-start;margin-top:7px;cursor:pointer;">
+          <input type="checkbox" class="accept-check" onchange="updateAcceptBtn()" style="margin-top:2px;flex-shrink:0;cursor:pointer;">
+          <span>Both teams have <strong>agreed on the work arrangement</strong></span>
+        </label>
+      </div>
+      <div style="font-size:11px;color:#9CA3AF;margin-bottom:18px;">Accepting notifies the applicant and their manager. This confirmation is logged with your name and timestamp.</div>
+      <div style="display:flex;gap:10px;justify-content:flex-end;">
+        <button onclick="this.closest('[style*=fixed]').remove()" style="padding:8px 16px;border:1px solid #E5E7EB;border-radius:8px;background:#fff;color:#374151;font-size:13px;cursor:pointer;">Cancel</button>
+        <button id="acceptConfirmBtn" disabled onclick="confirmAccept(this,'${name}')" style="padding:8px 16px;border:none;border-radius:8px;background:#D1D5DB;color:#9CA3AF;font-size:13px;font-weight:700;cursor:not-allowed;">✓ Yes, Accept</button>
+      </div>
+    </div>`
+  modal._actionDiv = actionDiv
+  document.body.appendChild(modal)
+  window._pendingAcceptDiv = actionDiv
+}
+
+function withdrawApplication(btn, title) {
+  const card = btn.closest('.card')
+  card.style.transition = 'opacity .3s'
+  card.style.opacity = '0.45'
+  card.style.borderLeftColor = '#D1D5DB'
+  btn.parentElement.innerHTML = '<span style="font-size:12px;color:#9CA3AF;font-weight:600;">Application withdrawn</span>'
+  toast(`Application withdrawn: ${title}. The poster has been notified.`)
+}
+
+function updateAcceptBtn() {
+  const boxes = document.querySelectorAll('.accept-check')
+  const btn = document.getElementById('acceptConfirmBtn')
+  if (!btn) return
+  const allChecked = Array.from(boxes).every(b => b.checked)
+  btn.disabled = !allChecked
+  btn.style.background = allChecked ? '#16A34A' : '#D1D5DB'
+  btn.style.color = allChecked ? '#fff' : '#9CA3AF'
+  btn.style.cursor = allChecked ? 'pointer' : 'not-allowed'
+}
+
+function confirmAccept(btn, name) {
+  if (btn.disabled) return
+  btn.closest('[style*="fixed"]').remove()
+  if (window._pendingAcceptDiv) {
+    window._pendingAcceptDiv.innerHTML = `<span style="font-size:12px;font-weight:700;color:#16A34A;">✓ Accepted</span>`
+    window._pendingAcceptDiv = null
+  }
+  toast(`✓ ${name} accepted! They and their manager will be notified.`)
+}
+
+function declineApplicant(btn, name) {
+  btn.closest('div').innerHTML = `<span style="font-size:12px;font-weight:700;color:#9CA3AF;">Declined</span>`
+  toast(`${name} has been declined and notified.`, 'error')
+}
+
+function markAllRead() {
+  document.querySelectorAll('.notif-dot:not(.read)').forEach(d => d.classList.add('read'))
+  document.querySelectorAll('.notif-text:not([style*="color"])').forEach(t => t.style.color='#9CA3AF')
+  toast('All notifications marked as read.')
+}
+
+function addSkill(type) {
+  const input = document.getElementById(type + '-skill-input')
+  const val = input.value.trim(); if (!val) return
+  const container = input.closest('div').previousElementSibling
+  const chip = document.createElement('span')
+  chip.className = 'skill-chip removable'; chip.textContent = val + ' ×'
+  chip.onclick = function() { this.remove() }
+  container.appendChild(chip); input.value = ''; input.focus()
+}
+
+function removeSkill(el) { el.remove() }
+
+function saveProfile() { toast('✓ Profile saved successfully.') }
+
+function renderAttachedFile(name, size) {
+  const list = document.getElementById('attach-list')
+  const item = document.createElement('div')
+  item.style.cssText = 'display:flex;align-items:center;gap:8px;background:#F9FAFB;border:1px solid #E5E7EB;border-radius:7px;padding:7px 10px;font-size:12px;'
+  const sizeStr = size > 1024*1024 ? (size/1024/1024).toFixed(1)+' MB' : (size/1024).toFixed(0)+' KB'
+  item.innerHTML = `<span style="font-size:16px;">📄</span><span style="flex:1;color:#374151;font-weight:600;">${name}</span><span style="color:#9CA3AF;">${sizeStr}</span><button onclick="this.parentElement.remove()" style="border:none;background:none;color:#9CA3AF;cursor:pointer;font-size:14px;padding:0 2px;">✕</button>`
+  list.appendChild(item)
+}
+
+function handleFileSelect(input) {
+  Array.from(input.files).forEach(f => renderAttachedFile(f.name, f.size))
+  input.value = ''
+}
+
+function handleFileDrop(e) {
+  e.preventDefault()
+  document.getElementById('attach-drop').style.borderColor = '#E5E7EB'
+  Array.from(e.dataTransfer.files).forEach(f => renderAttachedFile(f.name, f.size))
+}
+
+function switchTab(btn) {
+  btn.closest('.tab-bar').querySelectorAll('.tab').forEach(t => t.classList.remove('active'))
+  btn.classList.add('active')
+}
+
+renderNav('recruiter')
+navigate('home')
+</script>
+</body>
+</html>
