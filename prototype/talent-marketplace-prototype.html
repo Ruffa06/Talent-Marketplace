@@ -497,6 +497,40 @@
     .growth-grid { grid-template-columns: 1fr; }
   }
 
+  /* ── Live (shared) state ── */
+  .live-panel {
+    border: 1px solid #BBF7D0; background: #F0FDF4;
+    border-radius: 12px; padding: 16px 18px; margin-bottom: 20px;
+  }
+  .live-panel.empty { border-color: #E5E7EB; background: #FAFAFA; }
+  .live-hd {
+    display: flex; align-items: center; gap: 8px;
+    font-size: 13px; font-weight: 700; color: #166534; margin-bottom: 4px;
+  }
+  .live-panel.empty .live-hd { color: #6B7280; }
+  .live-sub { font-size: 11px; color: #6B7280; line-height: 1.55; margin-bottom: 12px; }
+  .live-row {
+    background: #fff; border: 1px solid #E5E7EB; border-radius: 9px;
+    padding: 11px 13px; margin-bottom: 8px;
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  }
+  .live-row:last-child { margin-bottom: 0; }
+  .live-row-main { flex: 1; min-width: 190px; }
+  .live-row-t { font-size: 13px; font-weight: 700; color: #111827; }
+  .live-row-s { font-size: 11px; color: #9CA3AF; margin-top: 2px; }
+  .live-dot {
+    width: 7px; height: 7px; border-radius: 50%; background: #16A34A;
+    display: inline-block; flex-shrink: 0;
+  }
+  .live-dot.off { background: #9CA3AF; }
+  .topbar-live {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 11px; font-weight: 600; color: rgba(255,255,255,0.9);
+    background: rgba(255,255,255,0.16); padding: 4px 10px; border-radius: 20px;
+  }
+  .topbar-live .live-dot { background: #4ADE80; }
+  .topbar-live .live-dot.off { background: #FCA5A5; }
+
   /* ── Mobile: sidebar becomes an off-canvas drawer ── */
   .hamburger {
     display: none;
@@ -622,6 +656,7 @@
     <button class="hamburger" id="hamburger" onclick="toggleSidebar()" aria-label="Menu" aria-expanded="false" aria-controls="sidebar">☰</button>
     <div class="topbar-title">Talent Marketplace</div>
     <div class="topbar-right">
+      <span class="topbar-live" id="liveStatus" onclick="promptLiveName()" title="Shared pilot state"><span class="live-dot off"></span><span id="liveStatusText">connecting…</span></span>
       <span class="topbar-user" id="topbarUser">Oprah Winfrey · Recruiter</span>
       <div class="topbar-avatar" id="topbarAvatar">OW</div>
     </div>
@@ -903,6 +938,7 @@
     <div class="page" id="page-all-opps">
       <div class="page-header">
         <div class="page-title">🔎 All Opportunities</div>
+      <div id="liveOpps"></div>
         <div class="page-sub">Everything live across LIFT Holdings — including the ones outside your current skill set</div>
       </div>
 
@@ -1266,6 +1302,7 @@
     <div class="page" id="page-applications">
       <div class="page-header">
         <div class="page-title">📨 My Applications</div>
+      <div id="liveMyApps"></div>
         <div class="page-sub">Track where every application stands — no guessing</div>
       </div>
 
@@ -1388,6 +1425,7 @@
     <div class="page" id="page-openings">
       <div class="page-header">
         <div class="page-title">📋 My Openings</div>
+      <div id="liveInbox"></div>
         <div class="page-sub">Review applicants for your posted opportunities</div>
       </div>
 
@@ -1470,6 +1508,7 @@
     <div class="page" id="page-team">
       <div class="page-header">
         <div class="page-title">👥 My Team Activity</div>
+      <div id="liveTeam"></div>
         <div class="page-sub">See how your direct reports are engaging with Talent Marketplace</div>
       </div>
       <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:10px;padding:12px 16px;margin-bottom:20px;font-size:12px;color:#1E40AF;">
@@ -1580,11 +1619,11 @@
         <div class="card form-card">
           <h3>Opportunity Details</h3>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-            <div class="field"><label>Type</label><select><option>Gig</option><option>Vacancy</option><option>Developmental Job Immersion</option><option>Service Request</option></select></div>
-            <div class="field"><label>Department</label><select><option selected>People & Culture</option><option>Finance</option><option>IT & Innovation</option><option>Operations</option></select></div>
+            <div class="field"><label>Type</label><select id="postType"><option>Gig</option><option>Vacancy</option><option>Developmental Job Immersion</option><option>Service Request</option></select></div>
+            <div class="field"><label>Department</label><select id="postDept"><option selected>People & Culture</option><option>Finance</option><option>IT & Innovation</option><option>Operations</option></select></div>
           </div>
-          <div class="field"><label>Title</label><input placeholder="e.g. HR Analytics Gig — Q4 Workforce Review"></div>
-          <div class="field"><label>Description</label><textarea placeholder="What will the person be doing? What problem are we solving?"></textarea></div>
+          <div class="field"><label>Title</label><input id="postTitle" placeholder="e.g. HR Analytics Gig — Q4 Workforce Review"></div>
+          <div class="field"><label>Description</label><textarea id="postDesc" placeholder="What will the person be doing? What problem are we solving?"></textarea></div>
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
             <div class="field"><label>Bandwidth</label><select><option>Ad-hoc</option><option>30% allocation</option><option>50% allocation</option><option>Full-time</option></select></div>
             <div class="field"><label>Estimated effort</label><input placeholder="e.g. ~8 hours total"></div>
@@ -1907,6 +1946,7 @@
     <div class="page" id="page-admin-opps">
       <div class="page-header">
         <div class="page-title">📋 All Opportunities</div>
+      <div id="liveQueue"></div>
         <div class="page-sub">Review, approve or reject posted opportunities</div>
       </div>
       <div class="tab-bar">
@@ -2207,6 +2247,244 @@ function renderNav(role) {
   `).join('')
 }
 
+/* ══════════════════════════════════════════════════════════════════
+   LIVE STATE — shared across everyone on the link, via Supabase.
+
+   Everything else on this page is seeded demo content that resets on
+   reload. The panels driven by this section are real: what one person
+   does here, the next person sees. There is no login, so we ask for a
+   display name purely to attribute actions.
+   ══════════════════════════════════════════════════════════════════ */
+const LIVE = {
+  url: 'https://qlcqsdnuparijwtewzji.supabase.co',
+  key: 'sb_publishable_3DiHQl1dMWaVkglZA_0LNg_3UA7NUNt',
+  online: false,
+  name: null,
+  opps: [],
+  apps: [],
+  timer: null,
+}
+
+function liveHeaders(extra) {
+  return Object.assign({
+    'apikey': LIVE.key,
+    'Authorization': 'Bearer ' + LIVE.key,
+    'Content-Type': 'application/json',
+  }, extra || {})
+}
+
+async function liveReq(path, opts) {
+  // Merge opts first, then force our headers in — a caller-supplied `headers`
+  // must extend the auth headers, never replace them.
+  const init = Object.assign({}, opts)
+  init.headers = liveHeaders((opts || {}).headers)
+  const res = await fetch(LIVE.url + '/rest/v1/' + path, init)
+  if (!res.ok) throw new Error('HTTP ' + res.status + ' ' + (await res.text()).slice(0, 200))
+  return res.status === 204 ? null : res.json()
+}
+
+function liveName() {
+  if (!LIVE.name) LIVE.name = localStorage.getItem('tm_live_name') || null
+  return LIVE.name
+}
+
+function promptLiveName() {
+  const n = prompt('Your name (so your actions are attributed in the pilot):', liveName() || '')
+  if (n && n.trim()) {
+    LIVE.name = n.trim()
+    localStorage.setItem('tm_live_name', LIVE.name)
+    setLiveStatus(LIVE.online)
+    toast('You are acting as ' + LIVE.name + '.')
+  }
+}
+
+function setLiveStatus(ok) {
+  LIVE.online = ok
+  const dot = document.querySelector('#liveStatus .live-dot')
+  const txt = document.getElementById('liveStatusText')
+  if (dot) dot.className = 'live-dot' + (ok ? '' : ' off')
+  if (txt) txt.textContent = ok ? (liveName() ? 'Live · ' + liveName() : 'Live — set name') : 'Offline'
+  const el = document.getElementById('liveStatus')
+  if (el) el.title = ok
+    ? 'Connected to shared pilot data. Click to change your name.'
+    : 'Could not reach the shared database — demo content only.'
+}
+
+// Sequence guard: a slow request that fails must not overwrite the result of a
+// newer one that already succeeded.
+LIVE.seq = 0
+async function liveRefresh() {
+  const mine = ++LIVE.seq
+  try {
+    const [opps, apps] = await Promise.all([
+      liveReq('opportunities?select=*&order=created_at.desc&limit=100'),
+      liveReq('applications?select=*&order=created_at.desc&limit=100'),
+    ])
+    if (mine !== LIVE.seq) return
+    LIVE.opps = opps || []
+    LIVE.apps = apps || []
+    setLiveStatus(true)
+  } catch (e) {
+    if (mine !== LIVE.seq) return
+    setLiveStatus(false)
+  }
+  renderLive()
+}
+
+const esc = t => String(t == null ? '' : t).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]))
+const ago = ts => {
+  const m = Math.floor((Date.now() - new Date(ts).getTime()) / 60000)
+  if (isNaN(m)) return ''
+  if (m < 1) return 'just now'
+  if (m < 60) return m + 'm ago'
+  if (m < 1440) return Math.floor(m / 60) + 'h ago'
+  return Math.floor(m / 1440) + 'd ago'
+}
+const badgeFor = t => {
+  const k = String(t || '').toLowerCase()
+  const c = k === 'dji' ? 'badge-dji' : k === 'vacancy' ? 'badge-vacancy' : k === 'service offer' ? 'badge-offer' : 'badge-gig'
+  return `<span class="badge ${c}">${esc(t || 'Gig')}</span>`
+}
+const statusBadge = s0 => { const s = s0 || 'applied'; return s === 'accepted' ? '<span class="badge badge-accepted">Accepted ✓</span>'
+  : s === 'declined' ? '<span class="badge badge-declined">Declined</span>'
+  : '<span class="badge badge-applied">Applied</span>' }
+
+function livePanel(id, title, sub, rowsHtml, emptyMsg) {
+  const el = document.getElementById(id)
+  if (!el) return
+  if (!LIVE.online) {
+    el.innerHTML = `<div class="live-panel empty"><div class="live-hd"><span class="live-dot off"></span>Shared pilot data unavailable</div>
+      <div class="live-sub">Everything below is demo content. Reconnect to see what other people have done.</div></div>`
+    return
+  }
+  el.innerHTML = `<div class="live-panel${rowsHtml ? '' : ' empty'}">
+      <div class="live-hd"><span class="live-dot${rowsHtml ? '' : ' off'}"></span>${esc(title)}</div>
+      <div class="live-sub">${sub}</div>
+      ${rowsHtml || `<div style="font-size:12px;color:#9CA3AF;">${esc(emptyMsg)}</div>`}
+    </div>`
+}
+
+function renderLive() {
+  const liveOpps = LIVE.opps.filter(o => o.status === 'live')
+  const pending  = LIVE.opps.filter(o => o.status === 'pending')
+  const me       = liveName()
+
+  livePanel('liveOpps', `${liveOpps.length} live opportunit${liveOpps.length === 1 ? 'y' : 'ies'} posted by real people`,
+    'Posted through this pilot and approved by an administrator. Anyone on the link can apply.',
+    liveOpps.map(o => `<div class="live-row">
+        <div class="live-row-main">
+          <div class="live-row-t">${badgeFor(o.type)} ${esc(o.title)}</div>
+          <div class="live-row-s">${esc(o.department || '—')} · posted by ${esc(o.posted_by)} · ${ago(o.created_at)}</div>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="liveApply(${o.id})">Apply →</button>
+      </div>`).join(''),
+    'Nothing approved yet. Post one as a recruiter or manager, then approve it as an administrator.')
+
+  livePanel('liveMyApps', 'Your live applications',
+    'These persist and are visible to managers and administrators on this link.',
+    LIVE.apps.filter(a => me && a.applicant === me).map(a => `<div class="live-row">
+        <div class="live-row-main">
+          <div class="live-row-t">${badgeFor(a.opp_type)} ${esc(a.opp_title)}</div>
+          <div class="live-row-s">Applied ${ago(a.created_at)}</div>
+        </div>${statusBadge(a.status)}
+      </div>`).join(''),
+    me ? 'You have not applied to anything yet.' : 'Set your name in the top bar to track your applications.')
+
+  const inbox = LIVE.apps.filter(a => (a.status || 'applied') === 'applied')
+  livePanel('liveInbox', `${inbox.length} application${inbox.length === 1 ? '' : 's'} awaiting your decision`,
+    'Submitted by real people using this link. Accepting or declining is visible to them and to administrators.',
+    inbox.map(a => `<div class="live-row">
+        <div class="live-row-main">
+          <div class="live-row-t">${esc(a.applicant)} → ${esc(a.opp_title)}</div>
+          <div class="live-row-s">${badgeFor(a.opp_type)} ${a.essay ? '· “' + esc(String(a.essay).slice(0, 90)) + '…”' : ''} · ${ago(a.created_at)}</div>
+        </div>
+        <div style="display:flex;gap:7px;">
+          <button class="btn btn-green btn-sm" onclick="liveDecide(${a.id},'accepted')">✓ Accept</button>
+          <button class="btn btn-outline btn-sm" onclick="liveDecide(${a.id},'declined')">✕ Decline</button>
+        </div>
+      </div>`).join(''),
+    'No live applications yet.')
+
+  livePanel('liveTeam', `${LIVE.apps.length} live application${LIVE.apps.length === 1 ? '' : 's'} across the pilot`,
+    'Every application submitted through this link, whoever made it.',
+    LIVE.apps.map(a => `<div class="live-row">
+        <div class="live-row-main">
+          <div class="live-row-t">${esc(a.applicant)}</div>
+          <div class="live-row-s">${badgeFor(a.opp_type)} ${esc(a.opp_title)} · ${ago(a.created_at)}</div>
+        </div>${statusBadge(a.status)}
+      </div>`).join(''),
+    'No one has applied through the pilot yet.')
+
+  livePanel('liveQueue', `${pending.length} post${pending.length === 1 ? '' : 's'} awaiting approval`,
+    'Submitted through this pilot. Approving one puts it on All Opportunities for everybody.',
+    pending.map(o => `<div class="live-row">
+        <div class="live-row-main">
+          <div class="live-row-t">${badgeFor(o.type)} ${esc(o.title)}</div>
+          <div class="live-row-s">${esc(o.department || '—')} · by ${esc(o.posted_by)} (${esc(o.posted_role)}) · ${ago(o.created_at)}</div>
+        </div>
+        <div style="display:flex;gap:7px;">
+          <button class="btn btn-green btn-sm" onclick="liveModerate(${o.id},'live')">✓ Approve</button>
+          <button class="btn btn-outline btn-sm" onclick="liveModerate(${o.id},'rejected')">✕ Reject</button>
+        </div>
+      </div>`).join(''),
+    'Nothing waiting. Post something as a recruiter or manager to see it arrive here.')
+}
+
+function requireName() {
+  if (!liveName()) promptLiveName()
+  return liveName()
+}
+
+async function livePost(table, body) {
+  return liveReq(table, { method: 'POST', body: JSON.stringify(body), headers: { 'Prefer': 'return=representation' } })
+}
+
+async function liveApply(oppId) {
+  if (!requireName()) return
+  const o = LIVE.opps.find(x => x.id === oppId)
+  if (!o) return
+  if (LIVE.apps.some(a => a.opp_title === o.title && a.applicant === liveName())) {
+    toast('You have already applied to that one.', 'warning'); return
+  }
+  try {
+    await livePost('applications', { opp_title: o.title, opp_type: o.type, applicant: liveName(), applicant_role: currentRole, essay: '', status: 'applied' })
+    toast(`✓ Applied to "${o.title}". A manager will see it immediately.`)
+    await liveRefresh()
+  } catch (e) { toast('Could not submit — ' + e.message, 'error') }
+}
+
+async function liveDecide(appId, status) {
+  try {
+    await liveReq('applications?id=eq.' + appId, { method: 'PATCH', body: JSON.stringify({ status }) })
+    toast(status === 'accepted' ? '✓ Accepted — the applicant sees this now.' : 'Declined.', status === 'accepted' ? 'success' : 'error')
+    await liveRefresh()
+  } catch (e) { toast('Could not update — ' + e.message, 'error') }
+}
+
+async function liveModerate(oppId, status) {
+  try {
+    await liveReq('opportunities?id=eq.' + oppId, { method: 'PATCH', body: JSON.stringify({ status }) })
+    toast(status === 'live' ? '✓ Approved and now live for everyone.' : 'Rejected.', status === 'live' ? 'success' : 'error')
+    await liveRefresh()
+  } catch (e) { toast('Could not update — ' + e.message, 'error') }
+}
+
+async function liveCreateOpportunity(fields) {
+  if (!requireName()) return false
+  try {
+    await livePost('opportunities', Object.assign({ posted_by: liveName(), posted_role: currentRole, status: 'pending' }, fields))
+    await liveRefresh()
+    return true
+  } catch (e) { toast('Could not post — ' + e.message, 'error'); return false }
+}
+
+function liveInit() {
+  setLiveStatus(false)
+  liveRefresh()
+  if (LIVE.timer) clearInterval(LIVE.timer)
+  LIVE.timer = setInterval(liveRefresh, 8000)
+}
+
 function toggleSidebar() {
   const open = document.getElementById('sidebar').classList.toggle('open')
   document.getElementById('sidebarBackdrop').classList.toggle('open', open)
@@ -2374,6 +2652,11 @@ function submitApplication(title, btn) {
   if (essay.length < 40) { toast('Add a bit more detail — name something specific you’ve done.','warning'); return }
   btn.closest('[data-overlay]').remove()
   toast(`✓ Application submitted for "${title}". Track it under My Applications.`)
+  if (LIVE.online && requireName()) {
+    livePost('applications', { opp_title: title, opp_type: 'Gig', applicant: liveName(), applicant_role: currentRole, essay, status: 'applied' })
+      .then(liveRefresh)
+      .catch(e => toast('Saved locally, but not shared — ' + e.message, 'warning'))
+  }
 }
 
 function openNominateDialog(title) {
@@ -2558,8 +2841,23 @@ function acceptServiceRequest(btn, name) {
   toast(`✓ You’re helping ${name}. They’ll reach out to schedule.`)
 }
 
-function submitOpportunity() {
-  toast("✓ Opportunity submitted for admin approval. You'll be notified once reviewed.")
+async function submitOpportunity() {
+  const title = (document.getElementById('postTitle').value || '').trim()
+  if (!title) { toast('Give the opportunity a title first.', 'warning'); return }
+  const fields = {
+    title,
+    type: document.getElementById('postType').value,
+    department: document.getElementById('postDept').value,
+    description: (document.getElementById('postDesc').value || '').trim(),
+  }
+  if (LIVE.online) {
+    if (!(await liveCreateOpportunity(fields))) return
+    document.getElementById('postTitle').value = ''
+    document.getElementById('postDesc').value = ''
+    toast('✓ Posted for approval. An administrator sees it now under All Opportunities.')
+  } else {
+    toast("✓ Opportunity submitted for admin approval. You'll be notified once reviewed.")
+  }
   navigate('openings')
 }
 
@@ -2727,6 +3025,7 @@ function switchTab(btn) {
 
 renderNav('recruiter')
 navigate('home')
+liveInit()
 </script>
 </body>
 </html>
