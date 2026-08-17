@@ -500,7 +500,7 @@
   /* ── Bigger hero, no boxed pills ── */
   .hero-lg { padding: 46px 44px; }
   .hero-lg .hero-eyebrow { font-size: 11px; letter-spacing: 2.4px; margin-bottom: 18px; }
-  .hero-lg .hero-title { font-size: 40px; line-height: 1.18; letter-spacing: -0.5px; margin-bottom: 20px; max-width: 15ch; }
+  .hero-lg .hero-title { font-size: 40px; line-height: 1.18; letter-spacing: -0.5px; margin-bottom: 20px; }
   .hero-lg .hero-body { font-size: 16px; line-height: 1.75; max-width: 620px; margin-bottom: 30px; color: rgba(255,255,255,0.82); }
 
   .hero-icons { display: flex; flex-wrap: wrap; gap: 34px; }
@@ -553,6 +553,11 @@
   .fit-line b { color: #374151; }
   .fit-have { color: #166534; font-weight: 700; }
   .fit-gap  { color: #92400E; font-weight: 700; }
+  .fit-note {
+    margin-top: 7px; background: #F9FAFB; border: 1px solid #F3F4F6;
+    border-radius: 7px; padding: 8px 10px; font-size: 10.5px; color: #6B7280; line-height: 1.6;
+  }
+  .fit-note b { color: #374151; }
   .fit-dev {
     margin-top: 7px; background: #FFFBEB; border: 1px solid #FDE68A;
     border-radius: 7px; padding: 8px 10px; font-size: 10.5px; color: #92400E; line-height: 1.6;
@@ -565,6 +570,15 @@
                text-align: left; padding: 7px 10px; border-bottom: 2px solid #F3F4F6; }
   .rubric td { font-size: 11.5px; color: #374151; padding: 8px 10px; border-bottom: 1px solid #F9FAFB; line-height: 1.55; }
   .rubric td:first-child { font-weight: 700; white-space: nowrap; }
+
+  /* ── Line-breaking: keep headings balanced and stop orphan words ── */
+  .page-title, .section-h2, .door-t, .why-title,
+  h1, h2, h3, .stat-lbl, .live-hd, .opp-title, .live-row-t { text-wrap: balance; }
+  .hero-lg .hero-title { text-wrap: nowrap; }   /* breaks are authored, not computed */
+  .hero-body, .page-sub, .why-body, .door-b, .live-sub,
+  .fit-line, .opp-meta, p { text-wrap: pretty; }
+  /* Phrases that must never be split across lines */
+  .nowrap { white-space: nowrap; }
 
   /* ── Live (shared) state ── */
   .live-panel {
@@ -643,7 +657,7 @@
     .hero { padding: 26px 20px; }
     .hero-lg { padding: 28px 20px; }
     .hero-title { font-size: 22px; }
-    .hero-lg .hero-title { font-size: 27px; max-width: none; }
+    .hero-lg .hero-title { font-size: 25px; }
     .hero-lg .hero-body { font-size: 14px; }
     .hero-icons { gap: 18px; }
     .door-grid { grid-template-columns: 1fr; }
@@ -701,7 +715,7 @@
       <span class="logo-emoji">🏪</span>
       <span class="logo-text">Growth: HC Talent&nbsp;Marketplace</span>
     </div>
-    <span class="logo-pill">Home Credit PH · Pilot</span>
+    <span class="logo-pill">Home Credit&nbsp;PH · Pilot</span>
   </div>
 
   <div class="role-switcher">
@@ -741,8 +755,8 @@
     <!-- ══ HOME ══ -->
     <div class="page active" id="page-home">
       <div class="hero hero-lg">
-        <div class="hero-eyebrow">Home Credit PH · Internal Growth Hub</div>
-        <div class="hero-title">Your next growth move is already here.</div>
+        <div class="hero-eyebrow">Home Credit&nbsp;PH · Internal Growth Hub</div>
+        <div class="hero-title">Your next growth&nbsp;move<br class="hero-br">is already&nbsp;here.</div>
         <div class="hero-body">Home Credit is full of work that could stretch you — and people who could learn from what you already know. <strong>Growth</strong> brings the two together. Explore an interest your role never had room for, put a hidden skill to work, and help another business unit while your own career moves forward.<br><br>No transfers. No waiting for the next cycle. On-the-job learning, right here at home.</div>
         <div class="hero-icons">
           <div class="hero-ico"><span>🔍</span><div><b>Discover</b><i>Work you didn't know existed</i></div></div>
@@ -771,7 +785,7 @@
           <div style="font-size:26px;margin-bottom:10px;">🌱</div>
           <div style="margin-bottom:8px;"><span class="badge badge-dji">DJI</span></div>
           <div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:6px;">Developmental Job Immersion</div>
-          <div style="font-size:12px;color:#6B7280;line-height:1.6;">Temporary assignment to another role or function, <strong>3 – 9 months</strong>. Develop yourself for a future role, or be assessed for a target position — without leaving the company.</div>
+          <div style="font-size:12px;color:#6B7280;line-height:1.6;">Temporary assignment to another role or function, <strong>3&nbsp;–&nbsp;9&nbsp;months</strong>. Develop yourself for a future role, or be assessed for a target position — without leaving the company.</div>
           <div class="dji-policy-box">
             <strong>📄 Policy 211_2021 v1.0 applies</strong>
             Before starting, you, your Direct Manager, and the Host Manager co-design a DJI Plan: goals, degree of immersion (100% full or partial split), expected outputs, and how performance will be evaluated. All four parties — employee, Direct Manager, Host Manager, and HR People Partner — sign off using the official DJI Form. Your headcount, salary, and benefits remain with your home department throughout.
@@ -848,7 +862,7 @@
           <div style="font-size:26px;margin-bottom:10px;">🌱</div>
           <div style="margin-bottom:8px;"><span class="badge badge-dji">DJI</span></div>
           <div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:6px;">Developmental Job Immersion</div>
-          <div style="font-size:12px;color:#6B7280;line-height:1.6;">Temporary assignment to another role or function, <strong>3 – 9 months</strong>. Develop yourself for a future role, or be assessed for a target position — without leaving the company.</div>
+          <div style="font-size:12px;color:#6B7280;line-height:1.6;">Temporary assignment to another role or function, <strong>3&nbsp;–&nbsp;9&nbsp;months</strong>. Develop yourself for a future role, or be assessed for a target position — without leaving the company.</div>
           <div class="dji-policy-box">
             <strong>📄 Policy 211_2021 v1.0 applies</strong>
             Before starting, you, your Direct Manager, and the Host Manager co-design a DJI Plan: goals, degree of immersion (100% full or partial split), expected outputs, and how performance will be evaluated. All four parties — employee, Direct Manager, Host Manager, and HR People Partner — sign off using the official DJI Form. Your headcount, salary, and benefits remain with your home department throughout.
@@ -880,7 +894,7 @@
         </div>
         <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;">
           <button class="btn btn-red" onclick="navigate('profile')">👤 Build my profile →</button>
-          <span style="font-size:11px;color:#9CA3AF;align-self:center;line-height:1.5;max-width:340px;">None of this reaches you until your skills are on your profile. It takes about five minutes.</span>
+          <span style="font-size:11px;color:#9CA3AF;align-self:center;line-height:1.5;max-width:340px;">None of this reaches you until your skills are on your&nbsp;profile.<br>It takes about five&nbsp;minutes.</span>
         </div>
       </div>
 
@@ -947,13 +961,13 @@
         <div style="font-size:16px;font-weight:700;color:#111827;margin-bottom:5px;">Thinking of posting? 3 reasons to open it up here first</div>
         <div style="font-size:13px;color:#6B7280;margin-bottom:16px;">For managers and employees with work that needs doing, a role to fill, or a skill to share.</div>
         <div class="growth-grid">
-          <div class="why-card"><div class="why-icon">⚡</div><div class="why-title">Talent in days, not months</div><div class="why-body">The average internal placement here takes <strong>21 days</strong> against 58 for an external hire — and the person already knows our systems, our data, and our customers. No agency fee, no onboarding runway.</div></div>
+          <div class="why-card"><div class="why-icon">⚡</div><div class="why-title">Talent in days, not months</div><div class="why-body">The average internal placement here takes <strong>21&nbsp;days</strong> against 58 for an external hire — and the person already knows our systems, our data, and our customers. No agency fee, no onboarding runway.</div></div>
           <div class="why-card"><div class="why-icon">🔍</div><div class="why-title">Reach the people you'd never meet</div><div class="why-body">Your network is a fraction of the company. Posting here puts your work in front of everyone whose skills actually fit — including the person three floors up you'd never have thought to ask.</div></div>
           <div class="why-card"><div class="why-icon">🏆</div><div class="why-title">Build a reputation as a talent magnet</div><div class="why-body">Managers who host gigs and DJIs become known as places people grow. That reputation compounds — it's what makes strong candidates say yes when you have a real vacancy to fill.</div></div>
         </div>
         <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;">
           <button class="btn btn-red" onclick="navigate('post')">➕ Post an opportunity →</button>
-          <span style="font-size:11px;color:#9CA3AF;align-self:center;line-height:1.5;max-width:340px;">Posts go live once approved — usually within two working days.</span>
+          <span style="font-size:11px;color:#9CA3AF;align-self:center;line-height:1.5;max-width:340px;">Posts go live once&nbsp;approved —<br>usually within two working&nbsp;days.</span>
         </div>
       </div>
     </div>
@@ -2218,7 +2232,7 @@
 
       <div id="hist-posts" class="hist-pane">
         <div class="stat-grid" style="grid-template-columns:repeat(4,1fr);">
-          <div class="card stat-card"><div class="stat-val" id="hpTotal">0</div><div class="stat-lbl">Total posts</div><div class="stat-sub">All time</div></div>
+          <div class="card stat-card"><div class="stat-val" id="hpTotal">0</div><div class="stat-lbl">Total&nbsp;posts</div><div class="stat-sub">All time</div></div>
           <div class="card stat-card"><div class="stat-val" style="color:#16A34A;" id="hpLive">0</div><div class="stat-lbl">Approved</div><div class="stat-sub">Went live</div></div>
           <div class="card stat-card"><div class="stat-val" style="color:#C00000;" id="hpRej">0</div><div class="stat-lbl">Rejected</div><div class="stat-sub">Not published</div></div>
           <div class="card stat-card"><div class="stat-val" style="color:#D97706;" id="hpPend">0</div><div class="stat-lbl">Pending</div><div class="stat-sub">Awaiting review</div></div>
@@ -2234,7 +2248,7 @@
 
       <div id="hist-apps" class="hist-pane" style="display:none;">
         <div class="stat-grid" style="grid-template-columns:repeat(4,1fr);">
-          <div class="card stat-card"><div class="stat-val" id="haTotal">0</div><div class="stat-lbl">Total applications</div><div class="stat-sub">All time</div></div>
+          <div class="card stat-card"><div class="stat-val" id="haTotal">0</div><div class="stat-lbl">Total&nbsp;applications</div><div class="stat-sub">All time</div></div>
           <div class="card stat-card"><div class="stat-val" style="color:#16A34A;" id="haAcc">0</div><div class="stat-lbl">Accepted</div><div class="stat-sub">Placed</div></div>
           <div class="card stat-card"><div class="stat-val" style="color:#C00000;" id="haDec">0</div><div class="stat-lbl">Declined</div><div class="stat-sub">Not selected</div></div>
           <div class="card stat-card"><div class="stat-val" style="color:#D97706;" id="haOpen">0</div><div class="stat-lbl">Awaiting decision</div><div class="stat-sub">Still open</div></div>
@@ -2807,6 +2821,14 @@ const SKILL_DEV = {
   'process automation': 'LMS · “Automate with Power Automate” (4h) + automate one of your own reports',
   'supply chain': 'Shadow the S&OP cycle for one month',
   'workforce planning': 'Sit in on the annual headcount planning session with PCD',
+  'prototyping': 'LMS · “Rapid Prototyping Basics” (3h); rebuild one manual process as a clickable mock',
+  'ai tools': 'LMS · “Working with AI Tools” (2h); use one on a real task this month and write up what changed',
+  'segmentation': 'Pair with Commercial Planning on one segmentation refresh',
+  'mentoring': 'Complete the PCD mentoring primer; take one mentee through a single cycle',
+  'journey mapping': 'Join one customer journey workshop; map a single end-to-end flow yourself',
+  'design thinking': 'LMS · “Design Thinking Foundations” (4h) + one facilitated ideation session',
+  'stakeholder management': 'Shadow a steering committee; own the comms for one workstream',
+  'project management': 'LMS · “Project Delivery Essentials” (6h); run one small cross-team piece end to end',
 }
 // Normalise so spelling variants ('modeling' / 'modelling') match each other.
 const skillKey = t => String(t || '').replace(/[✅×]/g, '').trim().toLowerCase()
@@ -2864,18 +2886,28 @@ function renderFitBreakdowns() {
   document.querySelectorAll('.fit-slot').forEach(slot => {
     const card = slot.closest('.opp-card') || slot.parentElement
     if (!card) return
-    const chips = [...card.querySelectorAll('.chip-row .skill-chip')].map(c => skillKey(c.textContent)).filter(Boolean)
+    // Keep each chip's own label so casing like "AI Tools" survives.
+    const chips = [...card.querySelectorAll('.chip-row .skill-chip')]
+      .map(c => ({ key: skillKey(c.textContent), label: c.textContent.replace(/[✅×]/g, '').trim() }))
+      .filter(c => c.key)
     if (!chips.length) { slot.innerHTML = ''; return }
-    const have = chips.filter(c => MY_SKILLS.some(m => m === c || c.includes(m) || m.includes(c)))
-    const gaps = chips.filter(c => !have.includes(c))
-    const pretty = k => (SKILL_DEFS[k] ? SKILL_DEFS[k][0] : k.replace(/\b\w/g, ch => ch.toUpperCase()))
-    const devs = gaps.map(g => SKILL_DEV[g] || SKILL_DEV[Object.keys(SKILL_DEV).find(d => g.includes(d)) || '']).filter(Boolean)
+    const has  = c => MY_SKILLS.some(m => m === c.key || c.key.includes(m) || m.includes(c.key))
+    const have = chips.filter(has)
+    const gaps = chips.filter(c => !has(c))
+    const list = a => a.map(c => esc(c.label)).join(', ')
+    const devs = gaps.map(g => SKILL_DEV[g.key] || SKILL_DEV[Object.keys(SKILL_DEV).find(d => g.key.includes(d)) || '']).filter(Boolean)
 
     slot.innerHTML = `<div class="fit-box">
       <div class="fit-line"><b>Why this score:</b>
-        ${have.length ? `you already bring <span class="fit-have">${have.map(pretty).join(', ')}</span>` : `<span class="fit-gap">none of the listed skills are on your profile yet</span>`}${gaps.length ? ` · to be a full match you'd add <span class="fit-gap">${gaps.map(pretty).join(', ')}</span>` : ` · that's everything this post asks for`}.
+        ${have.length
+          ? `your profile already shows <span class="fit-have">${list(have)}</span>${gaps.length ? `. It also asks for <span class="fit-gap">${list(gaps)}</span>.` : ` — that is everything this post asks for.`}`
+          : `this post asks for <span class="fit-gap">${list(gaps)}</span>, and none of that is on your profile yet.`}
       </div>
-      ${gaps.length && devs.length ? `<div class="fit-dev"><b>📚 How to close the gap</b>${devs.map(d => '· ' + d).join('<br>')}</div>` : ''}
+      ${gaps.length ? `<div class="fit-note">
+        ✏️ <b>Already have ${gaps.length > 1 ? 'any of these' : 'this'}?</b> Add ${gaps.length > 1 ? 'them' : 'it'} to your profile — matching only sees what is written down, so a real skill you never listed costs you the score.
+        <b style="display:block;margin-top:5px;">Don't have ${gaps.length > 1 ? 'them' : 'it'} yet?</b> Leave your profile alone. Claimed skills are checked before they count for much, and a padded profile matches you to work you cannot do. ${devs.length ? `Build ${gaps.length > 1 ? 'them' : 'it'} first:` : `Apply anyway if the direction genuinely interests you — say so in your answer.`}
+      </div>` : ''}
+      ${gaps.length && devs.length ? `<div class="fit-dev"><b>📚 How to build ${gaps.length > 1 ? 'these' : 'this'}</b>${devs.map(d => '· ' + d).join('<br>')}</div>` : ''}
     </div>`
   })
 }
