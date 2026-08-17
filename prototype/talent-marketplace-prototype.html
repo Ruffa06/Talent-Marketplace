@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Talent Marketplace — LIFT Holdings</title>
+<title>Growth: HC Talent Marketplace</title>
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -497,6 +497,75 @@
     .growth-grid { grid-template-columns: 1fr; }
   }
 
+  /* ── Bigger hero, no boxed pills ── */
+  .hero-lg { padding: 46px 44px; }
+  .hero-lg .hero-eyebrow { font-size: 11px; letter-spacing: 2.4px; margin-bottom: 18px; }
+  .hero-lg .hero-title { font-size: 40px; line-height: 1.18; letter-spacing: -0.5px; margin-bottom: 20px; max-width: 15ch; }
+  .hero-lg .hero-body { font-size: 16px; line-height: 1.75; max-width: 620px; margin-bottom: 30px; color: rgba(255,255,255,0.82); }
+
+  .hero-icons { display: flex; flex-wrap: wrap; gap: 34px; }
+  .hero-ico { display: flex; align-items: flex-start; gap: 11px; }
+  .hero-ico > span { font-size: 26px; line-height: 1; }
+  .hero-ico b { display: block; font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 2px; }
+  .hero-ico i { display: block; font-size: 12px; font-style: normal; color: rgba(255,255,255,0.6); }
+
+  /* ── The two doors ── */
+  .door-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin: 28px 0; }
+  .door-card {
+    background: #fff; border: 1px solid #E5E7EB; border-radius: 14px;
+    padding: 26px 26px 22px; cursor: pointer;
+    transition: border-color .16s, box-shadow .16s, transform .16s;
+  }
+  .door-card:hover { border-color: #C00000; box-shadow: 0 6px 22px rgba(192,0,0,0.09); transform: translateY(-2px); }
+  .door-ico { font-size: 30px; margin-bottom: 12px; }
+  .door-t { font-size: 17px; font-weight: 700; color: #111827; margin-bottom: 7px; letter-spacing: 0.2px; }
+  .door-b { font-size: 13px; color: #6B7280; line-height: 1.65; margin-bottom: 14px; }
+  .door-cta { font-size: 13px; font-weight: 700; color: #C00000; }
+
+  /* ── Sub-navigation ── */
+  .nav-item.nav-sub {
+    padding-left: 30px; font-size: 12.5px; color: #6B7280;
+    position: relative;
+  }
+  .nav-item.nav-sub::before {
+    content: ''; position: absolute; left: 18px; top: 50%;
+    width: 5px; height: 1px; background: #D1D5DB;
+  }
+  .nav-item.nav-sub.active { color: #C00000; }
+
+  /* ── Skill definition tooltip ── */
+  #skillTip {
+    position: fixed; z-index: 900; max-width: 270px;
+    background: #111827; color: #fff; border-radius: 9px;
+    padding: 10px 12px; font-size: 11px; line-height: 1.55;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.22);
+    opacity: 0; visibility: hidden; transition: opacity .13s;
+    pointer-events: none;
+  }
+  #skillTip.on { opacity: 1; visibility: visible; }
+  #skillTip b { display: block; margin-bottom: 4px; font-size: 11.5px; }
+  #skillTip .tip-meta { margin-top: 6px; padding-top: 6px; border-top: 1px solid #374151; color: #9CA3AF; font-size: 10px; }
+  .skill-chip[data-def] { cursor: help; }
+
+  /* ── Fit breakdown on opportunity cards ── */
+  .fit-box { margin-top: 10px; border-top: 1px dashed #E5E7EB; padding-top: 9px; }
+  .fit-line { font-size: 11px; line-height: 1.6; color: #6B7280; }
+  .fit-line b { color: #374151; }
+  .fit-have { color: #166534; font-weight: 700; }
+  .fit-gap  { color: #92400E; font-weight: 700; }
+  .fit-dev {
+    margin-top: 7px; background: #FFFBEB; border: 1px solid #FDE68A;
+    border-radius: 7px; padding: 8px 10px; font-size: 10.5px; color: #92400E; line-height: 1.6;
+  }
+  .fit-dev b { display: block; margin-bottom: 3px; }
+
+  /* ── Rubric table ── */
+  .rubric { width: 100%; border-collapse: collapse; margin-top: 10px; }
+  .rubric th { font-size: 10px; text-transform: uppercase; letter-spacing: .4px; color: #9CA3AF;
+               text-align: left; padding: 7px 10px; border-bottom: 2px solid #F3F4F6; }
+  .rubric td { font-size: 11.5px; color: #374151; padding: 8px 10px; border-bottom: 1px solid #F9FAFB; line-height: 1.55; }
+  .rubric td:first-child { font-weight: 700; white-space: nowrap; }
+
   /* ── Live (shared) state ── */
   .live-panel {
     border: 1px solid #BBF7D0; background: #F0FDF4;
@@ -572,7 +641,12 @@
     .content { padding: 16px 14px 32px; }
 
     .hero { padding: 26px 20px; }
+    .hero-lg { padding: 28px 20px; }
     .hero-title { font-size: 22px; }
+    .hero-lg .hero-title { font-size: 27px; max-width: none; }
+    .hero-lg .hero-body { font-size: 14px; }
+    .hero-icons { gap: 18px; }
+    .door-grid { grid-template-columns: 1fr; }
     .hero-body { font-size: 13px; }
     .hero-pill { flex: 1 1 100%; }
     .hero::after { display: none; }
@@ -607,10 +681,10 @@
   <div class="login-card">
     <div class="login-logo-row">
       <div class="login-logo-icon">🏪</div>
-      <div><div class="login-appname">Talent Marketplace</div><div class="login-appsub">LIFT Holdings Internal</div></div>
+      <div><div class="login-appname">Growth</div><div class="login-appsub">HC Talent Marketplace</div></div>
     </div>
     <div class="login-title">Welcome back</div>
-    <div class="login-sub">Sign in to explore opportunities across the company</div>
+    <div class="login-sub">Sign in to explore opportunities across Home Credit PH</div>
     <div class="input-group"><label>Email address</label><input type="email" value="oprah.winfrey@abc.com"></div>
     <div class="input-group"><label>Password</label><input type="password" value="password"></div>
     <button class="btn-login" onclick="closeLogin()">Sign in</button>
@@ -625,9 +699,9 @@
   <div class="sidebar-logo">
     <div class="logo-row">
       <span class="logo-emoji">🏪</span>
-      <span class="logo-text">Talent Marketplace</span>
+      <span class="logo-text">Growth: HC Talent&nbsp;Marketplace</span>
     </div>
-    <span class="logo-pill">LIFT Holdings · Pilot</span>
+    <span class="logo-pill">Home Credit PH · Pilot</span>
   </div>
 
   <div class="role-switcher">
@@ -654,7 +728,7 @@
 <div class="main">
   <div class="topbar">
     <button class="hamburger" id="hamburger" onclick="toggleSidebar()" aria-label="Menu" aria-expanded="false" aria-controls="sidebar">☰</button>
-    <div class="topbar-title">Talent Marketplace</div>
+    <div class="topbar-title">Growth: HC Talent Marketplace</div>
     <div class="topbar-right">
       <span class="topbar-live" id="liveStatus" onclick="promptLiveName()" title="Shared pilot state"><span class="live-dot off"></span><span id="liveStatusText">connecting…</span></span>
       <span class="topbar-user" id="topbarUser">Oprah Winfrey · Recruiter</span>
@@ -666,80 +740,14 @@
 
     <!-- ══ HOME ══ -->
     <div class="page active" id="page-home">
-      <div class="hero">
-        <div class="hero-eyebrow">LIFT Holdings Internal Opportunity Hub</div>
-        <div class="hero-title">Find your next move — without leaving.</div>
-        <div class="hero-body">Talent Marketplace connects you to gigs, projects, and immersions across the company that match your skills and career goals — and matches you to them automatically. Instead of waiting for your next promotion, explore real opportunities happening inside LIFT Holdings right now.</div>
-        <div class="hero-pills">
-          <div class="hero-pill"><div class="hero-pill-icon">🔍</div><div><div class="hero-pill-title">Discover</div><div class="hero-pill-sub">Internal moves you didn't know existed</div></div></div>
-          <div class="hero-pill"><div class="hero-pill-icon">🌱</div><div><div class="hero-pill-title">Grow</div><div class="hero-pill-sub">Without leaving LIFT Holdings</div></div></div>
-          <div class="hero-pill"><div class="hero-pill-icon">🤝</div><div><div class="hero-pill-title">Get matched</div><div class="hero-pill-sub">AI surfaces your best-fit opportunities</div></div></div>
-        </div>
-        <button class="btn btn-red" onclick="navigate('profile')">Build my profile →</button>
-      </div>
-
-      <!-- Why apply -->
-      <div style="margin-bottom:28px;">
-        <div style="font-size:16px;font-weight:700;color:#111827;margin-bottom:5px;">7 real reasons to apply</div>
-        <div style="font-size:13px;color:#6B7280;margin-bottom:16px;">Marketplace work doesn't come with extra pay — it comes with a formal commitment from LIFT Holdings in return. Here's what's in it for you.</div>
-        <div class="why-grid">
-          <div class="why-card"><div class="why-icon">📋</div><div class="why-title">Fulfill your IDP</div><div class="why-body">Turn your Individual Development Plan from a paper exercise into a real, visible action your manager can endorse.</div></div>
-          <div class="why-card"><div class="why-icon">🎨</div><div class="why-title">Creative outlet</div><div class="why-body">If your current role doesn't let you flex certain muscles, a gig will. Work on problems that genuinely energize you.</div></div>
-          <div class="why-card"><div class="why-icon">❤️</div><div class="why-title">Because you love it</div><div class="why-body">Some people love certain kinds of problems. If a gig matches what energizes you, that's reason enough.</div></div>
-          <div class="why-card"><div class="why-icon">🧭</div><div class="why-title">Career pivot test drive</div><div class="why-body">Curious about another function? A gig or DJI lets you try a different career path with zero risk before committing.</div></div>
-          <div class="why-card"><div class="why-icon">👁️</div><div class="why-title">Visibility with leaders</div><div class="why-body">Work with leaders outside your chain. New sponsors who can advocate for you is one of the fastest career accelerators.</div></div>
-          <div class="why-card"><div class="why-icon">🌐</div><div class="why-title">Build your network</div><div class="why-body">Most opportunities inside companies are word-of-mouth. Cross-functional relationships now compound for your entire career here.</div></div>
-          <div class="why-card"><div class="why-icon">🚀</div><div class="why-title">Move into a new role</div><div class="why-body">Internal vacancies come with a shorter learning curve — you already know our systems, our people, and how things get done. You start contributing on day one, not month three.</div></div>
-        </div>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;">
-          <button class="btn btn-red" onclick="navigate('profile')">👤 Build my profile →</button>
-          <span style="font-size:11px;color:#9CA3AF;align-self:center;line-height:1.5;max-width:340px;">None of this reaches you until your skills are on your profile. It takes about five minutes.</span>
-        </div>
-      </div>
-
-      <!-- What LIFT commits in return -->
-      <div style="background:#0F172A;border-radius:12px;padding:24px 26px;margin-bottom:28px;color:#fff;">
-        <div style="font-size:16px;font-weight:700;margin-bottom:5px;">What LIFT Holdings commits to in return</div>
-        <div style="font-size:12px;color:#94A3B8;margin-bottom:18px;line-height:1.6;">Marketplace work is unpaid, so the exchange has to be honest. These four commitments are not goodwill — they are policy, and the <strong style="color:#E2E8F0;">People &amp; Culture Department (PCD)</strong> is accountable for delivering each one. Not your manager, not the host manager, not you — PCD owns it centrally, which is why it holds even if the people around you change.</div>
-        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
-          <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:9px;padding:15px;">
-            <div style="font-size:19px;margin-bottom:7px;">📁</div>
-            <div style="font-size:12px;font-weight:700;margin-bottom:5px;">A formal record on your file</div>
-            <div style="font-size:11px;color:#CBD5E1;line-height:1.55;">Every completed gig, DJI, and service offer is logged permanently in your HR record with the host manager's rating — not a favour someone might remember, a document.</div>
-          </div>
-          <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:9px;padding:15px;">
-            <div style="font-size:19px;margin-bottom:7px;">🎯</div>
-            <div style="font-size:12px;font-weight:700;margin-bottom:5px;">Inclusion in the talent review</div>
-            <div style="font-size:11px;color:#CBD5E1;line-height:1.55;">Your marketplace contributions are tabled at the annual talent review and succession planning discussion — the room where promotions and successor slates are decided.</div>
-          </div>
-          <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:9px;padding:15px;">
-            <div style="font-size:19px;margin-bottom:7px;">📝</div>
-            <div style="font-size:12px;font-weight:700;margin-bottom:5px;">A post-activity survey, sent immediately</div>
-            <div style="font-size:11px;color:#CBD5E1;line-height:1.55;">The moment the engagement ends, PCD sends you the post-activity survey — what you learned, what you'd change, where you want this to lead. It goes out automatically, while the work is still fresh, and your answers route straight to PCD.</div>
-          </div>
-          <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:9px;padding:15px;">
-            <div style="font-size:19px;margin-bottom:7px;">⭐</div>
-            <div style="font-size:12px;font-weight:700;margin-bottom:5px;">First look at related roles</div>
-            <div style="font-size:11px;color:#CBD5E1;line-height:1.55;">Complete work in a function and you are flagged as a priority internal candidate when a vacancy opens there. Proven contribution counts ahead of a fresh application.</div>
-          </div>
-        </div>
-        <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.1);font-size:11px;color:#94A3B8;line-height:1.6;">
-          <strong style="color:#E2E8F0;">On work hours and workload.</strong> Gigs are done outside office hours, or during office hours only with your manager's written permission. DJIs follow an agreed role split under Policy 211_2021. Your primary role and KPIs are never expected to absorb the difference — if a marketplace commitment starts to compromise your core work, raise it with your manager or PCD and it will be adjusted or ended. No one is penalised for that conversation.
-        </div>
-      </div>
-
-      <!-- Why post -->
-      <div style="margin-bottom:28px;">
-        <div style="font-size:16px;font-weight:700;color:#111827;margin-bottom:5px;">Thinking of posting? 3 reasons to open it up here first</div>
-        <div style="font-size:13px;color:#6B7280;margin-bottom:16px;">For managers and employees with work that needs doing, a role to fill, or a skill to share.</div>
-        <div class="growth-grid">
-          <div class="why-card"><div class="why-icon">⚡</div><div class="why-title">Talent in days, not months</div><div class="why-body">The average internal placement here takes <strong>21 days</strong> against 58 for an external hire — and the person already knows our systems, our data, and our customers. No agency fee, no onboarding runway.</div></div>
-          <div class="why-card"><div class="why-icon">🔍</div><div class="why-title">Reach the people you'd never meet</div><div class="why-body">Your network is a fraction of the company. Posting here puts your work in front of everyone whose skills actually fit — including the person three floors up you'd never have thought to ask.</div></div>
-          <div class="why-card"><div class="why-icon">🏆</div><div class="why-title">Build a reputation as a talent magnet</div><div class="why-body">Managers who host gigs and DJIs become known as places people grow. That reputation compounds — it's what makes strong candidates say yes when you have a real vacancy to fill.</div></div>
-        </div>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;">
-          <button class="btn btn-red" onclick="navigate('post')">➕ Post an opportunity →</button>
-          <span style="font-size:11px;color:#9CA3AF;align-self:center;line-height:1.5;max-width:340px;">Posts go live once approved — usually within two working days.</span>
+      <div class="hero hero-lg">
+        <div class="hero-eyebrow">Home Credit PH · Internal Growth Hub</div>
+        <div class="hero-title">Your next growth move is already here.</div>
+        <div class="hero-body">Home Credit is full of work that could stretch you — and people who could learn from what you already know. <strong>Growth</strong> brings the two together. Explore an interest your role never had room for, put a hidden skill to work, and help another business unit while your own career moves forward.<br><br>No transfers. No waiting for the next cycle. On-the-job learning, right here at home.</div>
+        <div class="hero-icons">
+          <div class="hero-ico"><span>🔍</span><div><b>Discover</b><i>Work you didn't know existed</i></div></div>
+          <div class="hero-ico"><span>🌱</span><div><b>Grow</b><i>Without leaving Home Credit</i></div></div>
+          <div class="hero-ico"><span>🤝</span><div><b>Get matched</b><i>AI surfaces your best fit</i></div></div>
         </div>
       </div>
 
@@ -780,8 +788,24 @@
         </div>
       </div>
 
+      <!-- Two doors -->
+      <div class="door-grid">
+        <div class="door-card" onclick="navigate('find')">
+          <div class="door-ico">🔎</div>
+          <div class="door-t">FIND an opportunity</div>
+          <div class="door-b">Gigs, vacancies, and Developmental Job Immersions — what each one is, and the honest reasons people take them.</div>
+          <span class="door-cta">See what you can join →</span>
+        </div>
+        <div class="door-card" onclick="navigate('offer')">
+          <div class="door-ico">📣</div>
+          <div class="door-t">POST an opportunity</div>
+          <div class="door-b">Have work that needs doing, a role to fill, or a skill worth sharing? Open it to the whole company.</div>
+          <span class="door-cta">See how posting works →</span>
+        </div>
+      </div>
+
       <!-- Testimonials -->
-      <div style="font-size:16px;font-weight:700;color:#111827;margin-bottom:16px;">Stories from inside LIFT Holdings</div>
+      <div style="font-size:16px;font-weight:700;color:#111827;margin-bottom:16px;">Stories from inside Home Credit PH</div>
       <div class="testimonial-grid">
         <div class="card testimonial-card">
           <div class="testimonial-quote">"I moved from Finance to IT through a 2-month analytics gig. The match score gave me the push I needed — and I got visibility with an Exco I'd never have had otherwise."</div>
@@ -796,23 +820,189 @@
           <div class="testimonial-author"><div class="testimonial-avatar">PC</div><div><div style="font-size:12px;font-weight:700;color:#111827;">Priyanka Chopra</div><div style="font-size:11px;color:#9CA3AF;">Operations</div></div></div>
         </div>
       </div>
+    </div>
 
-      <!-- Closing CTA -->
-      <div style="background:#FEF2F2;border:1px solid #FECACA;border-radius:12px;padding:24px 26px;margin-top:24px;text-align:center;">
-        <div style="font-size:16px;font-weight:700;color:#111827;margin-bottom:5px;">Both doors are open. Pick one.</div>
-        <div style="font-size:12px;color:#7F1D1D;line-height:1.6;margin-bottom:16px;max-width:560px;margin-left:auto;margin-right:auto;">Every story above started with someone doing one of these two things. You don't have to choose forever — most people here end up doing both.</div>
-        <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center;">
+    <!-- ══ FIND AN OPPORTUNITY (sub-page of Introduction) ══ -->
+    <div class="page" id="page-find">
+      <div class="page-header">
+        <div class="page-title">🔎 Find an opportunity</div>
+        <div class="page-sub">Three ways to join someone else's work — and what each one actually asks of you</div>
+      </div>
+      <!-- The three you apply for -->
+      <div style="font-size:16px;font-weight:700;color:#111827;margin-bottom:4px;">The three you can apply for</div>
+      <div style="font-size:13px;color:#6B7280;margin-bottom:16px;">Gig, Vacancy, and Developmental Job Immersion. The fourth — offering your own service — lives under Post an opportunity.</div>
+      <div class="growth-grid growth-grid-4">
+        <div class="card" style="padding:22px;">
+          <div style="font-size:26px;margin-bottom:10px;">⚡</div>
+          <div style="margin-bottom:8px;"><span class="badge badge-gig">Gig</span></div>
+          <div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:6px;">Gig</div>
+          <div style="font-size:12px;color:#6B7280;line-height:1.6;">Short-term project, <strong>a few hours to a few weeks</strong>. Work on real initiatives without changing roles. Done outside work hours or with your manager's written permission.</div>
+        </div>
+        <div class="card" style="padding:22px;">
+          <div style="font-size:26px;margin-bottom:10px;">🏢</div>
+          <div style="margin-bottom:8px;"><span class="badge badge-vacancy">Vacancy</span></div>
+          <div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:6px;">Vacancy</div>
+          <div style="font-size:12px;color:#6B7280;line-height:1.6;">Open internal role, permanent. A formal internal move to a new team or department.</div>
+        </div>
+        <div class="card" style="padding:22px;">
+          <div style="font-size:26px;margin-bottom:10px;">🌱</div>
+          <div style="margin-bottom:8px;"><span class="badge badge-dji">DJI</span></div>
+          <div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:6px;">Developmental Job Immersion</div>
+          <div style="font-size:12px;color:#6B7280;line-height:1.6;">Temporary assignment to another role or function, <strong>3 – 9 months</strong>. Develop yourself for a future role, or be assessed for a target position — without leaving the company.</div>
+          <div class="dji-policy-box">
+            <strong>📄 Policy 211_2021 v1.0 applies</strong>
+            Before starting, you, your Direct Manager, and the Host Manager co-design a DJI Plan: goals, degree of immersion (100% full or partial split), expected outputs, and how performance will be evaluated. All four parties — employee, Direct Manager, Host Manager, and HR People Partner — sign off using the official DJI Form. Your headcount, salary, and benefits remain with your home department throughout.
+          </div>
+        </div>
+        <div class="card" style="padding:22px;border:1px solid #DDD6FE;">
+          <div style="font-size:26px;margin-bottom:10px;">🎁</div>
+          <div style="margin-bottom:8px;"><span class="badge badge-offer">Offer</span></div>
+          <div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:6px;">Service Offer</div>
+          <div style="font-size:12px;color:#6B7280;line-height:1.6;">The only one that works in reverse. Instead of applying for work, you <strong>publish what you're willing to help with</strong> — mentoring on product and customer segments, vibe-coding a prototype, reviewing a pricing model, coaching a first-time presenter. Teams come to you.</div>
+          <div style="margin-top:12px;background:#F5F3FF;border:1px solid #DDD6FE;border-radius:8px;padding:10px 12px;font-size:11px;color:#5B21B6;line-height:1.5;">
+            <strong>Usually an hour or two at a time.</strong> You set your own capacity and can pause any time. Every completed request is logged on your profile — the fastest way to build an internal reputation for what you're genuinely good at.
+          </div>
+        </div>
+      </div>
+
+      <!-- Why apply -->
+      <div style="margin-bottom:28px;">
+        <div style="font-size:16px;font-weight:700;color:#111827;margin-bottom:5px;">7 real reasons to apply</div>
+        <div style="font-size:13px;color:#6B7280;margin-bottom:16px;">Marketplace work doesn't come with extra pay — it comes with a formal commitment from Home Credit PH in return. Here's what's in it for you.</div>
+        <div class="why-grid">
+          <div class="why-card"><div class="why-icon">📋</div><div class="why-title">Fulfill your IDP</div><div class="why-body">Turn your Individual Development Plan from a paper exercise into a real, visible action your manager can endorse.</div></div>
+          <div class="why-card"><div class="why-icon">🎨</div><div class="why-title">Creative outlet</div><div class="why-body">If your current role doesn't let you flex certain muscles, a gig will. Work on problems that genuinely energize you.</div></div>
+          <div class="why-card"><div class="why-icon">❤️</div><div class="why-title">Because you love it</div><div class="why-body">Some people love certain kinds of problems. If a gig matches what energizes you, that's reason enough.</div></div>
+          <div class="why-card"><div class="why-icon">🧭</div><div class="why-title">Career pivot test drive</div><div class="why-body">Curious about another function? A gig or DJI lets you try a different career path with zero risk before committing.</div></div>
+          <div class="why-card"><div class="why-icon">👁️</div><div class="why-title">Visibility with leaders</div><div class="why-body">Work with leaders outside your chain. New sponsors who can advocate for you is one of the fastest career accelerators.</div></div>
+          <div class="why-card"><div class="why-icon">🌐</div><div class="why-title">Build your network</div><div class="why-body">Most opportunities inside companies are word-of-mouth. Cross-functional relationships now compound for your entire career here.</div></div>
+          <div class="why-card"><div class="why-icon">🚀</div><div class="why-title">Move into a new role</div><div class="why-body">Internal vacancies come with a shorter learning curve — you already know our systems, our people, and how things get done. You start contributing on day one, not month three.</div></div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;">
           <button class="btn btn-red" onclick="navigate('profile')">👤 Build my profile →</button>
-          <button class="btn btn-outline" onclick="navigate('post')">➕ Post an opportunity →</button>
+          <span style="font-size:11px;color:#9CA3AF;align-self:center;line-height:1.5;max-width:340px;">None of this reaches you until your skills are on your profile. It takes about five minutes.</span>
+        </div>
+      </div>
+
+      <!-- What LIFT commits in return -->
+      <div style="background:#0F172A;border-radius:12px;padding:24px 26px;margin-bottom:28px;color:#fff;">
+        <div style="font-size:16px;font-weight:700;margin-bottom:5px;">What Home Credit PH commits to in return</div>
+        <div style="font-size:12px;color:#94A3B8;margin-bottom:18px;line-height:1.6;">Marketplace work is unpaid, so the exchange has to be honest. These four commitments are not goodwill — they are policy, and the <strong style="color:#E2E8F0;">People &amp; Culture Department (PCD)</strong> is accountable for delivering each one. Not your manager, not the host manager, not you — PCD owns it centrally, which is why it holds even if the people around you change.</div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
+          <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:9px;padding:15px;">
+            <div style="font-size:19px;margin-bottom:7px;">📁</div>
+            <div style="font-size:12px;font-weight:700;margin-bottom:5px;">A formal record on your file</div>
+            <div style="font-size:11px;color:#CBD5E1;line-height:1.55;">Every completed gig, DJI, and service offer is logged permanently in your HR record with the host manager's rating — not a favour someone might remember, a document.</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:9px;padding:15px;">
+            <div style="font-size:19px;margin-bottom:7px;">🎯</div>
+            <div style="font-size:12px;font-weight:700;margin-bottom:5px;">Inclusion in the talent review</div>
+            <div style="font-size:11px;color:#CBD5E1;line-height:1.55;">Your marketplace contributions are tabled at the annual talent review and succession planning discussion — the room where promotions and successor slates are decided.</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:9px;padding:15px;">
+            <div style="font-size:19px;margin-bottom:7px;">📝</div>
+            <div style="font-size:12px;font-weight:700;margin-bottom:5px;">A post-activity survey, sent immediately</div>
+            <div style="font-size:11px;color:#CBD5E1;line-height:1.55;">The moment the engagement ends, PCD sends you the post-activity survey — what you learned, what you'd change, where you want this to lead. It goes out automatically, while the work is still fresh, and your answers route straight to PCD.</div>
+          </div>
+          <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:9px;padding:15px;">
+            <div style="font-size:19px;margin-bottom:7px;">⭐</div>
+            <div style="font-size:12px;font-weight:700;margin-bottom:5px;">First look at related roles</div>
+            <div style="font-size:11px;color:#CBD5E1;line-height:1.55;">Complete work in a function and you are flagged as a priority internal candidate when a vacancy opens there. Proven contribution counts ahead of a fresh application.</div>
+          </div>
+        </div>
+        <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.1);font-size:11px;color:#94A3B8;line-height:1.6;">
+          <strong style="color:#E2E8F0;">On work hours and workload.</strong> Gigs are done outside office hours, or during office hours only with your manager's written permission. DJIs follow an agreed role split under Policy 211_2021. Your primary role and KPIs are never expected to absorb the difference — if a marketplace commitment starts to compromise your core work, raise it with your manager or PCD and it will be adjusted or ended. No one is penalised for that conversation.
         </div>
       </div>
     </div>
 
+    <!-- ══ POST AN OPPORTUNITY (sub-page of Introduction) ══ -->
+    <div class="page" id="page-offer">
+      <div class="page-header">
+        <div class="page-title">📣 Post an opportunity</div>
+        <div class="page-sub">Open your work to the whole company — or offer a skill nobody knows you have</div>
+      </div>
+
+      <div class="card" style="padding:24px 26px;margin-bottom:24px;border-left:3px solid #C00000;">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+          <span style="font-size:26px;">🎁</span>
+          <div>
+            <span class="badge badge-offer">Service Offer</span>
+            <div style="font-size:16px;font-weight:700;color:#111827;margin-top:5px;">The one that runs in reverse</div>
+          </div>
+        </div>
+        <div style="font-size:13px;color:#374151;line-height:1.7;">
+          Every other opportunity here starts with a team needing someone. A <strong>Service Offer</strong> starts with you.
+          You publish what you're willing to help with — dashboard reviews, facilitation, a second pair of eyes on a model —
+          and teams across Home Credit PH request your time.<br><br>
+          It is the fastest way to be useful without committing to a project, and the most reliable way to be discovered for
+          work you'd never have been invited to. You keep control: every request comes to you, and you accept or decline it.
+        </div>
+        <div style="margin-top:16px;">
+          <button class="btn btn-red" onclick="navigate('post')">➕ Publish a service offer →</button>
+        </div>
+      </div>
+      <!-- Why post -->
+      <div style="margin-bottom:28px;">
+        <div style="font-size:16px;font-weight:700;color:#111827;margin-bottom:5px;">Thinking of posting? 3 reasons to open it up here first</div>
+        <div style="font-size:13px;color:#6B7280;margin-bottom:16px;">For managers and employees with work that needs doing, a role to fill, or a skill to share.</div>
+        <div class="growth-grid">
+          <div class="why-card"><div class="why-icon">⚡</div><div class="why-title">Talent in days, not months</div><div class="why-body">The average internal placement here takes <strong>21 days</strong> against 58 for an external hire — and the person already knows our systems, our data, and our customers. No agency fee, no onboarding runway.</div></div>
+          <div class="why-card"><div class="why-icon">🔍</div><div class="why-title">Reach the people you'd never meet</div><div class="why-body">Your network is a fraction of the company. Posting here puts your work in front of everyone whose skills actually fit — including the person three floors up you'd never have thought to ask.</div></div>
+          <div class="why-card"><div class="why-icon">🏆</div><div class="why-title">Build a reputation as a talent magnet</div><div class="why-body">Managers who host gigs and DJIs become known as places people grow. That reputation compounds — it's what makes strong candidates say yes when you have a real vacancy to fill.</div></div>
+        </div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;">
+          <button class="btn btn-red" onclick="navigate('post')">➕ Post an opportunity →</button>
+          <span style="font-size:11px;color:#9CA3AF;align-self:center;line-height:1.5;max-width:340px;">Posts go live once approved — usually within two working days.</span>
+        </div>
+      </div>
+    </div>
     <!-- ══ MATCHES ══ -->
     <div class="page" id="page-matches">
       <div class="page-header">
         <div class="page-title">✨ My Matches</div>
         <div class="page-sub">Opportunities ≥ 70% match with your current skills</div>
+      </div>
+
+      <div class="card" style="padding:22px 24px;margin-bottom:20px;border-left:3px solid #5B21B6;">
+        <div style="display:flex;align-items:center;gap:9px;margin-bottom:8px;flex-wrap:wrap;">
+          <span style="font-size:22px;">🤖</span>
+          <div style="font-size:15px;font-weight:700;color:#111827;">These matches are generated by AI</div>
+          <span class="badge" style="background:#EDE9FE;color:#5B21B6;border:1px solid #DDD6FE;">Claude</span>
+        </div>
+        <div style="font-size:12.5px;color:#374151;line-height:1.7;margin-bottom:6px;">
+          Nobody sits and ranks you against every post. When a new opportunity goes live, an AI model reads your profile —
+          your skills, your stated aspiration, your marketplace history — against what the post actually asks for, and
+          returns a score with its reasoning. You can read that reasoning on every card, and you can disagree with it:
+          <strong>the score never blocks an application.</strong> There is deliberately no minimum to apply.
+        </div>
+        <details style="margin-top:12px;">
+          <summary style="padding:11px 13px;">📊 How the score is calculated — the full rubric</summary>
+          <div style="padding:4px 16px 16px;">
+            <div style="font-size:11.5px;color:#6B7280;line-height:1.65;margin-bottom:6px;">Four factors are weighted, then banded. Verified skills count roughly double a self-claimed one.</div>
+            <table class="rubric">
+              <thead><tr><th>Factor</th><th>Weight</th><th>What the model looks at</th></tr></thead>
+              <tbody>
+                <tr><td>Skill overlap</td><td>50%</td><td>How many of the required skills you hold, and whether each is verified (manager endorsement, a 4★+ host rating, or an LMS certification) or self-claimed.</td></tr>
+                <tr><td>Aspiration fit</td><td>20%</td><td>Whether the work moves you toward the direction you wrote on your profile — not just what you can already do.</td></tr>
+                <tr><td>Track record</td><td>20%</td><td>Completed gigs, DJIs and service offers, and the ratings host managers gave you.</td></tr>
+                <tr><td>Practicalities</td><td>10%</td><td>Bandwidth asked for, duration, and department — a signal, never a disqualifier.</td></tr>
+              </tbody>
+            </table>
+            <table class="rubric" style="margin-top:14px;">
+              <thead><tr><th>Band</th><th>Reads as</th><th>What we suggest</th></tr></thead>
+              <tbody>
+                <tr><td><span style="color:#16A34A;">85–100%</span></td><td>Strong match</td><td>You can do this now. Apply.</td></tr>
+                <tr><td><span style="color:#16A34A;">70–84%</span></td><td>Good match</td><td>One or two gaps, closable on the job. Apply.</td></tr>
+                <tr><td><span style="color:#D97706;">50–69%</span></td><td>Stretch</td><td>A real step up. Worth applying if the direction excites you — say so in your answer.</td></tr>
+                <tr><td><span style="color:#6B7280;">Below 50%</span></td><td>Long shot</td><td>Apply if you're genuinely drawn to it, and use the development suggestions on the card.</td></tr>
+              </tbody>
+            </table>
+            <div style="margin-top:13px;background:#F9FAFB;border:1px solid #F3F4F6;border-radius:8px;padding:11px 13px;font-size:11px;color:#6B7280;line-height:1.65;">
+              <strong style="color:#374151;">Where it can be wrong.</strong> The model only knows what is written down. A skill you never added, or experience recorded nowhere, is invisible to it — which is why a thin profile produces low scores that say more about the profile than the person. It also cannot judge motivation. If a score looks wrong to you, it probably is: apply anyway, and tell the poster why.
+            </div>
+          </div>
+        </details>
       </div>
 
       <!-- Skills invitation banner -->
@@ -860,7 +1050,9 @@
             </div>
             <div class="match-bar-track"><div class="match-bar-fill" style="width:90%;background:#16A34A;"></div></div>
           </div>
-          <div style="margin-top:12px;"><button class="btn btn-red btn-sm" onclick="openApplyDialog('Business Intelligence Analyst — FP&A Team')">Apply Now →</button></div>
+          <div class="fit-slot"></div>
+          <div style="margin-top:12px;"><button class="btn btn-red btn-sm" onclick="openApplyDialog('Business Intelligence Analyst — FP&A Team')">Apply Now →</button>
+            <button class="btn btn-outline btn-sm" onclick="openAskDialog('Business Intelligence Analyst — FP&A Team')">💬 Ask more info</button></div>
         </div></div>
         <div class="card"><div class="opp-card">
           <div class="opp-card-header"><span class="badge badge-gig">Gig</span><span style="font-size:11px;color:#9CA3AF;">Ad-hoc</span></div>
@@ -883,7 +1075,9 @@
             </div>
             <div class="match-bar-track"><div class="match-bar-fill" style="width:80%;background:#16A34A;"></div></div>
           </div>
-          <div style="margin-top:12px;"><button class="btn btn-red btn-sm" onclick="openApplyDialog('HR Analytics Gig — Workforce Planning')">Apply Now →</button></div>
+          <div class="fit-slot"></div>
+          <div style="margin-top:12px;"><button class="btn btn-red btn-sm" onclick="openApplyDialog('HR Analytics Gig — Workforce Planning')">Apply Now →</button>
+            <button class="btn btn-outline btn-sm" onclick="openAskDialog('HR Analytics Gig — Workforce Planning')">💬 Ask more info</button></div>
         </div></div>
         <div class="card"><div class="opp-card">
           <div class="opp-card-header"><span class="badge badge-dji">DJI</span><span style="font-size:11px;color:#9CA3AF;">3 months</span></div>
@@ -906,6 +1100,7 @@
             </div>
             <div class="match-bar-track"><div class="match-bar-fill" style="width:70%;background:#D97706;"></div></div>
           </div>
+          <div class="fit-slot"></div>
           <div style="margin-top:12px;"><span class="badge badge-applied">Applied ✓</span></div>
         </div></div>
         <div class="card"><div class="opp-card">
@@ -929,7 +1124,9 @@
             </div>
             <div class="match-bar-track"><div class="match-bar-fill" style="width:72%;background:#D97706;"></div></div>
           </div>
-          <div style="margin-top:12px;"><button class="btn btn-red btn-sm" onclick="openApplyDialog('Supply Chain Analytics — Q4 Review')">Apply Now →</button></div>
+          <div class="fit-slot"></div>
+          <div style="margin-top:12px;"><button class="btn btn-red btn-sm" onclick="openApplyDialog('Supply Chain Analytics — Q4 Review')">Apply Now →</button>
+            <button class="btn btn-outline btn-sm" onclick="openAskDialog('Supply Chain Analytics — Q4 Review')">💬 Ask more info</button></div>
         </div></div>
       </div>
     </div>
@@ -939,7 +1136,7 @@
       <div class="page-header">
         <div class="page-title">🔎 All Opportunities</div>
       <div id="liveOpps"></div>
-        <div class="page-sub">Everything live across LIFT Holdings — including the ones outside your current skill set</div>
+        <div class="page-sub">Everything live across Home Credit PH — including the ones outside your current skill set</div>
       </div>
 
       <div style="background:#F5F3FF;border:1px solid #DDD6FE;border-radius:10px;padding:12px 16px;margin-bottom:18px;font-size:12px;color:#5B21B6;line-height:1.6;">
@@ -979,8 +1176,10 @@
             <div class="match-bar-top"><span class="match-bar-label">Match score</span><span style="font-weight:700;color:#6B7280;">34% · stretch</span></div>
             <div class="match-bar-track"><div class="match-bar-fill" style="width:34%;background:#9CA3AF;"></div></div>
           </div>
+          <div class="fit-slot"></div>
           <div style="margin-top:12px;display:flex;gap:7px;flex-wrap:wrap;">
             <button class="btn btn-red btn-sm" onclick="openApplyDialog('Sustainability Reporting Lead — ESG')">Apply Anyway →</button>
+            <button class="btn btn-outline btn-sm" onclick="openAskDialog('Sustainability Reporting Lead — ESG')">💬 Ask more info</button>
             <button class="btn btn-outline btn-sm" onclick="openNominateDialog('Sustainability Reporting Lead — ESG')">🤝 Nominate</button>
           </div>
         </div></div>
@@ -996,8 +1195,10 @@
             <div class="match-bar-top"><span class="match-bar-label">Relevance to your profile</span><span style="font-weight:700;color:#16A34A;">81%</span></div>
             <div class="match-bar-track"><div class="match-bar-fill" style="width:81%;background:#16A34A;"></div></div>
           </div>
+          <div class="fit-slot"></div>
           <div style="margin-top:12px;display:flex;gap:7px;flex-wrap:wrap;">
             <button class="btn btn-red btn-sm" onclick="openApplyDialog('Mentoring from Harry Styles: pricing for new customer segments')">Request this mentoring →</button>
+            <button class="btn btn-outline btn-sm" onclick="openAskDialog('Mentoring from Harry Styles: pricing for new customer segments')">💬 Ask more info</button>
             <button class="btn btn-outline btn-sm" onclick="openNominateDialog('Mentoring from Harry Styles: pricing for new customer segments')">🤝 Nominate someone</button>
           </div>
         </div></div>
@@ -1013,8 +1214,10 @@
             <div class="match-bar-top"><span class="match-bar-label">Match score</span><span style="font-weight:700;color:#D97706;">58% · stretch</span></div>
             <div class="match-bar-track"><div class="match-bar-fill" style="width:58%;background:#D97706;"></div></div>
           </div>
+          <div class="fit-slot"></div>
           <div style="margin-top:12px;display:flex;gap:7px;flex-wrap:wrap;">
             <button class="btn btn-red btn-sm" onclick="openApplyDialog('Vibe-code a prototype: branch queue tracker')">Apply Anyway →</button>
+            <button class="btn btn-outline btn-sm" onclick="openAskDialog('Vibe-code a prototype: branch queue tracker')">💬 Ask more info</button>
             <button class="btn btn-outline btn-sm" onclick="openNominateDialog('Vibe-code a prototype: branch queue tracker')">🤝 Nominate</button>
           </div>
         </div></div>
@@ -1030,8 +1233,10 @@
             <div class="match-bar-top"><span class="match-bar-label">Match score</span><span style="font-weight:700;color:#6B7280;">45% · stretch</span></div>
             <div class="match-bar-track"><div class="match-bar-fill" style="width:45%;background:#9CA3AF;"></div></div>
           </div>
+          <div class="fit-slot"></div>
           <div style="margin-top:12px;display:flex;gap:7px;flex-wrap:wrap;">
             <button class="btn btn-red btn-sm" onclick="openApplyDialog('DJI: Customer Experience — Journey Redesign')">Apply Anyway →</button>
+            <button class="btn btn-outline btn-sm" onclick="openAskDialog('DJI: Customer Experience — Journey Redesign')">💬 Ask more info</button>
             <button class="btn btn-outline btn-sm" onclick="openNominateDialog('DJI: Customer Experience — Journey Redesign')">🤝 Nominate</button>
           </div>
         </div></div>
@@ -1047,6 +1252,7 @@
             <div class="match-bar-top"><span class="match-bar-label">Match score</span><span style="font-weight:700;color:#16A34A;">90%</span></div>
             <div class="match-bar-track"><div class="match-bar-fill" style="width:90%;background:#16A34A;"></div></div>
           </div>
+          <div class="fit-slot"></div>
           <div style="margin-top:12px;"><span class="badge badge-applied">Applied ✓</span></div>
         </div></div>
 
@@ -1061,8 +1267,10 @@
             <div class="match-bar-top"><span class="match-bar-label">Match score</span><span style="font-weight:700;color:#D97706;">66% · stretch</span></div>
             <div class="match-bar-track"><div class="match-bar-fill" style="width:66%;background:#D97706;"></div></div>
           </div>
+          <div class="fit-slot"></div>
           <div style="margin-top:12px;display:flex;gap:7px;flex-wrap:wrap;">
             <button class="btn btn-red btn-sm" onclick="openApplyDialog('Coach a first-time presenter — Exco readout')">Apply Anyway →</button>
+            <button class="btn btn-outline btn-sm" onclick="openAskDialog('Coach a first-time presenter — Exco readout')">💬 Ask more info</button>
             <button class="btn btn-outline btn-sm" onclick="openNominateDialog('Coach a first-time presenter — Exco readout')">🤝 Nominate</button>
           </div>
         </div></div>
@@ -1077,7 +1285,7 @@
       </div>
 
       <div style="background:#F5F3FF;border:1px solid #DDD6FE;border-radius:10px;padding:14px 18px;margin-bottom:20px;font-size:12px;color:#5B21B6;line-height:1.6;">
-        🎁 <strong>Service Offers work in reverse.</strong> You publish what you're good at and willing to help with; teams across LIFT Holdings request your time. You set your own capacity, accept only what fits, and pause any time. Every completed request is logged on your profile.
+        🎁 <strong>Service Offers work in reverse.</strong> You publish what you're good at and willing to help with; teams across Home Credit PH request your time. You set your own capacity, accept only what fits, and pause any time. Every completed request is logged on your profile.
       </div>
 
       <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:22px;">
@@ -1159,7 +1367,7 @@
 
       <div style="background:linear-gradient(135deg,#0F172A 0%,#1E3A5F 60%,#0F172A 100%);border-radius:12px;padding:20px 24px;margin-bottom:20px;color:#fff;display:flex;align-items:center;gap:22px;flex-wrap:wrap;">
         <div style="flex:1;min-width:240px;">
-          <div style="font-size:15px;font-weight:700;margin-bottom:5px;">You're the #2 nominator at LIFT Holdings this quarter</div>
+          <div style="font-size:15px;font-weight:700;margin-bottom:5px;">You're the #2 nominator at Home Credit PH this quarter</div>
           <div style="font-size:12px;color:#CBD5E1;line-height:1.6;">4 nominations, 3 of them selected — a 75% hit rate against a 41% company average. Spotting talent that other people miss is a leadership signal, and it's recognised at the quarterly Exco review.</div>
         </div>
         <div style="display:flex;gap:22px;">
@@ -1992,6 +2200,68 @@
     </div>
 
     <!-- ══ NOTIFICATIONS ══ -->
+    <!-- ══ ADMIN — HISTORY & AUDIT ══ -->
+    <div class="page" id="page-admin-history">
+      <div class="page-header">
+        <div class="page-title">🗂️ History &amp; Audit</div>
+        <div class="page-sub">Every post and every application, including the ones that were rejected</div>
+      </div>
+      <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:10px;padding:12px 16px;margin-bottom:20px;font-size:12px;color:#1E40AF;line-height:1.6;">
+        🗂️ <strong>Nothing is deleted.</strong> Rejected posts and declined applications stay on the record — that history is what tells PCD whether the marketplace is working, and protects both applicants and posters if a decision is questioned later.
+      </div>
+
+      <div class="tab-bar">
+        <button class="tab active" onclick="switchHistTab(this,'hist-posts')">Posts</button>
+        <button class="tab" onclick="switchHistTab(this,'hist-apps')">Applications</button>
+        <button class="tab" onclick="switchHistTab(this,'hist-sla')">Overdue &amp; escalations</button>
+      </div>
+
+      <div id="hist-posts" class="hist-pane">
+        <div class="stat-grid" style="grid-template-columns:repeat(4,1fr);">
+          <div class="card stat-card"><div class="stat-val" id="hpTotal">0</div><div class="stat-lbl">Total posts</div><div class="stat-sub">All time</div></div>
+          <div class="card stat-card"><div class="stat-val" style="color:#16A34A;" id="hpLive">0</div><div class="stat-lbl">Approved</div><div class="stat-sub">Went live</div></div>
+          <div class="card stat-card"><div class="stat-val" style="color:#C00000;" id="hpRej">0</div><div class="stat-lbl">Rejected</div><div class="stat-sub">Not published</div></div>
+          <div class="card stat-card"><div class="stat-val" style="color:#D97706;" id="hpPend">0</div><div class="stat-lbl">Pending</div><div class="stat-sub">Awaiting review</div></div>
+        </div>
+        <div class="card" style="overflow:hidden;">
+          <div style="padding:14px 16px;border-bottom:1px solid #F3F4F6;font-size:14px;font-weight:700;color:#111827;">Post history</div>
+          <div class="table-scroll"><table class="team-table">
+            <thead><tr><th>Opportunity</th><th>Type</th><th>Department</th><th>Posted by</th><th>Submitted</th><th>Outcome</th></tr></thead>
+            <tbody id="histPosts"></tbody>
+          </table></div>
+        </div>
+      </div>
+
+      <div id="hist-apps" class="hist-pane" style="display:none;">
+        <div class="stat-grid" style="grid-template-columns:repeat(4,1fr);">
+          <div class="card stat-card"><div class="stat-val" id="haTotal">0</div><div class="stat-lbl">Total applications</div><div class="stat-sub">All time</div></div>
+          <div class="card stat-card"><div class="stat-val" style="color:#16A34A;" id="haAcc">0</div><div class="stat-lbl">Accepted</div><div class="stat-sub">Placed</div></div>
+          <div class="card stat-card"><div class="stat-val" style="color:#C00000;" id="haDec">0</div><div class="stat-lbl">Declined</div><div class="stat-sub">Not selected</div></div>
+          <div class="card stat-card"><div class="stat-val" style="color:#D97706;" id="haOpen">0</div><div class="stat-lbl">Awaiting decision</div><div class="stat-sub">Still open</div></div>
+        </div>
+        <div class="card" style="overflow:hidden;">
+          <div style="padding:14px 16px;border-bottom:1px solid #F3F4F6;font-size:14px;font-weight:700;color:#111827;">Application history</div>
+          <div class="table-scroll"><table class="team-table">
+            <thead><tr><th>Applicant</th><th>Opportunity</th><th>Type</th><th>Applied</th><th>Waiting</th><th>Outcome</th></tr></thead>
+            <tbody id="histApps"></tbody>
+          </table></div>
+        </div>
+      </div>
+
+      <div id="hist-sla" class="hist-pane" style="display:none;">
+        <div style="background:#FEF2F2;border:1px solid #FECACA;border-radius:10px;padding:14px 16px;margin-bottom:16px;font-size:12px;color:#7F1D1D;line-height:1.65;">
+          ⏰ <strong>The 7-day rule.</strong> Applicants are promised a decision within seven working days. Past that, an automated reminder goes to the post owner, copied to PCD. A silent no is the fastest way to lose someone from the marketplace for good.
+        </div>
+        <div class="card" style="overflow:hidden;">
+          <div style="padding:14px 16px;border-bottom:1px solid #F3F4F6;font-size:14px;font-weight:700;color:#111827;">Applications past the 7-day commitment</div>
+          <div class="table-scroll"><table class="team-table">
+            <thead><tr><th>Applicant</th><th>Opportunity</th><th>Waiting</th><th>Escalation</th><th></th></tr></thead>
+            <tbody id="histSla"></tbody>
+          </table></div>
+        </div>
+      </div>
+    </div>
+
     <div class="page" id="page-notifications">
       <div class="page-header">
         <div class="page-title">🔔 Notifications</div>
@@ -2046,7 +2316,7 @@
 
         <details><summary>There's no extra pay — so what does the company actually give me in return? <span>+</span></summary>
           <div class="faq-body">
-            A fair question, and the honest answer is that "exposure" isn't payment. Marketplace work is unpaid, so LIFT Holdings commits to four things in exchange. These are policy, not goodwill, and the People &amp; Culture Department (PCD) is accountable for delivering each — centrally, not devolved to your manager:<br><br>
+            A fair question, and the honest answer is that "exposure" isn't payment. Marketplace work is unpaid, so Home Credit PH commits to four things in exchange. These are policy, not goodwill, and the People &amp; Culture Department (PCD) is accountable for delivering each — centrally, not devolved to your manager:<br><br>
             <strong>1. A formal record on your file.</strong> Every completed engagement is logged permanently in your HR record with the host manager's rating. Not a favour someone might remember — a document.<br>
             <strong>2. Inclusion in the talent review.</strong> Your contributions are tabled at the annual talent review and succession planning discussion — the room where promotions and successor slates are decided.<br>
             <strong>3. A post-activity survey, immediately.</strong> The moment the engagement ends, PCD sends you the post-activity survey — what you learned, what you'd change, where you want it to lead. Sent automatically while the work is fresh, and it goes to PCD, not into a drawer.<br>
@@ -2165,6 +2435,8 @@ const ROLES = {
     name: 'Oprah Winfrey', initials: 'OW', label: 'Recruiter',
     nav: [
       { id: 'home', emoji: '📖', label: 'Introduction' },
+      { id: 'find', emoji: '🔎', label: 'Find an opportunity', sub: true },
+      { id: 'offer', emoji: '📣', label: 'Post an opportunity', sub: true },
       { id: 'profile', emoji: '👤', label: 'My Profile' },
       { id: 'matches', emoji: '✨', label: 'My Matches' },
       { id: 'all-opps', emoji: '🔎', label: 'All Opportunities' },
@@ -2178,6 +2450,8 @@ const ROLES = {
     name: 'Taylor Swift', initials: 'TS', label: 'Manager',
     nav: [
       { id: 'home', emoji: '📖', label: 'Introduction' },
+      { id: 'find', emoji: '🔎', label: 'Find an opportunity', sub: true },
+      { id: 'offer', emoji: '📣', label: 'Post an opportunity', sub: true },
       { id: 'profile', emoji: '👤', label: 'My Profile' },
       { id: 'matches', emoji: '✨', label: 'My Matches' },
       { id: 'all-opps', emoji: '🔎', label: 'All Opportunities' },
@@ -2193,6 +2467,8 @@ const ROLES = {
     name: 'Cristiano Ronaldo', initials: 'CR', label: 'Employee',
     nav: [
       { id: 'home', emoji: '📖', label: 'Introduction' },
+      { id: 'find', emoji: '🔎', label: 'Find an opportunity', sub: true },
+      { id: 'offer', emoji: '📣', label: 'Post an opportunity', sub: true },
       { id: 'profile', emoji: '👤', label: 'My Profile' },
       { id: 'matches', emoji: '✨', label: 'My Matches' },
       { id: 'all-opps', emoji: '🔎', label: 'All Opportunities' },
@@ -2208,6 +2484,7 @@ const ROLES = {
     nav: [
       { id: 'dashboard', emoji: '📊', label: 'Dashboard' },
       { id: 'admin-opps', emoji: '📋', label: 'All Opportunities', badge: '12' },
+      { id: 'admin-history', emoji: '🗂️', label: 'History & Audit' },
       { id: 'admin-noms', emoji: '🏆', label: 'Nomination Dashboard' },
       { id: 'notifications', emoji: '💬', label: 'Feedbacks' },
     ]
@@ -2240,7 +2517,7 @@ function setRole(role) {
 function renderNav(role) {
   const r = ROLES[role]
   document.getElementById('navItems').innerHTML = r.nav.map(item => `
-    <button class="nav-item" id="nav-${item.id}" onclick="navigate('${item.id}')">
+    <button class="nav-item${item.sub ? ' nav-sub' : ''}" id="nav-${item.id}" onclick="navigate('${item.id}')">
       ${item.emoji} ${item.label}
       ${item.badge ? `<span class="nav-badge">${item.badge}</span>` : ''}
     </button>
@@ -2329,6 +2606,7 @@ async function liveRefresh() {
     setLiveStatus(false)
   }
   renderLive()
+  renderHistory()
 }
 
 const esc = t => String(t == null ? '' : t).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]))
@@ -2396,9 +2674,10 @@ function renderLive() {
     inbox.map(a => `<div class="live-row">
         <div class="live-row-main">
           <div class="live-row-t">${esc(a.applicant)} → ${esc(a.opp_title)}</div>
-          <div class="live-row-s">${badgeFor(a.opp_type)} ${a.essay ? '· “' + esc(String(a.essay).slice(0, 90)) + '…”' : ''} · ${ago(a.created_at)}</div>
+          <div class="live-row-s">${badgeFor(a.opp_type)} ${a.essay ? '· “' + esc(String(a.essay).slice(0, 90)) + '…”' : ''} · ${ago(a.created_at)} ${slaBadge(a)}</div>
         </div>
         <div style="display:flex;gap:7px;">
+          ${isOverdue(a) ? `<button class="btn btn-outline btn-sm" onclick="previewReminder(${a.id})">✉ Reminder</button>` : ''}
           <button class="btn btn-green btn-sm" onclick="liveDecide(${a.id},'accepted')">✓ Accept</button>
           <button class="btn btn-outline btn-sm" onclick="liveDecide(${a.id},'declined')">✕ Decline</button>
         </div>
@@ -2483,6 +2762,281 @@ function liveInit() {
   liveRefresh()
   if (LIVE.timer) clearInterval(LIVE.timer)
   LIVE.timer = setInterval(liveRefresh, 8000)
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   SKILL DEFINITIONS (hover) + MATCH EXPLANATION (what you have vs
+   what you'd need, with development suggestions when you fall short).
+   ══════════════════════════════════════════════════════════════════ */
+const SKILL_DEFS = {
+  'sql': ['SQL', 'Querying relational databases directly — joins, aggregation, window functions — to answer questions without waiting on a data team.'],
+  'excel': ['Excel', 'Advanced spreadsheet modelling: lookups, pivots, scenario tables and clean, auditable structure others can pick up.'],
+  'power bi': ['Power BI', 'Building interactive dashboards and data models that a business audience can explore on their own.'],
+  'data analysis': ['Data Analysis', 'Turning raw figures into a defensible conclusion — choosing the right cut, testing it, and saying what it means.'],
+  'financial modelling': ['Financial Modelling', 'Structuring forecasts, scenarios and valuations that hold up under challenge.'],
+  'financial modeling': ['Financial Modelling', 'Structuring forecasts, scenarios and valuations that hold up under challenge.'],
+  'stakeholder management': ['Stakeholder Management', 'Keeping people with competing priorities aligned, informed and willing to keep backing the work.'],
+  'project management': ['Project Management', 'Scoping, sequencing and landing work on time across people who do not report to you.'],
+  'talent acquisition': ['Talent Acquisition', 'Sourcing, assessing and closing candidates — including the internal ones already in the building.'],
+  'hrbp': ['HR Business Partnering', 'Acting as the people-side advisor to a business unit: workforce planning, capability, and hard conversations.'],
+  'labor relations': ['Labor Relations', 'Handling employee cases, discipline and union or regulatory matters within Philippine labour law.'],
+  'esg reporting': ['ESG Reporting', 'Compiling environmental, social and governance disclosures against a recognised framework.'],
+  'regulatory': ['Regulatory', 'Reading regulation and translating it into what the business must actually do differently.'],
+  'process automation': ['Process Automation', 'Removing manual steps with scripts, workflow tools or RPA — and proving the time saved.'],
+  'facilitation': ['Facilitation', 'Running a room so a mixed group reaches a decision they will actually act on.'],
+  'change management': ['Change Management', 'Bringing people through a change — communications, readiness, and handling resistance.'],
+  'customer segmentation': ['Customer Segmentation', 'Dividing a customer base into groups that behave differently, then acting on the difference.'],
+  'pricing': ['Pricing', 'Setting and testing price points against margin, elasticity and competitive position.'],
+  'product design': ['Product Design', 'Shaping what gets built — the problem, the flow, and how it feels to use.'],
+  'analytics': ['Analytics', 'Measuring what happened and why, well enough to change a decision.'],
+  'supply chain': ['Supply Chain', 'Planning and moving goods end to end — forecasting, inventory and supplier performance.'],
+  'workforce planning': ['Workforce Planning', 'Matching headcount, skills and cost to what the business will need next.'],
+}
+// Development suggestions used when a required skill is missing.
+const SKILL_DEV = {
+  'sql': 'LMS · “SQL for Analysts” (6h) + shadow a Finance BI report build',
+  'power bi': 'LMS · “Power BI Essentials” (4h) then rebuild one of your own trackers as a dashboard',
+  'esg reporting': 'Ask PCD for the ESG primer deck; sit in on one quarterly disclosure review',
+  'regulatory': 'Shadow a Compliance case review; read the latest BSP circular summary',
+  'financial modelling': 'LMS · “Modelling for Non-Finance” (8h) + rebuild one FP&A scenario',
+  'facilitation': 'Co-facilitate one team retro with an experienced host before leading your own',
+  'change management': 'LMS · “Leading Change” (5h); volunteer on a current rollout comms squad',
+  'product design': 'Join a design review as an observer; run one customer interview',
+  'pricing': 'Sit in on a pricing committee; work through the commercial planning primer',
+  'customer segmentation': 'Pair with Commercial Planning on one segmentation refresh',
+  'process automation': 'LMS · “Automate with Power Automate” (4h) + automate one of your own reports',
+  'supply chain': 'Shadow the S&OP cycle for one month',
+  'workforce planning': 'Sit in on the annual headcount planning session with PCD',
+}
+// Normalise so spelling variants ('modeling' / 'modelling') match each other.
+const skillKey = t => String(t || '').replace(/[✅×]/g, '').trim().toLowerCase()
+  .replace(/modeling/g, 'modelling').replace(/\s+/g, ' ')
+
+// The signed-in employee's verified + claimed skills, used for the fit breakdown.
+const MY_SKILLS = ['sql', 'excel', 'financial modelling', 'stakeholder management']
+
+function defFor(text) {
+  const k = skillKey(text)
+  if (SKILL_DEFS[k]) return SKILL_DEFS[k]
+  const hit = Object.keys(SKILL_DEFS).find(d => k.includes(d) || d.includes(k))
+  return hit ? SKILL_DEFS[hit] : null
+}
+
+function tagSkillChips() {
+  document.querySelectorAll('.skill-chip').forEach(c => {
+    const d = defFor(c.textContent)
+    if (!d) return
+    c.dataset.def = d[1]
+    c.dataset.defName = d[0]
+    if (c.title && !c.dataset.verify) c.dataset.verify = c.title
+    c.removeAttribute('title')            // suppress the native tooltip; ours is richer
+  })
+}
+
+function initSkillTip() {
+  let tip = document.getElementById('skillTip')
+  if (!tip) {
+    tip = document.createElement('div')
+    tip.id = 'skillTip'
+    document.body.appendChild(tip)
+  }
+  const show = e => {
+    const c = e.target.closest('.skill-chip[data-def]')
+    if (!c) return
+    tip.innerHTML = `<b>${esc(c.dataset.defName)}</b>${esc(c.dataset.def)}` +
+      (c.dataset.verify ? `<div class="tip-meta">${esc(c.dataset.verify)}</div>` : '')
+    tip.classList.add('on')
+    const r = c.getBoundingClientRect()
+    tip.style.left = Math.min(r.left, window.innerWidth - tip.offsetWidth - 12) + 'px'
+    const above = r.top > tip.offsetHeight + 14
+    tip.style.top = (above ? r.top - tip.offsetHeight - 9 : r.bottom + 9) + 'px'
+  }
+  const hide = e => { if (e.target.closest && e.target.closest('.skill-chip')) tip.classList.remove('on') }
+  document.addEventListener('mouseover', show)
+  document.addEventListener('mouseout', hide)
+  document.addEventListener('focusin', show)
+  document.addEventListener('focusout', hide)
+  tagSkillChips()
+}
+
+/* Item 12 — per-opportunity fit: what you already bring, what you'd need. */
+function renderFitBreakdowns() {
+  document.querySelectorAll('.fit-slot').forEach(slot => {
+    const card = slot.closest('.opp-card') || slot.parentElement
+    if (!card) return
+    const chips = [...card.querySelectorAll('.chip-row .skill-chip')].map(c => skillKey(c.textContent)).filter(Boolean)
+    if (!chips.length) { slot.innerHTML = ''; return }
+    const have = chips.filter(c => MY_SKILLS.some(m => m === c || c.includes(m) || m.includes(c)))
+    const gaps = chips.filter(c => !have.includes(c))
+    const pretty = k => (SKILL_DEFS[k] ? SKILL_DEFS[k][0] : k.replace(/\b\w/g, ch => ch.toUpperCase()))
+    const devs = gaps.map(g => SKILL_DEV[g] || SKILL_DEV[Object.keys(SKILL_DEV).find(d => g.includes(d)) || '']).filter(Boolean)
+
+    slot.innerHTML = `<div class="fit-box">
+      <div class="fit-line"><b>Why this score:</b>
+        ${have.length ? `you already bring <span class="fit-have">${have.map(pretty).join(', ')}</span>` : `<span class="fit-gap">none of the listed skills are on your profile yet</span>`}${gaps.length ? ` · to be a full match you'd add <span class="fit-gap">${gaps.map(pretty).join(', ')}</span>` : ` · that's everything this post asks for`}.
+      </div>
+      ${gaps.length && devs.length ? `<div class="fit-dev"><b>📚 How to close the gap</b>${devs.map(d => '· ' + d).join('<br>')}</div>` : ''}
+    </div>`
+  })
+}
+
+/* Item 8 — ask the post owner a question. */
+function openAskDialog(title) {
+  const overlay = document.createElement('div')
+  overlay.setAttribute('data-overlay', '1')
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;overflow-y:auto;'
+  overlay.innerHTML = `
+    <div style="background:#fff;border-radius:14px;padding:30px;width:520px;max-width:95vw;box-shadow:0 8px 40px rgba(0,0,0,0.14);">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#9CA3AF;margin-bottom:6px;">Ask about this opportunity</div>
+      <div style="font-size:17px;font-weight:700;color:#111827;margin-bottom:14px;">${esc(title)}</div>
+      <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;padding:11px 13px;font-size:11.5px;color:#1E40AF;line-height:1.6;margin-bottom:16px;">
+        💬 Asking a question is <strong>not</strong> an application and nothing is recorded against you. Posters see the question and your name, and are asked to reply within three working days.
+      </div>
+      <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;color:#374151;display:block;margin-bottom:6px;">What would you like to know? <span style="color:#C00000;">*</span></label>
+      <textarea id="askText" placeholder="e.g. How many hours a week does this realistically take? Is it possible alongside a full workload? Would my manager need to approve first? What does success look like at the end?" style="width:100%;min-height:170px;padding:12px 13px;border:1px solid #E5E7EB;border-radius:9px;font-family:inherit;font-size:13px;line-height:1.65;color:#374151;outline:none;resize:vertical;"></textarea>
+      <div style="font-size:10.5px;color:#9CA3AF;margin-top:7px;line-height:1.55;">Common questions: time commitment · manager approval · whether it can be done remotely · what happens at the end · whether they'd consider someone still developing a listed skill.</div>
+      <div style="display:flex;gap:9px;justify-content:flex-end;margin-top:20px;">
+        <button class="btn btn-outline" onclick="this.closest('[data-overlay]').remove()">Cancel</button>
+        <button class="btn btn-red" onclick="submitAsk(${JSON.stringify(title).replace(/"/g, '&quot;')}, this)">Send question →</button>
+      </div>
+    </div>`
+  document.body.appendChild(overlay)
+  setTimeout(() => document.getElementById('askText').focus(), 40)
+}
+
+function submitAsk(title, btn) {
+  const q = document.getElementById('askText').value.trim()
+  if (q.length < 10) { toast('Add a bit more detail so the poster can answer properly.', 'warning'); return }
+  btn.closest('[data-overlay]').remove()
+  toast(`✓ Question sent about "${title}". You'll be notified when the poster replies.`)
+}
+
+/* ══════════════════════════════════════════════════════════════════
+   ITEM 13 — 7-day no-response escalation.
+
+   An application left untouched for 7 days triggers a reminder to the
+   post owner, copied to PCD. The ageing and the escalation state are
+   computed here from real timestamps; actually putting mail in an inbox
+   needs a mail service (SES/SendGrid) behind a backend, which a static
+   page cannot do. The prototype therefore shows exactly what would be
+   sent, and to whom, and records that it fired.
+   ══════════════════════════════════════════════════════════════════ */
+const SLA_DAYS = 7
+const daysOld = ts => (Date.now() - new Date(ts).getTime()) / 86400000
+const isOverdue = a => (a.status || 'applied') === 'applied' && daysOld(a.created_at) >= SLA_DAYS
+
+function overdueApplications() { return LIVE.apps.filter(isOverdue) }
+
+function slaBadge(a) {
+  if ((a.status || 'applied') !== 'applied') return ''
+  const d = Math.floor(daysOld(a.created_at))
+  if (d >= SLA_DAYS) return `<span class="badge" style="background:#FEE2E2;color:#991B1B;border:1px solid #FECACA;">⚠ ${d}d — reminder sent</span>`
+  if (d >= SLA_DAYS - 2) return `<span class="badge" style="background:#FEF3C7;color:#92400E;border:1px solid #FDE68A;">${d}d — due soon</span>`
+  return ''
+}
+
+function previewReminder(appId) {
+  const a = LIVE.apps.find(x => x.id === appId)
+  if (!a) return
+  const d = Math.floor(daysOld(a.created_at))
+  const overlay = document.createElement('div')
+  overlay.setAttribute('data-overlay', '1')
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;overflow-y:auto;'
+  overlay.innerHTML = `
+    <div style="background:#fff;border-radius:14px;padding:28px;width:560px;max-width:95vw;box-shadow:0 8px 40px rgba(0,0,0,0.14);">
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#9CA3AF;margin-bottom:10px;">Automated reminder · day ${d}</div>
+      <div style="border:1px solid #E5E7EB;border-radius:10px;overflow:hidden;">
+        <div style="background:#F9FAFB;padding:12px 14px;border-bottom:1px solid #E5E7EB;font-size:11.5px;color:#374151;line-height:1.8;">
+          <div><strong>To:</strong> the post owner</div>
+          <div><strong>Cc:</strong> People &amp; Culture Department</div>
+          <div><strong>Subject:</strong> Action needed — an application has been waiting ${d} days</div>
+        </div>
+        <div style="padding:16px 14px;font-size:12.5px;color:#374151;line-height:1.75;">
+          <strong>${esc(a.applicant)}</strong> applied to <strong>${esc(a.opp_title)}</strong> ${d} days ago and has not had a decision.<br><br>
+          Our commitment to applicants is a response within ${SLA_DAYS} working days — a silent no is the single thing that stops people using the marketplace again. Please accept or decline, or reply to them directly if you need more time.<br><br>
+          If this post is no longer live, close it so it stops appearing in search.
+        </div>
+      </div>
+      <div style="margin-top:14px;background:#FFFBEB;border:1px solid #FDE68A;border-radius:8px;padding:11px 13px;font-size:11px;color:#92400E;line-height:1.6;">
+        ⚠️ <strong>Prototype limitation.</strong> The ${SLA_DAYS}-day rule and this message are real and computed from the actual application date — but no email leaves this page. Delivery needs a mail service behind a backend.
+      </div>
+      <div style="display:flex;justify-content:flex-end;margin-top:16px;">
+        <button class="btn btn-outline" onclick="this.closest('[data-overlay]').remove()">Close</button>
+      </div>
+    </div>`
+  document.body.appendChild(overlay)
+}
+
+/* Item 10 — admin history. Live rows are real; the seeded rows below are
+   demo history so the view is not empty before the pilot has traffic. */
+const SEED_POSTS = [
+  ['Risk Reporting Dashboard — Q3',            'Gig',     'Risk Management',    'Roger Federer',    '2026-06-02', 'live'],
+  ['Customer Insights DJI — Commercial',       'DJI',     'Commercial Planning','Priyanka Chopra',  '2026-06-11', 'live'],
+  ['Branch Queue Tracker — prototype',         'Gig',     'IT & Innovation',    'Harry Styles',     '2026-06-18', 'rejected'],
+  ['Collections Analyst — Manila',             'Vacancy', 'Operations',         'Adele Adkins',     '2026-06-24', 'live'],
+  ['Social Media Takeover — Brand',            'Gig',     'Marketing',          'Zendaya Coleman',  '2026-07-01', 'rejected'],
+  ['Process Automation Gig — Finance Ops',     'Gig',     'Finance',            'Taylor Swift',     '2026-07-03', 'live'],
+]
+const SEED_APPS = [
+  ['Cristiano Ronaldo', 'Process Automation Gig — Finance Ops',   'Gig',     '2026-06-28', 'accepted'],
+  ['Lionel Messi',      'Business Intelligence Analyst — FP&A',   'Vacancy', '2026-07-04', 'applied'],
+  ['Jennifer Lopez',    'DJI: Digital Transformation — Strategy', 'DJI',     '2026-06-20', 'accepted'],
+  ['Rihanna',           'Supply Chain Analytics — Q4 Review',     'Gig',     '2026-06-30', 'declined'],
+  ['Will Smith',        'Innovation Lab — Product Design DJI',    'DJI',     '2026-07-06', 'applied'],
+  ['Ed Sheeran',        'Collections Analyst — Manila',           'Vacancy', '2026-06-15', 'declined'],
+]
+const outcomeBadge = o => o === 'live' || o === 'accepted'
+  ? `<span class="badge badge-accepted">${o === 'live' ? 'Approved ✓' : 'Accepted ✓'}</span>`
+  : o === 'rejected' || o === 'declined'
+  ? `<span class="badge badge-declined">${o === 'rejected' ? 'Rejected' : 'Declined'}</span>`
+  : '<span class="badge badge-applied">Pending</span>'
+const fmtDate = d => new Date(d).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+
+function switchHistTab(btn, pane) {
+  document.querySelectorAll('#page-admin-history .tab').forEach(t => t.classList.remove('active'))
+  btn.classList.add('active')
+  document.querySelectorAll('.hist-pane').forEach(p => p.style.display = p.id === pane ? '' : 'none')
+}
+
+function renderHistory() {
+  const posts = [
+    ...LIVE.opps.map(o => [o.title, o.type, o.department || '—', o.posted_by, o.created_at, o.status, true]),
+    ...SEED_POSTS.map(r => [...r, false]),
+  ]
+  const apps = [
+    ...LIVE.apps.map(a => [a.applicant, a.opp_title, a.opp_type, a.created_at, a.status || 'applied', true]),
+    ...SEED_APPS.map(r => [...r, false]),
+  ]
+  const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v }
+  set('hpTotal', posts.length)
+  set('hpLive',  posts.filter(p => p[5] === 'live').length)
+  set('hpRej',   posts.filter(p => p[5] === 'rejected').length)
+  set('hpPend',  posts.filter(p => p[5] === 'pending').length)
+  set('haTotal', apps.length)
+  set('haAcc',   apps.filter(a => a[4] === 'accepted').length)
+  set('haDec',   apps.filter(a => a[4] === 'declined').length)
+  set('haOpen',  apps.filter(a => a[4] === 'applied').length)
+
+  const tagLive = isLive => isLive ? ' <span class="badge" style="background:#DCFCE7;color:#166534;border:1px solid #BBF7D0;">live</span>' : ''
+  const tp = document.getElementById('histPosts')
+  if (tp) tp.innerHTML = posts.map(p => `<tr><td>${esc(p[0])}${tagLive(p[6])}</td><td>${badgeFor(p[1])}</td><td>${esc(p[2])}</td><td>${esc(p[3])}</td><td>${fmtDate(p[4])}</td><td>${outcomeBadge(p[5])}</td></tr>`).join('')
+  const ta = document.getElementById('histApps')
+  if (ta) ta.innerHTML = apps.map(a => {
+    const d = Math.floor(daysOld(a[3]))
+    const wait = a[4] === 'applied' ? `${d}d${d >= SLA_DAYS ? ' ⚠' : ''}` : '—'
+    return `<tr><td>${esc(a[0])}${tagLive(a[5])}</td><td>${esc(a[1])}</td><td>${badgeFor(a[2])}</td><td>${fmtDate(a[3])}</td><td>${wait}</td><td>${outcomeBadge(a[4])}</td></tr>`
+  }).join('')
+  const ts = document.getElementById('histSla')
+  if (ts) {
+    const late = apps.filter(a => a[4] === 'applied' && daysOld(a[3]) >= SLA_DAYS)
+    ts.innerHTML = late.length ? late.map(a => {
+      const d = Math.floor(daysOld(a[3]))
+      const liveRow = LIVE.apps.find(x => x.applicant === a[0] && x.opp_title === a[1])
+      return `<tr><td>${esc(a[0])}</td><td>${esc(a[1])}</td><td><strong style="color:#991B1B;">${d} days</strong></td>
+        <td><span class="badge" style="background:#FEE2E2;color:#991B1B;border:1px solid #FECACA;">Reminder sent to owner</span></td>
+        <td>${liveRow ? `<button class="btn btn-outline btn-sm" onclick="previewReminder(${liveRow.id})">✉ View</button>` : ''}</td></tr>`
+    }).join('') : '<tr><td colspan="5" style="color:#9CA3AF;">Nothing past the 7-day commitment. </td></tr>'
+  }
 }
 
 function toggleSidebar() {
@@ -3025,6 +3579,9 @@ function switchTab(btn) {
 
 renderNav('recruiter')
 navigate('home')
+initSkillTip()
+renderFitBreakdowns()
+renderHistory()
 liveInit()
 </script>
 </body>

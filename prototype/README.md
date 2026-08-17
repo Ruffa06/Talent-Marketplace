@@ -1,4 +1,4 @@
-# Talent Marketplace — clickable prototype
+# Growth: HC Talent Marketplace — clickable prototype
 
 `talent-marketplace-prototype.html` is a single self-contained HTML file: no build
 step, no dependencies, no network calls. Open it in any browser and it runs.
@@ -55,9 +55,20 @@ Use the role switcher in the top bar to move between them without reloading.
 - **Nomination Dashboard** (as Administrator) — the leaderboard is ranked by
   *selected* nominations, not volume.
 
+## Shared live state
+
+Posting, approving, applying and deciding write to a Supabase project, so what
+one person on the link does is visible to everyone else. Run
+`supabase-schema.sql` once in the Supabase SQL Editor to create the tables. The
+badge in the top bar reads **Live** when connected and **Offline** otherwise.
+
+There is no login: anyone with the link can act as any role, including
+administrator, and can read or change all pilot data.
+
 ## Known scope limits
 
-State is in-memory only. Reloading the page resets everything, and nothing
-persists between roles — submitting feedback as the employee does not change
-what the manager sees. That is fine for walking someone through the flows and
-wrong for anything else.
+Everything outside those shared panels is seeded demo content that resets on
+reload — the surveys, nominations, dashboards and the seeded personas. The
+7-day escalation computes real ageing and shows the exact message that would
+go out, but no email is actually sent; delivery needs a mail service behind a
+backend.
