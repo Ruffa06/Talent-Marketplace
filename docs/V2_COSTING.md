@@ -7,6 +7,12 @@
 Every figure here is derived by [`docs/v2-costing-model.py`](v2-costing-model.py) — run it to
 re-derive them or to test a changed assumption.
 
+> **Superseded recommendation.** This document costs v2 **as originally scoped**,
+> at ₱1,542,136 over three years — 39% above v1. [`docs/V2_CBA.md`](V2_CBA.md)
+> costs the **lean** configuration at **₱1,050,375**, which is 6% *below* v1, and
+> adds the benefit side. The analysis below is still the reference for where v2's
+> money goes and why; take the lean figures and the recommendation from the CBA.
+
 Companion to [`docs/COSTING.md`](COSTING.md), which costs v1 on its own and
 carries the full build-vs-buy comparison. This document only prices the
 difference and re-tests the conclusions against it. Every v1 figure below is
@@ -257,7 +263,19 @@ near a decision forum — do not carry v1's benefit numbers into a v2 paper.
 
 ---
 
-## 8. What must be validated before this goes to a decision forum
+## 8. Reducing the cost
+
+Five changes take v2 from ₱1,542,136 to **₱1,050,375** over three years without
+altering what drives internal growth — the board, the match scores and the job
+descriptions are untouched. They are set out with the benefit case in
+[`docs/V2_CBA.md`](V2_CBA.md): Supabase-native instead of a separate API service
+(₱270,000), reusing the v1 design system (₱66,000), deferring the referral engine
+to Q2 (₱162,000 out of year 1), cancelling phase 2 (₱108,000), and quarterly
+rather than monthly reconciliation (₱7,500/yr).
+
+---
+
+## 9. What must be validated before this goes to a decision forum
 
 Carrying forward from `COSTING.md` — the developer rate card, the maintenance
 FTE, real vendor quotes, and whether your HRIS already bundles a marketplace
