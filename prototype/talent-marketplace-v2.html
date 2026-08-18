@@ -697,6 +697,12 @@
   .vac-title { font-size: 14px; font-weight: 700; color: #111827; margin: 8px 0 3px; line-height: 1.4; }
   .vac-meta { font-size: 11px; color: #6B7280; line-height: 1.6; }
   .vac-foot { margin-top: auto; padding-top: 13px; }
+  .jd-row { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; margin-top: 11px;
+            background: #F9FAFB; border: 1px solid #E5E7EB; border-radius: 9px; padding: 9px 11px; }
+  .jd-file { font-size: 11.5px; font-weight: 700; color: #374151; }
+  .jd-size { font-size: 10.5px; color: #9CA3AF; }
+  .jd-row .btn { margin-left: auto; }
+  .jd-row-empty { font-size: 10.5px; color: #9CA3AF; line-height: 1.5; display: block; }
   .ref-code { font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; background: #0F172A; color: #fff;
               padding: 3px 9px; border-radius: 6px; font-size: 12px; letter-spacing: 0.6px; display: inline-block; }
   .ref-code-lg { font-size: 20px; padding: 11px 18px; letter-spacing: 1.6px; }
@@ -999,7 +1005,7 @@
           work you'd never have been invited to. You keep control: every request comes to you, and you accept or decline it.
         </div>
         <div style="margin-top:16px;">
-          <button class="btn btn-red" onclick="navigate('post')">➕ Publish a service offer →</button>
+          <button class="btn btn-red" onclick="openPostTab('post-pane-offer')">➕ Publish a service offer →</button>
         </div>
       </div>
       <!-- Why post -->
@@ -1424,7 +1430,7 @@
         </div>
       </div>
 
-      <button class="btn btn-red" onclick="navigate('profile');toast('Add a new service offer in your profile.')">＋ Add a service offer</button>
+      <button class="btn btn-red" onclick="openPostTab('post-pane-offer')">＋ Add a service offer</button>
     </div>
 
     <!-- ══ MY NOMINATIONS ══ -->
@@ -1887,9 +1893,15 @@
     <div class="page" id="page-post">
       <div class="page-header">
         <div class="page-title">➕ Post Opportunity</div>
-        <div class="page-sub">Create a new opportunity for your team</div>
+        <div class="page-sub">Open work to the whole company — or publish a skill you are willing to share</div>
       </div>
-      <div style="max-width:640px;">
+
+      <div class="tab-bar">
+        <button class="tab active" onclick="switchPostTab(this,'post-pane-work')">Work that needs doing</button>
+        <button class="tab" onclick="switchPostTab(this,'post-pane-offer')">🎁 Offer a service</button>
+      </div>
+
+      <div class="post-pane" id="post-pane-work" style="max-width:640px;">
         <div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:10px;padding:12px 16px;margin-bottom:20px;font-size:12px;color:#92400E;">
           ⏳ Opportunities require admin approval before becoming visible to applicants.
         </div>
@@ -1936,6 +1948,52 @@
           </div>
         </div>
         <button class="btn btn-red" onclick="submitOpportunity()">Submit for Approval</button>
+      </div>
+
+      <div class="post-pane" id="post-pane-offer" style="max-width:640px;display:none;">
+        <div style="background:#F5F3FF;border:1px solid #DDD6FE;border-radius:10px;padding:12px 16px;margin-bottom:20px;font-size:12px;color:#5B21B6;line-height:1.6;">
+          🎁 <strong>No approval needed.</strong> A service offer is your own time, offered on your own terms, so it goes live
+          the moment you publish it. You accept or decline every request that comes in, and you can pause an offer any time.
+        </div>
+                <div class="card form-card" style="border:1px solid #DDD6FE;">
+          <h3>🎁 What I can help others with</h3>
+          <div style="background:#F5F3FF;border:1px solid #DDD6FE;border-radius:8px;padding:11px 13px;font-size:11px;color:#5B21B6;line-height:1.6;margin-bottom:16px;">
+            This is the one part of the marketplace that works in reverse. Rather than applying for work, you publish what you're willing to help with and teams come to you. Mentoring, a second opinion, a prototype, a walkthrough of something you know well — usually an hour or two at a time.
+          </div>
+
+          <div style="border:1px solid #E5E7EB;border-radius:9px;padding:14px;margin-bottom:10px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;">
+              <div style="font-size:13px;font-weight:700;color:#111827;">Mentoring on product &amp; customer segments</div>
+              <span class="badge badge-accepted">● Active</span>
+            </div>
+            <div style="font-size:12px;color:#4B5563;line-height:1.55;margin-bottom:9px;">Happy to walk anyone through how we segment customers, how pricing decisions get made, and how to read the segment P&amp;L.</div>
+            <div style="display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:#6B7280;">
+              <span>⏱ Up to <strong>4 hrs / month</strong></span><span>👥 12 people reached</span><span>★ 5.0 rating</span>
+            </div>
+          </div>
+
+          <div style="border:1px solid #E5E7EB;border-radius:9px;padding:14px;margin-bottom:14px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;">
+              <div style="font-size:13px;font-weight:700;color:#111827;">Vibe-coding: quick prototypes &amp; automations</div>
+              <span class="badge badge-accepted">● Active</span>
+            </div>
+            <div style="font-size:12px;color:#4B5563;line-height:1.55;margin-bottom:9px;">Bring a manual process or a rough idea and we'll pair with AI tooling to get something working by Friday.</div>
+            <div style="display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:#6B7280;">
+              <span>⏱ Up to <strong>6 hrs / month</strong></span><span>👥 5 people reached</span><span>★ 4.8 rating</span>
+            </div>
+          </div>
+
+          <div style="border:1px dashed #DDD6FE;border-radius:9px;padding:16px;background:#FAFAFF;">
+            <div style="font-size:12px;font-weight:700;color:#5B21B6;margin-bottom:12px;">＋ Add another service offer</div>
+            <div class="field"><label>What can you help with?</label><input placeholder="e.g. Reviewing a pricing model, coaching a first-time presenter…"></div>
+            <div class="field"><label>Describe it briefly</label><textarea placeholder="Who is this for, and what will they walk away with?" style="min-height:70px;"></textarea></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+              <div class="field"><label>Capacity</label><select><option>Up to 2 hrs / month</option><option selected>Up to 4 hrs / month</option><option>Up to 6 hrs / month</option><option>Ad-hoc — ask me</option></select></div>
+              <div class="field"><label>Format</label><select><option>Either</option><option>1-on-1</option><option>Small group</option></select></div>
+            </div>
+            <button class="btn btn-red btn-sm" onclick="toast('✓ Service offer published. It’s now live in All Opportunities, and on your profile.')">Publish offer</button>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -2001,47 +2059,6 @@
                 <input id="develop-skill-input" placeholder="Type a skill…" style="flex:1;padding:7px 10px;border:1px solid #E5E7EB;border-radius:7px;font-size:13px;font-family:inherit;outline:none;" onkeydown="if(event.key==='Enter'){addSkill('develop');event.preventDefault()}">
                 <button class="btn btn-outline btn-sm" onclick="addSkill('develop')">+ Add</button>
               </div>
-            </div>
-          </div>
-
-          <!-- Service Offers -->
-          <div class="card form-card" style="border:1px solid #DDD6FE;">
-            <h3>🎁 What I can help others with <span style="font-weight:400;color:#9CA3AF;font-size:12px;">— Service Offers</span></h3>
-            <div style="background:#F5F3FF;border:1px solid #DDD6FE;border-radius:8px;padding:11px 13px;font-size:11px;color:#5B21B6;line-height:1.6;margin-bottom:16px;">
-              This is the one part of the marketplace that works in reverse. Rather than applying for work, you publish what you're willing to help with and teams come to you. Mentoring, a second opinion, a prototype, a walkthrough of something you know well — usually an hour or two at a time.
-            </div>
-
-            <div style="border:1px solid #E5E7EB;border-radius:9px;padding:14px;margin-bottom:10px;">
-              <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;">
-                <div style="font-size:13px;font-weight:700;color:#111827;">Mentoring on product &amp; customer segments</div>
-                <span class="badge badge-accepted">● Active</span>
-              </div>
-              <div style="font-size:12px;color:#4B5563;line-height:1.55;margin-bottom:9px;">Happy to walk anyone through how we segment customers, how pricing decisions get made, and how to read the segment P&amp;L.</div>
-              <div style="display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:#6B7280;">
-                <span>⏱ Up to <strong>4 hrs / month</strong></span><span>👥 12 people reached</span><span>★ 5.0 rating</span>
-              </div>
-            </div>
-
-            <div style="border:1px solid #E5E7EB;border-radius:9px;padding:14px;margin-bottom:14px;">
-              <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:8px;flex-wrap:wrap;">
-                <div style="font-size:13px;font-weight:700;color:#111827;">Vibe-coding: quick prototypes &amp; automations</div>
-                <span class="badge badge-accepted">● Active</span>
-              </div>
-              <div style="font-size:12px;color:#4B5563;line-height:1.55;margin-bottom:9px;">Bring a manual process or a rough idea and we'll pair with AI tooling to get something working by Friday.</div>
-              <div style="display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:#6B7280;">
-                <span>⏱ Up to <strong>6 hrs / month</strong></span><span>👥 5 people reached</span><span>★ 4.8 rating</span>
-              </div>
-            </div>
-
-            <div style="border:1px dashed #DDD6FE;border-radius:9px;padding:16px;background:#FAFAFF;">
-              <div style="font-size:12px;font-weight:700;color:#5B21B6;margin-bottom:12px;">＋ Add another service offer</div>
-              <div class="field"><label>What can you help with?</label><input placeholder="e.g. Reviewing a pricing model, coaching a first-time presenter…"></div>
-              <div class="field"><label>Describe it briefly</label><textarea placeholder="Who is this for, and what will they walk away with?" style="min-height:70px;"></textarea></div>
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-                <div class="field"><label>Capacity</label><select><option>Up to 2 hrs / month</option><option selected>Up to 4 hrs / month</option><option>Up to 6 hrs / month</option><option>Ad-hoc — ask me</option></select></div>
-                <div class="field"><label>Format</label><select><option>Either</option><option>1-on-1</option><option>Small group</option></select></div>
-              </div>
-              <button class="btn btn-outline btn-sm" onclick="toast('✓ Service offer published. It’s now live in All Opportunities.')">Publish offer</button>
             </div>
           </div>
 
@@ -2319,6 +2336,7 @@
           <div class="field"><label>Closes on</label><input id="vacCloses" type="date"></div>
         </div>
         <div class="field"><label>Careers link</label><input id="vacUrl" placeholder="https://careers.homecredit.ph/job/REQ-2609"></div>
+        <div class="field"><label>Job description link <span style="font-weight:400;color:#9CA3AF;">(optional)</span></label><input id="vacJd" placeholder="Link to the JD document — people decide from this before they click through"></div>
         <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;padding:10px 12px;font-size:11px;color:#1E40AF;line-height:1.6;margin-bottom:14px;">
           🔗 The link is appended with <code>?src=growth&amp;gref=&lt;code&gt;</code> at handoff. If Careers strips unknown query
           parameters, the code still reaches recruitment through the referral code the employee pastes into the source field — which
@@ -3792,6 +3810,21 @@ function handleFileDrop(e) {
   Array.from(e.dataTransfer.files).forEach(f => renderAttachedFile(f.name, f.size))
 }
 
+/* Post an opportunity has two shapes: work you need done, and time you are
+   offering. They share nothing but the page, so they get a pane each. */
+function switchPostTab(btn, pane) {
+  document.querySelectorAll('#page-post .tab').forEach(t => t.classList.remove('active'))
+  btn.classList.add('active')
+  document.querySelectorAll('#page-post .post-pane').forEach(p => { p.style.display = p.id === pane ? '' : 'none' })
+}
+
+function openPostTab(pane) {
+  navigate('post')
+  const tabs = [...document.querySelectorAll('#page-post .tab')]
+  const i = pane === 'post-pane-offer' ? 1 : 0
+  if (tabs[i]) switchPostTab(tabs[i], pane)
+}
+
 function switchTab(btn) {
   btn.closest('.tab-bar').querySelectorAll('.tab').forEach(t => t.classList.remove('active'))
   btn.classList.add('active')
@@ -3835,22 +3868,143 @@ const REF_SOURCE_LABEL = { board: 'Vacancy board', matches: 'My Matches', search
 const SEED_VACANCIES = [
   { req_id: 'REQ-2481', title: 'Business Intelligence Analyst — FP&A Team', department: 'Finance',
     location: 'Manila · Hybrid', closes_on: '2026-09-05', score: 90,
-    skills: ['Power BI', 'SQL', 'Financial Modelling'], seeded: true },
+    skills: ['Power BI', 'SQL', 'Financial Modelling'], seeded: true,
+    jd: {
+      file: 'JD_REQ-2481_BI-Analyst_FPA.pdf', size: '186 KB', updated: '2026-08-02',
+      reports_to: 'Head of Financial Planning & Analysis', grade: 'Officer / Senior Officer',
+      employment: 'Permanent, full-time', headcount: '1',
+      purpose: 'Turn Home Credit PH financial and operational data into the numbers the business plans against — so that FP&A spends its time on the decision, not on assembling the file.',
+      responsibilities: [
+        'Own the monthly management reporting pack end to end: build, reconcile, and publish it against a fixed close calendar.',
+        'Rebuild recurring Excel trackers as Power BI models the business can explore without asking Finance first.',
+        'Write and maintain the SQL that feeds the FP&A layer, including the reconciliation checks that catch a broken feed before a manager does.',
+        'Partner with Commercial and Operations on the scenario models behind the annual plan and each quarterly reforecast.',
+        'Investigate variances to root cause and write the two-paragraph explanation that goes to the CFO.',
+      ],
+      requirements: [
+        '3+ years in financial analysis, business intelligence, or a data-heavy commercial role.',
+        'Advanced SQL — joins, window functions, and the judgement to know when a query is wrong rather than just slow.',
+        'Power BI or an equivalent BI tool, including data modelling, not only report building.',
+        'Financial modelling that survives challenge: scenarios, sensitivities, and an audit trail.',
+        'Able to present a number to a non-finance audience and defend how it was derived.',
+      ],
+      nice: ['Consumer finance or banking experience', 'Python or dbt for transformation', 'Exposure to BSP reporting requirements'],
+    } },
   { req_id: 'REQ-2494', title: 'Collections Analyst — Manila', department: 'Operations',
     location: 'Manila · On-site', closes_on: '2026-08-29', score: 61,
-    skills: ['Data Analysis', 'Excel'], seeded: true },
+    skills: ['Data Analysis', 'Excel'], seeded: true,
+    jd: {
+      file: 'JD_REQ-2494_Collections-Analyst.pdf', size: '142 KB', updated: '2026-07-28',
+      reports_to: 'Collections Strategy Manager', grade: 'Officer',
+      employment: 'Permanent, full-time', headcount: '2',
+      purpose: 'Improve recovery rates across the early-delinquency portfolio by finding which treatments work on which customers, and proving it.',
+      responsibilities: [
+        'Analyse collections performance by bucket, vintage, channel and treatment, and report what actually moved.',
+        'Design and run champion/challenger tests on contact strategy — timing, channel, message — and read the results honestly.',
+        'Build the daily and weekly operational dashboards the collections floor runs on.',
+        'Size the impact of proposed policy changes before they go live, and measure them after.',
+        'Work with Risk on the handoff between late-stage collections and write-off.',
+      ],
+      requirements: [
+        '2+ years in collections, credit risk, or operations analytics.',
+        'Advanced Excel: lookups, pivots, and scenario tables another analyst can pick up.',
+        'Comfortable querying large transaction datasets and defending the cut you chose.',
+        'Clear written communication — most of this role is explaining a result to someone who will act on it.',
+      ],
+      nice: ['SQL', 'Consumer lending portfolio experience', 'Familiarity with dialler and contact-centre data'],
+    } },
   { req_id: 'REQ-2502', title: 'Sustainability Reporting Lead — ESG', department: 'Legal & Compliance',
     location: 'Manila · Hybrid', closes_on: '2026-09-12', score: 34,
-    skills: ['ESG Reporting', 'Regulatory'], seeded: true },
+    skills: ['ESG Reporting', 'Regulatory'], seeded: true,
+    jd: {
+      file: 'JD_REQ-2502_Sustainability-Reporting-Lead.pdf', size: '204 KB', updated: '2026-08-06',
+      reports_to: 'Head of Compliance', grade: 'Manager',
+      employment: 'Permanent, full-time', headcount: '1',
+      purpose: 'Own Home Credit PH sustainability disclosure end to end — so that what we publish is accurate, defensible, and filed on time.',
+      responsibilities: [
+        'Compile and file the annual sustainability report against SEC Philippines requirements and the GRI framework.',
+        'Establish the data collection process across departments, including who owns each figure and how it is evidenced.',
+        'Run the quarterly disclosure review with Finance, Operations and Facilities.',
+        'Track incoming regulation and translate it into what the business must do differently, with dates.',
+        'Prepare the ESG material that goes to the Board risk committee and to lenders during diligence.',
+      ],
+      requirements: [
+        '4+ years in sustainability reporting, regulatory reporting, or audit.',
+        'Working knowledge of at least one recognised disclosure framework (GRI, SASB, ISSB).',
+        'Able to read regulation and say plainly what it obliges the business to do.',
+        'Evidence discipline — every published figure traceable to a source somebody signed off.',
+      ],
+      nice: ['SEC Philippines filing experience', 'Financial services background', 'Assurance or external audit experience'],
+    } },
   { req_id: 'REQ-2517', title: 'Senior Accountant — Tax & Compliance', department: 'Finance',
     location: 'Manila · Hybrid', closes_on: '2026-09-01', score: 72,
-    skills: ['Excel', 'Regulatory'], seeded: true },
+    skills: ['Excel', 'Regulatory'], seeded: true,
+    jd: {
+      file: 'JD_REQ-2517_Senior-Accountant-Tax.pdf', size: '158 KB', updated: '2026-07-30',
+      reports_to: 'Tax Manager', grade: 'Senior Officer',
+      employment: 'Permanent, full-time', headcount: '1',
+      purpose: 'Keep Home Credit PH tax position accurate and filed on time, and make the annual BIR audit a routine exercise rather than an event.',
+      responsibilities: [
+        'Prepare and file monthly, quarterly and annual BIR returns — VAT, withholding, and income tax.',
+        'Own the current and deferred tax provision in the statutory accounts.',
+        'Maintain the reconciliation between the tax ledger and the general ledger, and clear differences monthly.',
+        'Assemble the documentation pack for BIR assessments and act as first point of contact during fieldwork.',
+        'Advise the business on the tax treatment of new products before they launch, not after.',
+      ],
+      requirements: [
+        'CPA, and 4+ years in tax within a regulated business or a practice tax team.',
+        'Philippine tax code in practice, not only in principle — VAT, withholding, and income tax.',
+        'Advanced Excel and clean, auditable working papers.',
+        'SAP or an equivalent ERP.',
+      ],
+      nice: ['Consumer finance experience', 'Transfer pricing exposure', 'Prior BIR assessment handling'],
+    } },
   { req_id: 'REQ-2528', title: 'Data Governance Analyst — IT Risk', department: 'IT & Innovation',
     location: 'Manila · Remote-friendly', closes_on: '2026-09-19', score: 55,
-    skills: ['SQL', 'Process Automation'], seeded: true },
+    skills: ['SQL', 'Process Automation'], seeded: true,
+    jd: {
+      file: 'JD_REQ-2528_Data-Governance-Analyst.pdf', size: '171 KB', updated: '2026-08-11',
+      reports_to: 'Head of IT Risk & Governance', grade: 'Officer / Senior Officer',
+      employment: 'Permanent, full-time', headcount: '1',
+      purpose: 'Make it possible to answer, quickly and correctly, where a piece of customer data came from, who may see it, and how long we keep it.',
+      responsibilities: [
+        'Maintain the data catalogue and data lineage for customer and transaction domains.',
+        'Run the access review cycle: who has access to what, whether they still need it, and evidencing the outcome.',
+        'Assess new systems and integrations against the Data Privacy Act and internal retention policy before go-live.',
+        'Automate the recurring governance controls that are currently done by hand each month.',
+        'Support the DPO on breach assessment and regulatory notification drafting.',
+      ],
+      requirements: [
+        '3+ years in data governance, IT risk, information security, or data engineering.',
+        'SQL good enough to profile a dataset yourself rather than requesting an extract.',
+        'Working understanding of the Philippine Data Privacy Act and its implementing rules.',
+        'Scripting or workflow automation — the goal is fewer manual controls each quarter.',
+      ],
+      nice: ['Collibra, Alation or a similar catalogue tool', 'CIPP/E, CIPM or CISA', 'Cloud data platform experience'],
+    } },
   { req_id: 'REQ-2533', title: 'Workforce Planning Partner', department: 'People & Culture',
     location: 'Manila · Hybrid', closes_on: '2026-09-08', score: 47,
-    skills: ['Workforce Planning', 'Stakeholder Management'], seeded: true },
+    skills: ['Workforce Planning', 'Stakeholder Management'], seeded: true,
+    jd: {
+      file: 'JD_REQ-2533_Workforce-Planning-Partner.pdf', size: '149 KB', updated: '2026-08-04',
+      reports_to: 'Head of People Strategy', grade: 'Manager',
+      employment: 'Permanent, full-time', headcount: '1',
+      purpose: 'Match headcount, skills and cost to what the business will actually need next — and give leaders a plan they can commit to rather than a spreadsheet they argue with.',
+      responsibilities: [
+        'Run the annual headcount planning cycle with Finance and each business unit.',
+        'Maintain the rolling 12-month view of demand, attrition and time-to-fill by function.',
+        'Build the skills supply picture from the HRIS and the LMS, and name the gaps early enough to act on them.',
+        'Model the cost and capability trade-off between hiring externally, moving people internally, and building the skill.',
+        'Report on internal mobility as a channel — including what the talent marketplace contributes to it.',
+      ],
+      requirements: [
+        '4+ years in workforce planning, HR analytics, or a commercial planning role.',
+        'Comfortable with headcount and cost modelling; able to hold your own with Finance.',
+        'Stakeholder management across leaders with genuinely competing priorities.',
+        'Able to turn a workforce number into a recommendation someone can act on.',
+      ],
+      nice: ['Workday or SAP SuccessFactors', 'Financial services or shared-services scale', 'Experience standing up an internal mobility programme'],
+    } },
 ]
 
 // Seeded referral history, so the attribution report has a shape to read.
@@ -3877,7 +4031,7 @@ function allVacancies() {
   const live = LIVE.vacancies.filter(v => (v.status || 'live') === 'live').map(v => ({
     id: v.id, req_id: v.req_id, title: v.title, department: v.department || '',
     location: v.location || '', closes_on: v.closes_on, ats_url: v.ats_url,
-    score: null, skills: [], seeded: false, posted_by: v.posted_by,
+    score: null, skills: [], seeded: false, posted_by: v.posted_by, jd_url: v.jd_url,
   }))
   const seen = {}
   return live.concat(SEED_VACANCIES).filter(v => {
@@ -4068,6 +4222,66 @@ function refFoot(v, r) {
     </div>`
 }
 
+/* The job description is the thing people actually want before they decide
+   whether to click through, and the one piece of the requisition worth
+   carrying across from the ATS rather than making them go and look. */
+function jdRow(v) {
+  if (v.jd) return `<div class="jd-row">
+      <span class="jd-file">📄 ${esc(v.jd.file)}</span>
+      <span class="jd-size">${esc(v.jd.size)} · updated ${fmtDate(v.jd.updated)}</span>
+      <button class="btn btn-outline btn-sm" onclick="openJobDescription('${esc(v.req_id)}')">Read it</button>
+    </div>`
+  if (v.jd_url) return `<div class="jd-row">
+      <span class="jd-file">📄 Job description</span>
+      <a class="btn btn-outline btn-sm" href="${esc(v.jd_url)}" target="_blank" rel="noopener noreferrer" style="text-decoration:none;">Open ↗</a>
+    </div>`
+  return `<div class="jd-row jd-row-empty">📄 No job description attached — it is in ${esc(ATS_NAME)} on the requisition.</div>`
+}
+
+function openJobDescription(req) {
+  const v = vacancyByReq(req)
+  if (!v || !v.jd) return
+  const d = v.jd
+  const list = (title, items) => items && items.length
+    ? `<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:#374151;margin:16px 0 7px;">${title}</div>
+       <ul style="margin:0;padding-left:18px;font-size:12.5px;color:#374151;line-height:1.75;">${items.map(i => `<li style="margin-bottom:5px;">${esc(i)}</li>`).join('')}</ul>` : ''
+  const overlay = document.createElement('div')
+  overlay.setAttribute('data-overlay', '1')
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:500;display:flex;align-items:flex-start;justify-content:center;padding:24px 20px;overflow-y:auto;'
+  overlay.innerHTML = `
+    <div style="background:#fff;border-radius:14px;width:660px;max-width:95vw;box-shadow:0 8px 40px rgba(0,0,0,0.14);overflow:hidden;">
+      <div style="background:#F9FAFB;border-bottom:1px solid #E5E7EB;padding:20px 26px;">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#9CA3AF;margin-bottom:6px;">Job description · ${esc(v.req_id)}</div>
+        <div style="font-size:18px;font-weight:700;color:#111827;line-height:1.35;">${esc(v.title)}</div>
+        <div style="font-size:12px;color:#6B7280;margin-top:5px;">${esc(v.department || '')}${v.location ? ' · ' + esc(v.location) : ''}</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;font-size:11px;color:#6B7280;">
+          <span style="background:#fff;border:1px solid #E5E7EB;border-radius:6px;padding:4px 9px;">Reports to <strong style="color:#374151;">${esc(d.reports_to)}</strong></span>
+          <span style="background:#fff;border:1px solid #E5E7EB;border-radius:6px;padding:4px 9px;">Grade <strong style="color:#374151;">${esc(d.grade)}</strong></span>
+          <span style="background:#fff;border:1px solid #E5E7EB;border-radius:6px;padding:4px 9px;">${esc(d.employment)}</span>
+          <span style="background:#fff;border:1px solid #E5E7EB;border-radius:6px;padding:4px 9px;">${esc(d.headcount)} opening${d.headcount === '1' ? '' : 's'}</span>
+        </div>
+      </div>
+      <div style="padding:22px 26px;">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:#374151;margin-bottom:7px;">Purpose of the role</div>
+        <div style="font-size:12.5px;color:#374151;line-height:1.75;">${esc(d.purpose)}</div>
+        ${list('What you will be doing', d.responsibilities)}
+        ${list('What the role asks for', d.requirements)}
+        ${list('Useful, not essential', d.nice)}
+        <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:9px;padding:12px 14px;font-size:11.5px;color:#1E40AF;line-height:1.7;margin-top:20px;">
+          📄 <strong>${esc(d.file)}</strong> · ${esc(d.size)} · last updated ${fmtDate(d.updated)}.
+          This copy is carried across from the requisition so you can read it before deciding. The authoritative version, and
+          the application itself, live in ${esc(ATS_NAME)}.
+        </div>
+      </div>
+      <div style="border-top:1px solid #F3F4F6;padding:16px 26px;display:flex;gap:9px;justify-content:flex-end;flex-wrap:wrap;">
+        <button class="btn btn-outline" onclick="this.closest('[data-overlay]').remove()">Close</button>
+        <button class="btn btn-red" onclick="this.closest('[data-overlay]').remove();referVacancy('${esc(v.req_id)}','board')">View &amp; apply in ${esc(ATS_NAME)} ↗</button>
+      </div>
+    </div>`
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove() })
+  document.body.appendChild(overlay)
+}
+
 function vacCard(v) {
   const r = refForReq(v.req_id)
   const closes = v.closes_on ? fmtDate(v.closes_on) : 'Rolling'
@@ -4079,6 +4293,7 @@ function vacCard(v) {
     <div class="vac-title">${esc(v.title)}</div>
     <div class="vac-meta">${esc(v.department || '—')}${v.location ? ' · ' + esc(v.location) : ''}<br>📅 Closes ${esc(closes)}</div>
     ${v.skills && v.skills.length ? `<div class="chip-row">${v.skills.map(s => `<span class="skill-chip">${esc(s)}</span>`).join('')}</div>` : ''}
+    ${jdRow(v)}
     ${scoreBar(v.score)}
     <div class="vac-foot">${refFoot(v, r)}</div>
   </div>`
@@ -4137,11 +4352,13 @@ async function promoteVacancy() {
     await livePost('v2_vacancies', {
       req_id: req, title: title, department: document.getElementById('vacDept').value,
       location: val('vacLoc'), closes_on: val('vacCloses') || null,
-      ats_url: val('vacUrl') || null, posted_by: liveName(), status: 'live',
+      ats_url: val('vacUrl') || null, jd_url: val('vacJd') || null,
+      posted_by: liveName(), status: 'live',
     })
     document.getElementById('vacReq').value = ''
     document.getElementById('vacTitle').value = ''
     document.getElementById('vacUrl').value = ''
+    document.getElementById('vacJd').value = ''
     toast('✓ ' + req + ' is on the vacancy board. Referrals against it are counted from now.')
     await liveRefresh()
   } catch (e) { toast('Could not promote — ' + e.message, 'error') }

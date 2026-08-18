@@ -58,6 +58,7 @@ create table if not exists public.v2_vacancies (
   department   text        not null default '',
   location     text        default '',
   ats_url      text,                                    -- deep link into Careers
+  jd_url       text,                                    -- link to the job description document
   closes_on    date,
   posted_by    text        not null default 'Anonymous', -- who promoted it here
   status       text        not null default 'live',      -- live | closed
