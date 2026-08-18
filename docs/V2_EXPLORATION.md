@@ -2,6 +2,7 @@
 
 **Branch:** `claude/talent-marketplace-v2-explore-kps8k8` · **Prototype:** `prototype/talent-marketplace-v2.html`
 **Schema:** `prototype/v2-supabase-schema.sql` (all tables `v2_`-prefixed) · **Prepared:** 18 August 2026
+**Costing:** [`docs/V2_COSTING.md`](V2_COSTING.md) — v2 against v1, side by side
 
 v1 is untouched. It stays live at ruffa06.github.io/Talent-Marketplace from
 `claude/cool-cray-9oq1pt`, on its own `opportunities` / `applications` tables.
