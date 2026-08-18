@@ -2549,12 +2549,17 @@ function renderNav(role) {
 const LIVE = {
   url: 'https://qlcqsdnuparijwtewzji.supabase.co',
   key: 'sb_publishable_3DiHQl1dMWaVkglZA_0LNg_3UA7NUNt',
+  // v2 writes to its own tables so experiments here cannot disturb the v1
+  // pilot, which shares this Supabase project. Set to '' to share v1's data.
+  prefix: 'v2_',
   online: false,
   name: null,
   opps: [],
   apps: [],
   timer: null,
 }
+
+const T = name => LIVE.prefix + name
 
 function liveHeaders(extra) {
   return Object.assign({
@@ -2608,8 +2613,8 @@ async function liveRefresh() {
   const mine = ++LIVE.seq
   try {
     const [opps, apps] = await Promise.all([
-      liveReq('opportunities?select=*&order=created_at.desc&limit=100'),
-      liveReq('applications?select=*&order=created_at.desc&limit=100'),
+      liveReq(T('opportunities') + '?select=*&order=created_at.desc&limit=100'),
+      liveReq(T('applications') + '?select=*&order=created_at.desc&limit=100'),
     ])
     if (mine !== LIVE.seq) return
     LIVE.opps = opps || []
@@ -2740,7 +2745,7 @@ async function liveApply(oppId) {
     toast('You have already applied to that one.', 'warning'); return
   }
   try {
-    await livePost('applications', { opp_title: o.title, opp_type: o.type, applicant: liveName(), applicant_role: currentRole, essay: '', status: 'applied' })
+    await livePost(T('applications'), { opp_title: o.title, opp_type: o.type, applicant: liveName(), applicant_role: currentRole, essay: '', status: 'applied' })
     toast(`✓ Applied to "${o.title}". A manager will see it immediately.`)
     await liveRefresh()
   } catch (e) { toast('Could not submit — ' + e.message, 'error') }
@@ -2748,7 +2753,7 @@ async function liveApply(oppId) {
 
 async function liveDecide(appId, status) {
   try {
-    await liveReq('applications?id=eq.' + appId, { method: 'PATCH', body: JSON.stringify({ status }) })
+    await liveReq(T('applications') + '?id=eq.' + appId, { method: 'PATCH', body: JSON.stringify({ status }) })
     toast(status === 'accepted' ? '✓ Accepted — the applicant sees this now.' : 'Declined.', status === 'accepted' ? 'success' : 'error')
     await liveRefresh()
   } catch (e) { toast('Could not update — ' + e.message, 'error') }
@@ -2756,7 +2761,7 @@ async function liveDecide(appId, status) {
 
 async function liveModerate(oppId, status) {
   try {
-    await liveReq('opportunities?id=eq.' + oppId, { method: 'PATCH', body: JSON.stringify({ status }) })
+    await liveReq(T('opportunities') + '?id=eq.' + oppId, { method: 'PATCH', body: JSON.stringify({ status }) })
     toast(status === 'live' ? '✓ Approved and now live for everyone.' : 'Rejected.', status === 'live' ? 'success' : 'error')
     await liveRefresh()
   } catch (e) { toast('Could not update — ' + e.message, 'error') }
@@ -2765,7 +2770,7 @@ async function liveModerate(oppId, status) {
 async function liveCreateOpportunity(fields) {
   if (!requireName()) return false
   try {
-    await livePost('opportunities', Object.assign({ posted_by: liveName(), posted_role: currentRole, status: 'pending' }, fields))
+    await livePost(T('opportunities'), Object.assign({ posted_by: liveName(), posted_role: currentRole, status: 'pending' }, fields))
     await liveRefresh()
     return true
   } catch (e) { toast('Could not post — ' + e.message, 'error'); return false }
@@ -3239,7 +3244,7 @@ function submitApplication(title, btn) {
   btn.closest('[data-overlay]').remove()
   toast(`✓ Application submitted for "${title}". Track it under My Applications.`)
   if (LIVE.online && requireName()) {
-    livePost('applications', { opp_title: title, opp_type: 'Gig', applicant: liveName(), applicant_role: currentRole, essay, status: 'applied' })
+    livePost(T('applications'), { opp_title: title, opp_type: 'Gig', applicant: liveName(), applicant_role: currentRole, essay, status: 'applied' })
       .then(liveRefresh)
       .catch(e => toast('Saved locally, but not shared — ' + e.message, 'warning'))
   }
