@@ -72,3 +72,37 @@ reload — the surveys, nominations, dashboards and the seeded personas. The
 7-day escalation computes real ageing and shows the exact message that would
 go out, but no email is actually sent; delivery needs a mail service behind a
 backend.
+
+---
+
+## v2 exploration — `talent-marketplace-v2.html`
+
+A second, separate file on the `claude/talent-marketplace-v2-explore-kps8k8`
+branch. **v1 above is untouched and stays live.** v2 asks one question: what does
+this app look like if it cannot run internal vacancies, because a separate
+recruitment system already does?
+
+Two things are removed:
+
+- **Internal Vacancy as a service.** You cannot post one, apply to one, or
+  approve one here. Vacancies become *promoted listings* that hand you over to
+  the recruitment system on a tracked link.
+- **The Recruiter role.** With vacancies out it had nothing left to do. Three
+  roles remain — Manager, Employee, Administrator — and the Administrator picks
+  up curating the vacancy board.
+
+Three pages are new:
+
+| Page | Role | What it does |
+|---|---|---|
+| Internal Vacancies | Employee, Manager | The promoted board. Match scores here, application in Careers. Each handoff mints a referral code and asks afterwards whether you applied. |
+| Promoted Vacancies | Administrator | Put a Careers requisition on the board. A stopgap for a nightly ATS feed. |
+| Referrals & Attribution | Administrator | The funnel — promoted, seen, referred, self-reported, confirmed, hired — with every figure labelled by how it is known, plus a CSV export for the monthly reconciliation. |
+
+Run `v2-supabase-schema.sql` once to create the five `v2_`-prefixed tables. They
+are independent of v1's, so both can run against the same Supabase project and
+dropping the `v2_` tables removes the experiment cleanly.
+
+The reasoning, the metric definitions, the 30-day attribution rule, the
+reconciliation runbook and the holdout design are in
+[`docs/V2_EXPLORATION.md`](../docs/V2_EXPLORATION.md).
