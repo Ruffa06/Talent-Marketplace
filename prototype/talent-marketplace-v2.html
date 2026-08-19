@@ -533,6 +533,29 @@
   }
   .nav-item.nav-sub.active { color: #C00000; }
 
+  /* ── Collapsible nav groups ──
+     Thirteen flat items is a list to read, not a menu to use. Grouping by
+     the task ("Discover", "My activity") gets every role down to 4-7 things
+     at rest. A collapsed group still shows the sum of its children's badges,
+     so nothing needing attention can hide behind a closed section. */
+  .nav-item.nav-group { padding-right: 42px; }
+  .nav-item.nav-group.has-active { color: #C00000; font-weight: 700; }
+  .nav-chev {
+    position: absolute; right: 11px; top: 50%;
+    transform: translateY(-50%) rotate(0deg);
+    font-size: 9px; color: #9CA3AF; line-height: 1;
+    transition: transform 0.16s ease;
+  }
+  .nav-item.open .nav-chev { transform: translateY(-50%) rotate(90deg); }
+  .nav-item.nav-group:hover .nav-chev { color: #C00000; }
+  .nav-kids { overflow: hidden; max-height: 0; transition: max-height 0.18s ease; }
+  .nav-kids.open { max-height: 320px; }
+  .nav-badge.badge-group { right: 28px; background: #E5E7EB; color: #4B5563; }
+  .nav-sec {
+    font-size: 9.5px; font-weight: 700; letter-spacing: 0.9px; text-transform: uppercase;
+    color: #9CA3AF; padding: 14px 10px 5px; margin: 0;
+  }
+
   /* ── Skill definition tooltip ── */
   #skillTip {
     position: fixed; z-index: 900; max-width: 270px;
@@ -2659,17 +2682,24 @@ const ROLES = {
   manager: {
     name: 'Taylor Swift', initials: 'TS', label: 'Manager',
     nav: [
-      { id: 'home', emoji: '📖', label: 'Introduction' },
-      { id: 'find', emoji: '🔎', label: 'Find an opportunity', sub: true },
-      { id: 'offer', emoji: '📣', label: 'Post an opportunity', sub: true },
-      { id: 'profile', emoji: '👤', label: 'My Profile' },
-      { id: 'matches', emoji: '✨', label: 'My Matches' },
-      { id: 'all-opps', emoji: '🔎', label: 'All Opportunities' },
-      { id: 'vacancies', emoji: '🏢', label: 'Internal Vacancies' },
-      { id: 'openings', emoji: '📋', label: 'My Openings', badge: '2' },
-      { id: 'team', emoji: '👥', label: 'My Team Activity' },
-      { id: 'nominations', emoji: '🤝', label: 'My Nominations', badge: '4' },
+      { id: 'home', emoji: '📖', label: 'Introduction', children: [
+        { id: 'find', emoji: '🔎', label: 'Find an opportunity' },
+        { id: 'offer', emoji: '📣', label: 'Post an opportunity' },
+      ]},
+      { sec: 'Work' },
+      { group: 'discover', emoji: '🔎', label: 'Discover', children: [
+        { id: 'matches', emoji: '✨', label: 'My Matches' },
+        { id: 'all-opps', emoji: '📃', label: 'All Opportunities' },
+        { id: 'vacancies', emoji: '🏢', label: 'Internal Vacancies' },
+      ]},
+      { group: 'mine', emoji: '📂', label: 'My activity', children: [
+        { id: 'openings', emoji: '📋', label: 'My Openings', badge: '2' },
+        { id: 'team', emoji: '👥', label: 'My Team Activity' },
+        { id: 'nominations', emoji: '🤝', label: 'My Nominations', badge: '4' },
+      ]},
       { id: 'post', emoji: '➕', label: 'Post Opportunity' },
+      { sec: 'Account' },
+      { id: 'profile', emoji: '👤', label: 'My Profile' },
       { id: 'faq', emoji: '❓', label: 'FAQ' },
       { id: 'notifications', emoji: '🔔', label: 'Notifications', badge: '1' },
     ]
@@ -2677,16 +2707,23 @@ const ROLES = {
   employee: {
     name: 'Cristiano Ronaldo', initials: 'CR', label: 'Employee',
     nav: [
-      { id: 'home', emoji: '📖', label: 'Introduction' },
-      { id: 'find', emoji: '🔎', label: 'Find an opportunity', sub: true },
-      { id: 'offer', emoji: '📣', label: 'Post an opportunity', sub: true },
+      { id: 'home', emoji: '📖', label: 'Introduction', children: [
+        { id: 'find', emoji: '🔎', label: 'Find an opportunity' },
+        { id: 'offer', emoji: '📣', label: 'Post an opportunity' },
+      ]},
+      { sec: 'Work' },
+      { group: 'discover', emoji: '🔎', label: 'Discover', children: [
+        { id: 'matches', emoji: '✨', label: 'My Matches' },
+        { id: 'all-opps', emoji: '📃', label: 'All Opportunities' },
+        { id: 'vacancies', emoji: '🏢', label: 'Internal Vacancies' },
+      ]},
+      { group: 'mine', emoji: '📂', label: 'My activity', children: [
+        { id: 'applications', emoji: '📨', label: 'My Applications', badge: '3' },
+        { id: 'my-offers', emoji: '🎁', label: 'My Service Offers', badge: '2' },
+        { id: 'nominations', emoji: '🤝', label: 'My Nominations', badge: '2' },
+      ]},
+      { sec: 'Account' },
       { id: 'profile', emoji: '👤', label: 'My Profile' },
-      { id: 'matches', emoji: '✨', label: 'My Matches' },
-      { id: 'all-opps', emoji: '🔎', label: 'All Opportunities' },
-      { id: 'vacancies', emoji: '🏢', label: 'Internal Vacancies' },
-      { id: 'applications', emoji: '📨', label: 'My Applications', badge: '3' },
-      { id: 'my-offers', emoji: '🎁', label: 'My Service Offers', badge: '2' },
-      { id: 'nominations', emoji: '🤝', label: 'My Nominations', badge: '2' },
       { id: 'faq', emoji: '❓', label: 'FAQ' },
       { id: 'notifications', emoji: '🔔', label: 'Notifications', badge: '1' },
     ]
@@ -2695,12 +2732,19 @@ const ROLES = {
     name: 'Beyoncé Knowles', initials: 'BK', label: 'Administrator',
     nav: [
       { id: 'dashboard', emoji: '📊', label: 'Dashboard' },
-      { id: 'admin-opps', emoji: '📋', label: 'All Opportunities', badge: '12' },
-      { id: 'admin-vacancies', emoji: '🏢', label: 'Promoted Vacancies' },
-      { id: 'admin-referrals', emoji: '🎯', label: 'Referrals & Attribution' },
-      { id: 'admin-history', emoji: '🗂️', label: 'History & Audit' },
-      { id: 'admin-noms', emoji: '🏆', label: 'Nomination Dashboard' },
-      { id: 'notifications', emoji: '💬', label: 'Feedbacks' },
+      { sec: 'Oversight' },
+      { group: 'approvals', emoji: '📋', label: 'Approvals', children: [
+        { id: 'admin-opps', emoji: '📃', label: 'Opportunity queue', badge: '12' },
+        { id: 'admin-history', emoji: '🗂️', label: 'History &amp; Audit' },
+      ]},
+      { group: 'vac-admin', emoji: '🏢', label: 'Vacancies', children: [
+        { id: 'admin-vacancies', emoji: '📌', label: 'Promoted Vacancies' },
+        { id: 'admin-referrals', emoji: '🎯', label: 'Referrals &amp; Attribution' },
+      ]},
+      { group: 'people', emoji: '🏆', label: 'People', children: [
+        { id: 'admin-noms', emoji: '🏆', label: 'Nomination Dashboard' },
+        { id: 'notifications', emoji: '💬', label: 'Feedbacks' },
+      ]},
     ]
   }
 }
@@ -2724,18 +2768,85 @@ function setRole(role) {
   const reportsToMap = { manager: 'Beyoncé Knowles', employee: 'Taylor Swift', admin: 'Roger Federer' }
   document.getElementById('profileDeptInput').value = deptMap[role].split(' · ')[0]
   document.getElementById('profileReportsTo').value = reportsToMap[role]
+  // Keep the picker honest when the role is switched from anywhere but the picker.
+  const picker = document.querySelector('.role-select')
+  if (picker && picker.value !== role) picker.value = role
   renderNav(role)
-  navigate(r.nav[0].id)
+  navigate(navFirstPage(role))
+}
+
+/* ── Sidebar ──
+   Groups are open/closed per role and remembered for the session. Navigating
+   to a page always opens the group holding it, so you can never end up on a
+   page whose own nav entry is hidden. */
+const NAV_OPEN = {}
+let currentPage = 'home'
+const navKey = it => it.group || it.id
+const navOpenKey = (role, key) => role + ':' + key
+
+// Badges that change at runtime are read live, so a re-render cannot revert them.
+const navBadge = it => it.id === 'admin-opps' ? String(adminOppCount) : it.badge
+
+function navGroupFor(role, pageId) {
+  const hit = (ROLES[role].nav || []).find(it => (it.children || []).some(c => c.id === pageId))
+  return hit ? navKey(hit) : null
+}
+
+function navFirstPage(role) {
+  for (const it of ROLES[role].nav) {
+    if (it.id) return it.id
+    const kid = (it.children || [])[0]
+    if (kid) return kid.id
+  }
+  return 'home'
+}
+
+function navItemHtml(it, extraClass) {
+  const b = navBadge(it)
+  return `<button class="nav-item${extraClass || ''}" id="nav-${it.id}" onclick="navigate('${it.id}')">
+      ${it.emoji} ${it.label}
+      ${b ? `<span class="nav-badge">${b}</span>` : ''}
+    </button>`
 }
 
 function renderNav(role) {
   const r = ROLES[role]
-  document.getElementById('navItems').innerHTML = r.nav.map(item => `
-    <button class="nav-item${item.sub ? ' nav-sub' : ''}" id="nav-${item.id}" onclick="navigate('${item.id}')">
-      ${item.emoji} ${item.label}
-      ${item.badge ? `<span class="nav-badge">${item.badge}</span>` : ''}
-    </button>
-  `).join('')
+  document.getElementById('navItems').innerHTML = r.nav.map(it => {
+    if (it.sec) return `<div class="nav-sec">${it.sec}</div>`
+    const kids = it.children || []
+    if (!kids.length) return navItemHtml(it, currentPage === it.id ? ' active' : '')
+
+    const key = navKey(it)
+    const open = !!NAV_OPEN[navOpenKey(role, key)]
+    const holdsActive = kids.some(c => c.id === currentPage)
+    const selfActive = it.id === currentPage
+    // A closed group still surfaces what is waiting inside it.
+    const total = kids.reduce((s, c) => s + (parseInt(navBadge(c), 10) || 0), 0)
+    const badge = !open && total
+      ? `<span class="nav-badge badge-group">${total}</span>` : ''
+
+    return `<button class="nav-item nav-group${open ? ' open' : ''}${selfActive ? ' active' : ''}${holdsActive && !selfActive ? ' has-active' : ''}"
+        ${it.id ? `id="nav-${it.id}"` : ''} onclick="navGroupClick(${it.id ? `'${it.id}'` : 'null'},'${key}')"
+        aria-expanded="${open}">
+        ${it.emoji} ${it.label}${badge}<span class="nav-chev">▶</span>
+      </button>
+      <div class="nav-kids${open ? ' open' : ''}">
+        ${kids.map(c => navItemHtml(c, ' nav-sub' + (currentPage === c.id ? ' active' : ''))).join('')}
+      </div>`
+  }).join('')
+}
+
+/* A group that is also a page navigates on the first click and collapses on
+   the next. A pure group just toggles. */
+function navGroupClick(pageId, key) {
+  const k = navOpenKey(currentRole, key)
+  if (pageId && currentPage !== pageId) {
+    NAV_OPEN[k] = true
+    navigate(pageId)
+  } else {
+    NAV_OPEN[k] = !NAV_OPEN[k]
+    renderNav(currentRole)
+  }
 }
 
 /* ══════════════════════════════════════════════════════════════════
@@ -3291,12 +3402,13 @@ function closeSidebar() {
 
 function navigate(pageId) {
   closeSidebar()
+  currentPage = pageId
   document.querySelectorAll('.page').forEach(p => p.classList.remove('active'))
-  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'))
   const page = document.getElementById('page-' + pageId)
   if (page) page.classList.add('active')
-  const nav = document.getElementById('nav-' + pageId)
-  if (nav) nav.classList.add('active')
+  const g = navGroupFor(currentRole, pageId)
+  if (g) NAV_OPEN[navOpenKey(currentRole, g)] = true
+  renderNav(currentRole)
 }
 
 function filterAllOpps() {
