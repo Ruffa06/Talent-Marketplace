@@ -2,7 +2,8 @@
 
 **Compares:** v1.0 (`07e848e`, live) against the v2 exploration on
 `claude/talent-marketplace-v2-explore-kps8k8`
-**Population:** 637 employees · **Horizon:** 3 years · **Prepared:** 18 August 2026
+**Population:** 637 employees · **Horizon:** 3 years
+**Recruitment system:** HC Connect Internal Job Posting (“HC Connect” throughout) · **Prepared:** 18 August 2026
 
 Every figure here is derived by [`docs/v2-costing-model.py`](v2-costing-model.py) — run it to
 re-derive them or to test a changed assumption.
@@ -26,7 +27,7 @@ reproduced from that document's own assumptions, not re-estimated.
 v1, not less.** Removing a service made the system more expensive.
 
 The reason is structural. v1 owned the whole vacancy funnel, so measuring it was
-free — the data was already in the database. v2 gives that funnel to Careers and
+free — the data was already in the database. v2 gives that funnel to HC Connect and
 keeps only the top of it, which means the outcome now sits in someone else's
 system and has to be *tracked, handed off, self-reported and reconciled* to be
 claimable at all. **The referral machinery costs more to build than the vacancy
@@ -67,7 +68,7 @@ conclusion is unchanged and not close.
 
 The second counterintuitive result. Dropping vacancies from the marketplace does
 not reduce the scoring workload, it increases it — because the promoted board
-carries **every open requisition in Careers**, and that is more roles than were
+carries **every open requisition in HC Connect**, and that is more roles than were
 ever posted in the marketplace by hand.
 
 | Driver | v1 | v2 | Why |
@@ -75,7 +76,7 @@ ever posted in the marketplace by hand.
 | Employees | 637 | 637 | — |
 | Live opportunities scored | 40 | **52** | 27 in-app + 25 promoted requisitions |
 | — of which posted in-app | 40 | 27 | Vacancies were ~32% of the v1 board mix |
-| — of which promoted from Careers | — | 25 | The ATS holds reqs nobody bothered to cross-post |
+| — of which promoted from HC Connect | — | 25 | The ATS holds reqs nobody bothered to cross-post |
 | New / changed per month | 15 | 22 | 10 in-app + 12 requisitions; reqs turn over faster |
 | Profile updates per month | 100 | 100 | — |
 | Pre-filter retention | 40% | 40% | — |
@@ -186,7 +187,7 @@ stops at "we sent them" and the self-reported tier disappears.
 
 **Reconciliation labour is the genuinely new operating cost, and the one most
 likely to be forgotten.** Three hours a month of a PCD analyst — pull the
-referral export, pull the Careers export, join on referral code, mark the
+referral export, pull the HC Connect export, join on referral code, mark the
 matches — at ₱375/hour fully loaded (₱60,000/month ÷ 160 hours). Phase 2 cuts it
 to a half-hour spot-check.
 
@@ -235,7 +236,7 @@ the funnel shape in the prototype clears it comfortably — but note the word
 
 **This is the case for the ₱429,716.** Under v2, an internal hire that the
 marketplace surfaced is invisible in your own data by default: the application,
-the screening and the offer all happen in Careers, and nothing there says the
+the screening and the offer all happen in HC Connect, and nothing there says the
 person came from here. Spend the money on the marketplace and skip the
 attribution machinery, and you get the benefit without any way to demonstrate
 it — which, at the next budget review, is indistinguishable from not getting it.
@@ -243,7 +244,7 @@ it — which, at the next budget review, is indistinguishable from not getting i
 The corollary is uncomfortable and should be said out loud: **v2's claimable
 benefit is smaller than v1's, even as its cost is higher.** v1's business case
 claimed 12 internal placements and ₱4.2M avoided. Under v2 most of that belongs
-to Careers. What Growth can claim is the gig, DJI and service-offer activity it
+to HC Connect. What Growth can claim is the gig, DJI and service-offer activity it
 owns end to end, plus a *confirmed referral share* of vacancy outcomes. Re-run
 the benefit side of `BUSINESS_CASE.md` on that basis before this goes anywhere
 near a decision forum — do not carry v1's benefit numbers into a v2 paper.
@@ -282,7 +283,7 @@ FTE, real vendor quotes, and whether your HRIS already bundles a marketplace
 module all still apply. v2 adds four:
 
 1. **Whether recruitment will add a `Growth Marketplace` source value and a
-   referral-code field to the Careers application form.** Everything in §6
+   referral-code field to the HC Connect application form.** Everything in §6
    depends on it. Get the answer before committing to the build, not after —
    if it is no, the attribution tier you can actually defend is much weaker and
    the ₱429,716 needs re-justifying.

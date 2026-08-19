@@ -73,10 +73,10 @@ notes(s,'We are asking to build v2-lean: 766,125 pesos in year one, 1.05M over t
 /* ══ 2 · THE CONSTRAINT ════════════════════════════════════════ */
 {
 const s = newSlide()
-slideTitle(s,'Careers already runs internal vacancies',
-  'So v2 gives up the half it was never going to win, and keeps the half Careers cannot do.')
+slideTitle(s,'HC Connect already runs internal vacancies',
+  'HC Connect Internal Job Posting — “HC Connect” here. v2 keeps only the half it cannot do.')
 const cols = [
-  { t:'Careers owns', c:INK, items:['The requisition','The application and CV','Screening and interviews','The offer'], pl:'SYSTEM OF RECORD', pc:SOFT, pb:'E2E8F0' },
+  { t:'HC Connect owns', c:INK, items:['The requisition','The application and CV','Screening and interviews','The offer'], pl:'SYSTEM OF RECORD', pc:SOFT, pb:'E2E8F0' },
   { t:'Growth owns',  c:RED, items:['Knowing what someone can already do','Scoring fit against every open role','Surfacing a role they were never going to search for','Gigs, DJIs and service offers, end to end'], pl:'WHERE WE ADD VALUE', pc:WHITE, pb:RED },
 ]
 cols.forEach((col,i) => {
@@ -103,10 +103,10 @@ const s = newSlide()
 slideTitle(s,'Promote here. Apply there. Count the handoff.',
   'Four steps. Each one produces a different grade of evidence, and we label every number with which.')
 const steps = [
-  { n:'01', t:'Promote', d:'The vacancy appears on our board with a match score and its job description — the part Careers cannot do.', p:'MEASURED HERE', pb:'DCFCE7', pc:'166534' },
-  { n:'02', t:'Hand off', d:'Opening it mints a referral code and carries it to Careers on the link. The click is ours, exactly.', p:'MEASURED HERE', pb:'DCFCE7', pc:'166534' },
+  { n:'01', t:'Promote', d:'The vacancy appears on our board with a match score and its job description — the part HC Connect cannot do.', p:'MEASURED HERE', pb:'DCFCE7', pc:'166534' },
+  { n:'02', t:'Hand off', d:'Opening it mints a referral code and carries it to HC Connect on the link. The click is ours, exactly.', p:'MEASURED HERE', pb:'DCFCE7', pc:'166534' },
   { n:'03', t:'Confirm', d:'We ask the employee afterwards whether they applied. One tap, and the board asks unprompted.', p:'SELF-REPORTED', pb:'FEF3C7', pc:'92400E' },
-  { n:'04', t:'Reconcile', d:'Quarterly, join our referral export against the Careers export on the referral code.', p:'FROM CAREERS', pb:'E0E7FF', pc:'3730A3' },
+  { n:'04', t:'Reconcile', d:'Quarterly, join our referral export against the HC Connect export on the referral code.', p:'FROM HC CONNECT', pb:'E0E7FF', pc:'3730A3' },
 ]
 const cw2 = (CW - 0.36*3)/4
 steps.forEach((st,i) => {
@@ -124,7 +124,7 @@ s.addText([
   { text:'a vacancy application counts as ours when a referral click precedes it by no more than 30 days, last touch.', options:{ color:INK, bold:true } },
   { text:'  Undercounting is the intended failure mode.', options:{ color:MUTE } },
 ], { x:M+0.34, y:5.52, w:CW-0.68, h:1.16, fontFace:BODY, fontSize:14, valign:'middle', margin:0 })
-notes(s,'Three tiers of evidence, never conflated. Clicks are exact and ours. Self-reports are free but biased upward. Only the Careers-confirmed number goes in a board paper.')
+notes(s,'Three tiers of evidence, never conflated. Clicks are exact and ours. Self-reports are free but biased upward. Only the HC Connect-confirmed number goes in a board paper.')
 }
 
 /* ══ 4 · THE FINDING ═══════════════════════════════════════════ */
@@ -133,7 +133,7 @@ const s = newSlide(true)
 pill(s, M, 0.52, 'THE COUNTERINTUITIVE FINDING', WHITE, RED)
 s.addText('Removing a service made\nthe system more expensive.', { x:M, y:0.98, w:7.5, h:1.5,
   fontFace:HEAD, fontSize:34, bold:true, color:WHITE, lineSpacing:38, margin:0 })
-s.addText('v1 owned the whole vacancy funnel, so measuring it was free — the data was already in our database. v2 hands that funnel to Careers and keeps only the top of it. The outcome now sits in someone else’s system, and has to be tracked, handed off, self-reported and reconciled to be claimable at all.',
+s.addText('v1 owned the whole vacancy funnel, so measuring it was free — the data was already in our database. v2 hands that funnel to HC Connect and keeps only the top of it. The outcome now sits in someone else’s system, and has to be tracked, handed off, self-reported and reconciled to be claimable at all.',
   { x:M, y:2.62, w:7.3, h:1.5, fontFace:BODY, fontSize:14.5, color:ICE, lineSpacing:23, margin:0 })
 card(s, 8.28, 1.06, 4.4, 2.5, '1E293B')
 s.addText('Developer effort', { x:8.62, y:1.28, w:3.8, h:0.3, fontFace:BODY, fontSize:11.5, bold:true, color:SOFT, charSpacing:0.8, margin:0 })
@@ -163,7 +163,7 @@ slideTitle(s,'Five changes remove ₱491,761',
 const rows = [
   ['B','Supabase-native','Auth, RLS and Edge Functions replace the separate API service.','₱270,000 + ₱13,920/yr'],
   ['C','Reuse the v1 design system','All three new surfaces are already designed in the working prototype.','₱66,000'],
-  ['A','Ship promotion Q1, tracking Q2','Launch the board first; measure Q1 from the Careers source field alone.','₱162,000 out of Y1'],
+  ['A','Ship promotion Q1, tracking Q2','Launch the board first; measure Q1 from the HC Connect source field alone.','₱162,000 out of Y1'],
   ['D','No phase 2','Do not automate the ATS join unless referral volume justifies it.','₱108,000'],
   ['F','Reconcile quarterly','Not monthly.','₱7,500/yr'],
 ]
@@ -193,7 +193,7 @@ const s = newSlide()
 slideTitle(s,'What we deliberately did not cut',
   'Promotion efficiency lives in five cheap things. Cutting any of them saves little and costs the case.')
 const keeps = [
-  ['Match scores on promoted roles','The entire reason our board beats a plain Careers listing. Without it we have built a duplicate job board.'],
+  ['Match scores on promoted roles','The entire reason our board beats a plain HC Connect listing. Without it we have built a duplicate job board.'],
   ['The job description on the card','What people actually decide on before clicking through.'],
   ['The “did you apply?” nudge','₱1,740/yr — the cheapest line in the model, and what turns a click into a countable application.'],
   ['The referral-log DPIA','A legal gate, not a documentation task. The log records who looked at which internal role.'],
@@ -326,7 +326,7 @@ slideTitle(s,'Two benefit streams — unequally defensible',
 const b = [
   { pl:'ATTRIBUTED', pc:'3730A3', pb:'E0E7FF', t:'Permanent-role outcomes', v:'₱1,673,231', sub:'per year',
     lines:[['Avoided agency fees — 4 × ₱350,000','₱1,400,000'],['37 vacancy days saved per fill','₱273,231']],
-    foot:'Exists only because of the tracking spend. Without a confirmed referral the hire is invisible in our data and belongs, as far as anyone can tell, to Careers.' },
+    foot:'Exists only because of the tracking spend. Without a confirmed referral the hire is invisible in our data and belongs, as far as anyone can tell, to HC Connect.' },
   { pl:'OWNED', pc:'166534', pb:'DCFCE7', t:'Retention on participants', v:'₱1,296,000', sub:'per year',
     lines:[['120 participants × 3pt retention lift','—'],['× ₱360,000 replacement cost each','₱1,296,000']],
     foot:'Needs no attribution — gigs, DJIs and service offers run end to end here. But the 3-point lift is a discounted judgement, not a measurement. See the stress test.' },

@@ -50,7 +50,7 @@ Use the role switcher in the top bar to move between them without reloading.
   participant's side.
 - **My Openings → Complete survey** (as Manager) — the same survey from the host
   manager's side, with different questions.
-- **Dashboard → Message Poster** (as Administrator) — templated messages to the
+- **Dashboard → Message Post Owner** (as Administrator) — templated messages to the
   owner of a stale post, rather than a bare nudge.
 - **Nomination Dashboard** (as Administrator) — the leaderboard is ranked by
   *selected* nominations, not volume.
@@ -84,8 +84,8 @@ recruitment system already does?
 
 Two things are removed:
 
-- **Internal Vacancy as a service.** You cannot post one, apply to one, or
-  approve one here. Vacancies become *promoted listings* that hand you over to
+- **Internal Vacancy as a service.** Permanent roles are run in **HC Connect Internal Job Posting**
+  (“HC Connect” below). You cannot post one, apply to one, or approve one here. Vacancies become *promoted listings* that hand you over to
   the recruitment system on a tracked link.
 - **The Recruiter role.** With vacancies out it had nothing left to do. Three
   roles remain — Manager, Employee, Administrator — and the Administrator picks
@@ -95,8 +95,8 @@ Three pages are new:
 
 | Page | Role | What it does |
 |---|---|---|
-| Internal Vacancies | Employee, Manager | The promoted board. Match scores here, application in Careers. Each handoff mints a referral code and asks afterwards whether you applied. |
-| Promoted Vacancies | Administrator | Put a Careers requisition on the board. A stopgap for a nightly ATS feed. |
+| Internal Vacancies | Employee, Manager | The promoted board. Match scores here, application in HC Connect. Each handoff mints a referral code and asks afterwards whether you applied. |
+| Promoted Vacancies | Administrator | Put a HC Connect requisition on the board. A stopgap for a nightly ATS feed. |
 | Referrals & Attribution | Administrator | The funnel — promoted, seen, referred, self-reported, confirmed, hired — with every figure labelled by how it is known, plus a CSV export for the monthly reconciliation. |
 
 Run `v2-supabase-schema.sql` once to create the five `v2_`-prefixed tables. They

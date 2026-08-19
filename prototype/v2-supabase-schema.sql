@@ -9,8 +9,8 @@
 --   * No Recruiter role. Managers post gigs, DJIs and service requests;
 --     People & Culture (admin) moderates and curates the vacancy board.
 --   * No vacancy application flow. Permanent roles are run in the recruitment
---     system ("Careers"). This app promotes them and hands people over on a
---     tracked link, then reconciles against the Careers export.
+--     system ("HC Connect Internal Job Posting"). This app promotes them and hands people over on a
+--     tracked link, then reconciles against the HC Connect export.
 --
 -- NOTE ON ACCESS: as in v1, this is a pilot with no login. The policies below
 -- let anyone holding the publishable key read and write these tables. That is
@@ -48,16 +48,16 @@ create table if not exists public.v2_applications (
 );
 
 -- ── Promoted requisitions ───────────────────────────────────────────────────
--- A pointer to a requisition that lives in Careers. Nothing here creates,
+-- A pointer to a requisition that lives in HC Connect. Nothing here creates,
 -- edits or closes a requisition; req_id is the join key to the ATS and is the
 -- single most important column in this schema.
 create table if not exists public.v2_vacancies (
   id           bigint generated always as identity primary key,
-  req_id       text        not null unique,             -- Careers requisition ID
+  req_id       text        not null unique,             -- HC Connect requisition ID
   title        text        not null,
   department   text        not null default '',
   location     text        default '',
-  ats_url      text,                                    -- deep link into Careers
+  ats_url      text,                                    -- deep link into HC Connect
   jd_url       text,                                    -- link to the job description document
   closes_on    date,
   posted_by    text        not null default 'Anonymous', -- who promoted it here
@@ -77,16 +77,16 @@ create table if not exists public.v2_vacancy_views (
 );
 create index if not exists v2_vacancy_views_req_idx on public.v2_vacancy_views (req_id, created_at desc);
 
--- ── The handoff: one row per person sent to Careers ─────────────────────────
+-- ── The handoff: one row per person sent to HC Connect ─────────────────────
 -- This is the table the whole v2 measurement question hangs on.
 --
 --   code       the referral code shown to the employee and carried on the link
---              as ?src=growth&gref=<code>. It is what the Careers export joins
+--              as ?src=growth&gref=<code>. It is what the HC Connect export joins
 --              back to. Short, unambiguous alphabet (no I/O/0/1) because people
 --              retype it by hand into a free-text field.
 --   outcome    the employee's own answer to "did you apply?". SELF-REPORTED --
 --              free, biased upward, never to be quoted as a hard number.
---   verified   set during the monthly reconciliation, when a row in the Careers
+--   verified   set during the monthly reconciliation, when a row in the HC Connect
 --              export carries this code or a source of 'Growth Marketplace'.
 --              This is the only column fit for a paper that goes to Exco.
 --
@@ -103,13 +103,48 @@ create table if not exists public.v2_vacancy_referrals (
   source         text        default 'board',            -- board | matches | search | digest
   outcome        text,                                   -- null | applied | no
   outcome_at     timestamptz,
-  verified       boolean     not null default false,     -- confirmed against the Careers export
+  verified       boolean     not null default false,     -- confirmed against the HC Connect export
   verified_at    timestamptz,
-  verified_source text       default 'Careers export',
+  verified_source text       default 'HC Connect export',
   created_at     timestamptz not null default now()
 );
 create index if not exists v2_vacancy_referrals_req_idx on public.v2_vacancy_referrals (req_id, created_at desc);
 create index if not exists v2_vacancy_referrals_emp_idx on public.v2_vacancy_referrals (employee);
+
+-- ── Employee skills, batch-loaded by People & Culture ───────────────────────
+-- Matching only sees what is written down, so an empty profile is worth nothing
+-- to its owner or to the marketplace. This table lets PCD pre-fill Current
+-- Skills from records HR already holds (HRIS competency table, LMS completions,
+-- the last capability assessment) instead of asking 637 people to author their
+-- own from a blank page.
+--
+--   source     'pre-filled' (loaded here), 'self' (typed by the employee), or
+--              'verified' (manager endorsement, 4-star host rating, or an LMS
+--              certification). Provenance decides how much a claim is worth and
+--              is shown in the UI, so nobody mistakes a bulk load for an
+--              endorsement.
+--
+-- One row per employee per skill. An upload only ever inserts: it never deletes
+-- a skill and never overwrites one the employee has edited, so people stay in
+-- charge of their own profile.
+--
+-- PRIVACY: this is a capability record about identifiable staff. It is more
+-- sensitive than it looks -- a skills table is also, read the other way, a
+-- record of what people cannot do. Restrict it to PCD behind real
+-- authentication before any real employee data goes near it, and agree a
+-- retention period first.
+create table if not exists public.v2_employee_skills (
+  id           bigint generated always as identity primary key,
+  employee_id  text,                                    -- HRIS identifier, when the export carries one
+  employee     text        not null,
+  department   text        default '',
+  skill        text        not null,
+  source       text        not null default 'pre-filled',  -- pre-filled | self | verified
+  uploaded_by  text,
+  created_at   timestamptz not null default now(),
+  constraint v2_employee_skills_unique unique (employee, skill)
+);
+create index if not exists v2_employee_skills_emp_idx on public.v2_employee_skills (employee);
 
 -- ── Row level security ──────────────────────────────────────────────────────
 alter table public.v2_opportunities       enable row level security;
@@ -117,12 +152,13 @@ alter table public.v2_applications        enable row level security;
 alter table public.v2_vacancies           enable row level security;
 alter table public.v2_vacancy_views       enable row level security;
 alter table public.v2_vacancy_referrals   enable row level security;
+alter table public.v2_employee_skills     enable row level security;
 
 -- Policies are dropped first so this script can be re-run safely.
 do $$
 declare t text;
 begin
-  foreach t in array array['v2_opportunities','v2_applications','v2_vacancies','v2_vacancy_views','v2_vacancy_referrals']
+  foreach t in array array['v2_opportunities','v2_applications','v2_vacancies','v2_vacancy_views','v2_vacancy_referrals','v2_employee_skills']
   loop
     execute format('drop policy if exists pilot_read   on public.%I', t);
     execute format('drop policy if exists pilot_insert on public.%I', t);
@@ -139,15 +175,16 @@ grant select, insert, update on public.v2_applications      to anon, authenticat
 grant select, insert, update on public.v2_vacancies         to anon, authenticated;
 grant select, insert         on public.v2_vacancy_views     to anon, authenticated;
 grant select, insert, update on public.v2_vacancy_referrals to anon, authenticated;
+grant select, insert, update on public.v2_employee_skills   to anon, authenticated;
 grant usage, select on all sequences in schema public to anon, authenticated;
 
 -- ── The reconciliation query ────────────────────────────────────────────────
--- Load the monthly Careers export into a staging table with at least
+-- Load the monthly HC Connect export into a staging table with at least
 -- (referral_code, req_id, employee, applied_at), then:
 --
 --   update public.v2_vacancy_referrals r
---      set verified = true, verified_at = now(), verified_source = 'Careers export'
---     from careers_export e
+--      set verified = true, verified_at = now(), verified_source = 'HC Connect export'
+--     from hcconnect_export e
 --    where upper(trim(e.referral_code)) = r.code
 --      and e.applied_at >= r.created_at
 --      and e.applied_at <  r.created_at + interval '30 days';

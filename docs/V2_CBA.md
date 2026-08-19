@@ -1,6 +1,7 @@
 # v2-lean — costing and cost-benefit analysis
 
 **Population:** 637 employees · **Horizon:** 3 years · **FX:** ₱58 = US$1 · **Discount rate:** 10%
+**Recruitment system:** HC Connect Internal Job Posting (“HC Connect” throughout)
 **Prepared:** 18 August 2026 · **Model:** [`docs/v2-cba-model.py`](v2-cba-model.py)
 
 Supersedes the recommendation in [`docs/V2_COSTING.md`](V2_COSTING.md), which costed
@@ -30,7 +31,7 @@ drives internal growth.
 These are where promotion efficiency actually lives, and each is cheap:
 
 - **Match scores on promoted requisitions** — the entire reason the board beats a
-  plain Careers listing. Without it you have built a duplicate job board.
+  plain HC Connect listing. Without it you have built a duplicate job board.
 - **The job description on the card** — what people decide on before clicking through.
 - **The "did you apply?" nudge email** (₱1,740/yr) — cheapest line in the model,
   and the thing that converts a click into a countable application.
@@ -120,7 +121,7 @@ Two streams, and they are **not** equally defensible:
 
 **Attributed** — avoided agency fees and vacancy days on permanent roles. These
 exist *only because of the tracking spend*: without a confirmed referral the
-hire is invisible in your data and belongs, as far as anyone can tell, to Careers.
+hire is invisible in your data and belongs, as far as anyone can tell, to HC Connect.
 
 | Scenario | Attributed hires/yr | Agency fees | Vacancy days | Total |
 |---|---:|---:|---:|---:|
