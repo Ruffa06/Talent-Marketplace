@@ -23,7 +23,7 @@ its own pages:
 
 | Role | Persona | What it demonstrates |
 |---|---|---|
-| Recruiter | Ada Lovelace | Posting, screening applicants, own matches |
+| Recruiter | Oprah Winfrey | Posting, screening applicants, own matches |
 | Manager | Taylor Swift | Team activity, nominations, hosting, the host-side survey |
 | Employee | Cristiano Ronaldo | Applying, service offers, nominations, the participant survey |
 | Administrator | Beyoncé Knowles | Approvals, stale posts, the nomination dashboard |

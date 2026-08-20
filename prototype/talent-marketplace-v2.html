@@ -1123,7 +1123,7 @@
           <div class="opp-title">Business Intelligence Analyst — FP&A Team</div>
           <div class="opp-meta">Finance Department · Full-time · 1 slot</div>
           <div style="font-size:11px;color:#9CA3AF;margin-top:2px;">👤 Posted by <strong style="color:#6B7280;">Roger Federer</strong> · Finance</div>
-          <div class="chip-row"><span class="skill-chip">Power BI</span><span class="skill-chip">SQL</span><span class="skill-chip">Financial Modeling</span></div>
+          <div class="chip-row"><span class="skill-chip">Power BI</span><span class="skill-chip">SQL</span><span class="skill-chip">Financial Modelling</span></div>
           <div class="match-bar-wrap">
             <div class="match-bar-top">
               <span class="match-bar-label">Match score</span>
@@ -1132,7 +1132,7 @@
                   <b>Why 90%?</b>
                   <span class="m-row"><span>Power BI</span><span class="m-yes">✓ matched</span></span>
                   <span class="m-row"><span>SQL</span><span class="m-yes">✓ matched</span></span>
-                  <span class="m-row"><span>Financial Modeling</span><span class="m-part">◐ partial</span></span>
+                  <span class="m-row"><span>Financial Modelling</span><span class="m-part">◐ partial</span></span>
                   <span class="m-note">Based on skills you listed in your profile. Not an assessment of your performance — the hiring manager makes the final call.</span>
                 </span>
               </span>
@@ -1788,7 +1788,7 @@
               <span style="font-size:13px;font-weight:700;color:#111827;">Zendaya Coleman</span>
               <span class="badge badge-nominated">🤝 Nominated</span>
             </div>
-            <div style="font-size:11px;color:#6B7280;">Finance · Financial Modeling, SQL · <strong style="color:#16A34A;">78% match</strong></div>
+            <div style="font-size:11px;color:#6B7280;">Finance · Financial Modelling, SQL · <strong style="color:#16A34A;">78% match</strong></div>
             <div style="font-size:11px;color:#9F1239;margin-top:3px;line-height:1.5;font-style:italic;">"Nominated by <strong>Taylor Swift</strong> — she rebuilt our reconciliation model in two weeks and then trained the whole team to run it. She won't put herself forward, so I'm doing it."</div>
           </div>
           <div id="actions-ze" style="display:flex;gap:7px;">
@@ -2047,7 +2047,7 @@
             </div>
             <div class="field"><label>Department</label><input id="profileDeptInput" value="People & Culture"></div>
             <div class="field"><label>Reports To (Direct Manager)</label><input id="profileReportsTo" value="Roger Federer" readonly style="background:#F9FAFB;color:#6B7280;"></div>
-            <div class="field"><label>About You</label><textarea>HR professional passionate about talent development and organizational effectiveness. Firm believer that the right opportunity at the right time changes everything.</textarea></div>
+            <div class="field"><label>About You</label><textarea>HR professional passionate about talent development and organisational effectiveness. Firm believer that the right opportunity at the right time changes everything.</textarea></div>
           </div>
           <div class="card form-card">
             <h3>Skills</h3>
@@ -2424,7 +2424,7 @@
         <div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:8px;">The honest limit: attribution is not causation</div>
         <div style="font-size:12px;color:#374151;line-height:1.8;">
           A confirmed referral proves the marketplace was the last thing the person touched before applying. It does not prove they
-          would not have applied anyway — some of them read the same role in the careers newsletter that morning.<br><br>
+          would not have applied anyway — some of them read the same role in the internal jobs newsletter that morning.<br><br>
           <strong>If someone challenges the number, there is exactly one clean answer: run a holdout.</strong> For one quarter, promote
           a random half of open requisitions on the marketplace and leave the other half listed only in HC Connect. Compare internal
           applications per requisition across the two groups. The difference is the marketplace's causal effect, and it is the only
@@ -2942,7 +2942,7 @@ const LIVE = {
   apps: [],
   vacancies: [],   // v2 — promoted requisitions that live in the ATS
   refs: [],        // v2 — one row per handoff click
-  views: [],       // v2 — one row per person / vacancy / day, for click-through rate
+  viewCount: null, // v2 — exact count of view rows, counted by the database; null until known
   skills: [],      // v2 — one row per employee / skill, batch-loaded by PCD
   timer: null,
 }
@@ -2953,6 +2953,18 @@ function liveHeaders(extra) {
     'Authorization': 'Bearer ' + LIVE.key,
     'Content-Type': 'application/json',
   }, extra || {})
+}
+
+/* An exact row count without pulling the rows. PostgREST answers
+   `Prefer: count=exact` with a Content-Range of the form `0-24/3573`; the
+   figure after the slash is the real total, whatever the page limit is. */
+async function liveCount(path) {
+  const url = LIVE.url + '/rest/v1/' + path + (path.indexOf('?') > -1 ? '&' : '?') + 'select=id&limit=1'
+  const res = await fetch(url, { headers: liveHeaders({ 'Prefer': 'count=exact' }) })
+  if (!res.ok) throw new Error('HTTP ' + res.status)
+  const range = res.headers.get('content-range') || ''
+  const total = parseInt(String(range).split('/')[1], 10)
+  return isNaN(total) ? null : total   // null = could not be determined, not zero
 }
 
 async function liveReq(path, opts) {
@@ -4268,14 +4280,17 @@ async function refreshVacancyState(seq) {
   try {
     const [vacs, refs, views, skills] = await Promise.all([
       liveReq('v2_vacancies?select=*&order=created_at.desc&limit=100'),
-      liveReq('v2_vacancy_referrals?select=*&order=created_at.desc&limit=500'),
-      liveReq('v2_vacancy_views?select=id&limit=2000'),
-      liveReq('v2_employee_skills?select=*&order=created_at.desc&limit=4000'),
+      liveReq('v2_vacancy_referrals?select=*&order=created_at.desc&limit=5000'),
+      liveCount('v2_vacancy_views'),
+      // 637 employees x ~8 skills is ~5,100 rows, so the old 4,000 cap
+      // truncated coverage silently. Production should aggregate server-side
+      // rather than ship the whole table to every browser.
+      liveReq('v2_employee_skills?select=*&order=created_at.desc&limit=20000'),
     ])
     if (seq !== LIVE.seq) return
     LIVE.vacancies = vacs || []
     LIVE.refs = refs || []
-    LIVE.views = views || []
+    if (typeof views === 'number') LIVE.viewCount = views   // keep the last good count otherwise
     LIVE.skills = skills || []
   } catch (e) { /* the shared-state banner already says we are offline */ }
 }
@@ -4595,7 +4610,8 @@ function renderAdminVacancies() {
 /* ── Admin: attribution ─────────────────────────────────────────── */
 function refMetrics() {
   const refs = allRefs()
-  const views = LIVE.views.length + SEED_VIEWS
+  const known = LIVE.viewCount !== null
+  const views = known ? LIVE.viewCount + SEED_VIEWS : null
   const pct = (a, b) => b ? Math.round((a / b) * 100) : 0
   const applied = refs.filter(r => r.outcome === 'applied').length
   const verified = refs.filter(r => r.verified).length
@@ -4607,7 +4623,7 @@ function refMetrics() {
     applied: applied,
     verified: verified,
     hires: SEED_HIRES,
-    ctr: pct(refs.length, views),
+    ctr: views ? pct(refs.length, views) : null,
     applyRate: pct(applied, refs.length),
     verifyRate: pct(verified, refs.length),
   }
@@ -4624,8 +4640,12 @@ function funnelCells(m, dark) {
         <div class="funnel-s">${sub}</div><span class="prov ${provCls}">${prov}</span></div>`
   return [
     cell(m.promoted, 'Vacancies promoted', 'Live on the marketplace board', 'Measured here', 'prov-hard'),
-    cell(m.views, 'People who saw one', 'One per person, per role, per day', 'Measured here', 'prov-hard'),
-    cell(m.refs, 'Referrals to ' + ATS_SHORT, m.ctr + '% of everyone who saw a role opened it', 'Measured here', 'prov-hard'),
+    cell(m.views === null ? '—' : m.views, 'People who saw one',
+         m.views === null ? 'Count unavailable — not shown rather than guessed' : 'One per person, per role, per day',
+         'Measured here', 'prov-hard'),
+    cell(m.refs, 'Referrals to ' + ATS_SHORT,
+         m.ctr === null ? 'Click-through needs the view count' : m.ctr + '% of everyone who saw a role opened it',
+         'Measured here', 'prov-hard'),
     cell(m.applied, 'Said they applied', m.applyRate + '% of referrals · ' + m.unanswered + ' unanswered', 'Self-reported', 'prov-soft'),
     cell(m.verified, 'Confirmed in ' + ATS_SHORT, m.verifyRate + '% of referrals carried the code through', 'From ' + ATS_SHORT, 'prov-ext'),
     cell(m.hires, 'Hires attributed', 'Confirmed applications that became offers', 'From ' + ATS_SHORT + ' / HR', 'prov-ext'),
@@ -4889,7 +4909,8 @@ async function commitSkillUpload() {
   if (!rows.length) { toast('Every skill in this file is already on a profile — nothing to write.', 'warning'); return }
   if (!LIVE.online) { toast('Shared database unreachable — nothing was written.', 'error'); return }
   try {
-    await livePost('v2_employee_skills', rows)
+    await liveReq('v2_employee_skills', { method: 'POST', body: JSON.stringify(rows),
+      headers: { 'Prefer': 'resolution=ignore-duplicates,return=representation' } })
     toast(`✓ ${rows.length} skills pre-filled across ${SKILL_PARSE.list.length} profiles.`)
     document.getElementById('skillCsv').value = ''
     SKILL_PARSE = null
