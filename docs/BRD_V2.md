@@ -457,3 +457,4 @@ Release 1 is accepted when:
 | `docs/ARCHITECTURE.md` | v1 as built and the proposed production architecture |
 | `prototype/talent-marketplace-v2.html` | The reference build — every ✔ in §7 |
 | `prototype/v2-supabase-schema.sql` | Reference data model for the four new entities |
+| `docs/BRD_V2.pdf` | This document as a PDF, for circulation. Regenerate with `docs/brd-to-pdf.py` + `docs/brd-to-pdf.js` after editing the markdown — do not hand-edit the PDF. |
