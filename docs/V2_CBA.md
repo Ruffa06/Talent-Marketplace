@@ -3,6 +3,8 @@
 **Population:** 637 employees · **Horizon:** 3 years · **FX:** ₱58 = US$1 · **Discount rate:** 10%
 **Recruitment system:** HC Connect Internal Job Posting (“HC Connect” throughout)
 **Prepared:** 18 August 2026 · **Model:** [`docs/v2-cba-model.py`](v2-cba-model.py)
+**Working spreadsheet:** [`docs/Growth-v2-CBA.xlsx`](Growth-v2-CBA.xlsx) — every figure below as a
+live model, with the vendor comparison. Change an assumption and the case recalculates.
 
 Supersedes the recommendation in [`docs/V2_COSTING.md`](V2_COSTING.md), which costed
 v2 as originally scoped at ₱1,542,136 over three years. This document costs the

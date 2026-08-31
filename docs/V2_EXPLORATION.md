@@ -4,6 +4,8 @@
 **Schema:** `prototype/v2-supabase-schema.sql` (all tables `v2_`-prefixed) · **Prepared:** 18 August 2026
 **Costing:** [`docs/V2_COSTING.md`](V2_COSTING.md) — v2 against v1, side by side
 **Business case:** [`docs/V2_CBA.md`](V2_CBA.md) — the lean build, competitive comparison, CBA
+**For IT:** [`docs/BRD_V2.md`](BRD_V2.md) — requirements and a build-unit worksheet for man-day estimation
+**Spreadsheet:** [`docs/Growth-v2-CBA.xlsx`](Growth-v2-CBA.xlsx) — the CBA as a live model
 
 v1 is untouched. It stays live at ruffa06.github.io/Talent-Marketplace from
 `claude/cool-cray-9oq1pt`, on its own `opportunities` / `applications` tables.
