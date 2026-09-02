@@ -1,7 +1,10 @@
-# Growth: HC Talent Marketplace — clickable prototype
+# Growth — clickable prototype
 
 `talent-marketplace-prototype.html` is a single self-contained HTML file: no build
 step, no dependencies, no network calls. Open it in any browser and it runs.
+
+v1 shipped under the earlier name *Growth: HC Talent Marketplace*; the product
+is now called simply **Growth** (see the naming note in `docs/V2_EXPLORATION.md`).
 
 This is a **design prototype**, not the product. It exists to settle questions of
 flow, wording, and incentive design before they get built. The React app under

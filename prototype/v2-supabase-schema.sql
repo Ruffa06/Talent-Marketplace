@@ -1,4 +1,4 @@
--- Talent Marketplace v2 — shared state for the exploration prototype.
+-- Growth v2 — shared state for the exploration prototype.
 --
 -- Run once in the Supabase SQL Editor (Dashboard -> SQL Editor -> New query -> Run).
 -- Every table is v2_-prefixed and independent of the v1 pilot tables, so v1

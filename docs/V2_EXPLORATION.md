@@ -42,6 +42,39 @@ bottom.** The whole design question is the join between them.
 
 ---
 
+## 1a. Naming
+
+The product is called **Growth**. Not *HC Growth*, not *Growth: HC Talent
+Marketplace*, not *Internal Growth Hub*.
+
+| Where | What it says |
+|---|---|
+| Browser tab | `Growth · Home Credit PH` — the one place with no surrounding context |
+| Sidebar logo, top bar | `Growth` |
+| Login and hero, first contact only | `Growth` + *Internal opportunities at Home Credit PH* |
+| Body copy | `Growth` |
+
+Three reasons, in order of weight:
+
+1. **"HC ..." collides with HC Connect.** The single thing a v2 user must
+   understand is that these are two different systems and their vacancy
+   application happens in the other one. A product also called *HC something*
+   works against that on every screen. This constraint did not exist in v1,
+   which ran vacancies itself — v2 created it, so v2 resolves it.
+2. **"Marketplace" is no longer accurate.** A marketplace implies the exchange
+   happens on the premises. For permanent roles it explicitly does not.
+3. **"Growth" is the employee's word, not HR's.** It names the reason someone
+   shows up, and it is the only word true of all four routes — gigs, DJIs,
+   service offers *and* promoted vacancies.
+
+**The known weakness:** *growth* is a generic word, and at a lender it already
+means portfolio and revenue growth, so intranet search will return finance
+decks. That is what the descriptor is for. If it proves a real problem in the
+pilot, the fix is a modifier — never a fourth name, and never one starting
+with *HC*.
+
+---
+
 ## 2. What was removed
 
 **Internal Vacancy, as a service.** You can no longer post a vacancy, apply to

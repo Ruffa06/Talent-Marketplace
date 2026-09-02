@@ -51,7 +51,7 @@ function newSlide(dark) {
 /* ══ 1 · TITLE ══════════════════════════════════════════════════ */
 {
 const s = newSlide(true)
-s.addText('GROWTH · HC TALENT MARKETPLACE', { x:M, y:1.62, w:CW, h:0.3, fontFace:BODY,
+s.addText('GROWTH · HOME CREDIT PH', { x:M, y:1.62, w:CW, h:0.3, fontFace:BODY,
   fontSize:12, bold:true, color:SOFT, charSpacing:2.4, margin:0 })
 s.addText('Version 2:\nbuild recommendation', { x:M, y:2.05, w:8.6, h:1.9, fontFace:HEAD,
   fontSize:47, bold:true, color:WHITE, lineSpacing:50, margin:0 })
