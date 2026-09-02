@@ -4,6 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Growth · Home Credit PH</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Crect width='48' height='48' rx='11' fill='%23C00000'/%3E%3Cg fill='none' stroke='%23fff' stroke-width='4.7' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M13.7 32.6A13.4 13.4 0 1 1 34.3 32.6'/%3E%3Cpath d='M24 33.8V19.2'/%3E%3Cpath d='M18.5 24.7 24 19.2 29.5 24.7'/%3E%3C/g%3E%3C/svg%3E">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -41,7 +42,6 @@
     margin-bottom: 6px;
   }
 
-  .logo-emoji { font-size: 18px; }
   .logo-text { font-size: 13px; font-weight: 700; color: #111827; line-height: 1.2; }
   .logo-pill {
     display: inline-block;
@@ -450,7 +450,7 @@
   .login-shell.visible { display: flex; }
   .login-card { background: #fff; border: 1px solid #E5E7EB; border-radius: 16px; padding: 40px; width: 380px; box-shadow: 0 4px 24px rgba(0,0,0,0.08); }
   .login-logo-row { display: flex; align-items: center; gap: 10px; margin-bottom: 28px; }
-  .login-logo-icon { width: 40px; height: 40px; background: #C00000; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; }
+  .login-logo-icon { width: 40px; height: 40px; background: #C00000; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 25px; color: #fff; }
   .login-appname { font-size: 16px; font-weight: 700; color: #111827; }
   .login-appsub { font-size: 11px; color: #9CA3AF; }
   .login-title { font-size: 20px; font-weight: 700; color: #111827; margin-bottom: 4px; }
@@ -503,9 +503,15 @@
   .hero-lg .hero-title { font-size: 40px; line-height: 1.18; letter-spacing: -0.5px; margin-bottom: 20px; }
   .hero-lg .hero-body { font-size: 16px; line-height: 1.75; max-width: 620px; margin-bottom: 30px; color: rgba(255,255,255,0.82); }
 
+  .hero-watermark { position: absolute; right: 40px; top: 50%; transform: translateY(-50%);
+                    width: 232px; height: 232px; color: #fff; opacity: 0.06; pointer-events: none; }
+  @media (max-width: 1180px) { .hero-watermark { display: none; } }
+
   .hero-icons { display: flex; flex-wrap: wrap; gap: 34px; }
   .hero-ico { display: flex; align-items: flex-start; gap: 11px; }
   .hero-ico > span { font-size: 26px; line-height: 1; }
+  .hero-ico > span > svg { width: 26px; height: 26px; display: block; color: #fff; opacity: 0.92;
+                           stroke: currentColor; stroke-width: 1.9; stroke-linecap: round; stroke-linejoin: round; }
   .hero-ico b { display: block; font-size: 14px; font-weight: 700; color: #fff; margin-bottom: 2px; }
   .hero-ico i { display: block; font-size: 12px; font-style: normal; color: rgba(255,255,255,0.6); }
 
@@ -740,6 +746,65 @@
   .prov-soft { background: #FEF3C7; color: #92400E; }
   .prov-ext  { background: #E0E7FF; color: #3730A3; }
   @media (max-width: 640px) { .vac-grid { grid-template-columns: 1fr; } }
+
+  /* ── Brand mark (Ascent) ────────────────────────────────────────────── */
+  .mark { display: block; flex: none; width: 1em; height: 1em; }
+  .logo-mark   { color: #C00000; font-size: 19px; }
+  .topbar-mark { color: #fff; font-size: 17px; }
+  .topbar-brand { display: flex; align-items: center; gap: 8px; }
+
+  /* ── How Growth works: process flow ─────────────────────────────────── */
+  .flow { background: #fff; border: 1px solid #E5E7EB; border-radius: 14px;
+          padding: 26px 28px 24px; margin-bottom: 28px; box-shadow: 0 1px 3px rgba(0,0,0,0.04); }
+  .flow-h { font-size: 16px; font-weight: 700; color: #111827; margin-bottom: 4px; }
+  .flow-sub { font-size: 13px; color: #6B7280; margin-bottom: 20px; }
+
+  .flow-rail { display: flex; flex-wrap: wrap; align-items: center; gap: 7px;
+               padding-bottom: 20px; margin-bottom: 22px; border-bottom: 1px solid #F3F4F6; }
+  .flow-chip { display: flex; align-items: center; gap: 7px; background: #FEF2F2;
+               border: 1px solid #FECACA; color: #C00000; font-size: 12px; font-weight: 700;
+               padding: 5px 12px 5px 6px; border-radius: 20px; white-space: nowrap; }
+  .flow-chip .n { display: inline-flex; align-items: center; justify-content: center;
+                  width: 18px; height: 18px; border-radius: 50%; background: #C00000;
+                  color: #fff; font-size: 10px; flex: none; }
+  .flow-arrow { color: #D1D5DB; flex: none; }
+
+  .flow-steps { display: grid; }
+  @media (min-width: 1100px) {
+    .flow-steps { grid-template-columns: 1fr 1fr; grid-template-rows: repeat(3, auto);
+                  grid-auto-flow: column; column-gap: 48px; }
+    .flow-step:nth-child(3)::before { display: none; }
+  }
+  .flow-step { display: flex; gap: 16px; position: relative; padding-bottom: 22px; }
+  .flow-step:last-child { padding-bottom: 0; }
+  .flow-step::before { content: ''; position: absolute; left: 17px; top: 40px; bottom: 0;
+                       width: 2px; background: #F3F4F6; }
+  .flow-step:last-child::before { display: none; }
+  .flow-node { flex: none; width: 36px; height: 36px; border-radius: 50%; background: #C00000;
+               color: #fff; display: flex; align-items: center; justify-content: center;
+               font-size: 14px; font-weight: 700; position: relative; z-index: 1; }
+  .flow-body { padding-top: 5px; min-width: 0; }
+  .flow-st-t { font-size: 14px; font-weight: 700; color: #111827; margin-bottom: 4px;
+               display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
+  .flow-who { font-size: 9.5px; font-weight: 700; letter-spacing: 0.6px; text-transform: uppercase;
+              color: #6B7280; background: #F3F4F6; border-radius: 20px; padding: 2px 8px; }
+  .flow-st-b { font-size: 12.5px; color: #6B7280; line-height: 1.65; max-width: 68ch; }
+  .flow-branch { margin-top: 11px; border-left: 2px dashed #BFDBFE; background: #EFF6FF;
+                 border-radius: 0 8px 8px 0; padding: 10px 13px; font-size: 11.5px;
+                 color: #1E40AF; line-height: 1.6; max-width: 66ch; }
+  .flow-branch.alt { border-left-color: #DDD6FE; background: #F5F3FF; color: #5B21B6; }
+  /* Wrapping the rail would leave arrows pointing at nothing; scroll it instead. */
+  @media (max-width: 760px) {
+    .flow-rail { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+    .flow-chip, .flow-arrow { flex: none; }
+  }
+  @media (max-width: 640px) {
+    .flow { padding: 20px 18px; }
+    .flow-step { gap: 12px; }
+    .flow-step::before { left: 15px; }
+    .flow-node { width: 32px; height: 32px; font-size: 13px; }
+    .flow-st-t { font-size: 13px; }
+  }
 </style>
 </head>
 <body>
@@ -748,12 +813,12 @@
 <div class="login-shell visible" id="loginShell">
   <div class="login-card">
     <div class="login-logo-row">
-      <div class="login-logo-icon">🏪</div>
+      <div class="login-logo-icon"><svg class="mark" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M10.98 34.93A17 17 0 1 1 37.02 34.93" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><path d="M24 36.4V17.9" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><path d="M17 24.9 24 17.9 31 24.9" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
       <div><div class="login-appname">Growth</div><div class="login-appsub">Internal opportunities at Home Credit&nbsp;PH</div></div>
     </div>
     <div class="login-title">Welcome back</div>
     <div class="login-sub">Sign in to explore opportunities across Home Credit PH</div>
-    <div class="input-group"><label>Email address</label><input type="email" value="taylor.swift@abc.com"></div>
+    <div class="input-group"><label>Email address</label><input type="email" value="taylor.swift@homecredit.ph"></div>
     <div class="input-group"><label>Password</label><input type="password" value="password"></div>
     <button class="btn-login" onclick="closeLogin()">Sign in</button>
     <div class="login-footer">No account? <a onclick="closeLogin()">Register here</a> &nbsp;·&nbsp; <a onclick="closeLogin()">Forgot password?</a></div>
@@ -766,7 +831,7 @@
 <div class="sidebar" id="sidebar">
   <div class="sidebar-logo">
     <div class="logo-row">
-      <span class="logo-emoji">🏪</span>
+      <svg class="mark logo-mark" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M10.98 34.93A17 17 0 1 1 37.02 34.93" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><path d="M24 36.4V17.9" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><path d="M17 24.9 24 17.9 31 24.9" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg>
       <span class="logo-text">Growth</span>
     </div>
     <span class="logo-pill">Home Credit&nbsp;PH · v2 exploration</span>
@@ -795,7 +860,7 @@
 <div class="main">
   <div class="topbar">
     <button class="hamburger" id="hamburger" onclick="toggleSidebar()" aria-label="Menu" aria-expanded="false" aria-controls="sidebar">☰</button>
-    <div class="topbar-title">Growth</div>
+    <div class="topbar-brand"><svg class="mark topbar-mark" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M10.98 34.93A17 17 0 1 1 37.02 34.93" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><path d="M24 36.4V17.9" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><path d="M17 24.9 24 17.9 31 24.9" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="topbar-title">Growth</div></div>
     <div class="topbar-right">
       <span class="topbar-live" id="liveStatus" onclick="promptLiveName()" title="Shared pilot state"><span class="live-dot off"></span><span id="liveStatusText">connecting…</span></span>
       <span class="topbar-user" id="topbarUser">Taylor Swift · Manager</span>
@@ -810,17 +875,78 @@
       <div class="hero hero-lg">
         <div class="hero-eyebrow">Internal opportunities at Home Credit&nbsp;PH</div>
         <div class="hero-title">Your next growth&nbsp;move<br class="hero-br">is already&nbsp;here.</div>
-        <div class="hero-body">Home Credit is full of work that could stretch you — and people who could learn from what you already know. <strong>Growth</strong> brings the two together. Explore an interest your role never had room for, put a hidden skill to work, and help another business unit while your own career moves forward.<br><br>No transfers. No waiting for the next cycle. On-the-job learning, right here at home.</div>
+        <div class="hero-body">Home Credit is full of work that could stretch you — and people who could learn from what you already know. <strong>Growth</strong> puts the two in the same place. Try the interest your role never had room for. Put a skill nobody knows you have to work. Help another business unit while your own career moves.<br><br>No transfer. No waiting for the next cycle. It happens where you already are.</div>
+        <svg class="hero-watermark" viewBox="0 0 48 48" fill="none" aria-hidden="true">
+          <path d="M10.98 34.93A17 17 0 1 1 37.02 34.93" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+          <path d="M24 36.4V17.9" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
+          <path d="M17 24.9 24 17.9 31 24.9" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
         <div class="hero-icons">
-          <div class="hero-ico"><span>🔍</span><div><b>Discover</b><i>Work you didn't know existed</i></div></div>
-          <div class="hero-ico"><span>🌱</span><div><b>Grow</b><i>Without leaving Home Credit</i></div></div>
-          <div class="hero-ico"><span>🤝</span><div><b>Get matched</b><i>AI surfaces your best fit</i></div></div>
+          <div class="hero-ico"><span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.2 16.2 21 21"/></svg></span><div><b>Discover</b><i>Work you didn't know existed</i></div></div>
+          <div class="hero-ico"><span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 17.5 9 11l4 4 8-8"/><path d="M15.5 3H21v5.5"/></svg></span><div><b>Grow</b><i>Without leaving Home Credit</i></div></div>
+          <div class="hero-ico"><span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.4"/></svg></span><div><b>Get matched</b><i>Scored against what you can already do</i></div></div>
         </div>
       </div>
 
-      <!-- Four ways to grow -->
+
+      <!-- ══ How Growth works — process flow ══ -->
+      <div class="flow">
+        <div class="flow-h">How Growth works</div>
+        <div class="flow-sub">Profile to permanent record, in six steps. Most people are through step&nbsp;three inside a lunch break.</div>
+
+        <div class="flow-rail"><div class="flow-chip"><span class="n">1</span>Profile</div><svg class="flow-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="flow-chip"><span class="n">2</span>Match</div><svg class="flow-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="flow-chip"><span class="n">3</span>Apply</div><svg class="flow-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="flow-chip"><span class="n">4</span>Sign-off</div><svg class="flow-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="flow-chip"><span class="n">5</span>The work</div><svg class="flow-arrow" width="13" height="13" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M9 5l7 7-7 7" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="flow-chip"><span class="n">6</span>On record</div></div>
+
+        <div class="flow-steps">
+        <div class="flow-step">
+          <div class="flow-node">1</div>
+          <div class="flow-body">
+            <div class="flow-st-t">Build your profile <span class="flow-who">You &middot; ~5 minutes</span></div>
+            <div class="flow-st-b">Add your skills, or simply confirm the ones People&nbsp;&amp;&nbsp;Culture already imported from your HR record. Nothing here can find you until this exists — your profile is the entire input.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-node">2</div>
+          <div class="flow-body">
+            <div class="flow-st-t">Growth scores every opening against you <span class="flow-who">Automatic</span></div>
+            <div class="flow-st-b">Each gig, Developmental Job Immersion and open vacancy is scored against your skills, your stated aspiration and your history here. You see the reasoning behind the score, not just the number — and the score never blocks you from applying.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-node">3</div>
+          <div class="flow-body">
+            <div class="flow-st-t">You apply — or someone nominates you <span class="flow-who">You, or any manager</span></div>
+            <div class="flow-st-b">One click for a gig or a DJI. Managers can also nominate a specific person, which is how Growth reaches people who would never put themselves forward.</div>
+            <div class="flow-branch"><strong>If it is a permanent vacancy.</strong> Growth lists it and scores your fit, then hands you over to <strong>HC&nbsp;Connect Internal Job&nbsp;Posting</strong> on a link carrying your referral code. HC&nbsp;Connect owns the application, the screening and the offer — the code is the only thing that proves Growth is what sent you.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-node">4</div>
+          <div class="flow-body">
+            <div class="flow-st-t">Sign-off <span class="flow-who">Post owner + your manager</span></div>
+            <div class="flow-st-b">The post owner shortlists and owes you a decision within seven working days. Your manager releases the time. A DJI adds a plan co-designed with the host manager and signed by four parties under Policy&nbsp;211_2021.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-node">5</div>
+          <div class="flow-body">
+            <div class="flow-st-t">You do the work <span class="flow-who">You + the host team</span></div>
+            <div class="flow-st-b">A few hours to a few weeks for a gig. Three to nine months for a DJI. Your role, pay, benefits and headcount stay exactly where they are throughout.</div>
+          </div>
+        </div>
+        <div class="flow-step">
+          <div class="flow-node">6</div>
+          <div class="flow-body">
+            <div class="flow-st-t">Rated, recorded, reviewed <span class="flow-who">People &amp; Culture</span></div>
+            <div class="flow-st-b">The host manager rates the work, a post-activity survey reaches you the day it ends, and the whole engagement lands on your HR file — where it is tabled at the annual talent review. Not a favour someone might remember. A document.</div>
+            <div class="flow-branch alt"><strong>The one route that runs backwards.</strong> A Service Offer skips steps&nbsp;2 and&nbsp;3 entirely — you publish what you are willing to help with, teams come and request your time, and every completed request lands on the same record at step&nbsp;6.</div>
+          </div>
+        </div>
+        </div>
+      </div>
+
+      <!-- The three routes -->
       <div style="font-size:16px;font-weight:700;color:#111827;margin-bottom:4px;">Three ways to grow here</div>
-      <div style="font-size:13px;color:#6B7280;margin-bottom:16px;">Two you apply for. One you offer. Permanent roles are a fourth route — but you apply for those in HC Connect, not here.</div>
+      <div style="font-size:13px;color:#6B7280;margin-bottom:16px;">Two you apply for. One you offer. Permanent roles are the fourth — listed here, applied for in HC Connect.</div>
       <div class="growth-grid">
         <div class="card" style="padding:22px;">
           <div style="font-size:26px;margin-bottom:10px;">⚡</div>
@@ -858,7 +984,7 @@
           already uses — owns the requisition, the screening and the offer, and duplicating that here would only split the process in two.<br><br>
           What Growth adds is the half HC Connect cannot do: it knows what you can already do, scores your fit against every open
           role, and puts one in front of you that you were never going to go looking for. When you open it, we hand you over on a
-          link that carries a <strong>referral code</strong> — that code is the only thing that tells anyone the marketplace is
+          link that carries a <strong>referral code</strong> — that code is the only thing that tells anyone Growth is
           what sent you.
         </div>
         <div style="margin-top:13px;">
@@ -904,7 +1030,7 @@
     <div class="page" id="page-find">
       <div class="page-header">
         <div class="page-title">🔎 Find an opportunity</div>
-        <div class="page-sub">Three ways to join someone else's work — and what each one actually asks of you</div>
+        <div class="page-sub">Two ways to join someone else's work — and what each one actually asks of you</div>
       </div>
       <!-- The three you apply for -->
       <div style="font-size:16px;font-weight:700;color:#111827;margin-bottom:4px;">The two you can apply for here</div>
@@ -926,14 +1052,12 @@
             Before starting, you, your Direct Manager, and the Host Manager co-design a DJI Plan: goals, degree of immersion (100% full or partial split), expected outputs, and how performance will be evaluated. All four parties — employee, Direct Manager, Host Manager, and HR People Partner — sign off using the official DJI Form. Your headcount, salary, and benefits remain with your home department throughout.
           </div>
         </div>
-        <div class="card" style="padding:22px;border:1px solid #DDD6FE;">
+        <div class="card" style="padding:22px;border:1px dashed #D1D5DB;background:#FAFAFA;">
           <div style="font-size:26px;margin-bottom:10px;">🎁</div>
           <div style="margin-bottom:8px;"><span class="badge badge-offer">Offer</span></div>
-          <div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:6px;">Service Offer</div>
-          <div style="font-size:12px;color:#6B7280;line-height:1.6;">The only one that works in reverse. Instead of applying for work, you <strong>publish what you're willing to help with</strong> — mentoring on product and customer segments, vibe-coding a prototype, reviewing a pricing model, coaching a first-time presenter. Teams come to you.</div>
-          <div style="margin-top:12px;background:#F5F3FF;border:1px solid #DDD6FE;border-radius:8px;padding:10px 12px;font-size:11px;color:#5B21B6;line-height:1.5;">
-            <strong>Usually an hour or two at a time.</strong> You set your own capacity and can pause any time. Every completed request is logged on your profile — the fastest way to build an internal reputation for what you're genuinely good at.
-          </div>
+          <div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:6px;">Want to offer a skill instead?</div>
+          <div style="font-size:12px;color:#6B7280;line-height:1.6;">A <strong>Service Offer</strong> runs the other way round — you publish what you're willing to help with and teams request your time. There is nothing to apply for, so it lives under Post an opportunity.</div>
+          <div style="margin-top:14px;"><button class="btn btn-outline btn-sm" onclick="navigate('offer')">See how offering works →</button></div>
         </div>
       </div>
 
@@ -946,7 +1070,7 @@
           already uses — owns the requisition, the screening and the offer, and duplicating that here would only split the process in two.<br><br>
           What Growth adds is the half HC Connect cannot do: it knows what you can already do, scores your fit against every open
           role, and puts one in front of you that you were never going to go looking for. When you open it, we hand you over on a
-          link that carries a <strong>referral code</strong> — that code is the only thing that tells anyone the marketplace is
+          link that carries a <strong>referral code</strong> — that code is the only thing that tells anyone Growth is
           what sent you.
         </div>
         <div style="margin-top:13px;">
@@ -956,12 +1080,11 @@
 
       <!-- Why apply -->
       <div style="margin-bottom:28px;">
-        <div style="font-size:16px;font-weight:700;color:#111827;margin-bottom:5px;">7 real reasons to apply</div>
-        <div style="font-size:13px;color:#6B7280;margin-bottom:16px;">Marketplace work doesn't come with extra pay — it comes with a formal commitment from Home Credit PH in return. Here's what's in it for you.</div>
+        <div style="font-size:16px;font-weight:700;color:#111827;margin-bottom:5px;">6 real reasons to apply</div>
+        <div style="font-size:13px;color:#6B7280;margin-bottom:16px;">Growth work doesn't come with extra pay — it comes with a formal commitment from Home Credit PH in return. Here's what's in it for you.</div>
         <div class="why-grid">
           <div class="why-card"><div class="why-icon">📋</div><div class="why-title">Fulfill your IDP</div><div class="why-body">Turn your Individual Development Plan from a paper exercise into a real, visible action your manager can endorse.</div></div>
-          <div class="why-card"><div class="why-icon">🎨</div><div class="why-title">Creative outlet</div><div class="why-body">If your current role doesn't let you flex certain muscles, a gig will. Work on problems that genuinely energize you.</div></div>
-          <div class="why-card"><div class="why-icon">❤️</div><div class="why-title">Because you love it</div><div class="why-body">Some people love certain kinds of problems. If a gig matches what energizes you, that's reason enough.</div></div>
+          <div class="why-card"><div class="why-icon">🎨</div><div class="why-title">Work that actually energises you</div><div class="why-body">If your role doesn't let you flex certain muscles, a gig will. Some people simply love a particular kind of problem — that is reason enough, and nobody here will ask you to justify it.</div></div>
           <div class="why-card"><div class="why-icon">🧭</div><div class="why-title">Career pivot test drive</div><div class="why-body">Curious about another function? A gig or DJI lets you try a different career path with zero risk before committing.</div></div>
           <div class="why-card"><div class="why-icon">👁️</div><div class="why-title">Visibility with leaders</div><div class="why-body">Work with leaders outside your chain. New sponsors who can advocate for you is one of the fastest career accelerators.</div></div>
           <div class="why-card"><div class="why-icon">🌐</div><div class="why-title">Build your network</div><div class="why-body">Most opportunities inside companies are word-of-mouth. Cross-functional relationships now compound for your entire career here.</div></div>
@@ -973,10 +1096,10 @@
         </div>
       </div>
 
-      <!-- What LIFT commits in return -->
+      <!-- What Home Credit PH commits in return -->
       <div style="background:#0F172A;border-radius:12px;padding:24px 26px;margin-bottom:28px;color:#fff;">
         <div style="font-size:16px;font-weight:700;margin-bottom:5px;">What Home Credit PH commits to in return</div>
-        <div style="font-size:12px;color:#94A3B8;margin-bottom:18px;line-height:1.6;">Marketplace work is unpaid, so the exchange has to be honest. These four commitments are not goodwill — they are policy, and the <strong style="color:#E2E8F0;">People &amp; Culture Department (PCD)</strong> is accountable for delivering each one. Not your manager, not the host manager, not you — PCD owns it centrally, which is why it holds even if the people around you change.</div>
+        <div style="font-size:12px;color:#94A3B8;margin-bottom:18px;line-height:1.6;">Growth work is unpaid, so the exchange has to be honest. These four commitments are not goodwill — they are policy, and the <strong style="color:#E2E8F0;">People &amp; Culture Department (PCD)</strong> is accountable for delivering each one. Not your manager, not the host manager, not you — PCD owns it centrally, which is why it holds even if the people around you change.</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
           <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:9px;padding:15px;">
             <div style="font-size:19px;margin-bottom:7px;">📁</div>
@@ -986,7 +1109,7 @@
           <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:9px;padding:15px;">
             <div style="font-size:19px;margin-bottom:7px;">🎯</div>
             <div style="font-size:12px;font-weight:700;margin-bottom:5px;">Inclusion in the talent review</div>
-            <div style="font-size:11px;color:#CBD5E1;line-height:1.55;">Your marketplace contributions are tabled at the annual talent review and succession planning discussion — the room where promotions and successor slates are decided.</div>
+            <div style="font-size:11px;color:#CBD5E1;line-height:1.55;">Your Growth contributions are tabled at the annual talent review and succession planning discussion — the room where promotions and successor slates are decided.</div>
           </div>
           <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:9px;padding:15px;">
             <div style="font-size:19px;margin-bottom:7px;">📝</div>
@@ -1000,7 +1123,7 @@
           </div>
         </div>
         <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.1);font-size:11px;color:#94A3B8;line-height:1.6;">
-          <strong style="color:#E2E8F0;">On work hours and workload.</strong> Gigs are done outside office hours, or during office hours only with your manager's written permission. DJIs follow an agreed role split under Policy 211_2021. Your primary role and KPIs are never expected to absorb the difference — if a marketplace commitment starts to compromise your core work, raise it with your manager or PCD and it will be adjusted or ended. No one is penalised for that conversation.
+          <strong style="color:#E2E8F0;">On work hours and workload.</strong> Gigs are done outside office hours, or during office hours only with your manager's written permission. DJIs follow an agreed role split under Policy 211_2021. Your primary role and KPIs are never expected to absorb the difference — if a Growth commitment starts to compromise your core work, raise it with your manager or PCD and it will be adjusted or ended. No one is penalised for that conversation.
         </div>
       </div>
     </div>
@@ -1061,7 +1184,7 @@
         </div>
         <div style="font-size:12.5px;color:#374151;line-height:1.7;margin-bottom:6px;">
           Nobody sits and ranks you against every post. When a new opportunity goes live, an AI model reads your profile —
-          your skills, your stated aspiration, your marketplace history — against what the post actually asks for, and
+          your skills, your stated aspiration, your history in Growth — against what the post actually asks for, and
           returns a score with its reasoning. You can read that reasoning on every card, and you can disagree with it:
           <strong>the score never blocks an application.</strong> There is deliberately no minimum to apply.
         </div>
@@ -1600,7 +1723,7 @@
 
       <div class="card" style="padding:18px 20px;">
         <div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:4px;">Why this matters</div>
-        <div style="font-size:12px;color:#4B5563;line-height:1.7;">Nominated candidates are selected at <strong style="color:#111827;">41%</strong> against <strong style="color:#111827;">23%</strong> for self-applications — someone who knows the work vouching for a specific person is a stronger signal than a self-assessment. Nomination is also how the marketplace reaches people who would never put themselves forward, which is exactly the group that formal posting alone tends to miss.</div>
+        <div style="font-size:12px;color:#4B5563;line-height:1.7;">Nominated candidates are selected at <strong style="color:#111827;">41%</strong> against <strong style="color:#111827;">23%</strong> for self-applications — someone who knows the work vouching for a specific person is a stronger signal than a self-assessment. Nomination is also how Growth reaches people who would never put themselves forward, which is exactly the group that formal posting alone tends to miss.</div>
       </div>
     </div>
 
@@ -1822,7 +1945,7 @@
       </div>
       <div class="card" style="overflow:hidden;margin-bottom:20px;">
         <div style="padding:14px 16px;border-bottom:1px solid #F9FAFB;display:flex;justify-content:space-between;align-items:center;">
-          <div style="font-size:14px;font-weight:700;color:#111827;">Direct Reports — Marketplace Activity</div>
+          <div style="font-size:14px;font-weight:700;color:#111827;">Direct Reports — Growth Activity</div>
           <div style="font-size:12px;color:#9CA3AF;">Pilot · July 2026</div>
         </div>
         <div class="table-scroll">
@@ -1930,7 +2053,7 @@
         </div>
         <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:10px;padding:12px 16px;margin-bottom:20px;font-size:12px;color:#1E40AF;line-height:1.6;">
           🏢 <strong>Filling a permanent role?</strong> Raise the requisition in HC Connect as you always have — Growth does not
-          take vacancy applications. Once it is open there, ask People &amp; Culture to promote it on the marketplace vacancy
+          take vacancy applications. Once it is open there, ask People &amp; Culture to promote it on the Growth vacancy
           board so it reaches people who match it but were not looking.
         </div>
         <div class="card form-card">
@@ -1981,7 +2104,7 @@
                 <div class="card form-card" style="border:1px solid #DDD6FE;">
           <h3>🎁 What I can help others with</h3>
           <div style="background:#F5F3FF;border:1px solid #DDD6FE;border-radius:8px;padding:11px 13px;font-size:11px;color:#5B21B6;line-height:1.6;margin-bottom:16px;">
-            This is the one part of the marketplace that works in reverse. Rather than applying for work, you publish what you're willing to help with and teams come to you. Mentoring, a second opinion, a prototype, a walkthrough of something you know well — usually an hour or two at a time.
+            This is the one part of Growth that works in reverse. Rather than applying for work, you publish what you're willing to help with and teams come to you. Mentoring, a second opinion, a prototype, a walkthrough of something you know well — usually an hour or two at a time.
           </div>
 
           <div style="border:1px solid #E5E7EB;border-radius:9px;padding:14px;margin-bottom:10px;">
@@ -2052,7 +2175,7 @@
           <div class="card form-card">
             <h3>Skills</h3>
             <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;padding:11px 13px;font-size:11px;color:#1E40AF;line-height:1.6;margin-bottom:14px;">
-              ✅ <strong>How skills get verified.</strong> Anyone can claim a skill — so claims alone don't carry much weight here. A skill becomes <strong>Verified</strong> three ways: your manager endorses it, a host manager rates you 4★+ on marketplace work using it, or you complete a certification logged in the LMS. Verified skills rank higher in matching and are the only ones shown to post owners by default.
+              ✅ <strong>How skills get verified.</strong> Anyone can claim a skill — so claims alone don't carry much weight here. A skill becomes <strong>Verified</strong> three ways: your manager endorses it, a host manager rates you 4★+ on work you did through Growth, or you complete a certification logged in the LMS. Verified skills rank higher in matching and are the only ones shown to post owners by default.
             </div>
             <div class="field">
               <label>Current Skills</label>
@@ -2105,7 +2228,7 @@
           <span style="font-size:18px;">💡</span>
           <span style="font-size:15px;font-weight:700;">Business Impact — Pilot to Date</span>
         </div>
-        <div style="font-size:12px;color:#94A3B8;margin-bottom:18px;">Gigs, DJIs and service offers run end to end in the marketplace. Vacancy outcomes are on the band below — those we contribute to, we do not own.</div>
+        <div style="font-size:12px;color:#94A3B8;margin-bottom:18px;">Gigs, DJIs and service offers run end to end in Growth. Vacancy outcomes are on the band below — those we contribute to, we do not own.</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:18px;">
           <div>
             <div style="font-size:26px;font-weight:700;color:#4ADE80;font-variant-numeric:tabular-nums;">₱4.2M</div>
@@ -2135,7 +2258,7 @@
       <div style="background:#0F172A;border-radius:12px;padding:20px 22px;margin-bottom:24px;color:#fff;">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
           <span style="font-size:17px;">🎯</span>
-          <span style="font-size:15px;font-weight:700;">Vacancy contribution — what the marketplace sent to HC Connect</span>
+          <span style="font-size:15px;font-weight:700;">Vacancy contribution — what Growth sent to HC Connect</span>
         </div>
         <div style="font-size:11.5px;color:#94A3B8;margin-bottom:16px;line-height:1.6;">
           We do not run vacancy applications, so we do not claim vacancy hires. What we can claim is the handoff: who we put in
@@ -2339,12 +2462,12 @@
     <div class="page" id="page-admin-vacancies">
       <div class="page-header">
         <div class="page-title">🏢 Promoted Vacancies</div>
-        <div class="page-sub">Requisitions that live in HC Connect Internal Job Posting and are surfaced on the marketplace</div>
+        <div class="page-sub">Requisitions that live in HC Connect Internal Job Posting and are surfaced in Growth</div>
       </div>
 
       <div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:10px;padding:13px 16px;margin-bottom:20px;font-size:12px;color:#92400E;line-height:1.65;">
         ⚠️ <strong>This list is curated by hand, and that is a deliberate stopgap.</strong> HC Connect is the system of record; nothing
-        here creates, edits or closes a requisition. Promoting one only means the marketplace shows it and can hand people over.
+        here creates, edits or closes a requisition. Promoting one only means Growth shows it and can hand people over.
         In production this form is replaced by a nightly read from the HC Connect requisition feed — a hand-kept board goes stale, and
         a stale board that sends people to a closed role is worse than no board.
       </div>
@@ -2367,7 +2490,7 @@
           parameters, the code still reaches recruitment through the referral code the employee pastes into the source field — which
           is why the code is shown to them in full rather than only being carried on the URL.
         </div>
-        <button class="btn btn-red" onclick="promoteVacancy()">Promote to the marketplace</button>
+        <button class="btn btn-red" onclick="promoteVacancy()">Promote to Growth</button>
       </div>
 
       <div id="adminVacList"></div>
@@ -2377,7 +2500,7 @@
     <div class="page" id="page-admin-referrals">
       <div class="page-header">
         <div class="page-title">🎯 Referrals &amp; Attribution</div>
-        <div class="page-sub">How many people the marketplace sent to HC Connect Internal Job Posting — and how much of that anyone can prove</div>
+        <div class="page-sub">How many people Growth sent to HC Connect Internal Job Posting — and how much of that anyone can prove</div>
       </div>
 
       <div id="refFunnel"></div>
@@ -2386,7 +2509,7 @@
         <div style="font-size:13px;font-weight:700;color:#111827;margin-bottom:8px;">What each number is worth</div>
         <div style="font-size:12px;color:#374151;line-height:1.75;">
           <span class="prov prov-hard" style="margin:0 4px 0 0;">Measured here</span> Views and referrals happen inside this app.
-          They are exact, and they are the marketplace's own contribution — nobody can dispute them.<br>
+          They are exact, and they are Growth's own contribution — nobody can dispute them.<br>
           <span class="prov prov-soft" style="margin:6px 4px 0 0;">Self-reported</span> The employee told us they applied. Useful and
           free, but it flatters: people who applied are likelier to answer than people who did not. Quote it as self-reported or not at all.<br>
           <span class="prov prov-ext" style="margin:6px 4px 0 0;">From HC Connect</span> A row in the HC Connect export carries the referral
@@ -2423,11 +2546,11 @@
       <div class="card" style="padding:18px 20px;margin-top:14px;border-left:3px solid #C00000;">
         <div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:8px;">The honest limit: attribution is not causation</div>
         <div style="font-size:12px;color:#374151;line-height:1.8;">
-          A confirmed referral proves the marketplace was the last thing the person touched before applying. It does not prove they
+          A confirmed referral proves Growth was the last thing the person touched before applying. It does not prove they
           would not have applied anyway — some of them read the same role in the internal jobs newsletter that morning.<br><br>
           <strong>If someone challenges the number, there is exactly one clean answer: run a holdout.</strong> For one quarter, promote
-          a random half of open requisitions on the marketplace and leave the other half listed only in HC Connect. Compare internal
-          applications per requisition across the two groups. The difference is the marketplace's causal effect, and it is the only
+          a random half of open requisitions in Growth and leave the other half listed only in HC Connect. Compare internal
+          applications per requisition across the two groups. The difference is Growth's causal effect, and it is the only
           version of this number that survives a hostile reading. It costs nothing but the discipline to leave half the reqs alone.<br><br>
           Until that runs, report the funnel as it is labelled: referrals are ours, applications are HC Connect', and the word
           "because" belongs to neither of us yet.
@@ -2447,10 +2570,10 @@
         <div class="handoff-b">
           Matching only sees what is written down. A person with no skills on file matches nothing, sees an empty
           board, and does not come back — and asking 637 people to sit down and type their own skills before the
-          marketplace does anything for them is the wrong order of events.<br><br>
+          Growth does anything for them is the wrong order of events.<br><br>
           You almost certainly already hold this data: the HRIS competency table, the LMS completion export, the
           last capability assessment. Load it here and every profile starts populated. People then <strong>correct</strong>
-          their skills, which is a far easier ask than <strong>authoring</strong> them, and the marketplace works on day one.
+          their skills, which is a far easier ask than <strong>authoring</strong> them, and Growth works on day one.
         </div>
       </div>
 
@@ -2510,7 +2633,7 @@ HC-1088,Lionel Messi,Finance,Power BI;SQL;Data Analysis</div>
         <div class="page-sub">Every post and every application, including the ones that were rejected</div>
       </div>
       <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:10px;padding:12px 16px;margin-bottom:20px;font-size:12px;color:#1E40AF;line-height:1.6;">
-        🗂️ <strong>Nothing is deleted.</strong> Rejected posts and declined applications stay on the record — that history is what tells PCD whether the marketplace is working, and protects both applicants and post owners if a decision is questioned later.
+        🗂️ <strong>Nothing is deleted.</strong> Rejected posts and declined applications stay on the record — that history is what tells PCD whether Growth is working, and protects both applicants and post owners if a decision is questioned later.
       </div>
 
       <div class="tab-bar">
@@ -2553,7 +2676,7 @@ HC-1088,Lionel Messi,Finance,Power BI;SQL;Data Analysis</div>
 
       <div id="hist-sla" class="hist-pane" style="display:none;">
         <div style="background:#FEF2F2;border:1px solid #FECACA;border-radius:10px;padding:14px 16px;margin-bottom:16px;font-size:12px;color:#7F1D1D;line-height:1.65;">
-          ⏰ <strong>The 7-day rule.</strong> Applicants are promised a decision within seven working days. Past that, an automated reminder goes to the post owner, copied to PCD. A silent no is the fastest way to lose someone from the marketplace for good.
+          ⏰ <strong>The 7-day rule.</strong> Applicants are promised a decision within seven working days. Past that, an automated reminder goes to the post owner, copied to PCD. A silent no is the fastest way to lose someone from Growth for good.
         </div>
         <div class="card" style="overflow:hidden;">
           <div style="padding:14px 16px;border-bottom:1px solid #F3F4F6;font-size:14px;font-weight:700;color:#111827;">Applications past the 7-day commitment</div>
@@ -2619,12 +2742,12 @@ HC-1088,Lionel Messi,Finance,Power BI;SQL;Data Analysis</div>
 
         <details><summary>There's no extra pay — so what does the company actually give me in return? <span>+</span></summary>
           <div class="faq-body">
-            A fair question, and the honest answer is that "exposure" isn't payment. Marketplace work is unpaid, so Home Credit PH commits to four things in exchange. These are policy, not goodwill, and the People &amp; Culture Department (PCD) is accountable for delivering each — centrally, not devolved to your manager:<br><br>
+            A fair question, and the honest answer is that "exposure" isn't payment. Growth work is unpaid, so Home Credit PH commits to four things in exchange. These are policy, not goodwill, and the People &amp; Culture Department (PCD) is accountable for delivering each — centrally, not devolved to your manager:<br><br>
             <strong>1. A formal record on your file.</strong> Every completed engagement is logged permanently in your HR record with the host manager's rating. Not a favour someone might remember — a document.<br>
             <strong>2. Inclusion in the talent review.</strong> Your contributions are tabled at the annual talent review and succession planning discussion — the room where promotions and successor slates are decided.<br>
             <strong>3. A post-activity survey, immediately.</strong> The moment the engagement ends, PCD sends you the post-activity survey — what you learned, what you'd change, where you want it to lead. Sent automatically while the work is fresh, and it goes to PCD, not into a drawer.<br>
             <strong>4. First look at related roles.</strong> Complete work in a function and you're flagged as a priority internal candidate when a vacancy opens there.<br><br>
-            <strong>On workload.</strong> Your primary role and KPIs are never expected to absorb the difference. If a marketplace commitment starts compromising your core work, raise it with your manager or HRPP — it will be adjusted or ended, and no one is penalised for that conversation.<br><br>
+            <strong>On workload.</strong> Your primary role and KPIs are never expected to absorb the difference. If a Growth commitment starts compromising your core work, raise it with your manager or HRPP — it will be adjusted or ended, and no one is penalised for that conversation.<br><br>
             Beyond the commitments, the reasons people actually give: fulfilling your IDP, a creative outlet, genuine love of the work, test-driving a career pivot with zero risk, visibility with leaders outside your chain, a cross-functional network that compounds for your whole career, and a shorter learning curve when you do move roles.
           </div>
         </details>
@@ -2632,7 +2755,7 @@ HC-1088,Lionel Messi,Finance,Power BI;SQL;Data Analysis</div>
         <details><summary>Can I nominate someone else instead of applying myself? <span>+</span></summary>
           <div class="faq-body">
             Yes — and please do. Every opportunity in <strong>All Opportunities</strong> has a <strong>🤝 Nominate</strong> button beside Apply.<br><br>
-            <strong>Why it matters.</strong> Nominated candidates are selected at roughly <strong>41%</strong> against 23% for self-applications. Someone who has seen the work vouching for a specific person is a far stronger signal than a self-assessment. Nomination is also how the marketplace reaches the people who would never put themselves forward — often exactly the people who should.<br><br>
+            <strong>Why it matters.</strong> Nominated candidates are selected at roughly <strong>41%</strong> against 23% for self-applications. Someone who has seen the work vouching for a specific person is a far stronger signal than a self-assessment. Nomination is also how Growth reaches the people who would never put themselves forward — often exactly the people who should.<br><br>
             <strong>Especially for managers.</strong> You see your team's capability more clearly than they do. Nominating a team member is one of the highest-leverage things you can do in this platform: it costs you nothing, it signals to them that you back their growth, and it's tracked. Managers whose nominees get selected are recognised at the quarterly Exco review.<br><br>
             <strong>How to nominate well.</strong> You must say why they're the best applicant, and specificity is what gets picked up. "She rebuilt our reconciliation model in two weeks and trained the team on it" lands; "she'd be great" doesn't.<br><br>
             <strong>The nominee stays in control.</strong> They're notified, they see your reason, and they can accept or decline. Nobody is entered into anything without their consent.
@@ -2653,9 +2776,9 @@ HC-1088,Lionel Messi,Finance,Power BI;SQL;Data Analysis</div>
           <div class="faq-body">
             Anyone can claim a skill, so claims alone don't carry much weight. A skill becomes <strong>✅ Verified</strong> three ways:<br><br>
             <strong>1. Manager endorsement.</strong> Your direct manager confirms it. Request this from your profile in one click.<br>
-            <strong>2. Marketplace performance.</strong> A host manager rates you <strong>4★ or higher</strong> on work that used the skill — it's verified automatically. This is the strongest form, because it's evidence rather than opinion.<br>
+            <strong>2. Growth performance.</strong> A host manager rates you <strong>4★ or higher</strong> on work that used the skill — it's verified automatically. This is the strongest form, because it's evidence rather than opinion.<br>
             <strong>3. Certification.</strong> A completed certification logged in the LMS.<br><br>
-            Verified skills rank higher in matching and are the only ones shown to post owners by default. Self-declared skills still count — they just carry a lighter weight until something backs them up. Over time, completed marketplace work becomes the main source of truth about what people here can actually do.
+            Verified skills rank higher in matching and are the only ones shown to post owners by default. Self-declared skills still count — they just carry a lighter weight until something backs them up. Over time, completed Growth work becomes the main source of truth about what people here can actually do.
           </div>
         </details>
 
@@ -2699,7 +2822,7 @@ HC-1088,Lionel Messi,Finance,Power BI;SQL;Data Analysis</div>
             role you would never have searched for ends up in front of you.<br><br>
             <strong>What the referral code is for.</strong> When you open a vacancy from here, we generate a code like
             <span class="ref-code">GRW-K7P2QX</span> and pass it on the link. Paste it into the "How did you hear about this role?"
-            field in HC Connect. It is the only evidence that connects your application back to the marketplace — without it, the
+            field in HC Connect. It is the only evidence that connects your application back to Growth — without it, the
             recruitment report shows an application from nowhere and this page looks like it does nothing.<br><br>
             <strong>What it is not.</strong> It is not tracking your application, it does not follow you into HC Connect, and nobody
             sees your CV through Growth. The code carries which role you opened and that you came from here. Nothing else.
@@ -2757,7 +2880,7 @@ const ROLES = {
         { id: 'offer', emoji: '📣', label: 'Post an opportunity' },
       ]},
       { sec: 'Work' },
-      { group: 'discover', emoji: '🔎', label: 'Discover', children: [
+      { group: 'discover', emoji: '🧭', label: 'Discover', children: [
         { id: 'matches', emoji: '✨', label: 'My Matches' },
         { id: 'all-opps', emoji: '📃', label: 'All Opportunities' },
         { id: 'vacancies', emoji: '🏢', label: 'Internal Vacancies' },
@@ -2782,7 +2905,7 @@ const ROLES = {
         { id: 'offer', emoji: '📣', label: 'Post an opportunity' },
       ]},
       { sec: 'Work' },
-      { group: 'discover', emoji: '🔎', label: 'Discover', children: [
+      { group: 'discover', emoji: '🧭', label: 'Discover', children: [
         { id: 'matches', emoji: '✨', label: 'My Matches' },
         { id: 'all-opps', emoji: '📃', label: 'All Opportunities' },
         { id: 'vacancies', emoji: '🏢', label: 'Internal Vacancies' },
@@ -3400,7 +3523,7 @@ function previewReminder(appId) {
         </div>
         <div style="padding:16px 14px;font-size:12.5px;color:#374151;line-height:1.75;">
           <strong>${esc(a.applicant)}</strong> applied to <strong>${esc(a.opp_title)}</strong> ${d} days ago and has not had a decision.<br><br>
-          Our commitment to applicants is a response within ${SLA_DAYS} working days — a silent no is the single thing that stops people using the marketplace again. Please accept or decline, or reply to them directly if you need more time.<br><br>
+          Our commitment to applicants is a response within ${SLA_DAYS} working days — a silent no is the single thing that stops people using Growth again. Please accept or decline, or reply to them directly if you need more time.<br><br>
           If this post is no longer live, close it so it stops appearing in search.
         </div>
       </div>
@@ -3748,7 +3871,7 @@ function openFeedbackDialog(title, counterpart, perspective) {
 
       <div style="border-top:1px solid #F3F4F6;padding-top:18px;margin-bottom:4px;">
         <div style="font-size:12px;font-weight:700;color:#111827;margin-bottom:3px;">The three questions PCD actually acts on</div>
-        <div style="font-size:11px;color:#6B7280;line-height:1.55;margin-bottom:16px;">The star rating goes to the person you worked with. These three go to PCD — they're how the marketplace gets better, and how anyone knows what you want next.</div>
+        <div style="font-size:11px;color:#6B7280;line-height:1.55;margin-bottom:16px;">The star rating goes to the person you worked with. These three go to PCD — they're how Growth gets better, and how anyone knows what you want next.</div>
 
         <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;color:#374151;display:block;margin-bottom:6px;">${C.learned} <span style="color:#C00000;">*</span></label>
         <textarea id="fbLearned" placeholder="${C.learnedPh}" style="width:100%;padding:10px 12px;border:1px solid #E5E7EB;border-radius:8px;font-size:13px;font-family:Arial,system-ui,sans-serif;min-height:80px;resize:vertical;outline:none;color:#111827;margin-bottom:16px;"></textarea>
@@ -4056,7 +4179,7 @@ function switchTab(btn) {
    every number in the UI is labelled with which tier it came from:
 
      HARD  — referral clicks and views. Recorded here, exact, undisputable.
-             This is the marketplace's own contribution and it is the number
+             This is Growth's own contribution and it is the number
              that is genuinely ours.
      SOFT  — the employee's own "yes, I applied". Free, biased upward,
              quotable only as self-reported.
@@ -4343,7 +4466,7 @@ function openHandoffModal(v, r) {
 
       <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:9px;padding:12px 14px;font-size:12px;color:#1E40AF;line-height:1.7;margin-bottom:16px;">
         In ${esc(ATS_NAME)}, paste this code into <strong>“How did you hear about this role?”</strong>. It is the only thing that
-        connects your application back to the marketplace. Without it, recruitment sees an application from nowhere — and this
+        connects your application back to Growth. Without it, recruitment sees an application from nowhere — and this
         page cannot show it did anything.
       </div>
 
@@ -4639,7 +4762,7 @@ function funnelCells(m, dark) {
     : `<div class="funnel-cell"><div class="funnel-n">${n}</div><div class="funnel-l">${label}</div>
         <div class="funnel-s">${sub}</div><span class="prov ${provCls}">${prov}</span></div>`
   return [
-    cell(m.promoted, 'Vacancies promoted', 'Live on the marketplace board', 'Measured here', 'prov-hard'),
+    cell(m.promoted, 'Vacancies promoted', 'Live on the Growth board', 'Measured here', 'prov-hard'),
     cell(m.views === null ? '—' : m.views, 'People who saw one',
          m.views === null ? 'Count unavailable — not shown rather than guessed' : 'One per person, per role, per day',
          'Measured here', 'prov-hard'),
@@ -4720,7 +4843,7 @@ function exportReferralsCsv() {
    population.
 
    Matching only sees what is written down, so an empty profile is
-   worth nothing to its owner and nothing to the marketplace. Asking
+   worth nothing to its owner and nothing to Growth. Asking
    637 people to author their own skills before the product has done
    anything for them is the wrong order of events; loading what HR
    already holds and asking people to *correct* it is the right one.
@@ -4939,7 +5062,7 @@ function renderSkillCoverage() {
     </div>
     <div style="background:${pct < 50 ? '#FFFBEB' : '#F0FDF4'};border:1px solid ${pct < 50 ? '#FDE68A' : '#BBF7D0'};border-radius:10px;padding:11px 15px;margin-bottom:22px;font-size:12px;color:${pct < 50 ? '#92400E' : '#065F46'};line-height:1.65;">
       ${pct < 50
-        ? `⚠ <strong>${POP - people.size} people have no skills on file.</strong> Every one of them opens the marketplace to an empty match list. This is the number to drive to zero before launch — not sign-ups, not posts.`
+        ? `⚠ <strong>${POP - people.size} people have no skills on file.</strong> Every one of them opens Growth to an empty match list. This is the number to drive to zero before launch — not sign-ups, not posts.`
         : `✓ <strong>${pct}% of the population has skills on file.</strong> Matching has something to work with for most people on day one.`}
     </div>`
 }
