@@ -2,13 +2,21 @@
 
 **Population:** 637 employees · **Horizon:** 3 years · **FX:** ₱58 = US$1 · **Discount rate:** 10%
 **Recruitment system:** HC Connect Internal Job Posting (“HC Connect” throughout)
-**Prepared:** 18 August 2026 · **Model:** [`docs/v2-cba-model.py`](v2-cba-model.py)
+**Prepared:** 18 August 2026 · **Revised:** 2 September 2026 with IT's costed build
+**Model:** [`docs/v2-cba-model.py`](v2-cba-model.py)
 **Working spreadsheet:** [`docs/Growth-v2-CBA.xlsx`](Growth-v2-CBA.xlsx) — every figure below as a
 live model, with the vendor comparison. Change an assumption and the case recalculates.
 
 Supersedes the recommendation in [`docs/V2_COSTING.md`](V2_COSTING.md), which costed
 v2 as originally scoped at ₱1,542,136 over three years. This document costs the
 **lean** configuration and adds the benefit side.
+
+> **Build cost, revised.** IT has now costed the man-hours at **₱1,785,500** for the
+> whole build. That supersedes the ₱873,000 bottom-up planning estimate in §2, which
+> is kept below only to show what moved. Every figure downstream — TCO, BCR, NPV,
+> payback, the vendor multiples and the break-even — has been recalculated on IT's
+> number. The build is phased ₱1,454,200 in year 1 and ₱331,300 in year 2, following
+> the ship-promotion-first plan (lever A).
 
 ---
 
@@ -54,7 +62,7 @@ These are where promotion efficiency actually lives, and each is cheap:
 | PM/BA, 4 months at 30% @ ₱150k — includes recruitment-side coordination | 180,000 |
 | Security review + DPA assessment + referral-log DPIA | 120,000 |
 | Contingency (20%) | 118,500 |
-| **Build, year 1** | **₱711,000** (US$12,259) |
+| **Planning estimate, year 1** *(superseded)* | **₱711,000** |
 
 ### Year 2 build — the deferred referral engine
 
@@ -62,7 +70,15 @@ These are where promotion efficiency actually lives, and each is cheap:
 |---|---:|
 | Full-stack developer, 0.9 months @ ₱150k — referral engine + attribution reporting | 135,000 |
 | Contingency (20%) | 27,000 |
-| **Build, year 2** | **₱162,000** (US$2,793) |
+| **Planning estimate, year 2** *(superseded)* | **₱162,000** |
+
+### Build, as costed by IT
+
+| | ₱ |
+|---|---:|
+| Year 1 — promotion, matching, JD reader, handoff | 1,454,200 |
+| Year 2 — the deferred referral engine | 331,300 |
+| **Total build, costed by IT** | **₱1,785,500** (US$30,784) |
 
 ### Annual run
 
@@ -79,13 +95,15 @@ These are where promotion efficiency actually lives, and each is cheap:
 
 | | Year 1 | Year 2 | Year 3 | **3-year** | US$ | Per employee |
 |---|---:|---:|---:|---:|---:|---:|
-| **v2-lean** | 766,125 | 223,125 | 61,125 | **₱1,050,375** | $18,110 | ₱1,649 |
+| **v2-lean, on IT's costed build** | 1,509,325 | 392,425 | 61,125 | **₱1,962,875** | $33,843 | ₱3,081 |
+| *v2-lean, on our planning estimate* | *766,125* | *223,125* | *61,125* | *₱1,050,375* | *$18,110* | *₱1,649* |
 | v2 as first costed | 1,291,545 | 179,295 | 71,295 | ₱1,542,136 | $26,589 | ₱2,421 |
 | v1 | 990,807 | 60,807 | 60,807 | ₱1,112,420 | $19,180 | ₱1,746 |
 
-**₱550 per employee per year. 32% below v2 as first costed, and 6% below v1** —
-the lean build lands under the version that still ran vacancies in-house, which
-resolves the awkward finding in `V2_COSTING.md`.
+**₱1,027 per employee per year.** On IT's costed build the lean configuration is
+**27% above** v2 as first costed and **76% above** v1 — the lever savings are real,
+but the build itself is roughly twice what we estimated from the outside. The case
+still clears comfortably; it no longer clears on price alone.
 
 ---
 
@@ -93,12 +111,12 @@ resolves the awkward finding in `V2_COSTING.md`.
 
 | | 3-year | US$ | Per employee |
 |---|---:|---:|---:|
-| **v2-lean** | **₱1,050,375** | $18,110 | ₱1,649 |
+| **v2-lean** | **₱1,962,875** | $33,843 | ₱3,081 |
 | External platform — Gloat, Fuel50, Eightfold, Workday | ₱10.15M – ₱27.84M | $175,000 – 480,000 | ₱15,934 – ₱43,705 |
 
-**10× – 27× cheaper.** The framing that lands in a decision forum is not the
+**5× – 14× cheaper.** The framing that lands in a decision forum is not the
 multiple, it is the break-even: **a vendor at the low band needs 29 attributed
-internal hires over three years just to cover its own licence. v2-lean needs 3.**
+internal hires over three years just to cover its own licence. v2-lean needs 6.**
 
 Vendor pricing remains a planning band derived from how enterprise HR SaaS is
 structured, **not a quote** — none of these vendors publish per-seat pricing, and
@@ -156,19 +174,19 @@ assumes build spend lands in months 1–3 with no benefit until month 4.
 
 | Scenario | 3-yr benefit | 3-yr cost | Net | BCR | NPV @10% | Payback |
 |---|---:|---:|---:|---:|---:|---:|
-| Conservative — 2 hires/yr | ₱5,118,277 | ₱1,050,375 | ₱4,067,902 | 4.9 | ₱3,213,452 | 12 mo |
-| **Base — 4 hires/yr** | **₱7,126,154** | **₱1,050,375** | **₱6,075,779** | **6.8** | **₱4,837,655** | **9 mo** |
-| Optimistic — 7 hires/yr | ₱10,137,969 | ₱1,050,375 | ₱9,087,594 | 9.7 | ₱7,273,959 | 7 mo |
-| *Base, retention excluded entirely* | ₱4,015,754 | ₱1,050,375 | ₱2,965,379 | 3.8 | ₱2,321,604 | 14 mo |
-| *Retention only, zero vacancy hires* | ₱3,110,400 | ₱1,050,375 | ₱2,060,025 | 3.0 | ₱1,589,249 | 16 mo |
+| Conservative — 2 hires/yr | ₱5,118,277 | ₱1,962,875 | ₱3,155,402 | 2.6 | ₱2,397,898 | 18 mo |
+| **Base — 4 hires/yr** | **₱7,126,154** | **₱1,962,875** | **₱5,163,279** | **3.6** | **₱4,022,101** | **15 mo** |
+| Optimistic — 7 hires/yr | ₱10,137,969 | ₱1,962,875 | ₱8,175,094 | 5.2 | ₱6,458,406 | 12 mo |
+| *Base, retention excluded entirely* | ₱4,015,754 | ₱1,962,875 | ₱2,052,879 | 2.0 | ₱1,506,050 | 21 mo |
+| *Retention only, zero vacancy hires* | ₱3,110,400 | ₱1,962,875 | ₱1,147,525 | 1.6 | ₱773,695 | 25 mo |
 
 **The case survives the removal of either benefit stream.** Strip retention out
-entirely — the softest input — and it is still BCR 3.8, payback 14 months. Strip
+entirely — the softest input — and it is still BCR 2.0, payback 21 months. Strip
 out every vacancy hire instead and retention alone repays the three-year TCO in
-0.8 years. Both halves would have to be wrong simultaneously for this to fail.
+1.5 years. Both halves would have to be wrong simultaneously for this to fail.
 
-**Break-even is 1.0 attributed hires per year** — roughly one internal fill out
-of the ~60 internal requisitions opened annually, or a 1.7% hit rate.
+**Break-even is 1.9 attributed hires per year** — roughly two internal fills out
+of the ~60 internal requisitions opened annually, or a 3.1% hit rate.
 
 ---
 
@@ -176,25 +194,26 @@ of the ~60 internal requisitions opened annually, or a 1.7% hit rate.
 
 | Risk | Effect | Mitigation |
 |---|---|---|
-| **Recruitment declines the `Growth Marketplace` source field** | Every attributed peso becomes unprovable, and lever A's Q1 measurement disappears. BCR falls to the retention-only row (3.0). | Secure it **before** committing to the build. It is a form configuration change, not an integration — the single highest-leverage ask in the programme. |
-| **Retention lift is zero** | Benefits fall to the attributed rows. Still BCR 3.8. | Already modelled. Run the holdout in `V2_EXPLORATION.md` §7 to measure it properly. |
+| **Recruitment declines the `Growth Marketplace` source field** | Every attributed peso becomes unprovable, and lever A's Q1 measurement disappears. BCR falls to the retention-only row (1.6). | Secure it **before** committing to the build. It is a form configuration change, not an integration — the single highest-leverage ask in the programme. |
+| **Retention lift is zero** | Benefits fall to the attributed rows. Still BCR 2.0. | Already modelled. Run the holdout in `V2_EXPLORATION.md` §7 to measure it properly. |
 | **Adoption below 120 participants/yr** | Retention benefit scales linearly — 60 participants halves it to ₱648,000/yr. | Case still clears at BCR ~5 in the base scenario. |
 | **DPO blocks the referral log** | The whole attribution tier is unavailable. | Gating item — get the position before build, not after. Retention benefits are unaffected. |
-| **Build effort doubles** | 3-yr TCO ≈ ₱1.76M. BCR base falls to 4.0. | Still clears comfortably; still 6×–16× under the vendor bands. |
-| **FX to ₱65/US$** | TCO ≈ ₱1.18M. Vendor bands move proportionally. | Conclusion unchanged. |
+| **Build overruns by half** | 3-yr TCO ≈ ₱2.86M. BCR base falls to 2.5. | Still clears; still 3.5×–10× under the vendor bands. |
+| **FX to ₱65/US$** | Run costs rise slightly; the build is peso-denominated. Vendor bands move proportionally. | Conclusion unchanged. |
 
 **Excluded and material, as in v1:** ongoing internal ownership from year 2.
 Budget 0.2–0.3 FTE (₱360k–₱540k/yr fully loaded) before comparing against a
-vendor whose support SLA is contractual. At 0.25 FTE the base-case BCR falls
-from 6.8 to roughly 3.1 — still a clear yes, but it is the most
-under-estimated line in any build-vs-buy and should not be left out of the paper.
+vendor whose support SLA is contractual. At 0.25 FTE the three-year cost is ₱3.31M and the
+base-case BCR falls from 3.6 to roughly 2.2 — still a clear yes, but it is the
+most under-estimated line in any build-vs-buy and should not be left out of the paper.
 
 ---
 
 ## 7. Recommendation
 
-1. **Build v2-lean.** ₱766,125 in year 1, ₱1,050,375 over three years, base-case
-   BCR 6.8 with a 9-month payback — and cheaper than v1 despite doing more.
+1. **Build v2-lean.** ₱1,509,325 in year 1 and ₱1,962,875 over three years on IT's
+   costed build, base-case BCR 3.6 with a 15-month payback. The case clears every
+   stress scenario in §5, including the one that deletes the retention benefit outright.
 2. **Get the source field committed first.** It is free, it carries Q1
    attribution on its own, and without it the attributed half of the case
    evaporates. Do not start the build until recruitment has agreed.

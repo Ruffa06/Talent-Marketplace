@@ -34,22 +34,31 @@ run_y1 = {'Supabase Pro + Auth (US$25/mo)': 25*12*FX, 'Claude API — Sonnet 5, 
           'Transactional email (incl. the nudge)': 8_700, 'Monitoring and logging': 6_960}
 run_y2 = dict(run_y1); run_y2['Reconciliation — 4 hrs/quarter, PCD analyst'] = 4*4*(60_000/160)
 
-B1, B2 = sum(build_y1.values())*C, sum(build_y2.values())*C
+# IT has costed the man-hours: P1,785,500 for the whole build. That supersedes the
+# bottom-up planning estimate below, which is kept only to show what moved and why.
+IT_BUILD = 1_785_500
+plan_y1, plan_y2 = sum(build_y1.values())*C, sum(build_y2.values())*C
+B1 = round(IT_BUILD * plan_y1/(plan_y1+plan_y2), -2)   # ship promotion first
+B2 = IT_BUILD - B1
 R1, R2 = sum(run_y1.values()), sum(run_y2.values())
 cost = [B1+R1, B2+R2, R2]; TCO = sum(cost)
 
-print('══ v2-LEAN · COST BREAKDOWN ══\nYEAR 1 BUILD')
+print('══ v2-LEAN · COST BREAKDOWN ══')
+print(f'BUILD, COSTED BY IT  {m(IT_BUILD)}  →  year 1 {m(B1)} · year 2 {m(B2)}')
+print(f'   (our planning estimate was {m(plan_y1+plan_y2)} — kept below to show what moved)')
+print('YEAR 1 BUILD — planning estimate, superseded')
 for k,v in build_y1.items(): print(f'   {k:<72}{m(v):>11}')
-print(f'   {"Contingency (20%)":<72}{m(sum(build_y1.values())*0.2):>11}\n   {"":<72}{m(B1):>11}  US${B1/FX:,.0f}')
-print('YEAR 2 BUILD — the deferred referral engine (lever A)')
+print(f'   {"Contingency (20%)":<72}{m(sum(build_y1.values())*0.2):>11}\n   {"":<72}{m(plan_y1):>11}')
+print('YEAR 2 BUILD — planning estimate, superseded (deferred referral engine, lever A)')
 for k,v in build_y2.items(): print(f'   {k:<72}{m(v):>11}')
-print(f'   {"Contingency (20%)":<72}{m(sum(build_y2.values())*0.2):>11}\n   {"":<72}{m(B2):>11}  US${B2/FX:,.0f}')
+print(f'   {"Contingency (20%)":<72}{m(sum(build_y2.values())*0.2):>11}\n   {"":<72}{m(plan_y2):>11}')
 print('ANNUAL RUN')
 for k in run_y2: print(f'   {k:<72}{m(run_y2[k]):>11}' + ('' if k in run_y1 else '  Y2+ only'))
 print(f'   {"Y1 / Y2+":<72}{m(R1)+" / "+m(R2):>11}')
 print(f'\n   Y1 {m(cost[0])}  |  Y2 {m(cost[1])}  |  Y3 {m(cost[2])}')
 print(f'   3-YEAR TCO {m(TCO)}  US${TCO/FX:,.0f}  ·  {m(TCO/EMP)}/employee  ·  {m(TCO/EMP/3)}/employee/yr')
 print(f'   vs v2 as costed P1,542,136 → {(TCO/1_542_136-1)*100:+.0f}%   ·   vs v1 P1,112,420 → {(TCO/1_112_420-1)*100:+.0f}%')
+print(f'   (on our planning estimate the TCO would have been {m(plan_y1+plan_y2+R1+2*R2)})')
 
 # ══ COMPETITION ═══════════════════════════════════════════════════
 vlo3, vhi3 = (75_000+2*50_000)*FX, (240_000+2*120_000)*FX
