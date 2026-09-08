@@ -60,6 +60,10 @@
 
   .role-switcher label { font-size: 10px; color: #9CA3AF; display: block; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 0.5px; font-weight: 600; }
 
+  .topbar-reset { font-size: 11px; color: rgba(255,255,255,0.72); border: 1px solid rgba(255,255,255,0.28);
+    border-radius: 20px; padding: 3px 10px; cursor: pointer; white-space: nowrap; }
+  .topbar-reset:hover { color: #fff; border-color: rgba(255,255,255,0.6); }
+  @media (max-width: 700px) { .topbar-reset { display: none; } }
   .role-select {
     width: 100%;
     background: #F9FAFB;
@@ -471,6 +475,15 @@
     position: relative; display: inline-flex; align-items: center; gap: 3px;
     cursor: help; border-bottom: 1px dotted #9CA3AF;
   }
+  .app-count { font-size: 11.5px; color: #6B7280; margin-top: 9px; display: flex; align-items: center; gap: 6px; }
+  .app-count strong { color: #111827; }
+  .done-row { border: 1px solid #E5E7EB; border-radius: 9px; padding: 13px 15px; margin-bottom: 11px; }
+  .done-row.pending { border-style: dashed; background: #FFFBEB; border-color: #FDE68A; }
+  .done-t { font-size: 13px; font-weight: 700; color: #111827; }
+  .done-m { font-size: 11px; color: #9CA3AF; margin-top: 2px; }
+  .done-q { font-size: 12px; color: #374151; line-height: 1.6; margin-top: 8px; font-style: italic; }
+  .done-stars { color: #F59E0B; font-size: 13px; letter-spacing: 1px; }
+  .prof-sec { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.4px; color: #9CA3AF; margin: 18px 0 8px; }
   .why-match .why-match-pop {
     visibility: hidden; opacity: 0; transition: opacity .15s;
     position: absolute; bottom: calc(100% + 8px); right: 0; z-index: 60;
@@ -863,6 +876,7 @@
     <div class="topbar-brand"><svg class="mark topbar-mark" viewBox="0 0 48 48" fill="none" aria-hidden="true"><path d="M10.98 34.93A17 17 0 1 1 37.02 34.93" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><path d="M24 36.4V17.9" stroke="currentColor" stroke-width="6" stroke-linecap="round"/><path d="M17 24.9 24 17.9 31 24.9" stroke="currentColor" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/></svg><div class="topbar-title">Growth</div></div>
     <div class="topbar-right">
       <span class="topbar-live" id="liveStatus" onclick="promptLiveName()" title="Shared pilot state"><span class="live-dot off"></span><span id="liveStatusText">connecting…</span></span>
+      <span class="topbar-reset" id="resetLocal" onclick="resetLocal()" title="Clear the posts, applications, skill edits and ratings made in this browser, and start the demo from the seeded state again">↺ Reset demo</span>
       <span class="topbar-user" id="topbarUser">Taylor Swift · Manager</span>
       <div class="topbar-avatar" id="topbarAvatar">TS</div>
     </div>
@@ -875,7 +889,7 @@
       <div class="hero hero-lg">
         <div class="hero-eyebrow">Internal opportunities at Home Credit&nbsp;PH</div>
         <div class="hero-title">Your next growth&nbsp;move<br class="hero-br">is already&nbsp;here.</div>
-        <div class="hero-body">Home Credit is full of work that could stretch you — and people who could learn from what you already know. <strong>Growth</strong> puts the two in the same place. Try the interest your role never had room for. Put a skill nobody knows you have to work. Help another business unit while your own career moves.<br><br>No transfer. No waiting for the next cycle. It happens where you already are.</div>
+        <div class="hero-body">Home Credit is full of work that could stretch you — and people who could learn from what you already know. <strong>Growth</strong> puts the two in the same place. Try the interest your role never had room for. Put a skill nobody knows you have to work. Help another business unit while your own career moves.<br><br>No transfer. No waiting for the next cycle. It happens where you already are — and you find out what you are ready for by doing it, not by wondering.</div>
         <svg class="hero-watermark" viewBox="0 0 48 48" fill="none" aria-hidden="true">
           <path d="M10.98 34.93A17 17 0 1 1 37.02 34.93" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
           <path d="M24 36.4V17.9" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
@@ -885,9 +899,41 @@
           <div class="hero-ico"><span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M16.2 16.2 21 21"/></svg></span><div><b>Discover</b><i>Work you didn't know existed</i></div></div>
           <div class="hero-ico"><span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M3 17.5 9 11l4 4 8-8"/><path d="M15.5 3H21v5.5"/></svg></span><div><b>Grow</b><i>Without leaving Home Credit</i></div></div>
           <div class="hero-ico"><span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><circle cx="12" cy="12" r="8.5"/><circle cx="12" cy="12" r="3.4"/></svg></span><div><b>Get matched</b><i>Scored against what you can already do</i></div></div>
+          <div class="hero-ico"><span><svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M12 3.5 14.6 9l6 .9-4.3 4.2 1 6-5.3-2.8L6.7 20l1-6L3.4 9.9 9.4 9z"/></svg></span><div><b>Find out you're ready</b><i>Proof, not a hunch</i></div></div>
         </div>
       </div>
 
+
+      <!-- The three routes -->
+      <div style="font-size:16px;font-weight:700;color:#111827;margin-bottom:4px;">Three ways to grow here</div>
+      <div style="font-size:13px;color:#6B7280;margin-bottom:16px;">Two you apply for. One you offer. Permanent roles are the fourth — listed here, applied for in HC Connect.</div>
+      <div class="growth-grid">
+        <div class="card" style="padding:22px;">
+          <div style="font-size:26px;margin-bottom:10px;">⚡</div>
+          <div style="margin-bottom:8px;"><span class="badge badge-gig">Gig</span></div>
+          <div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:6px;">Gig</div>
+          <div style="font-size:12px;color:#6B7280;line-height:1.6;">Short-term project, <strong>a few hours to a few weeks</strong>. Work on real initiatives without changing roles. Done outside work hours or with your manager's written permission.</div>
+        </div>
+        <div class="card" style="padding:22px;">
+          <div style="font-size:26px;margin-bottom:10px;">🌱</div>
+          <div style="margin-bottom:8px;"><span class="badge badge-dji">DJI</span></div>
+          <div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:6px;">Developmental Job Immersion</div>
+          <div style="font-size:12px;color:#6B7280;line-height:1.6;">Temporary assignment to another role or function, <strong>3&nbsp;–&nbsp;9&nbsp;months</strong>. Develop yourself for a future role, or be assessed for a target position — without leaving the company.</div>
+          <div class="dji-policy-box">
+            <strong>📄 Policy 211_2021 v1.0 applies</strong>
+            Before starting, you, your Direct Manager, and the Host Manager co-design a DJI Plan: goals, degree of immersion (100% full or partial split), expected outputs, and how performance will be evaluated. All four parties — employee, Direct Manager, Host Manager, and HR People Partner — sign off using the official DJI Form. Your headcount, salary, and benefits remain with your home department throughout.
+          </div>
+        </div>
+        <div class="card" style="padding:22px;border:1px solid #DDD6FE;">
+          <div style="font-size:26px;margin-bottom:10px;">🎁</div>
+          <div style="margin-bottom:8px;"><span class="badge badge-offer">Offer</span></div>
+          <div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:6px;">Service Offer</div>
+          <div style="font-size:12px;color:#6B7280;line-height:1.6;">The only one that works in reverse. Instead of applying for work, you <strong>publish what you're willing to help with</strong> — mentoring on product and customer segments, vibe-coding a prototype, reviewing a pricing model, coaching a first-time presenter. Teams come to you.</div>
+          <div style="margin-top:12px;background:#F5F3FF;border:1px solid #DDD6FE;border-radius:8px;padding:10px 12px;font-size:11px;color:#5B21B6;line-height:1.5;">
+            <strong>Usually an hour or two at a time.</strong> You set your own capacity and can pause any time. Every completed request is logged on your profile — the fastest way to build an internal reputation for what you're genuinely good at.
+          </div>
+        </div>
+      </div>
 
       <!-- ══ How Growth works — process flow ══ -->
       <div class="flow">
@@ -943,38 +989,6 @@
         </div>
         </div>
       </div>
-
-      <!-- The three routes -->
-      <div style="font-size:16px;font-weight:700;color:#111827;margin-bottom:4px;">Three ways to grow here</div>
-      <div style="font-size:13px;color:#6B7280;margin-bottom:16px;">Two you apply for. One you offer. Permanent roles are the fourth — listed here, applied for in HC Connect.</div>
-      <div class="growth-grid">
-        <div class="card" style="padding:22px;">
-          <div style="font-size:26px;margin-bottom:10px;">⚡</div>
-          <div style="margin-bottom:8px;"><span class="badge badge-gig">Gig</span></div>
-          <div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:6px;">Gig</div>
-          <div style="font-size:12px;color:#6B7280;line-height:1.6;">Short-term project, <strong>a few hours to a few weeks</strong>. Work on real initiatives without changing roles. Done outside work hours or with your manager's written permission.</div>
-        </div>
-        <div class="card" style="padding:22px;">
-          <div style="font-size:26px;margin-bottom:10px;">🌱</div>
-          <div style="margin-bottom:8px;"><span class="badge badge-dji">DJI</span></div>
-          <div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:6px;">Developmental Job Immersion</div>
-          <div style="font-size:12px;color:#6B7280;line-height:1.6;">Temporary assignment to another role or function, <strong>3&nbsp;–&nbsp;9&nbsp;months</strong>. Develop yourself for a future role, or be assessed for a target position — without leaving the company.</div>
-          <div class="dji-policy-box">
-            <strong>📄 Policy 211_2021 v1.0 applies</strong>
-            Before starting, you, your Direct Manager, and the Host Manager co-design a DJI Plan: goals, degree of immersion (100% full or partial split), expected outputs, and how performance will be evaluated. All four parties — employee, Direct Manager, Host Manager, and HR People Partner — sign off using the official DJI Form. Your headcount, salary, and benefits remain with your home department throughout.
-          </div>
-        </div>
-        <div class="card" style="padding:22px;border:1px solid #DDD6FE;">
-          <div style="font-size:26px;margin-bottom:10px;">🎁</div>
-          <div style="margin-bottom:8px;"><span class="badge badge-offer">Offer</span></div>
-          <div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:6px;">Service Offer</div>
-          <div style="font-size:12px;color:#6B7280;line-height:1.6;">The only one that works in reverse. Instead of applying for work, you <strong>publish what you're willing to help with</strong> — mentoring on product and customer segments, vibe-coding a prototype, reviewing a pricing model, coaching a first-time presenter. Teams come to you.</div>
-          <div style="margin-top:12px;background:#F5F3FF;border:1px solid #DDD6FE;border-radius:8px;padding:10px 12px;font-size:11px;color:#5B21B6;line-height:1.5;">
-            <strong>Usually an hour or two at a time.</strong> You set your own capacity and can pause any time. Every completed request is logged on your profile — the fastest way to build an internal reputation for what you're genuinely good at.
-          </div>
-        </div>
-      </div>
-
 
       <!-- v2 — vacancies are promoted here and applied for in HC Connect -->
       <div class="handoff-band">
@@ -1080,9 +1094,10 @@
 
       <!-- Why apply -->
       <div style="margin-bottom:28px;">
-        <div style="font-size:16px;font-weight:700;color:#111827;margin-bottom:5px;">6 real reasons to apply</div>
+        <div style="font-size:16px;font-weight:700;color:#111827;margin-bottom:5px;">7 real reasons to apply</div>
         <div style="font-size:13px;color:#6B7280;margin-bottom:16px;">Growth work doesn't come with extra pay — it comes with a formal commitment from Home Credit PH in return. Here's what's in it for you.</div>
         <div class="why-grid">
+          <div class="why-card"><div class="why-icon">⭐</div><div class="why-title">Find out you're readier than you think</div><div class="why-body">The commonest reason people do not apply internally is not lack of interest — it is not feeling ready. A gig is the low-risk way to find out. You do the work, a host manager rates it, and the answer is on your record instead of in your head.</div></div>
           <div class="why-card"><div class="why-icon">📋</div><div class="why-title">Fulfill your IDP</div><div class="why-body">Turn your Individual Development Plan from a paper exercise into a real, visible action your manager can endorse.</div></div>
           <div class="why-card"><div class="why-icon">🎨</div><div class="why-title">Work that actually energises you</div><div class="why-body">If your role doesn't let you flex certain muscles, a gig will. Some people simply love a particular kind of problem — that is reason enough, and nobody here will ask you to justify it.</div></div>
           <div class="why-card"><div class="why-icon">🧭</div><div class="why-title">Career pivot test drive</div><div class="why-body">Curious about another function? A gig or DJI lets you try a different career path with zero risk before committing.</div></div>
@@ -1220,7 +1235,7 @@
       <!-- Skills invitation banner -->
       <div style="background:linear-gradient(135deg,#0F172A 0%,#1E3A5F 60%,#0F172A 100%);border-radius:12px;padding:20px 24px;margin-bottom:20px;color:#fff;display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
         <div style="flex:1;min-width:260px;">
-          <div style="font-size:15px;font-weight:700;margin-bottom:5px;">You're matching on 4 skills. There are 28 live opportunities.</div>
+          <div style="font-size:15px;font-weight:700;margin-bottom:5px;">You're matching on <span id="mySkillCount">4</span> skills. There are 28 live opportunities.</div>
           <div style="font-size:12px;color:#CBD5E1;line-height:1.6;">Every skill you add opens a door you can't currently see. People who list <strong style="color:#fff;">8 or more skills</strong> get matched to roughly three times as many opportunities — including the ones in functions they'd never have thought to look at.</div>
           <div style="margin-top:11px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
             <div style="flex:1;min-width:150px;max-width:260px;height:6px;background:rgba(255,255,255,0.15);border-radius:4px;overflow:hidden;">
@@ -1866,7 +1881,7 @@
         </div>
         <button class="btn btn-amber btn-sm" onclick="openFeedbackDialog('Process Automation Gig — Finance Ops','Cristiano Ronaldo','host')">Complete survey →</button>
       </div>
-      <div class="card" style="margin-bottom:14px;">
+      <div class="card" id="openingCard" data-opp="DJI: Business Intelligence — FP&amp;A Team" data-req="SQL; Power BI; Financial Modelling" style="margin-bottom:14px;">
         <div style="padding:16px 20px;border-bottom:1px solid #F9FAFB;">
           <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;">
             <div>
@@ -1874,7 +1889,7 @@
                 <span class="badge badge-dji">DJI</span>
                 <span style="font-size:14px;font-weight:700;color:#111827;">DJI: Business Intelligence — FP&A Team</span>
               </div>
-              <div style="font-size:12px;color:#9CA3AF;">Finance Department · 6 months · 4 applicants</div>
+              <div style="font-size:12px;color:#9CA3AF;">Finance Department · 6 months · <span id="openingCount">4</span> applicants · asks for SQL, Power BI, Financial Modelling</div>
             </div>
             <span class="badge badge-approved">Approved</span>
           </div>
@@ -1886,9 +1901,10 @@
               <span style="font-size:13px;font-weight:700;color:#111827;">Cristiano Ronaldo</span>
               <span class="badge" style="background:#DCFCE7;color:#166534;border:1px solid #BBF7D0;">Your direct report</span>
             </div>
-            <div style="font-size:11px;color:#9CA3AF;">Finance · SQL, Excel, Financial Modelling · <strong style="color:#16A34A;">88% match</strong> · <em>Conversation scheduled</em></div>
+            <div class="app-meta-line" data-person="Cristiano Ronaldo" data-note="Conversation scheduled" style="font-size:11px;color:#9CA3AF;"></div>
           </div>
           <div id="actions-cr" style="display:flex;gap:7px;">
+            <button class="btn btn-outline btn-sm" onclick="openApplicantProfile('Cristiano Ronaldo','DJI: Business Intelligence — FP&amp;A Team')">👤 Profile</button>
             <button class="btn btn-green btn-sm" onclick="acceptApplicant(this,'Cristiano Ronaldo')">✓ Accept</button>
             <button class="btn btn-outline btn-sm" onclick="declineApplicant(this,'Cristiano Ronaldo')">✕ Decline</button>
           </div>
@@ -1897,9 +1913,10 @@
           <div class="app-avatar" style="background:#C00000;">LJ</div>
           <div style="flex:1;">
             <div style="font-size:13px;font-weight:700;color:#111827;">LeBron James</div>
-            <div style="font-size:11px;color:#9CA3AF;">Operations · Power BI, SQL, Excel · <strong style="color:#16A34A;">85% match</strong></div>
+            <div class="app-meta-line" data-person="LeBron James" style="font-size:11px;color:#9CA3AF;"></div>
           </div>
           <div id="actions-lj" style="display:flex;gap:7px;">
+            <button class="btn btn-outline btn-sm" onclick="openApplicantProfile('LeBron James','DJI: Business Intelligence — FP&amp;A Team')">👤 Profile</button>
             <button class="btn btn-green btn-sm" onclick="acceptApplicant(this,'LeBron James')">✓ Accept</button>
             <button class="btn btn-outline btn-sm" onclick="declineApplicant(this,'LeBron James')">✕ Decline</button>
           </div>
@@ -1911,10 +1928,11 @@
               <span style="font-size:13px;font-weight:700;color:#111827;">Zendaya Coleman</span>
               <span class="badge badge-nominated">🤝 Nominated</span>
             </div>
-            <div style="font-size:11px;color:#6B7280;">Finance · Financial Modelling, SQL · <strong style="color:#16A34A;">78% match</strong></div>
+            <div class="app-meta-line" data-person="Zendaya Coleman" style="font-size:11px;color:#9CA3AF;"></div>
             <div style="font-size:11px;color:#9F1239;margin-top:3px;line-height:1.5;font-style:italic;">"Nominated by <strong>Taylor Swift</strong> — she rebuilt our reconciliation model in two weeks and then trained the whole team to run it. She won't put herself forward, so I'm doing it."</div>
           </div>
           <div id="actions-ze" style="display:flex;gap:7px;">
+            <button class="btn btn-outline btn-sm" onclick="openApplicantProfile('Zendaya Coleman','DJI: Business Intelligence — FP&amp;A Team')">👤 Profile</button>
             <button class="btn btn-green btn-sm" onclick="acceptApplicant(this,'Zendaya')">✓ Accept</button>
             <button class="btn btn-outline btn-sm" onclick="declineApplicant(this,'Zendaya')">✕ Decline</button>
           </div>
@@ -1923,9 +1941,10 @@
           <div class="app-avatar" style="background:#7C3AED;">ES</div>
           <div style="flex:1;">
             <div style="font-size:13px;font-weight:700;color:#111827;">Ed Sheeran</div>
-            <div style="font-size:11px;color:#9CA3AF;">IT · Power BI, Data Analysis · <strong style="color:#D97706;">72% match</strong></div>
+            <div class="app-meta-line" data-person="Ed Sheeran" style="font-size:11px;color:#9CA3AF;"></div>
           </div>
           <div id="actions-es" style="display:flex;gap:7px;">
+            <button class="btn btn-outline btn-sm" onclick="openApplicantProfile('Ed Sheeran','DJI: Business Intelligence — FP&amp;A Team')">👤 Profile</button>
             <button class="btn btn-green btn-sm" onclick="acceptApplicant(this,'Ed Sheeran')">✓ Accept</button>
             <button class="btn btn-outline btn-sm" onclick="declineApplicant(this,'Ed Sheeran')">✕ Decline</button>
           </div>
@@ -2066,8 +2085,8 @@
           <div class="field"><label>Description</label><textarea id="postDesc" placeholder="What will the person be doing? What problem are we solving?"></textarea></div>
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
             <div class="field"><label>Bandwidth</label><select><option>Ad-hoc</option><option>30% allocation</option><option>50% allocation</option><option>Full-time</option></select></div>
-            <div class="field"><label>Estimated effort</label><input placeholder="e.g. ~8 hours total"></div>
-            <div class="field"><label>Slots</label><input type="number" value="2" min="1"></div>
+            <div class="field"><label>Estimated effort</label><input id="postEffort" placeholder="e.g. ~8 hours total"></div>
+            <div class="field"><label>Slots</label><input id="postSlots" type="number" value="2" min="1"></div>
           </div>
           <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;">
             <div class="field"><label>Start date <span style="color:#C00000;">*</span></label><input type="date" value="2026-08-04"></div>
@@ -2079,8 +2098,9 @@
           </div>
           <div class="field">
             <label>Key Skills Required</label>
-            <div class="chip-row" style="margin-bottom:8px;"><span class="skill-chip">Excel</span><span class="skill-chip">Data Analysis</span><span class="skill-chip">HR Analytics</span></div>
-            <input placeholder="Type a skill and press Enter…">
+            <div id="postSkills" class="chip-row" style="margin-bottom:8px;"><span class="skill-chip removable" onclick="removeSkill(this)">Excel ×</span><span class="skill-chip removable" onclick="removeSkill(this)">Data Analysis ×</span><span class="skill-chip removable" onclick="removeSkill(this)">HR Analytics ×</span></div>
+            <input id="postSkillInput" placeholder="Type a skill and press Enter…" onkeydown="if(event.key==='Enter'){addPostSkill();event.preventDefault()}">
+            <div style="font-size:11px;color:#6B7280;line-height:1.55;margin-top:7px;">These are what people are scored against. Ask for what the work genuinely needs — every extra skill you list quietly filters out someone who could have done it after a week of ramp-up.</div>
           </div>
           <div class="field">
             <label>Attachments <span style="font-weight:400;color:#9CA3AF;">(optional)</span></label>
@@ -2175,7 +2195,11 @@
           <div class="card form-card">
             <h3>Skills</h3>
             <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;padding:11px 13px;font-size:11px;color:#1E40AF;line-height:1.6;margin-bottom:14px;">
-              ✅ <strong>How skills get verified.</strong> Anyone can claim a skill — so claims alone don't carry much weight here. A skill becomes <strong>Verified</strong> three ways: your manager endorses it, a host manager rates you 4★+ on work you did through Growth, or you complete a certification logged in the LMS. Verified skills rank higher in matching and are the only ones shown to post owners by default.
+              ✅ <strong>Where each skill came from, and what it is worth.</strong>
+              <span style="display:block;margin-top:6px;">✅ <strong>Verified</strong> — endorsed by a manager, or earned on work a host manager rated 4★ or better. Counts in full.<br>
+              📥 <strong>Uploaded by HR</strong> — loaded in bulk from HRIS and LMS records. Trusted more than a claim, less than an endorsement.<br>
+              ✏️ <strong>Added by you</strong> — typed on this page. It counts, but least.</span>
+              <span style="display:block;margin-top:6px;">Anyone can claim a skill — so claims alone don't carry much weight here. Add or remove anything below and every match score on this app is recalculated the moment you do.</span>
             </div>
             <div class="field">
               <label>Current Skills</label>
@@ -2184,12 +2208,7 @@
                 held. They are a starting point, not a verdict — remove anything that is wrong and add what is missing.
                 Correcting a list is much quicker than writing one, and matching only ever sees what is on this page.
               </div>
-              <div id="current-skills" class="chip-row" style="margin-bottom:8px;">
-                <span class="skill-chip removable" onclick="removeSkill(this)" style="background:#D1FAE5;border-color:#A7F3D0;color:#065F46;" title="Verified — endorsed by your manager">✅ Talent Acquisition ×</span>
-                <span class="skill-chip removable" onclick="removeSkill(this)" style="background:#D1FAE5;border-color:#A7F3D0;color:#065F46;" title="Verified — 5★ from host manager, HR Analytics Gig">✅ HRBP ×</span>
-                <span class="skill-chip removable" onclick="removeSkill(this)">Labor Relations ×</span>
-                <span class="skill-chip removable" onclick="removeSkill(this)">Excel ×</span>
-              </div>
+              <div id="current-skills" class="chip-row" style="margin-bottom:8px;"><!-- filled by renderProfileSkills() --></div>
               <div id="skillProvenance" style="display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:#6B7280;margin-bottom:10px;"></div>
               <div style="display:flex;gap:7px;">
                 <input id="current-skill-input" placeholder="Type a skill…" style="flex:1;padding:7px 10px;border:1px solid #E5E7EB;border-radius:7px;font-size:13px;font-family:inherit;outline:none;" onkeydown="if(event.key==='Enter'){addSkill('current');event.preventDefault()}">
@@ -2208,6 +2227,16 @@
                 <button class="btn btn-outline btn-sm" onclick="addSkill('develop')">+ Add</button>
               </div>
             </div>
+          </div>
+
+          <div class="card form-card">
+            <h3>Work completed through Growth</h3>
+            <div style="font-size:11.5px;color:#6B7280;line-height:1.6;margin-bottom:14px;">
+              Every gig, DJI and service offer you have finished, with the host manager's rating and what they wrote.
+              This is the part that outlives the engagement: a 4★ or better rating verifies the skills the work used,
+              and a verified skill is worth more in matching than anything you can type about yourself.
+            </div>
+            <div id="completedWork"></div>
           </div>
 
           <button class="btn btn-red" onclick="saveProfile()">Save Profile</button>
@@ -2809,6 +2838,7 @@ HC-1088,Lionel Messi,Finance,Power BI;SQL;Data Analysis</div>
             <strong>Bench strength.</strong> A broader-skilled team member is more valuable to your team. They can cross-cover and bring back capabilities you don't have to hire for.<br><br>
             <strong>Employer brand.</strong> Managers who support mobility are the ones top talent wants to work for.<br><br>
             <strong>The math.</strong> For gigs and DJIs at partial capacity, you still have 50–80% of your team member for the duration. Most managers find this workable — especially versus losing the person entirely.<br><br>
+            <strong>And remember how you got here.</strong> Almost nobody reaches a management seat without someone above them saying yes to a stretch they were not obviously ready for. If the managers you had at the time had held on to you instead, you would not be reading this. Backing your own people is how that debt gets paid forward — and it is the one part of this that costs you nothing but the discomfort of losing someone good for a while.<br><br>
             <strong>Go further: nominate them.</strong> Allowing someone to apply is passive. Putting their name forward yourself is the strongest development signal a manager can send — it says you see their capability and you're willing to spend your credibility on it. Your nominations and their outcomes are tracked, and managers whose nominees get selected are recognised at the quarterly Exco review.
           </div>
         </details>
@@ -2971,6 +3001,9 @@ function setRole(role) {
   renderNav(role)
   navigate(navFirstPage(role))
   renderProfileSkills()
+  renderCompletedWork()
+  renderApplicantCounts()
+  renderScores()
   renderFitBreakdowns()
 }
 
@@ -3156,8 +3189,17 @@ async function liveRefresh() {
   renderSkillCoverage()
   renderSkillLog()
   renderProfileSkills()
+  renderCompletedWork()
+  renderApplicantCounts()
+  renderScores()
   renderFitBreakdowns()
 }
+
+/* Safe inside a single-quoted JS string that is itself inside a double-quoted
+   HTML attribute: escape for JS first, then for HTML, or the browser hands the
+   parser a quote we thought we had escaped. */
+const jsq = t => String(t == null ? '' : t).replace(/\\/g, '\\\\').replace(/'/g, "\\'")
+  .replace(/[&<>"]/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c]))
 
 const esc = t => String(t == null ? '' : t).replace(/[&<>"']/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;' }[c]))
 const ago = ts => {
@@ -3180,9 +3222,9 @@ const statusBadge = s0 => { const s = s0 || 'applied'; return s === 'accepted' ?
 function livePanel(id, title, sub, rowsHtml, emptyMsg) {
   const el = document.getElementById(id)
   if (!el) return
-  if (!LIVE.online) {
+  if (!LIVE.online && !rowsHtml) {
     el.innerHTML = `<div class="live-panel empty"><div class="live-hd"><span class="live-dot off"></span>Shared pilot data unavailable</div>
-      <div class="live-sub">Everything below is demo content. Reconnect to see what other people have done.</div></div>`
+      <div class="live-sub">Nothing has been done in this browser yet either. Post something or apply to something and it will appear here and survive a reload — it just will not reach anyone else until the shared database is back.</div></div>`
     return
   }
   el.innerHTML = `<div class="live-panel${rowsHtml ? '' : ' empty'}">
@@ -3192,71 +3234,127 @@ function livePanel(id, title, sub, rowsHtml, emptyMsg) {
     </div>`
 }
 
-function renderLive() {
-  const liveOpps = LIVE.opps.filter(o => o.status === 'live')
-  const pending  = LIVE.opps.filter(o => o.status === 'pending')
-  const me       = liveName()
+const idArg = id => isLocalId(id) ? "'" + id + "'" : id
+const localTag = row => row && isLocalId(row.id)
+  ? ' <span style="font-size:10px;font-weight:700;color:#166534;background:#DCFCE7;border:1px solid #BBF7D0;border-radius:20px;padding:1px 7px;">this browser</span>' : ''
 
-  livePanel('liveOpps', `${liveOpps.length} live opportunit${liveOpps.length === 1 ? 'y' : 'ies'} posted by real people`,
-    'Posted through this pilot and approved by an administrator. Anyone on the link can apply.',
+function renderLive() {
+  const opps     = allOpps()
+  const apps     = allApps()
+  const liveOpps = opps.filter(o => o.status === 'live')
+  const pending  = opps.filter(o => o.status === 'pending')
+  const me       = liveName() || personaName()
+
+  livePanel('liveOpps', `${liveOpps.length} live opportunit${liveOpps.length === 1 ? 'y' : 'ies'} posted through this pilot`,
+    'Posted here and approved by an administrator. They sit on All Opportunities alongside the seeded ones, scored against your profile like everything else.',
     liveOpps.map(o => `<div class="live-row">
         <div class="live-row-main">
-          <div class="live-row-t">${badgeFor(o.type)} ${esc(o.title)}</div>
+          <div class="live-row-t">${badgeFor(o.type)} ${esc(o.title)}${localTag(o)}</div>
           <div class="live-row-s">${esc(o.department || '—')} · posted by ${esc(o.posted_by)} · ${ago(o.created_at)}</div>
         </div>
-        <button class="btn btn-primary btn-sm" onclick="liveApply(${o.id})">Apply →</button>
+        <button class="btn btn-primary btn-sm" onclick="liveApply(${idArg(o.id)})">Apply →</button>
       </div>`).join(''),
     'Nothing approved yet. Post one as a manager, then approve it as an administrator.')
 
-  livePanel('liveMyApps', 'Your live applications',
-    'These persist and are visible to managers and administrators on this link.',
-    LIVE.apps.filter(a => me && a.applicant === me).map(a => `<div class="live-row">
+  livePanel('liveMyApps', 'Your applications',
+    'Everything you have applied to here. These persist across a reload and are visible to the post owner.',
+    apps.filter(a => me && a.applicant === me).map(a => `<div class="live-row">
         <div class="live-row-main">
-          <div class="live-row-t">${badgeFor(a.opp_type)} ${esc(a.opp_title)}</div>
+          <div class="live-row-t">${badgeFor(a.opp_type)} ${esc(a.opp_title)}${localTag(a)}</div>
           <div class="live-row-s">Applied ${ago(a.created_at)}</div>
         </div>${statusBadge(a.status)}
       </div>`).join(''),
     me ? 'You have not applied to anything yet.' : 'Set your name in the top bar to track your applications.')
 
-  const inbox = LIVE.apps.filter(a => (a.status || 'applied') === 'applied')
-  livePanel('liveInbox', `${inbox.length} application${inbox.length === 1 ? '' : 's'} awaiting your decision`,
-    'Submitted by real people using this link. Accepting or declining is visible to them and to administrators.',
-    inbox.map(a => `<div class="live-row">
+  const inbox = apps.filter(a => (a.status || 'applied') === 'applied')
+  const running = apps.filter(a => a.status === 'accepted' &&
+    !allCompleted().some(c => c.person === a.applicant && c.title === a.opp_title && c.rating))
+  const inboxRows = inbox.map(a => `<div class="live-row">
         <div class="live-row-main">
-          <div class="live-row-t">${esc(a.applicant)} → ${esc(a.opp_title)}</div>
+          <div class="live-row-t">${esc(a.applicant)} → ${esc(a.opp_title)}${localTag(a)}</div>
           <div class="live-row-s">${badgeFor(a.opp_type)} ${a.essay ? '· “' + esc(String(a.essay).slice(0, 90)) + '…”' : ''} · ${ago(a.created_at)} ${slaBadge(a)}</div>
         </div>
-        <div style="display:flex;gap:7px;">
-          ${isOverdue(a) ? `<button class="btn btn-outline btn-sm" onclick="previewReminder(${a.id})">✉ Reminder</button>` : ''}
-          <button class="btn btn-green btn-sm" onclick="liveDecide(${a.id},'accepted')">✓ Accept</button>
-          <button class="btn btn-outline btn-sm" onclick="liveDecide(${a.id},'declined')">✕ Decline</button>
+        <div style="display:flex;gap:7px;flex-wrap:wrap;">
+          <button class="btn btn-outline btn-sm" onclick="openApplicantProfile('${jsq(a.applicant)}','${jsq(a.opp_title)}')">👤 Profile</button>
+          ${isOverdue(a) ? `<button class="btn btn-outline btn-sm" onclick="previewReminder(${idArg(a.id)})">✉ Reminder</button>` : ''}
+          <button class="btn btn-green btn-sm" onclick="liveDecide(${idArg(a.id)},'accepted')">✓ Accept</button>
+          <button class="btn btn-outline btn-sm" onclick="liveDecide(${idArg(a.id)},'declined')">✕ Decline</button>
         </div>
-      </div>`).join(''),
-    'No live applications yet.')
-
-  livePanel('liveTeam', `${LIVE.apps.length} live application${LIVE.apps.length === 1 ? '' : 's'} across the pilot`,
-    'Every application submitted through this link, whoever made it.',
-    LIVE.apps.map(a => `<div class="live-row">
+      </div>`).join('')
+  const runRows = running.length ? `<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.4px;color:#9CA3AF;margin:14px 0 6px;">Running — close these out when they finish</div>`
+    + running.map(a => `<div class="live-row">
         <div class="live-row-main">
-          <div class="live-row-t">${esc(a.applicant)}</div>
+          <div class="live-row-t">${esc(a.applicant)} → ${esc(a.opp_title)}${localTag(a)}</div>
+          <div class="live-row-s">Accepted ${ago(a.created_at)} · your rating is what goes on their record</div>
+        </div>
+        <div style="display:flex;gap:7px;flex-wrap:wrap;">
+          <button class="btn btn-outline btn-sm" onclick="openApplicantProfile('${jsq(a.applicant)}','${jsq(a.opp_title)}')">👤 Profile</button>
+          <button class="btn btn-amber btn-sm" onclick="openFeedbackDialog('${jsq(a.opp_title)}','${jsq(a.applicant)}','host')">🏁 Close out &amp; rate</button>
+        </div>
+      </div>`).join('') : ''
+  livePanel('liveInbox', `${inbox.length} application${inbox.length === 1 ? '' : 's'} awaiting your decision`,
+    'Open anyone’s profile before you decide — what they have finished and what a host manager said about it is worth more than the paragraph they wrote.',
+    inboxRows + runRows, 'No applications waiting.')
+
+  livePanel('liveTeam', `${apps.length} application${apps.length === 1 ? '' : 's'} across the pilot`,
+    'Every application submitted through this link, whoever made it.',
+    apps.map(a => `<div class="live-row">
+        <div class="live-row-main">
+          <div class="live-row-t">${esc(a.applicant)}${localTag(a)}</div>
           <div class="live-row-s">${badgeFor(a.opp_type)} ${esc(a.opp_title)} · ${ago(a.created_at)}</div>
         </div>${statusBadge(a.status)}
       </div>`).join(''),
     'No one has applied through the pilot yet.')
 
   livePanel('liveQueue', `${pending.length} post${pending.length === 1 ? '' : 's'} awaiting approval`,
-    'Submitted through this pilot. Approving one puts it on All Opportunities for everybody.',
+    'Submitted through this pilot. Approving one puts it on All Opportunities for everybody, scored against each person’s profile.',
     pending.map(o => `<div class="live-row">
         <div class="live-row-main">
-          <div class="live-row-t">${badgeFor(o.type)} ${esc(o.title)}</div>
-          <div class="live-row-s">${esc(o.department || '—')} · by ${esc(o.posted_by)} (${esc(o.posted_role)}) · ${ago(o.created_at)}</div>
+          <div class="live-row-t">${badgeFor(o.type)} ${esc(o.title)}${localTag(o)}</div>
+          <div class="live-row-s">${esc(o.department || '—')} · by ${esc(o.posted_by)} (${esc(o.posted_role)}) · ${ago(o.created_at)}${o.skills ? ' · ' + esc(o.skills) : ''}</div>
         </div>
         <div style="display:flex;gap:7px;">
-          <button class="btn btn-green btn-sm" onclick="liveModerate(${o.id},'live')">✓ Approve</button>
-          <button class="btn btn-outline btn-sm" onclick="liveModerate(${o.id},'rejected')">✕ Reject</button>
+          <button class="btn btn-green btn-sm" onclick="liveModerate(${idArg(o.id)},'live')">✓ Approve</button>
+          <button class="btn btn-outline btn-sm" onclick="liveModerate(${idArg(o.id)},'rejected')">✕ Reject</button>
         </div>
       </div>`).join(''),
     'Nothing waiting. Post something as a manager to see it arrive here.')
+
+  renderLocalOppCards()
+}
+
+/* Approved local posts join All Opportunities as real cards — same markup,
+   so they are filtered, scored and explained exactly like the seeded ones. */
+function renderLocalOppCards() {
+  const grid = document.querySelector('#page-all-opps .opp-grid')
+  if (!grid) return
+  grid.querySelectorAll('.opp-item[data-local]').forEach(el => el.remove())
+  const live = LOCAL.opps.filter(o => o.status === 'live')
+  live.slice().reverse().forEach(o => {
+    const sk = String(o.skills || '').split(/[;,]/).map(x => x.trim()).filter(Boolean)
+    const slots = String(o.slots || 1)
+    const div = document.createElement('div')
+    div.className = 'card opp-item'
+    div.dataset.local = o.id
+    div.dataset.type = o.type || 'Gig'
+    div.dataset.dept = o.department || ''
+    div.dataset.score = '0'
+    div.innerHTML = `<div class="opp-card">
+      <div class="opp-card-header">${badgeFor(o.type)}<span style="font-size:11px;color:#9CA3AF;">${esc(o.duration || 'Ad-hoc')}</span></div>
+      <div class="opp-title">${esc(o.title)}</div>
+      <div class="opp-meta">${esc(o.department || '—')} · ${esc(o.duration || 'Ad-hoc')} · ${esc(slots)} ${slots === '1' ? 'slot' : 'slots'}</div>
+      <div style="font-size:11px;color:#9CA3AF;margin-top:2px;">👤 Posted by <strong style="color:#6B7280;">${esc(o.posted_by)}</strong> · ${ago(o.created_at)} · <span style="color:#166534;font-weight:700;">posted in this pilot</span></div>
+      ${o.description ? `<div style="font-size:12px;color:#4B5563;line-height:1.55;margin-top:8px;">${esc(o.description)}</div>` : ''}
+      <div class="chip-row">${sk.map(x => `<span class="skill-chip">${esc(x)}</span>`).join('')}</div>
+      <div class="match-bar-wrap"></div>
+      <div class="fit-slot"></div>
+      <div style="margin-top:12px;display:flex;gap:7px;flex-wrap:wrap;">
+        <button class="btn btn-red btn-sm" onclick="liveApply('${o.id}')">Apply Now →</button>
+        <button class="btn btn-outline btn-sm" onclick="openAskDialog('${jsq(o.title)}')">💬 Ask more info</button>
+      </div>`
+    grid.insertBefore(div, grid.firstChild)
+  })
+  if (live.length) { renderScores(); renderApplicantCounts(); renderFitBreakdowns() }
 }
 
 function requireName() {
@@ -3268,21 +3366,43 @@ async function livePost(table, body) {
   return liveReq(table, { method: 'POST', body: JSON.stringify(body), headers: { 'Prefer': 'return=representation' } })
 }
 
+/* Every write lands locally first and is mirrored to Supabase when it is
+   reachable. A successful mirror drops the local copy so nothing is counted
+   twice; a failed one leaves it, and the row keeps working here. */
 async function liveApply(oppId) {
-  if (!requireName()) return
-  const o = LIVE.opps.find(x => x.id === oppId)
+  const who = liveName() || personaName()
+  if (!who) { if (!requireName()) return }
+  const me = liveName() || personaName()
+  const o = allOpps().find(x => String(x.id) === String(oppId))
   if (!o) return
-  if (LIVE.apps.some(a => a.opp_title === o.title && a.applicant === liveName())) {
+  if (allApps().some(a => a.opp_title === o.title && a.applicant === me)) {
     toast('You have already applied to that one.', 'warning'); return
   }
-  try {
-    await livePost('v2_applications', { opp_title: o.title, opp_type: o.type, applicant: liveName(), applicant_role: currentRole, essay: '', status: 'applied' })
-    toast(`✓ Applied to "${o.title}". A manager will see it immediately.`)
-    await liveRefresh()
-  } catch (e) { toast('Could not submit — ' + e.message, 'error') }
+  const row = { id: newLocalId(), opp_title: o.title, opp_type: o.type, applicant: me,
+    applicant_role: currentRole, essay: '', status: 'applied', created_at: new Date().toISOString() }
+  LOCAL.apps.unshift(row); saveLocal()
+  renderLive(); renderApplicantCounts()
+  toast(`✓ Applied to “${o.title}”. The post owner sees it under My Openings now.`)
+  if (LIVE.online && !isLocalId(o.id)) {
+    try {
+      await livePost('v2_applications', { opp_title: o.title, opp_type: o.type, applicant: me,
+        applicant_role: currentRole, essay: '', status: 'applied' })
+      LOCAL.apps = LOCAL.apps.filter(a => a.id !== row.id); saveLocal()
+      await liveRefresh()
+    } catch (e) { toast('Saved here, but not shared — ' + e.message, 'warning') }
+  }
 }
 
 async function liveDecide(appId, status) {
+  if (isLocalId(appId)) {
+    const a = LOCAL.apps.find(x => x.id === appId)
+    if (!a) return
+    a.status = status; saveLocal(); renderLive(); renderHistory()
+    toast(status === 'accepted'
+      ? `✓ Accepted. ${a.applicant} sees this now — and when it finishes, close it out so your rating goes on their record.`
+      : 'Declined.', status === 'accepted' ? 'success' : 'error')
+    return
+  }
   try {
     await liveReq('v2_applications?id=eq.' + appId, { method: 'PATCH', body: JSON.stringify({ status }) })
     toast(status === 'accepted' ? '✓ Accepted — the applicant sees this now.' : 'Declined.', status === 'accepted' ? 'success' : 'error')
@@ -3291,6 +3411,15 @@ async function liveDecide(appId, status) {
 }
 
 async function liveModerate(oppId, status) {
+  if (isLocalId(oppId)) {
+    const o = LOCAL.opps.find(x => x.id === oppId)
+    if (!o) return
+    o.status = status; saveLocal(); renderLive()
+    toast(status === 'live'
+      ? `✓ Approved. “${o.title}” is on All Opportunities now, scored against everyone’s profile.`
+      : 'Rejected.', status === 'live' ? 'success' : 'error')
+    return
+  }
   try {
     await liveReq('v2_opportunities?id=eq.' + oppId, { method: 'PATCH', body: JSON.stringify({ status }) })
     toast(status === 'live' ? '✓ Approved and now live for everyone.' : 'Rejected.', status === 'live' ? 'success' : 'error')
@@ -3299,12 +3428,33 @@ async function liveModerate(oppId, status) {
 }
 
 async function liveCreateOpportunity(fields) {
-  if (!requireName()) return false
-  try {
-    await livePost('v2_opportunities', Object.assign({ posted_by: liveName(), posted_role: currentRole, status: 'pending' }, fields))
-    await liveRefresh()
-    return true
-  } catch (e) { toast('Could not post — ' + e.message, 'error'); return false }
+  const who = liveName() || personaName() || 'You'
+  const row = Object.assign({ id: newLocalId(), posted_by: who, posted_role: currentRole,
+    status: 'pending', created_at: new Date().toISOString() }, fields)
+  LOCAL.opps.unshift(row); saveLocal()
+  renderLive()
+  if (LIVE.online) {
+    try {
+      const saved = await livePost('v2_opportunities', Object.assign({ posted_by: who,
+        posted_role: currentRole, status: 'pending' }, fields))
+      if (saved && saved.length) {
+        LOCAL.opps = LOCAL.opps.filter(o => o.id !== row.id); saveLocal()
+        await liveRefresh()
+      }
+    } catch (e) { /* keep the local row: the post is not lost, only unshared */ }
+  }
+  return true
+}
+
+/* Everything this browser has done, undone. Demo state is only useful if it
+   can be put back — nobody wants to present on top of last week's clicking. */
+function resetLocal() {
+  if (!confirm('Clear everything done in this browser — posts, applications, skill edits and ratings — and start again from the seeded demo?')) return
+  LOCAL = { opps: [], apps: [], completed: [] }
+  SKILL_EDITS = {}
+  saveLocal(); saveEdits()
+  renderLive(); renderProfileSkills(); renderCompletedWork(); renderApplicantCounts(); renderScores(); renderFitBreakdowns(); renderHistory()
+  toast('Back to the seeded demo. Anything saved to the shared database is still there.')
 }
 
 function liveInit() {
@@ -3368,7 +3518,8 @@ const SKILL_DEV = {
 }
 // Normalise so spelling variants ('modeling' / 'modelling') match each other.
 const skillKey = t => String(t || '').replace(/[✅×]/g, '').trim().toLowerCase()
-  .replace(/modeling/g, 'modelling').replace(/\s+/g, ' ')
+  .replace(/modeling/g, 'modelling').replace(/\bmgmt\b/g, 'management')
+  .replace(/\bcomms\b/g, 'communications').replace(/\s+/g, ' ')
 
 // Fallback for a profile with nothing loaded. mySkills() prefers whatever
 // People & Culture has pre-filled for the persona — see the skills upload.
@@ -3423,32 +3574,44 @@ function renderFitBreakdowns() {
   document.querySelectorAll('.fit-slot').forEach(slot => {
     const card = slot.closest('.opp-card') || slot.parentElement
     if (!card) return
-    // Keep each chip's own label so casing like "AI Tools" survives.
-    const chips = [...card.querySelectorAll('.chip-row .skill-chip')]
-      .map(c => ({ key: skillKey(c.textContent), label: c.textContent.replace(/[✅×]/g, '').trim() }))
-      .filter(c => c.key)
-    if (!chips.length) { slot.innerHTML = ''; return }
-    const mine = mySkills()
-    const has  = c => mine.some(m => m === c.key || c.key.includes(m) || m.includes(c.key))
-    const have = chips.filter(has)
-    const gaps = chips.filter(c => !has(c))
+    // Graded exactly as the score is, so the sentence and the number can never
+    // disagree — the fastest way to lose someone is to show them both.
+    const m = matchFor(cardSkills(card))
+    if (!m) { slot.innerHTML = ''; return }
+    const have = m.rows.filter(r => r.w >= 0.8)
+    const near = m.rows.filter(r => r.w > 0 && r.w < 0.8)
+    const gaps = m.rows.filter(r => !r.w)
+    const missing = near.concat(gaps)     // anything not literally on the profile
     const list = a => a.map(c => esc(c.label)).join(', ')
-    const devs = gaps.map(g => SKILL_DEV[g.key] || SKILL_DEV[Object.keys(SKILL_DEV).find(d => g.key.includes(d)) || '']).filter(Boolean)
+    const devs = missing.map(g => SKILL_DEV[g.key] || SKILL_DEV[Object.keys(SKILL_DEV).find(d => g.key.includes(d)) || '']).filter(Boolean)
+    const many = missing.length > 1
+    // Group the partial credits by the skill that earned them, or the sentence
+    // repeats itself once per requirement.
+    const byVia = {}
+    near.forEach(r => { (byVia[r.via] = byVia[r.via] || []).push(r.label) })
+    const nearLine = Object.keys(byVia).map(via => {
+      const l = byVia[via]
+      return `<span class="fit-have">${esc(l.join(', '))}</span> count${l.length > 1 ? '' : 's'} partly \u2014 adjacent to <b>${esc(via)}</b>, which you have.`
+    }).join(' ')
 
     slot.innerHTML = `<div class="fit-box">
       <div class="fit-line"><b>Why this score:</b>
         ${have.length
-          ? `your profile already shows <span class="fit-have">${list(have)}</span>${gaps.length ? `. It also asks for <span class="fit-gap">${list(gaps)}</span>.` : ` — that is everything this post asks for.`}`
-          : `this post asks for <span class="fit-gap">${list(gaps)}</span>, and none of that is on your profile yet.`}
+          ? `your profile already shows <span class="fit-have">${list(have)}</span>${gaps.length ? `. It also asks for <span class="fit-gap">${list(gaps)}</span>.` : missing.length ? '.' : ` \u2014 that is everything this post asks for.`}`
+          : gaps.length && !near.length
+            ? `this post asks for <span class="fit-gap">${list(gaps)}</span>, and none of that is on your profile yet.`
+            : `nothing on your profile matches this post exactly${gaps.length ? `, and it also asks for <span class="fit-gap">${list(gaps)}</span>` : ''}.`}
       </div>
-      ${gaps.length ? `<div class="fit-note">
-        ✏️ <b>Already have ${gaps.length > 1 ? 'any of these' : 'this'}?</b> Add ${gaps.length > 1 ? 'them' : 'it'} to your profile — matching only sees what is written down, so a real skill you never listed costs you the score.
-        <b style="display:block;margin-top:5px;">Don't have ${gaps.length > 1 ? 'them' : 'it'} yet?</b> Leave your profile alone. Claimed skills are checked before they count for much, and a padded profile matches you to work you cannot do. ${devs.length ? `Build ${gaps.length > 1 ? 'them' : 'it'} first:` : `Apply anyway if the direction genuinely interests you — say so in your answer.`}
+      ${near.length ? `<div class="fit-line" style="margin-top:5px;">${nearLine}</div>` : ''}
+      ${missing.length ? `<div class="fit-note">
+        \u270f\ufe0f <b>Already have ${many ? 'any of these' : 'this'}?</b> Add ${many ? 'them' : 'it'} to your profile by name \u2014 matching only sees what is written down, and an adjacent skill is only ever worth part marks.
+        <b style="display:block;margin-top:5px;">Don't have ${many ? 'them' : 'it'} yet?</b> Leave your profile alone. Claimed skills are checked before they count for much, and a padded profile matches you to work you cannot do. ${devs.length ? `Build ${many ? 'them' : 'it'} first:` : `Apply anyway if the direction genuinely interests you \u2014 say so in your answer.`}
       </div>` : ''}
-      ${gaps.length && devs.length ? `<div class="fit-dev"><b>📚 How to build ${gaps.length > 1 ? 'these' : 'this'}</b>${devs.map(d => '· ' + d).join('<br>')}</div>` : ''}
+      ${devs.length ? `<div class="fit-dev"><b>\ud83d\udcda How to build ${many ? 'these' : 'this'}</b>${devs.map(d => '\u00b7 ' + d).join('<br>')}</div>` : ''}
     </div>`
   })
 }
+
 
 /* Item 8 — ask the post owner a question. */
 function openAskDialog(title) {
@@ -3645,7 +3808,7 @@ function filterAllOpps() {
     c.style.display = ok ? '' : 'none'
     if (ok) shown++
   })
-  document.getElementById('oppCount').textContent = shown + ' of 26'
+  document.getElementById('oppCount').textContent = shown + ' of ' + cards.length
   document.getElementById('oppEmpty').style.display = shown === 0 ? 'block' : 'none'
 }
 
@@ -3773,11 +3936,16 @@ function submitApplication(title, btn) {
   if (!essay) { toast('Tell us why you’re the best applicant before submitting.','warning'); return }
   if (essay.length < 40) { toast('Add a bit more detail — name something specific you’ve done.','warning'); return }
   btn.closest('[data-overlay]').remove()
-  toast(`✓ Application submitted for "${title}". Track it under My Applications.`)
-  if (LIVE.online && requireName()) {
-    livePost('v2_applications', { opp_title: title, opp_type: 'Gig', applicant: liveName(), applicant_role: currentRole, essay, status: 'applied' })
-      .then(liveRefresh)
-      .catch(e => toast('Saved locally, but not shared — ' + e.message, 'warning'))
+  const me = liveName() || personaName() || 'You'
+  const row = { id: newLocalId(), opp_title: title, opp_type: typeForOpp(title), applicant: me,
+    applicant_role: currentRole, essay, status: 'applied', created_at: new Date().toISOString() }
+  LOCAL.apps.unshift(row); saveLocal()
+  renderLive(); renderApplicantCounts(); renderHistory()
+  toast(`✓ Application submitted for "${title}". It is on the post owner's list under My Openings.`)
+  if (LIVE.online && liveName()) {
+    livePost('v2_applications', { opp_title: title, opp_type: row.opp_type, applicant: liveName(), applicant_role: currentRole, essay, status: 'applied' })
+      .then(() => { LOCAL.apps = LOCAL.apps.filter(a => a.id !== row.id); saveLocal(); return liveRefresh() })
+      .catch(e => toast('Saved here, but not shared — ' + e.message, 'warning'))
   }
 }
 
@@ -3854,7 +4022,7 @@ function openFeedbackDialog(title, counterpart, perspective) {
     <div style="background:#fff;border-radius:14px;padding:32px;width:500px;max-width:95vw;box-shadow:0 8px 40px rgba(0,0,0,0.14);">
       <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#9CA3AF;margin-bottom:6px;">${C.kicker}</div>
       <div style="font-size:17px;font-weight:700;color:#111827;margin-bottom:4px;">${title}</div>
-      <div style="font-size:12px;color:#6B7280;margin-bottom:18px;">Ended Jul 14 · ${C.sub} ${counterpart}</div>
+      <div style="font-size:12px;color:#6B7280;margin-bottom:18px;">${C.sub} ${counterpart}</div>
 
       <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:8px;padding:10px 12px;font-size:11px;color:#065F46;line-height:1.55;margin-bottom:20px;">
         🔒 <strong>Ratings release simultaneously.</strong> Neither of you sees the other's rating until both are submitted, so nobody is anchored by what the other said.
@@ -3895,7 +4063,7 @@ function openFeedbackDialog(title, counterpart, perspective) {
 
       <div style="display:flex;gap:10px;justify-content:flex-end;">
         <button onclick="this.closest('[data-overlay]').remove()" style="padding:9px 18px;border:1px solid #E5E7EB;border-radius:8px;background:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;color:#374151;">Remind me later</button>
-        <button onclick="submitFeedback('${title}',this,'${perspective || ''}')" style="padding:9px 18px;background:#C00000;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">Submit feedback</button>
+        <button onclick="submitFeedback('${jsq(title)}',this,'${perspective || ''}','${jsq(counterpart)}')" style="padding:9px 18px;background:#C00000;color:#fff;border:none;border-radius:8px;font-size:13px;font-weight:700;cursor:pointer;font-family:inherit;">Submit feedback</button>
       </div>
     </div>`
   overlay.setAttribute('data-overlay','1')
@@ -3925,7 +4093,7 @@ function pickAgain(btn) {
   btn.style.background = '#FEF2F2'; btn.style.borderColor = '#C00000'; btn.style.color = '#C00000'; btn.style.fontWeight = '700'
 }
 
-function submitFeedback(title, btn, perspective) {
+function submitFeedback(title, btn, perspective, counterpart) {
   const asHost = perspective === 'host'
   if (!_fbRating) { toast('Please give a star rating first.','warning'); return }
   const comment = document.getElementById('fbComment').value.trim()
@@ -3940,6 +4108,19 @@ function submitFeedback(title, btn, perspective) {
     if (el && !el.value.trim()) { toast(msg, 'warning'); el.focus(); return }
   }
   btn.closest('[data-overlay]').remove()
+  const learned = (document.getElementById('fbLearned') || {}).value || ''
+  if (asHost) {
+    // The host's rating is the record. 4★ or better verifies the skills the
+    // work used — which is why this survey is the spine of the whole product.
+    recordCompletion(counterpart, title, { rating: _fbRating, comment,
+      host: liveName() || personaName() || 'Host manager' })
+    renderCompletedWork(); renderProfileSkills(); renderScores(); renderFitBreakdowns(); renderLive()
+    if (_fbRating >= 4) toast(`✓ ${counterpart} rated ${_fbRating}★. The skills this work used are now verified on their profile.`)
+  } else {
+    recordCompletion(personaName(), title, { myRating: _fbRating, myComment: comment,
+      host: counterpart || 'Host manager', myLearned: learned.trim() })
+    renderCompletedWork(); renderProfileSkills(); renderScores(); renderFitBreakdowns()
+  }
   if (asHost) {
     const hostBanner = document.querySelector('#page-openings > div[data-pending]')
     if (!hostBanner) return
@@ -3966,20 +4147,21 @@ function acceptServiceRequest(btn, name) {
 async function submitOpportunity() {
   const title = (document.getElementById('postTitle').value || '').trim()
   if (!title) { toast('Give the opportunity a title first.', 'warning'); return }
+  const skills = [...document.querySelectorAll('#postSkills .skill-chip')]
+    .map(c => c.textContent.replace(/[×]/g, '').trim()).filter(Boolean)
   const fields = {
     title,
     type: document.getElementById('postType').value,
     department: document.getElementById('postDept').value,
     description: (document.getElementById('postDesc').value || '').trim(),
+    skills: skills.join('; '),
+    slots: (document.getElementById('postSlots') || {}).value || '1',
+    duration: ((document.getElementById('postEffort') || {}).value || '').trim() || 'Ad-hoc',
   }
-  if (LIVE.online) {
-    if (!(await liveCreateOpportunity(fields))) return
-    document.getElementById('postTitle').value = ''
-    document.getElementById('postDesc').value = ''
-    toast('✓ Posted for approval. An administrator sees it now under All Opportunities.')
-  } else {
-    toast("✓ Opportunity submitted for admin approval. You'll be notified once reviewed.")
-  }
+  if (!(await liveCreateOpportunity(fields))) return
+  document.getElementById('postTitle').value = ''
+  document.getElementById('postDesc').value = ''
+  toast('✓ Posted. It is in the administrator\u2019s approval queue now \u2014 approve it as an administrator and it appears on All Opportunities, scored against everyone\u2019s profile.')
   navigate('openings')
 }
 
@@ -4106,19 +4288,61 @@ function markAllRead() {
   toast('All notifications marked as read.')
 }
 
+function addPostSkill() {
+  const input = document.getElementById('postSkillInput')
+  const val = input.value.trim(); if (!val) return
+  const chip = document.createElement('span')
+  chip.className = 'skill-chip removable'; chip.textContent = val + ' \u00d7'
+  chip.onclick = function () { this.remove() }
+  document.getElementById('postSkills').appendChild(chip)
+  input.value = ''; input.focus(); tagSkillChips()
+}
+
 function addSkill(type) {
   const input = document.getElementById(type + '-skill-input')
   const val = input.value.trim(); if (!val) return
-  const container = input.closest('div').previousElementSibling
+  input.value = ''; input.focus()
+  if (type === 'current') {
+    const me = personaName(); if (!me) return
+    const e = editsFor(me), k = skillKey(val)
+    if (skillsOf(me).some(x => skillKey(x) === k)) { toast('That one is already on your profile.', 'warning'); return }
+    delete e.rm[k]
+    e.add[k] = { skill: val, source: 'self' }
+    saveEdits()
+    afterSkillChange('✓ Added “' + val + '”. Every match score has been recalculated.')
+    return
+  }
+  const container = document.getElementById('develop-skills')
   const chip = document.createElement('span')
   chip.className = 'skill-chip removable'; chip.textContent = val + ' ×'
   chip.dataset.own = '1'
-  if (type === 'current') setTimeout(renderFitBreakdowns, 0)
   chip.onclick = function() { this.remove() }
-  container.appendChild(chip); input.value = ''; input.focus()
+  container.appendChild(chip)
+  tagSkillChips()
+}
+
+/* Removing a skill is remembered against the persona, so it stays removed
+   across a reload and across a bulk upload that would otherwise re-add it. */
+function dropSkill(el) {
+  const me = personaName(); if (!me) return
+  const label = (el.dataset.skill || el.textContent).replace(/[\u2705\ud83d\udce5\u270f\ufe0f\u00d7]/g, '').trim()
+  const e = editsFor(me), k = skillKey(label)
+  delete e.add[k]; e.rm[k] = 1
+  saveEdits()
+  afterSkillChange('Removed “' + label + '”. Every match score has been recalculated.')
 }
 
 function removeSkill(el) { el.remove() }
+
+/* One place to re-run everything a skill change can move. */
+function afterSkillChange(msg) {
+  renderProfileSkills()
+  renderScores()
+  renderFitBreakdowns()
+  renderVacancyBoard()
+  renderCompletedWork()
+  if (msg) toast(msg)
+}
 
 function saveProfile() { toast('✓ Profile saved successfully.') }
 
@@ -4632,7 +4856,7 @@ function vacCard(v) {
     <div class="vac-meta">${esc(v.department || '—')}${v.location ? ' · ' + esc(v.location) : ''}<br>📅 Closes ${esc(closes)}</div>
     ${v.skills && v.skills.length ? `<div class="chip-row">${v.skills.map(s => `<span class="skill-chip">${esc(s)}</span>`).join('')}</div>` : ''}
     ${jdRow(v)}
-    ${scoreBar(v.score)}
+    ${scoreBar(v.score == null ? null : (v.skills && v.skills.length ? matchFor(v.skills).score : v.score))}
     <div class="vac-foot">${refFoot(v, r)}</div>
   </div>`
 }
@@ -4874,12 +5098,14 @@ const SKILL_HEADERS = {
 const SEED_SKILLS = [
   ['HC-1042', 'Cristiano Ronaldo', 'Finance',            ['SQL', 'Excel', 'Financial Modelling', 'Stakeholder Management']],
   ['HC-1088', 'Lionel Messi',      'Finance',            ['Power BI', 'SQL', 'Data Analysis']],
+  ['HC-1097', 'LeBron James',      'Operations',         ['Power BI', 'SQL', 'Excel']],
   ['HC-1103', 'Zendaya Coleman',   'Finance',            ['Financial Modelling', 'SQL', 'Excel']],
   ['HC-1150', 'Jennifer Lopez',    'IT & Innovation',    ['Product Design', 'Design Thinking', 'Journey Mapping']],
   ['HC-1177', 'Ed Sheeran',        'IT & Innovation',    ['Power BI', 'Data Analysis']],
   ['HC-1204', 'Rihanna',           'Operations',         ['Supply Chain', 'Excel', 'Analytics']],
   ['HC-1233', 'Will Smith',        'Finance',            ['Excel', 'Project Management']],
   ['HC-1260', 'Harry Styles',      'People & Culture',   ['Workforce Planning', 'Stakeholder Management']],
+  ['HC-1011', 'Taylor Swift',      'People & Culture',   ['Excel', 'Data Analysis', 'Stakeholder Management']],
   ['HC-1291', 'Adele Adkins',      'Legal & Compliance', ['ESG Reporting', 'Regulatory']],
   ['HC-1315', 'Priyanka Chopra',   'Operations',         ['Change Management', 'Facilitation', 'Process Automation']],
 ].flatMap(([id, name, dept, skills]) =>
@@ -4887,15 +5113,183 @@ const SEED_SKILLS = [
 
 let SKILL_PARSE = null   // last parsed upload, awaiting commit
 
+/* ══════════════════════════════════════════════════════════════════
+   LOCAL STORE — what this browser has done.
+
+   Everything a person does here (post, apply, decide, edit a skill,
+   close out an engagement) is written locally first, so the whole loop
+   works even when the shared database is unreachable, and mirrored to
+   Supabase when it is not. Local rows carry an 'L…' id so the decide
+   and moderate paths can tell them apart from server rows.
+   ══════════════════════════════════════════════════════════════════ */
+const LS = {
+  get(k) { try { return localStorage.getItem(k) } catch (e) { return null } },
+  set(k, v) { try { localStorage.setItem(k, v) } catch (e) { /* private window */ } },
+}
+function loadJson(k, fallback) {
+  try { return JSON.parse(LS.get(k)) || fallback } catch (e) { return fallback }
+}
+let LOCAL = loadJson('growth_local_v2', { opps: [], apps: [], completed: [] })
+;['opps','apps','completed'].forEach(k => { if (!Array.isArray(LOCAL[k])) LOCAL[k] = [] })
+const saveLocal = () => LS.set('growth_local_v2', JSON.stringify(LOCAL))
+const newLocalId = () => 'L' + Date.now().toString(36) + Math.floor(Math.random()*1e4)
+const isLocalId = id => typeof id === 'string' && id.charAt(0) === 'L'
+const allOpps = () => LOCAL.opps.concat(LIVE.opps)
+const allApps = () => LOCAL.apps.concat(LIVE.apps)
+
+/* ══ COMPLETED WORK — the permanent record the whole product promises ══
+   A finished engagement carries the host manager's rating and comment,
+   and it is what turns an unpaid stretch into something that counts. A
+   4-star-or-better rating also verifies the skills the work used, which
+   is the strongest form of verification we have: evidence, not opinion. */
+const SEED_COMPLETED = [
+  { person:'Cristiano Ronaldo', title:'Process Automation Gig — Finance Ops', type:'Gig',
+    host:'Taylor Swift', dept:'Finance', ended:'2026-07-14', rating:5,
+    comment:'Rebuilt three manual month-end reports as scheduled jobs and documented them so the team can maintain it without him. Would host again tomorrow.',
+    skills:['Process Automation','Excel'], seeded:true },
+  { person:'Cristiano Ronaldo', title:'Risk Reporting Dashboard — Q3', type:'Gig',
+    host:'Roger Federer', dept:'Risk Management', ended:'2026-05-30', rating:4,
+    comment:'Solid SQL and a clean data model. Needed a nudge on stakeholder comms early on, then ran it himself.',
+    skills:['SQL','Data Analysis'], seeded:true },
+  { person:'Taylor Swift', title:'HR Analytics Gig — Workforce Planning', type:'Gig',
+    host:'Beyoncé Knowles', dept:'People & Culture', ended:'2026-06-20', rating:5,
+    comment:'Turned a spreadsheet nobody trusted into the headcount view the leadership team now runs planning from.',
+    skills:['HRBP','Workforce Planning'], seeded:true },
+  { person:'Jennifer Lopez', title:'DJI: Digital Transformation — Strategy', type:'DJI',
+    host:'Selena Gomez', dept:'IT & Innovation', ended:'2026-06-28', rating:4,
+    comment:'Came in from Operations and shipped a journey map the product team actually used. Ask her back.',
+    skills:['Journey Mapping','Design Thinking'], seeded:true },
+]
+const allCompleted = () => LOCAL.completed.concat(SEED_COMPLETED)
+const completedFor = p => allCompleted().filter(c => c.person === p)
+    .sort((a,b) => new Date(b.ended) - new Date(a.ended))
+
+/* ══════════════════════════════════════════════════════════════════
+   SKILLS — three provenances, and the difference is the whole point.
+
+     verified   a manager endorsed it, or a host manager rated the work
+                4★+. Evidence rather than opinion, so it counts full.
+     uploaded   loaded in bulk by HR from the HRIS or the LMS. Trusted
+                more than a self-claim, less than an endorsement.
+     self       typed by the employee on their own profile.
+
+   Employee edits live in SKILL_EDITS, survive a reload, and feed the
+   matcher directly — so changing a profile changes every score on the
+   next render. That is the only way anyone believes matching is real.
+   ══════════════════════════════════════════════════════════════════ */
+const SRC = {
+  verified: { icon:'✅', name:'verified by a manager', bg:'#D1FAE5', bd:'#A7F3D0', fg:'#065F46', w:1.00 },
+  uploaded: { icon:'📥', name:'uploaded by HR',       bg:'#EFF6FF', bd:'#BFDBFE', fg:'#1E40AF', w:0.85 },
+  self:     { icon:'✏️', name:'added by the employee', bg:'#F9FAFB', bd:'#E5E7EB', fg:'#374151', w:0.70 },
+}
+const SRC_ORDER = ['verified', 'uploaded', 'self']
+
+// Manager endorsements, seeded so all three states are visible on day one.
+const SEED_VERIFIED = {
+  'Taylor Swift':      ['Talent Acquisition'],
+  'Cristiano Ronaldo': ['Financial Modelling'],
+  'Beyoncé Knowles':   ['Workforce Planning'],
+  'Lionel Messi':      ['Power BI'],
+  'Zendaya Coleman':   ['Financial Modelling'],
+}
+// Skills the personas typed themselves, before anyone edits anything.
+const SEED_SELF = {
+  'Taylor Swift':      ['Labor Relations', 'Excel'],
+  'Beyoncé Knowles':   ['Stakeholder Management'],
+}
+
+let SKILL_EDITS = loadJson('growth_skill_edits_v2', {})
+const saveEdits = () => LS.set('growth_skill_edits_v2', JSON.stringify(SKILL_EDITS))
+function editsFor(p) {
+  const e = SKILL_EDITS[p] = SKILL_EDITS[p] || { add: {}, rm: {} }
+  e.add = e.add || {}; e.rm = e.rm || {}
+  return e
+}
+
 const allSkillRows = () => LIVE.skills.concat(SEED_SKILLS)
-const skillsOf = person => allSkillRows().filter(r => r.employee === person).map(r => r.skill)
+const personaName = () => (ROLES[currentRole] && ROLES[currentRole].name) || null
+
+/* One person's skills, merged. The best provenance wins, so an
+   endorsement is never quietly demoted by a later bulk upload. */
+function skillRowsFor(person) {
+  if (!person) return []
+  const out = new Map()
+  const put = (skill, source, note) => {
+    const k = skillKey(skill); if (!k) return
+    const cur = out.get(k)
+    if (!cur || SRC[source].w > SRC[cur.source].w) out.set(k, { skill, source, note })
+  }
+  allSkillRows().filter(r => r.employee === person).forEach(r => put(r.skill, 'uploaded'))
+  ;(SEED_SELF[person] || []).forEach(sk => put(sk, 'self'))
+  ;(SEED_VERIFIED[person] || []).forEach(sk => put(sk, 'verified', 'endorsed by their manager'))
+  completedFor(person).filter(c => c.rating >= 4).forEach(c => (c.skills || []).forEach(sk =>
+    put(sk, 'verified', c.rating + '★ from ' + c.host + ' on ' + c.title)))
+  const e = editsFor(person)
+  Object.keys(e.add).forEach(k => { const v = e.add[k]; put(v.skill, v.source || 'self', v.note) })
+  Object.keys(e.rm).forEach(k => out.delete(k))
+  return Array.from(out.values()).sort((a, b) =>
+    SRC_ORDER.indexOf(a.source) - SRC_ORDER.indexOf(b.source) || a.skill.localeCompare(b.skill))
+}
+const skillsOf = person => skillRowsFor(person).map(r => r.skill)
 
 /* The signed-in employee's skills, used by the per-card fit breakdown.
-   Falls back to MY_SKILLS when nothing has been uploaded for them. */
+   Falls back to MY_SKILLS when nothing is on file for them at all. */
 function mySkills() {
-  const persona = (ROLES[currentRole] && ROLES[currentRole].name) || null
-  const rows = persona ? skillsOf(persona) : []
-  return rows.length ? rows.map(skillKey) : MY_SKILLS
+  const rows = skillRowsFor(personaName())
+  return rows.length ? rows.map(r => skillKey(r.skill)) : MY_SKILLS
+}
+
+/* ── Matching ─────────────────────────────────────────────────────
+   Skill overlap is the one factor this prototype computes live: every
+   required skill is graded against the profile as it stands, and what
+   the skill is worth depends on where it came from. The rubric's other
+   three factors (aspiration, track record, practicalities) are held
+   constant here, which is what the 30-point base stands for — and why
+   no post ever scores zero.
+
+   Adjacent skills earn partial credit, because that is how a person
+   reads a CV. Someone with SQL is not a stranger to Power BI.        */
+const REL = [
+  ['sql', 'data analysis'], ['sql', 'power bi'], ['power bi', 'data analysis'],
+  ['excel', 'data analysis'], ['excel', 'financial modelling'], ['excel', 'analytics'],
+  ['analytics', 'data analysis'], ['financial modelling', 'data analysis'],
+  ['change management', 'stakeholder management'], ['change management', 'facilitation'],
+  ['change management', 'agile'], ['project management', 'agile'],
+  ['facilitation', 'stakeholder management'], ['hrbp', 'workforce planning'],
+  ['hrbp', 'labor relations'], ['talent acquisition', 'workforce planning'],
+  ['process automation', 'ai tools'], ['journey mapping', 'design thinking'],
+  ['design thinking', 'product design'], ['supply chain', 'analytics'],
+  ['pricing', 'segmentation'], ['segmentation', 'customer segmentation'],
+  ['esg reporting', 'regulatory'], ['sap', 'excel'],
+  ['coaching', 'mentoring'], ['coaching', 'facilitation'], ['mentoring', 'facilitation'],
+  ['presentation', 'facilitation'], ['presentation', 'stakeholder management'],
+  ['prototyping', 'ai tools'], ['prototyping', 'design thinking'], ['ai tools', 'process automation'],
+  ['pricing', 'financial modelling'], ['segmentation', 'data analysis'],
+  ['journey mapping', 'customer segmentation'], ['agile', 'project management'],
+].reduce((m, [a, b]) => { (m[a] = m[a] || []).push(b); (m[b] = m[b] || []).push(a); return m }, {})
+
+const SRC_W = { verified: 1.00, uploaded: 0.90, self: 0.80 }
+
+function matchFor(labels, person) {
+  const req = (labels || []).map(l => ({ label: String(l).trim(), key: skillKey(l) })).filter(r => r.key)
+  if (!req.length) return null
+  const rows = skillRowsFor(person || personaName())
+  const mine = rows.length ? rows : MY_SKILLS.map(k => ({ skill: k, source: 'uploaded' }))
+  const grade = k => {
+    let best = { w: 0, src: null, via: null }
+    mine.forEach(r => {
+      const mk = skillKey(r.skill)
+      const kin = (REL[k] || []).indexOf(mk) > -1 || (REL[mk] || []).indexOf(k) > -1
+      const fit = mk === k ? 1 : (mk.indexOf(k) > -1 || k.indexOf(mk) > -1) ? 0.75 : kin ? 0.5 : 0
+      if (!fit) return
+      const w = SRC_W[r.source] * fit
+      if (w > best.w) best = { w, src: r.source, via: fit === 1 ? null : r.skill }
+    })
+    return best
+  }
+  const graded = req.map(r => Object.assign({ label: r.label, key: r.key }, grade(r.key)))
+  const score = Math.round(30 + 65 * graded.reduce((a, r) => a + r.w, 0) / graded.length)
+  return { score, rows: graded }
 }
 
 /* ── CSV, properly: quoted fields, embedded commas, CRLF, BOM ───── */
@@ -5132,24 +5526,24 @@ function loadSkillSample() {
   parseSkillCsv()
 }
 
-/* ── The employee side: pre-filled skills on the profile ────────── */
+/* ── The employee side: every skill, and where it came from ────── */
+function skillChipHtml(r, opts) {
+  const o = opts || {}, c = SRC[r.source]
+  const tip = c.icon + ' ' + c.name.charAt(0).toUpperCase() + c.name.slice(1) + (r.note ? ' — ' + r.note : '')
+  return `<span class="skill-chip${o.removable ? ' removable' : ''}" data-skill="${esc(r.skill)}" data-src="${r.source}"
+    ${o.removable ? 'onclick="dropSkill(this)"' : ''} title="${esc(tip)}"
+    style="background:${c.bg};border-color:${c.bd};color:${c.fg};">${c.icon} ${esc(r.skill)}${o.removable ? ' ×' : ''}</span>`
+}
+
 function renderProfileSkills() {
   const box = document.getElementById('current-skills')
   if (!box) return
-  const persona = (ROLES[currentRole] && ROLES[currentRole].name) || null
-  const rows = persona ? allSkillRows().filter(r => r.employee === persona) : []
+  const rows = skillRowsFor(personaName())
   const banner = document.getElementById('prefillNote')
-  if (!rows.length) { if (banner) banner.style.display = 'none'; renderSkillProvenance(); return }
-  if (banner) banner.style.display = ''
-  // Carry across only chips the user typed on this page. The chips hard-coded
-  // in the markup are the default persona's, and would otherwise follow every
-  // persona around.
-  const own = [...box.querySelectorAll('.skill-chip[data-own]')].map(c => c.outerHTML)
-  const seen = new Set()
-  const chips = rows.filter(r => { const k = skillKey(r.skill); if (seen.has(k)) return false; seen.add(k); return true })
-    .map(r => `<span class="skill-chip removable" data-prefilled="1" onclick="removeSkill(this)"
-        style="background:#EFF6FF;border-color:#BFDBFE;color:#1E40AF;" title="Pre-filled by People &amp; Culture from HR records — edit or remove it if it is wrong">📥 ${esc(r.skill)} ×</span>`)
-  box.innerHTML = chips.join('') + own.join('')
+  if (banner) banner.style.display = rows.some(r => r.source === 'uploaded') ? '' : 'none'
+  box.innerHTML = rows.length
+    ? rows.map(r => skillChipHtml(r, { removable: true })).join('')
+    : `<span style="font-size:12px;color:#9CA3AF;">Nothing listed yet — add what you can actually do, below. Matching only ever sees what is written here.</span>`
   tagSkillChips()
   renderSkillProvenance()
 }
@@ -5157,26 +5551,295 @@ function renderProfileSkills() {
 /* The tally under the chips, counted rather than asserted. */
 function renderSkillProvenance() {
   const el = document.getElementById('skillProvenance')
-  const box = document.getElementById('current-skills')
-  if (!el || !box) return
-  const chips = [...box.querySelectorAll('.skill-chip')]
-  const verified = chips.filter(c => c.textContent.indexOf('✅') === 0).length
-  const prefilled = chips.filter(c => c.dataset.prefilled).length
-  const self = chips.length - verified - prefilled
-  const part = (n, label, colour, extra) => n
-    ? `<span>${label} <strong style="color:${colour};">${n} ${extra}</strong></span>` : ''
-  el.innerHTML =
-    part(verified, '✅', '#065F46', 'verified') +
-    part(prefilled, '📥', '#1E40AF', 'pre-filled by PCD') +
-    (self ? `<span>◻️ ${self} self-declared</span>` : '') +
-    (verified < chips.length
-      ? ` <span><a onclick="toast('Endorsement request sent to your manager.')" style="color:#C00000;font-weight:600;cursor:pointer;text-decoration:underline;">ask my manager to endorse</a></span>`
-      : '')
+  if (!el) return
+  const rows = skillRowsFor(personaName())
+  const n = k => rows.filter(r => r.source === k).length
+  const parts = SRC_ORDER.filter(k => n(k)).map(k =>
+    `<span title="${esc(SRC[k].name)}">${SRC[k].icon} <strong style="color:${SRC[k].fg};">${n(k)}</strong> ${esc(SRC[k].name)}</span>`)
+  const unverified = rows.length - n('verified')
+  el.innerHTML = parts.join('') + (unverified
+    ? ` <span><a onclick="toast('Endorsement request sent to your manager for ${unverified} skill${unverified === 1 ? '' : 's'}.')" style="color:#C00000;font-weight:600;cursor:pointer;text-decoration:underline;">ask my manager to endorse the other ${unverified}</a></span>`
+    : ` <span style="color:#065F46;font-weight:600;">Every skill on your profile is verified.</span>`)
+}
+
+/* ══ LIVE SCORING ═══════════════════════════════════════
+   Every match score on the page is computed from the profile as it stands
+   this second. Edit a skill and the numbers move — which is the only way
+   anyone believes the score means anything. */
+// The bands are the ones published in the rubric on My Matches: 70+ is a
+// match worth applying to, 50-69 a stretch, below that a long shot.
+const scoreColour = sc => sc >= 70 ? '#16A34A' : sc >= 50 ? '#D97706' : '#9CA3AF'
+const scoreTag = sc => sc >= 70 ? '' : sc >= 50 ? ' \u00b7 stretch' : ' \u00b7 long shot'
+const cardSkills = card => [...card.querySelectorAll('.chip-row .skill-chip')]
+  .map(c => (c.dataset.skill || c.textContent).replace(/[\u2705\u00d7]/g, '').trim()).filter(Boolean)
+
+function matchBarInner(m, label) {
+  const col = scoreColour(m.score)
+  const rows = m.rows.map(r => {
+    const v = r.w >= 0.8 ? '<span class="m-yes">\u2713 matched</span>'
+      : r.w > 0 ? `<span class="m-part">\u25d0 close to ${esc(r.via || 'a skill you have')}</span>`
+      : '<span class="m-no">\u2014 not listed</span>'
+    return `<span class="m-row"><span>${esc(r.label)}${r.src && !r.via ? ' ' + SRC[r.src].icon : ''}</span>${v}</span>`
+  }).join('')
+  return `<div class="match-bar-top">
+      <span class="match-bar-label">${esc(label)}</span>
+      <span class="why-match" tabindex="0" style="font-weight:700;color:${col};">${m.score}%${scoreTag(m.score)} <span style="font-size:10px;color:#9CA3AF;">\u24d8</span>
+        <span class="why-match-pop"><b>Why ${m.score}%?</b>${rows}
+          <span class="m-note">Scored against your profile as it stands right now. \u2705 verified counts in full, \ud83d\udce5 uploaded by HR slightly less, \u270f\ufe0f self-added least. This prototype scores skill overlap live; aspiration, track record and practicalities are held constant, which is the 30-point base. Not an assessment of your performance \u2014 the post owner decides.</span>
+        </span>
+      </span>
+    </div>
+    <div class="match-bar-track"><div class="match-bar-fill" style="width:${m.score}%;background:${col};"></div></div>`
+}
+
+function renderScores() {
+  document.querySelectorAll('.opp-card').forEach(card => {
+    const wrap = card.querySelector('.match-bar-wrap')
+    if (!wrap) return
+    const m = matchFor(cardSkills(card))
+    if (!m) return
+    const lab = card.querySelector('.match-bar-label')
+    wrap.innerHTML = matchBarInner(m, (lab && lab.textContent) || 'Match score')
+    const item = card.closest('.opp-item')
+    if (item) item.dataset.score = m.score
+  })
+  const cnt = document.getElementById('mySkillCount')
+  if (cnt) cnt.textContent = skillRowsFor(personaName()).length
+  if (document.getElementById('filterType')) filterAllOpps()
+}
+
+/* ══ HOW MANY HAVE APPLIED ══════════════════════════════
+   Seeded demand for the seeded posts, plus every application actually made
+   through this browser or the shared database. Showing it changes behaviour
+   both ways: an empty post is a reason to apply, a crowded one is a reason
+   to write a better answer. */
+const SEED_APPLICANTS = {
+  'Business Intelligence Analyst — FP&A Team': 9,
+  'HR Analytics Gig — Workforce Planning': 4,
+  'DJI: Digital Transformation Office — Strategy': 11,
+  'Supply Chain Analytics — Q4 Review': 2,
+  'Process Automation Gig — Finance Ops': 0,
+  'DJI: Legal & Compliance — Contract Review': 0,
+}
+const hashN = (t, mod) => { let h = 0; for (let i = 0; i < t.length; i++) h = (h * 31 + t.charCodeAt(i)) >>> 0; return h % mod }
+function applicantsFor(title) {
+  const t = String(title || '').trim()
+  const real = allApps().filter(a => String(a.opp_title || '').trim() === t).length
+  // A post created in this browser starts at nought. Inventing demand for it
+  // would be the one number on this page nobody could believe.
+  if (LOCAL.opps.some(o => String(o.title).trim() === t)) return real
+  return real + (SEED_APPLICANTS.hasOwnProperty(t) ? SEED_APPLICANTS[t] : hashN(t, 8))
+}
+
+/* The post owner's view of an applicant, drawn from that applicant's profile
+   rather than from anything typed into this page. */
+function renderApplicantRows() {
+  const card = document.getElementById('openingCard')
+  if (!card) return
+  const req = String(card.dataset.req || '').split(';').map(x => x.trim()).filter(Boolean)
+  const opp = card.dataset.opp
+  card.querySelectorAll('.app-meta-line').forEach(el => {
+    const who = el.dataset.person
+    const rows = skillRowsFor(who)
+    const m = matchFor(req, who)
+    const list = rows.slice(0, 4).map(r => SRC[r.source].icon + ' ' + esc(r.skill)).join(', ')
+    el.innerHTML = `${esc(deptOf(who))} · ${list || 'no skills on file'}`
+      + (m ? ` · <strong style="color:${scoreColour(m.score)};">${m.score}% match</strong>` : '')
+      + (el.dataset.note ? ` · <em>${esc(el.dataset.note)}</em>` : '')
+  })
+  const n = document.getElementById('openingCount')
+  if (n) n.textContent = card.querySelectorAll('.applicant-row').length + allApps().filter(a => a.opp_title === opp).length
+}
+
+function renderApplicantCounts() {
+  renderApplicantRows()
+  document.querySelectorAll('.opp-card').forEach(card => {
+    const t = card.querySelector('.opp-title'), row = card.querySelector('.chip-row')
+    if (!t || !row) return
+    let el = card.querySelector('.app-count')
+    if (!el) { el = document.createElement('div'); el.className = 'app-count'; row.insertAdjacentElement('afterend', el) }
+    const n = applicantsFor(t.textContent)
+    const meta = card.querySelector('.opp-meta')
+    const sl = meta && String(meta.textContent).match(/(\d+)\s+(?:slot|place)/)
+    const slots = sl ? ' for <strong>' + sl[1] + '</strong> ' + (sl[1] === '1' ? 'slot' : 'slots') : ''
+    el.innerHTML = n
+      ? `\ud83d\udc65 <span><strong>${n}</strong> ${n === 1 ? 'person has' : 'people have'} applied${slots}${n >= 8 ? ' \u00b7 <span style="color:#B45309;font-weight:600;">competitive \u2014 make your answer specific</span>' : ''}</span>`
+      : `\ud83d\udc65 <span style="color:#166534;">No applications yet \u2014 <strong>you would be the first.</strong></span>`
+  })
+}
+
+/* ══ COMPLETED WORK ═══════════════════════════════════ */
+const stars = n => `<span class="done-stars">${'\u2605'.repeat(n)}${'\u2606'.repeat(5 - n)}</span>`
+const fmtDone = d => { const t = new Date(d); return isNaN(t) ? String(d)
+  : t.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' }) }
+
+function doneRowHtml(c) {
+  const rated = !!c.rating
+  return `<div class="done-row${rated ? '' : ' pending'}">
+    <div style="display:flex;justify-content:space-between;gap:10px;align-items:flex-start;flex-wrap:wrap;">
+      <div>
+        <div class="done-t">${badgeFor(c.type)} ${esc(c.title)}</div>
+        <div class="done-m">${esc(c.dept || '\u2014')} \u00b7 hosted by ${esc(c.host)} \u00b7 ended ${esc(fmtDone(c.ended))}</div>
+      </div>
+      <div style="text-align:right;">${rated
+        ? stars(c.rating) + `<div class="done-m">${c.rating} of 5 from your host</div>`
+        : '<div class="done-m" style="color:#B45309;font-weight:600;">Rating pending</div>'}</div>
+    </div>
+    ${c.comment ? `<div class="done-q">\u201c${esc(c.comment)}\u201d</div>` : ''}
+    ${!rated ? `<div class="done-m" style="margin-top:7px;color:#92400E;">Your host manager has not submitted their survey yet. Ratings release together, so neither of you is anchored by the other.</div>` : ''}
+    ${rated && c.rating >= 4 && (c.skills || []).length
+      ? `<div style="margin-top:9px;font-size:11px;color:#065F46;">\u2705 This verified ${(c.skills || []).map(x => '<strong>' + esc(x) + '</strong>').join(', ')} on your profile \u2014 evidence, not a claim.</div>` : ''}
+    ${c.myComment ? `<div style="margin-top:9px;padding-top:9px;border-top:1px solid #F3F4F6;font-size:11.5px;color:#6B7280;line-height:1.6;"><strong>What you said:</strong> \u201c${esc(c.myComment)}\u201d</div>` : ''}
+  </div>`
+}
+
+function renderCompletedWork() {
+  const el = document.getElementById('completedWork')
+  if (!el) return
+  const rows = completedFor(personaName())
+  const avg = rows.filter(r => r.rating).reduce((a, r, i, arr) => a + r.rating / arr.length, 0)
+  el.innerHTML = rows.length
+    ? (avg ? `<div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:9px;padding:11px 14px;margin-bottom:13px;font-size:12px;color:#065F46;">
+        ${stars(Math.round(avg))} <strong>${avg.toFixed(1)} average</strong> across ${rows.filter(r => r.rating).length} rated engagement${rows.filter(r => r.rating).length === 1 ? '' : 's'}. This is what a post owner sees before they read anything you wrote about yourself.</div>` : '')
+      + rows.map(doneRowHtml).join('')
+    : `<div style="font-size:12px;color:#9CA3AF;line-height:1.6;">Nothing finished yet. Once a gig, DJI or service offer closes and your host manager submits their survey, it lands here with their rating and their words \u2014 permanently, and visible to anyone considering you for the next one.</div>`
+}
+
+/* Written by the host manager at close-out; updated, never duplicated, so a
+   record cannot be inflated by submitting the same survey twice. */
+function recordCompletion(person, title, patch) {
+  if (!person || !title) return
+  let row = LOCAL.completed.find(c => c.person === person && c.title === title)
+  if (!row) {
+    const seeded = SEED_COMPLETED.find(c => c.person === person && c.title === title)
+    const o = allOpps().find(x => x.title === title)
+    row = Object.assign({ person, title, type: (o && o.type) || (seeded && seeded.type) || 'Gig',
+      host: (seeded && seeded.host) || liveName() || personaName() || 'Host manager',
+      dept: (o && o.department) || (seeded && seeded.dept) || '\u2014',
+      ended: new Date().toISOString().slice(0, 10), rating: 0, comment: '',
+      skills: (seeded && seeded.skills) || skillsForOpp(title) }, seeded || {})
+    delete row.seeded
+    LOCAL.completed.unshift(row)
+  }
+  Object.assign(row, patch)
+  saveLocal()
+}
+
+/* ══ AN APPLICANT'S PROFILE, FROM THE POST OWNER'S SIDE ═══════════
+   A post owner deciding between four people should see what each of them
+   has actually done, and be able to endorse what they know first-hand. */
+function typeForOpp(title) {
+  const t = String(title || '').trim()
+  const o = allOpps().find(x => String(x.title).trim() === t)
+  if (o) return o.type || 'Gig'
+  const card = [...document.querySelectorAll('.opp-card')].find(c => {
+    const el = c.querySelector('.opp-title'); return el && el.textContent.trim() === t })
+  const b = card && card.querySelector('.badge')
+  return (b ? b.textContent.replace(/·.*$/, '').trim() : '') || 'Gig'
+}
+
+function skillsForOpp(title) {
+  const t = String(title || '').trim()
+  const declared = [...document.querySelectorAll('[data-opp][data-req]')]
+    .find(el => el.dataset.opp.trim() === t)
+  if (declared) return declared.dataset.req.split(';').map(x => x.trim()).filter(Boolean)
+  const card = [...document.querySelectorAll('.opp-card')].find(c => {
+    const el = c.querySelector('.opp-title'); return el && el.textContent.trim() === t })
+  if (card) return cardSkills(card)
+  const o = allOpps().find(x => String(x.title).trim() === t)
+  if (o && o.skills) return String(o.skills).split(/[;,]/).map(x => x.trim()).filter(Boolean)
+  const v = SEED_VACANCIES.find(x => x.title === t)
+  return v ? v.skills : []
+}
+
+const DIRECTORY = (() => {
+  const d = {}
+  SEED_SKILLS.forEach(r => { d[r.employee] = r.department })
+  Object.keys(ROLES).forEach(k => { d[ROLES[k].name] = d[ROLES[k].name] || (ROLES[k].dept || 'Home Credit PH') })
+  return d
+})()
+const deptOf = n => DIRECTORY[n] || '\u2014'
+const initialsOf = n => String(n || '?').split(/\s+/).map(w => w.charAt(0)).slice(0, 2).join('').toUpperCase()
+
+function openApplicantProfile(name, oppTitle) {
+  const rows = skillRowsFor(name)
+  const m = oppTitle ? matchFor(skillsForOpp(oppTitle), name) : null
+  const done = completedFor(name)
+  const apps = allApps().filter(a => a.applicant === name)
+  const unverified = rows.filter(r => r.source !== 'verified')
+  const overlay = document.createElement('div')
+  overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:520;display:flex;align-items:center;justify-content:center;padding:20px;overflow-y:auto;'
+  overlay.innerHTML = `
+    <div style="background:#fff;border-radius:14px;padding:28px 30px;width:560px;max-width:95vw;max-height:90vh;overflow-y:auto;box-shadow:0 8px 40px rgba(0,0,0,0.14);">
+      <div style="display:flex;gap:14px;align-items:center;margin-bottom:6px;">
+        <div class="app-avatar" style="background:#C00000;width:46px;height:46px;font-size:16px;">${esc(initialsOf(name))}</div>
+        <div>
+          <div style="font-size:18px;font-weight:700;color:#111827;">${esc(name)}</div>
+          <div style="font-size:12px;color:#6B7280;">${esc(deptOf(name))}</div>
+        </div>
+      </div>
+      ${m ? `<div style="background:#F9FAFB;border:1px solid #E5E7EB;border-radius:9px;padding:12px 14px;margin:14px 0;">
+        <div style="font-size:11px;color:#6B7280;margin-bottom:6px;">Fit for <strong style="color:#374151;">${esc(oppTitle)}</strong></div>
+        <div style="font-size:22px;font-weight:700;color:${scoreColour(m.score)};">${m.score}%</div>
+        <div style="font-size:11px;color:#6B7280;line-height:1.7;margin-top:6px;">
+          ${m.rows.map(r => r.via
+            ? `\u25d0 ${esc(r.label)} <span style="color:#9CA3AF;">\u2014 close to ${esc(r.via)} ${SRC[r.src].icon}</span>`
+            : r.w ? `\u2713 ${esc(r.label)} ${SRC[r.src].icon}`
+            : `<span style="color:#9CA3AF;">\u2014 ${esc(r.label)} not on their profile</span>`).join('<br>')}
+        </div>
+      </div>` : ''}
+
+      <div class="prof-sec">Skills \u00b7 ${rows.length}</div>
+      <div class="chip-row">${rows.length ? rows.map(r => skillChipHtml(r)).join('')
+        : '<span style="font-size:12px;color:#9CA3AF;">Nothing on file.</span>'}</div>
+      ${unverified.length ? `<div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:8px;padding:11px 13px;margin-top:11px;font-size:11.5px;color:#065F46;line-height:1.6;">
+        \u2705 <strong>Seen them do one of these yourself?</strong> Endorse it. An endorsement outranks anything they typed, and it follows them to every future post \u2014 not just yours.
+        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:9px;">
+          ${unverified.map(r => `<button class="btn btn-outline btn-sm" onclick="endorseSkill('${esc(name).replace(/'/g, "\\'")}','${esc(r.skill).replace(/'/g, "\\'")}','${esc(oppTitle || '').replace(/'/g, "\\'")}')">\u2705 ${esc(r.skill)}</button>`).join('')}
+        </div></div>` : ''}
+
+      <div class="prof-sec">Work completed through Growth \u00b7 ${done.length}</div>
+      ${done.length ? done.map(doneRowHtml).join('')
+        : '<div style="font-size:12px;color:#9CA3AF;line-height:1.6;">Nothing finished through Growth yet. That is not a mark against them \u2014 most of the company has not had the chance. It is the reason this post exists.</div>'}
+
+      ${apps.length ? `<div class="prof-sec">Applications in the pilot \u00b7 ${apps.length}</div>
+        ${apps.map(a => `<div style="font-size:12px;color:#374151;padding:7px 0;border-bottom:1px solid #F3F4F6;">
+          ${badgeFor(a.opp_type)} ${esc(a.opp_title)} <span style="color:#9CA3AF;">\u00b7 ${ago(a.created_at)}</span> ${statusBadge(a.status)}
+          ${a.essay ? `<div style="font-size:11.5px;color:#6B7280;line-height:1.6;margin-top:4px;font-style:italic;">\u201c${esc(a.essay)}\u201d</div>` : ''}
+        </div>`).join('')}` : ''}
+
+      <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:22px;">
+        <button onclick="this.closest('[data-overlay]').remove()" style="padding:9px 18px;border:1px solid #E5E7EB;border-radius:8px;background:#fff;font-size:13px;font-weight:600;cursor:pointer;font-family:inherit;color:#374151;">Close</button>
+      </div>
+    </div>`
+  overlay.setAttribute('data-overlay', '1')
+  overlay.addEventListener('click', e => { if (e.target === overlay) overlay.remove() })
+  document.body.appendChild(overlay)
+}
+
+/* The manager side of provenance: an endorsement is the strongest thing
+   anyone can put on someone else's profile, so it is one click and it says
+   who gave it. */
+function endorseSkill(person, skill, oppTitle) {
+  const by = liveName() || personaName() || 'their manager'
+  const e = editsFor(person), k = skillKey(skill)
+  delete e.rm[k]
+  e.add[k] = { skill, source: 'verified', note: 'endorsed by ' + by }
+  saveEdits()
+  toast('\u2705 Endorsed \u201c' + skill + '\u201d for ' + person + '. It now counts in full, everywhere.')
+  const open = document.querySelector('[data-overlay]')
+  if (open) open.remove()
+  renderScores(); renderProfileSkills(); renderFitBreakdowns(); renderApplicantCounts()
+  openApplicantProfile(person, oppTitle)
 }
 
 renderNav('manager')
 navigate('home')
 initSkillTip()
+renderProfileSkills()
+renderCompletedWork()
+renderApplicantCounts()
+renderScores()
 renderFitBreakdowns()
 renderHistory()
 liveInit()
