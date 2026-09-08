@@ -894,7 +894,7 @@ const next = (dark) => {
      '"Talent Exporter" recognition to ExCo; champions seed Phase 0.', AMBER],
     ['Employees arrive to an empty profile','HIGH',
      'No skills on file means no matches, an empty board, and no return visit.',
-     'Batch-load from the HRIS and the LMS. Correcting a list beats authoring one.', AMBER],
+     'Pre-load from HRIS and MyDevelopment. Correcting beats authoring.', AMBER],
     ['The retention lift is zero','MED',
      'Benefits fall to the attributed rows — still BCR 3.8, 14-month payback.',
      'Already modelled. A year-one holdout measures it properly.', MUTE],

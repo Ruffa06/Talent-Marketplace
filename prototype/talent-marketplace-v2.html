@@ -341,6 +341,20 @@
     color: #065F46;
     line-height: 1.5;
   }
+  .dji-pay-box {
+    margin-top: 8px;
+    background: #FFFBEB;
+    border: 1px solid #FDE68A;
+    border-radius: 8px;
+    padding: 10px 12px;
+    font-size: 11px;
+    color: #92400E;
+    line-height: 1.55;
+  }
+  .dji-pay-box strong { font-size: 11px; }
+  .dji-pay-box > strong:first-child { display: block; margin-bottom: 3px; text-transform: uppercase; letter-spacing: 0.3px; }
+  .dji-dl { margin-top: 10px; display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
+  .dji-dl-t { font-size: 11px; color: #6B7280; flex: 1 1 100%; }
   .dji-policy-box strong { display: block; margin-bottom: 3px; font-size: 11px; text-transform: uppercase; letter-spacing: 0.3px; }
 
   /* ── Stale alert ── */
@@ -434,7 +448,7 @@
   summary::-webkit-details-marker { display: none; }
   .faq-body { padding: 0 18px 16px; font-size: 13px; color: #6B7280; line-height: 1.7; border-top: 1px solid #F9FAFB; }
   .faq-policy-link {
-    display: inline-block; margin-top: 10px;
+    display: inline-block; margin-top: 10px; cursor: pointer; font-family: inherit; text-align: left;
     background: #D1FAE5; color: #065F46; font-size: 11px; font-weight: 700;
     padding: 3px 10px; border-radius: 6px; border: 1px solid #A7F3D0;
   }
@@ -947,7 +961,7 @@
           <div class="flow-node">1</div>
           <div class="flow-body">
             <div class="flow-st-t">Build your profile <span class="flow-who">You &middot; ~5 minutes</span></div>
-            <div class="flow-st-b">Add your skills, or simply confirm the ones People&nbsp;&amp;&nbsp;Culture already imported from your HR record. Nothing here can find you until this exists — your profile is the entire input.</div>
+            <div class="flow-st-b">Add your skills, or simply confirm the ones HR already imported from your HR record. Nothing here can find you until this exists — your profile is the entire input.</div>
           </div>
         </div>
         <div class="flow-step">
@@ -982,7 +996,7 @@
         <div class="flow-step">
           <div class="flow-node">6</div>
           <div class="flow-body">
-            <div class="flow-st-t">Rated, recorded, reviewed <span class="flow-who">People &amp; Culture</span></div>
+            <div class="flow-st-t">Rated, recorded, reviewed <span class="flow-who">HR</span></div>
             <div class="flow-st-b">The host manager rates the work, a post-activity survey reaches you the day it ends, and the whole engagement lands on your HR file — where it is tabled at the annual talent review. Not a favour someone might remember. A document.</div>
             <div class="flow-branch alt"><strong>The one route that runs backwards.</strong> A Service Offer skips steps&nbsp;2 and&nbsp;3 entirely — you publish what you are willing to help with, teams come and request your time, and every completed request lands on the same record at step&nbsp;6.</div>
           </div>
@@ -994,7 +1008,7 @@
       <div class="handoff-band">
         <div class="handoff-t">🏢 Permanent vacancies: listed here, applied for in HC Connect</div>
         <div class="handoff-b">
-          Growth does not run internal vacancies. <strong>HC Connect Internal Job Posting</strong> — the system People &amp; Culture
+          Growth does not run internal vacancies. <strong>HC Connect Internal Job Posting</strong> — the system HR
           already uses — owns the requisition, the screening and the offer, and duplicating that here would only split the process in two.<br><br>
           What Growth adds is the half HC Connect cannot do: it knows what you can already do, scores your fit against every open
           role, and puts one in front of you that you were never going to go looking for. When you open it, we hand you over on a
@@ -1063,7 +1077,16 @@
           <div style="font-size:12px;color:#6B7280;line-height:1.6;">Temporary assignment to another role or function, <strong>3&nbsp;–&nbsp;9&nbsp;months</strong>. Develop yourself for a future role, or be assessed for a target position — without leaving the company.</div>
           <div class="dji-policy-box">
             <strong>📄 Policy 211_2021 v1.0 applies</strong>
-            Before starting, you, your Direct Manager, and the Host Manager co-design a DJI Plan: goals, degree of immersion (100% full or partial split), expected outputs, and how performance will be evaluated. All four parties — employee, Direct Manager, Host Manager, and HR People Partner — sign off using the official DJI Form. Your headcount, salary, and benefits remain with your home department throughout.
+            Before starting, you, your Direct Manager, and the Host Manager co-design a DJI Plan: goals, degree of immersion (100% full or partial split), expected outputs, and how performance will be evaluated. All four parties — employee, Direct Manager, Host Manager, and HR People Partner (HRPP) — sign off using the official DJI Form.
+          </div>
+          <div class="dji-pay-box">
+            <strong>💰 It does not touch your pay</strong>
+            Your headcount, employment status, <strong>salary and benefits stay exactly where they are</strong> for the whole immersion — none of it moves to the host department (§5.4.3). You are <strong>not</strong> eligible for incentives, bonuses or allowances specific to the host department, and no extra allowance is paid for doing a DJI. Incentives you already qualify for at home are unaffected, as long as you still meet their own rules — and how immersion time affects your evaluation is written into the DJI Plan and signed by all four parties before you start (§5.4.2).
+          </div>
+          <div class="dji-dl">
+            <span class="dji-dl-t">📄 Read it yourself before you commit to anything</span>
+            <button class="btn btn-outline btn-sm" onclick="downloadPolicy('policy')">⬇ Policy 211_2021 v1.0</button>
+            <button class="btn btn-outline btn-sm" onclick="downloadPolicy('form')">⬇ Annex 1 — DJI Form</button>
           </div>
         </div>
         <div class="card" style="padding:22px;border:1px dashed #D1D5DB;background:#FAFAFA;">
@@ -1080,7 +1103,7 @@
       <div class="handoff-band">
         <div class="handoff-t">🏢 Permanent vacancies: listed here, applied for in HC Connect</div>
         <div class="handoff-b">
-          Growth does not run internal vacancies. <strong>HC Connect Internal Job Posting</strong> — the system People &amp; Culture
+          Growth does not run internal vacancies. <strong>HC Connect Internal Job Posting</strong> — the system HR
           already uses — owns the requisition, the screening and the offer, and duplicating that here would only split the process in two.<br><br>
           What Growth adds is the half HC Connect cannot do: it knows what you can already do, scores your fit against every open
           role, and puts one in front of you that you were never going to go looking for. When you open it, we hand you over on a
@@ -1114,7 +1137,7 @@
       <!-- What Home Credit PH commits in return -->
       <div style="background:#0F172A;border-radius:12px;padding:24px 26px;margin-bottom:28px;color:#fff;">
         <div style="font-size:16px;font-weight:700;margin-bottom:5px;">What Home Credit PH commits to in return</div>
-        <div style="font-size:12px;color:#94A3B8;margin-bottom:18px;line-height:1.6;">Growth work is unpaid, so the exchange has to be honest. These four commitments are not goodwill — they are policy, and the <strong style="color:#E2E8F0;">People &amp; Culture Department (PCD)</strong> is accountable for delivering each one. Not your manager, not the host manager, not you — PCD owns it centrally, which is why it holds even if the people around you change.</div>
+        <div style="font-size:12px;color:#94A3B8;margin-bottom:18px;line-height:1.6;">Growth work is unpaid, so the exchange has to be honest. These four commitments are not goodwill — they are policy, and the <strong style="color:#E2E8F0;">HR Department</strong> is accountable for delivering each one. Not your manager, not the host manager, not you — HR owns it centrally, which is why it holds even if the people around you change.</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
           <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:9px;padding:15px;">
             <div style="font-size:19px;margin-bottom:7px;">📁</div>
@@ -1129,7 +1152,7 @@
           <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:9px;padding:15px;">
             <div style="font-size:19px;margin-bottom:7px;">📝</div>
             <div style="font-size:12px;font-weight:700;margin-bottom:5px;">A post-activity survey, sent immediately</div>
-            <div style="font-size:11px;color:#CBD5E1;line-height:1.55;">The moment the engagement ends, PCD sends you the post-activity survey — what you learned, what you'd change, where you want this to lead. It goes out automatically, while the work is still fresh, and your answers route straight to PCD.</div>
+            <div style="font-size:11px;color:#CBD5E1;line-height:1.55;">The moment the engagement ends, HR sends you the post-activity survey — what you learned, what you'd change, where you want this to lead. It goes out automatically, while the work is still fresh, and your answers route straight to HR.</div>
           </div>
           <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:9px;padding:15px;">
             <div style="font-size:19px;margin-bottom:7px;">⭐</div>
@@ -1138,7 +1161,7 @@
           </div>
         </div>
         <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.1);font-size:11px;color:#94A3B8;line-height:1.6;">
-          <strong style="color:#E2E8F0;">On work hours and workload.</strong> Gigs are done outside office hours, or during office hours only with your manager's written permission. DJIs follow an agreed role split under Policy 211_2021. Your primary role and KPIs are never expected to absorb the difference — if a Growth commitment starts to compromise your core work, raise it with your manager or PCD and it will be adjusted or ended. No one is penalised for that conversation.
+          <strong style="color:#E2E8F0;">On work hours and workload.</strong> Gigs are done outside office hours, or during office hours only with your manager's written permission. DJIs follow an agreed role split under Policy 211_2021. Your primary role and KPIs are never expected to absorb the difference — if a Growth commitment starts to compromise your core work, raise it with your manager or HR and it will be adjusted or ended. No one is penalised for that conversation.
         </div>
       </div>
     </div>
@@ -1206,14 +1229,14 @@
         <details style="margin-top:12px;">
           <summary style="padding:11px 13px;">📊 How the score is calculated — the full rubric</summary>
           <div style="padding:4px 16px 16px;">
-            <div style="font-size:11.5px;color:#6B7280;line-height:1.65;margin-bottom:6px;">Four factors are weighted, then banded. Verified skills count roughly double a self-claimed one.</div>
+            <div style="font-size:11.5px;color:#6B7280;line-height:1.65;margin-bottom:6px;">Four factors, weighted to 100, then banded. Holding a required skill earns 20; having it verified earns 50 more — so evidence is worth three and a half times a claim.</div>
             <table class="rubric">
               <thead><tr><th>Factor</th><th>Weight</th><th>What the model looks at</th></tr></thead>
               <tbody>
-                <tr><td>Skill overlap</td><td>50%</td><td>How many of the required skills you hold, and whether each is verified (manager endorsement, a 4★+ host rating, or an LMS certification) or self-claimed.</td></tr>
-                <tr><td>Aspiration fit</td><td>20%</td><td>Whether the work moves you toward the direction you wrote on your profile — not just what you can already do.</td></tr>
-                <tr><td>Track record</td><td>20%</td><td>Completed gigs, DJIs and service offers, and the ratings host managers gave you.</td></tr>
-                <tr><td>Practicalities</td><td>10%</td><td>Bandwidth asked for, duration, and department — a signal, never a disqualifier.</td></tr>
+                <tr><td>Required skills — self-declared</td><td>20%</td><td>Every required skill on your profile earns a share of this, however it got there. Typing it is enough.</td></tr>
+                <tr><td>Required skills — verified</td><td>50%</td><td>A further, larger share for each of those skills that is <em>evidenced</em>: endorsed by a manager, earned on work a host manager rated 4★+, or certified in MyDevelopment. Skills HR uploaded from the HRIS sit in between.</td></tr>
+                <tr><td>Aspiration fit</td><td>20%</td><td>Whether the work moves you toward what you said you want — a required skill you already hold, or one you listed under <em>Skills to Develop</em>.</td></tr>
+                <tr><td>Track record</td><td>10%</td><td>Gigs, DJIs and service offers you have finished, and the ratings host managers gave you.</td></tr>
               </tbody>
             </table>
             <table class="rubric" style="margin-top:14px;">
@@ -1226,7 +1249,9 @@
               </tbody>
             </table>
             <div style="margin-top:13px;background:#F9FAFB;border:1px solid #F3F4F6;border-radius:8px;padding:11px 13px;font-size:11px;color:#6B7280;line-height:1.65;">
-              <strong style="color:#374151;">Where it can be wrong.</strong> The model only knows what is written down. A skill you never added, or experience recorded nowhere, is invisible to it — which is why a thin profile produces low scores that say more about the profile than the person. It also cannot judge motivation. If a score looks wrong to you, it probably is: apply anyway, and tell the post owner why.
+              <strong style="color:#374151;">Worked example.</strong> A post asking for SQL, Power BI and Financial Modelling, against a profile holding SQL and Financial Modelling as verified and nothing else:
+              skills <strong>58 of 70</strong> (two verified outright; Power BI counts at half, being adjacent to SQL), aspiration <strong>20 of 20</strong> (all three are in your direction — two held, one adjacent), track record <strong>9 of 10</strong> (two finished engagements at 4.5★) — <strong>87%</strong>, a strong match. Hover any score on a card to see its own version of this.
+              <div style="margin-top:9px;"><strong style="color:#374151;">Where it can be wrong.</strong> The model only knows what is written down. A skill you never added, or experience recorded nowhere, is invisible to it — which is why a thin profile produces low scores that say more about the profile than the person. It also cannot judge motivation. If a score looks wrong to you, it probably is: apply anyway, and tell the post owner why.</div>
             </div>
           </div>
         </details>
@@ -1251,7 +1276,7 @@
           <option>All Types</option><option>Gig</option><option>DJI</option>
         </select>
         <select style="padding:7px 11px;border:1px solid #E5E7EB;border-radius:8px;background:#fff;color:#374151;font-size:13px;font-family:inherit;outline:none;">
-          <option>All Departments</option><option>Finance</option><option>People & Culture</option><option>IT & Innovation</option>
+          <option>All Departments</option><option>Finance</option><option>HR</option><option>IT & Innovation</option>
         </select>
         <input placeholder="🔍  Search opportunities…" style="padding:7px 11px;border:1px solid #E5E7EB;border-radius:8px;background:#fff;color:#374151;font-size:13px;font-family:inherit;outline:none;flex:1;min-width:180px;">
       </div>
@@ -1286,8 +1311,8 @@
         <div class="card"><div class="opp-card">
           <div class="opp-card-header"><span class="badge badge-gig">Gig</span><span style="font-size:11px;color:#9CA3AF;">Ad-hoc</span></div>
           <div class="opp-title">HR Analytics Gig — Workforce Planning</div>
-          <div class="opp-meta">People & Culture · Ad-hoc · 2 slots</div>
-          <div style="font-size:11px;color:#9CA3AF;margin-top:2px;">👤 Posted by <strong style="color:#6B7280;">Taylor Swift</strong> · People &amp; Culture</div>
+          <div class="opp-meta">HR · Ad-hoc · 2 slots</div>
+          <div style="font-size:11px;color:#9CA3AF;margin-top:2px;">👤 Posted by <strong style="color:#6B7280;">Taylor Swift</strong> · HR</div>
           <div class="chip-row"><span class="skill-chip">Excel</span><span class="skill-chip">Data Analysis</span></div>
           <div class="match-bar-wrap">
             <div class="match-bar-top">
@@ -1377,7 +1402,7 @@
           <option value="">All Types</option><option>Gig</option><option>DJI</option><option>Service Offer</option><option>Service Request</option>
         </select>
         <select id="filterDept" onchange="filterAllOpps()" style="padding:7px 11px;border:1px solid #E5E7EB;border-radius:8px;background:#fff;color:#374151;font-size:13px;font-family:inherit;outline:none;">
-          <option value="">All Departments</option><option>Finance</option><option>People &amp; Culture</option><option>IT &amp; Innovation</option><option>Operations</option><option>Legal &amp; Compliance</option><option>Commercial Planning</option>
+          <option value="">All Departments</option><option>Finance</option><option>HR</option><option>IT &amp; Innovation</option><option>Operations</option><option>Legal &amp; Compliance</option><option>Commercial Planning</option>
         </select>
         <select id="filterScore" onchange="filterAllOpps()" style="padding:7px 11px;border:1px solid #E5E7EB;border-radius:8px;background:#fff;color:#374151;font-size:13px;font-family:inherit;outline:none;">
           <option value="">Any match score</option><option value="stretch">Stretch roles (&lt;70%)</option><option value="strong">Strong fit (≥70%)</option>
@@ -1457,11 +1482,11 @@
         </div></div>
 
 
-        <div class="card opp-item" data-type="Gig" data-dept="People &amp; Culture" data-score="66"><div class="opp-card">
+        <div class="card opp-item" data-type="Gig" data-dept="HR" data-score="66"><div class="opp-card">
           <div class="opp-card-header"><span class="badge badge-gig">Gig</span><span style="font-size:11px;color:#6B7280;">~6 hours</span></div>
           <div class="opp-title">Coach a first-time presenter — Exco readout</div>
-          <div class="opp-meta">People &amp; Culture · Ad-hoc · 3 slots</div>
-          <div style="font-size:11px;color:#6B7280;margin-top:2px;">👤 Posted by <strong>Taylor Swift</strong> · People &amp; Culture</div>
+          <div class="opp-meta">HR · Ad-hoc · 3 slots</div>
+          <div style="font-size:11px;color:#6B7280;margin-top:2px;">👤 Posted by <strong>Taylor Swift</strong> · HR</div>
           <div style="font-size:11px;color:#6B7280;margin-top:6px;">📅 Aug 5 → Aug 26 · Rolling</div>
           <div class="chip-row"><span class="skill-chip">Coaching</span><span class="skill-chip">Presentation</span></div>
           <div class="match-bar-wrap">
@@ -1640,7 +1665,7 @@
                 <td><span class="badge badge-accepted">Selected ✓</span></td>
               </tr>
               <tr>
-                <td><strong>Jennifer Lopez</strong><br><span style="font-size:11px;color:#6B7280;">People &amp; Culture</span></td>
+                <td><strong>Jennifer Lopez</strong><br><span style="font-size:11px;color:#6B7280;">HR</span></td>
                 <td>Coach a first-time presenter</td>
                 <td><span class="badge badge-gig">Gig</span></td>
                 <td>Jul 21</td>
@@ -1693,7 +1718,7 @@
               </tr>
               <tr style="background:#FFFBEB;">
                 <td style="font-weight:700;font-size:15px;color:#6B7280;">🥈</td>
-                <td><strong>Taylor Swift</strong></td><td>People &amp; Culture</td>
+                <td><strong>Taylor Swift</strong></td><td>HR</td>
                 <td style="font-variant-numeric:tabular-nums;">4</td>
                 <td style="font-variant-numeric:tabular-nums;font-weight:700;color:#16A34A;">3</td>
                 <td><span class="badge badge-accepted">75%</span></td>
@@ -1834,7 +1859,7 @@
         <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:12px;flex-wrap:wrap;margin-bottom:6px;">
           <div style="flex:1;min-width:220px;">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;"><span class="badge badge-gig">Gig</span><span style="font-size:14px;font-weight:700;color:#111827;">HR Analytics Gig — Workforce Planning</span></div>
-            <div style="font-size:11px;color:#9CA3AF;">People &amp; Culture · 3 weeks · Posted by Taylor Swift</div>
+            <div style="font-size:11px;color:#9CA3AF;">HR · 3 weeks · Posted by Taylor Swift</div>
           </div>
           <span class="badge badge-accepted" style="padding:4px 11px;">✓ Accepted</span>
         </div>
@@ -1877,7 +1902,7 @@
       <div data-pending="1" style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:10px;padding:16px 18px;margin-bottom:20px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;">
         <div style="flex:1;min-width:250px;">
           <div style="font-size:13px;font-weight:700;color:#92400E;margin-bottom:3px;">⭐ Post-activity survey due — Process Automation Gig (Finance Ops)</div>
-          <div style="font-size:12px;color:#92400E;line-height:1.55;">This gig ended on <strong>Jul 14</strong>. You hosted <strong>Cristiano Ronaldo</strong>, one of your direct reports, and he hasn't completed his yet either. Both ratings release once you both do — and your three answers are what tell PCD whether hosting was worth it.</div>
+          <div style="font-size:12px;color:#92400E;line-height:1.55;">This gig ended on <strong>Jul 14</strong>. You hosted <strong>Cristiano Ronaldo</strong>, one of your direct reports, and he hasn't completed his yet either. Both ratings release once you both do — and your three answers are what tell HR whether hosting was worth it.</div>
         </div>
         <button class="btn btn-amber btn-sm" onclick="openFeedbackDialog('Process Automation Gig — Finance Ops','Cristiano Ronaldo','host')">Complete survey →</button>
       </div>
@@ -2015,7 +2040,7 @@
             </tr>
             <tr>
               <td><span class="team-avatar" style="background:#0F766E;">AG</span>Ariana Grande</td>
-              <td>People & Culture</td><td>—</td><td>—</td><td><span class="badge badge-notyet">Not Yet Active</span></td>
+              <td>HR</td><td>—</td><td>—</td><td><span class="badge badge-notyet">Not Yet Active</span></td>
             </tr>
             <tr>
               <td><span class="team-avatar" style="background:#9D174D;">SW</span>Serena Williams</td>
@@ -2041,7 +2066,7 @@
             <div style="font-size:13px;color:#374151;line-height:1.6;margin-bottom:14px;">These team members haven't engaged yet. A quick conversation about growth goals could be all it takes:</div>
             <div style="display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid #F9FAFB;">
               <span class="team-avatar" style="background:#0F766E;display:inline-flex;">AG</span>
-              <div><div style="font-size:13px;font-weight:700;color:#111827;">Ariana Grande</div><div style="font-size:11px;color:#9CA3AF;">People & Culture</div></div>
+              <div><div style="font-size:13px;font-weight:700;color:#111827;">Ariana Grande</div><div style="font-size:11px;color:#9CA3AF;">HR</div></div>
               <button class="btn btn-outline btn-sm" style="margin-left:auto;" onclick="toast('Nudge sent to Ariana Grande.')">Nudge</button>
             </div>
             <div style="display:flex;align-items:center;gap:10px;padding:10px 0;">
@@ -2072,14 +2097,14 @@
         </div>
         <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:10px;padding:12px 16px;margin-bottom:20px;font-size:12px;color:#1E40AF;line-height:1.6;">
           🏢 <strong>Filling a permanent role?</strong> Raise the requisition in HC Connect as you always have — Growth does not
-          take vacancy applications. Once it is open there, ask People &amp; Culture to promote it on the Growth vacancy
+          take vacancy applications. Once it is open there, ask HR to promote it on the Growth vacancy
           board so it reaches people who match it but were not looking.
         </div>
         <div class="card form-card">
           <h3>Opportunity Details</h3>
           <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
             <div class="field"><label>Type</label><select id="postType"><option>Gig</option><option>Developmental Job Immersion</option><option>Service Request</option></select></div>
-            <div class="field"><label>Department</label><select id="postDept"><option selected>People & Culture</option><option>Finance</option><option>IT & Innovation</option><option>Operations</option></select></div>
+            <div class="field"><label>Department</label><select id="postDept"><option selected>HR</option><option>Finance</option><option>IT & Innovation</option><option>Operations</option></select></div>
           </div>
           <div class="field"><label>Title</label><input id="postTitle" placeholder="e.g. HR Analytics Gig — Q4 Workforce Review"></div>
           <div class="field"><label>Description</label><textarea id="postDesc" placeholder="What will the person be doing? What problem are we solving?"></textarea></div>
@@ -2174,7 +2199,7 @@
           <div class="card profile-sidebar-card">
             <div class="profile-avatar-lg" id="profileAvatarLg">TS</div>
             <div class="profile-name" id="profileName">Taylor Swift</div>
-            <div class="profile-dept" id="profileDept">People & Culture · Manager</div>
+            <div class="profile-dept" id="profileDept">HR · Manager</div>
             <div class="profile-stat-row">
               <div><div class="profile-stat-val">3</div><div class="profile-stat-lbl">Openings</div></div>
               <div><div class="profile-stat-val">5</div><div class="profile-stat-lbl">Applicants</div></div>
@@ -2188,7 +2213,7 @@
               <div class="field"><label>First Name</label><input id="profileFirst" value="Taylor"></div>
               <div class="field"><label>Last Name</label><input id="profileLast" value="Winfrey"></div>
             </div>
-            <div class="field"><label>Department</label><input id="profileDeptInput" value="People & Culture"></div>
+            <div class="field"><label>Department</label><input id="profileDeptInput" value="HR"></div>
             <div class="field"><label>Reports To (Direct Manager)</label><input id="profileReportsTo" value="Roger Federer" readonly style="background:#F9FAFB;color:#6B7280;"></div>
             <div class="field"><label>About You</label><textarea>HR professional passionate about talent development and organisational effectiveness. Firm believer that the right opportunity at the right time changes everything.</textarea></div>
           </div>
@@ -2197,14 +2222,14 @@
             <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;padding:11px 13px;font-size:11px;color:#1E40AF;line-height:1.6;margin-bottom:14px;">
               ✅ <strong>Where each skill came from, and what it is worth.</strong>
               <span style="display:block;margin-top:6px;">✅ <strong>Verified</strong> — endorsed by a manager, or earned on work a host manager rated 4★ or better. Counts in full.<br>
-              📥 <strong>Uploaded by HR</strong> — loaded in bulk from HRIS and LMS records. Trusted more than a claim, less than an endorsement.<br>
+              📥 <strong>Uploaded by HR</strong> — loaded in bulk from HRIS and MyDevelopment records. Trusted more than a claim, less than an endorsement.<br>
               ✏️ <strong>Added by you</strong> — typed on this page. It counts, but least.</span>
               <span style="display:block;margin-top:6px;">Anyone can claim a skill — so claims alone don't carry much weight here. Add or remove anything below and every match score on this app is recalculated the moment you do.</span>
             </div>
             <div class="field">
               <label>Current Skills</label>
               <div id="prefillNote" style="display:none;background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;padding:10px 12px;font-size:11px;color:#1E40AF;line-height:1.6;margin-bottom:10px;">
-                📥 <strong>Some of these were pre-filled for you</strong> by People &amp; Culture, from records HR already
+                📥 <strong>Some of these were pre-filled for you</strong> by HR, from records HR already
                 held. They are a starting point, not a verdict — remove anything that is wrong and add what is missing.
                 Correcting a list is much quicker than writing one, and matching only ever sees what is on this page.
               </div>
@@ -2406,7 +2431,7 @@
             </div>
             <div class="card" style="padding:14px 18px;display:flex;align-items:center;gap:14px;">
               <div style="font-size:22px;font-weight:700;color:#9CA3AF;width:32px;">#3</div>
-              <div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#111827;">HR Analytics Gig</div><div style="font-size:11px;color:#9CA3AF;">P&C · 11 applications</div></div>
+              <div style="flex:1;"><div style="font-size:13px;font-weight:700;color:#111827;">HR Analytics Gig</div><div style="font-size:11px;color:#9CA3AF;">HR · 11 applications</div></div>
               <span class="badge badge-gig">Gig</span>
             </div>
           </div>
@@ -2505,7 +2530,7 @@
         <h3>Promote a requisition</h3>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
           <div class="field"><label>HC Connect requisition ID</label><input id="vacReq" placeholder="e.g. REQ-2609"></div>
-          <div class="field"><label>Department</label><select id="vacDept"><option>Finance</option><option>People &amp; Culture</option><option>IT &amp; Innovation</option><option>Operations</option><option>Legal &amp; Compliance</option><option>Commercial Planning</option><option>Risk Management</option><option>Marketing</option></select></div>
+          <div class="field"><label>Department</label><select id="vacDept"><option>Finance</option><option>HR</option><option>IT &amp; Innovation</option><option>Operations</option><option>Legal &amp; Compliance</option><option>Commercial Planning</option><option>Risk Management</option><option>Marketing</option></select></div>
         </div>
         <div class="field"><label>Role title</label><input id="vacTitle" placeholder="e.g. Credit Risk Analyst — Portfolio"></div>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
@@ -2600,7 +2625,7 @@
           Matching only sees what is written down. A person with no skills on file matches nothing, sees an empty
           board, and does not come back — and asking 637 people to sit down and type their own skills before the
           Growth does anything for them is the wrong order of events.<br><br>
-          You almost certainly already hold this data: the HRIS competency table, the LMS completion export, the
+          You almost certainly already hold this data: the HRIS competency table, the MyDevelopment completion export, the
           last capability assessment. Load it here and every profile starts populated. People then <strong>correct</strong>
           their skills, which is a far easier ask than <strong>authoring</strong> them, and Growth works on day one.
         </div>
@@ -2638,7 +2663,7 @@ HC-1088,Lionel Messi,Finance,Power BI;SQL;Data Analysis</div>
                 style="min-height:150px;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11.5px;line-height:1.7;"></textarea>
             </div>
             <div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:8px;padding:10px 12px;font-size:11px;color:#92400E;line-height:1.6;">
-              🔒 Uploaded skills land as <strong>Pre-filled by PCD</strong> — a provenance of its own, ranked between
+              🔒 Uploaded skills land as <strong>Uploaded by HR</strong> — a provenance of its own, ranked between
               verified and self-declared. An upload never overwrites a skill an employee has edited themselves, and
               never removes one. People stay in charge of their own profile.
             </div>
@@ -2662,7 +2687,7 @@ HC-1088,Lionel Messi,Finance,Power BI;SQL;Data Analysis</div>
         <div class="page-sub">Every post and every application, including the ones that were rejected</div>
       </div>
       <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:10px;padding:12px 16px;margin-bottom:20px;font-size:12px;color:#1E40AF;line-height:1.6;">
-        🗂️ <strong>Nothing is deleted.</strong> Rejected posts and declined applications stay on the record — that history is what tells PCD whether Growth is working, and protects both applicants and post owners if a decision is questioned later.
+        🗂️ <strong>Nothing is deleted.</strong> Rejected posts and declined applications stay on the record — that history is what tells HR whether Growth is working, and protects both applicants and post owners if a decision is questioned later.
       </div>
 
       <div class="tab-bar">
@@ -2705,7 +2730,7 @@ HC-1088,Lionel Messi,Finance,Power BI;SQL;Data Analysis</div>
 
       <div id="hist-sla" class="hist-pane" style="display:none;">
         <div style="background:#FEF2F2;border:1px solid #FECACA;border-radius:10px;padding:14px 16px;margin-bottom:16px;font-size:12px;color:#7F1D1D;line-height:1.65;">
-          ⏰ <strong>The 7-day rule.</strong> Applicants are promised a decision within seven working days. Past that, an automated reminder goes to the post owner, copied to PCD. A silent no is the fastest way to lose someone from Growth for good.
+          ⏰ <strong>The 7-day rule.</strong> Applicants are promised a decision within seven working days. Past that, an automated reminder goes to the post owner, copied to HR. A silent no is the fastest way to lose someone from Growth for good.
         </div>
         <div class="card" style="overflow:hidden;">
           <div style="padding:14px 16px;border-bottom:1px solid #F3F4F6;font-size:14px;font-weight:700;color:#111827;">Applications past the 7-day commitment</div>
@@ -2753,7 +2778,7 @@ HC-1088,Lionel Messi,Finance,Power BI;SQL;Data Analysis</div>
             &nbsp;&nbsp;• <strong>Full immersion (100%)</strong> — you are fully released to the Host Department for the duration<br>
             &nbsp;&nbsp;• <strong>Partial immersion</strong> — the new role is performed alongside your current role at an agreed split<br><br>
             This is co-designed by you, your Direct Manager, and the Host Manager, then signed off by all three plus your HR People Partner (HRPP) using the official DJI Form.
-            <div class="faq-policy-link">📄 Policy 211_2021 v1.0 — Section 5.4.2 Goal and Expectation Setting</div>
+            <button class="faq-policy-link" onclick="downloadPolicy('policy')" title="Download the policy">📄 Policy 211_2021 v1.0 — Section 5.4.2 Goal and Expectation Setting &nbsp;⬇</button>
           </div>
         </details>
 
@@ -2765,16 +2790,16 @@ HC-1088,Lionel Messi,Finance,Power BI;SQL;Data Analysis</div>
             &nbsp;&nbsp;• At least <strong>12 months</strong> in your current position<br>
             &nbsp;&nbsp;• No disciplinary action in the last 12 months<br>
             &nbsp;&nbsp;• PIP/underperformers reviewed on a case-by-case basis with HRPP
-            <div class="faq-policy-link">📄 Policy 211_2021 v1.0 — Section 5.1 Eligibility</div>
+            <button class="faq-policy-link" onclick="downloadPolicy('policy')" title="Download the policy">📄 Policy 211_2021 v1.0 — Section 5.1 Eligibility &nbsp;⬇</button>
           </div>
         </details>
 
         <details><summary>There's no extra pay — so what does the company actually give me in return? <span>+</span></summary>
           <div class="faq-body">
-            A fair question, and the honest answer is that "exposure" isn't payment. Growth work is unpaid, so Home Credit PH commits to four things in exchange. These are policy, not goodwill, and the People &amp; Culture Department (PCD) is accountable for delivering each — centrally, not devolved to your manager:<br><br>
+            A fair question, and the honest answer is that "exposure" isn't payment. Growth work is unpaid, so Home Credit PH commits to four things in exchange. These are policy, not goodwill, and the HR Department is accountable for delivering each — centrally, not devolved to your manager:<br><br>
             <strong>1. A formal record on your file.</strong> Every completed engagement is logged permanently in your HR record with the host manager's rating. Not a favour someone might remember — a document.<br>
             <strong>2. Inclusion in the talent review.</strong> Your contributions are tabled at the annual talent review and succession planning discussion — the room where promotions and successor slates are decided.<br>
-            <strong>3. A post-activity survey, immediately.</strong> The moment the engagement ends, PCD sends you the post-activity survey — what you learned, what you'd change, where you want it to lead. Sent automatically while the work is fresh, and it goes to PCD, not into a drawer.<br>
+            <strong>3. A post-activity survey, immediately.</strong> The moment the engagement ends, HR sends you the post-activity survey — what you learned, what you'd change, where you want it to lead. Sent automatically while the work is fresh, and it goes to HR, not into a drawer.<br>
             <strong>4. First look at related roles.</strong> Complete work in a function and you're flagged as a priority internal candidate when a vacancy opens there.<br><br>
             <strong>On workload.</strong> Your primary role and KPIs are never expected to absorb the difference. If a Growth commitment starts compromising your core work, raise it with your manager or HRPP — it will be adjusted or ended, and no one is penalised for that conversation.<br><br>
             Beyond the commitments, the reasons people actually give: fulfilling your IDP, a creative outlet, genuine love of the work, test-driving a career pivot with zero risk, visibility with leaders outside your chain, a cross-functional network that compounds for your whole career, and a shorter learning curve when you do move roles.
@@ -2806,7 +2831,7 @@ HC-1088,Lionel Messi,Finance,Power BI;SQL;Data Analysis</div>
             Anyone can claim a skill, so claims alone don't carry much weight. A skill becomes <strong>✅ Verified</strong> three ways:<br><br>
             <strong>1. Manager endorsement.</strong> Your direct manager confirms it. Request this from your profile in one click.<br>
             <strong>2. Growth performance.</strong> A host manager rates you <strong>4★ or higher</strong> on work that used the skill — it's verified automatically. This is the strongest form, because it's evidence rather than opinion.<br>
-            <strong>3. Certification.</strong> A completed certification logged in the LMS.<br><br>
+            <strong>3. Certification.</strong> A completed certification logged in MyDevelopment.<br><br>
             Verified skills rank higher in matching and are the only ones shown to post owners by default. Self-declared skills still count — they just carry a lighter weight until something backs them up. Over time, completed Growth work becomes the main source of truth about what people here can actually do.
           </div>
         </details>
@@ -2815,7 +2840,7 @@ HC-1088,Lionel Messi,Finance,Power BI;SQL;Data Analysis</div>
           <div class="faq-body">
             Two weeks after the end date on the post, both you and the other party are automatically asked for a short rating and comment. Under two minutes.<br><br>
             <strong>Ratings release simultaneously.</strong> Neither of you sees the other's until both are in, so nobody is anchored by what the other said.<br><br>
-            The rating and comment land on your permanent record, feed skill verification, and are visible in the talent review. PCD then sends you the post-activity survey immediately, so your own account of the work is captured while you still remember it.<br><br>
+            The rating and comment land on your permanent record, feed skill verification, and are visible in the talent review. HR then sends you the post-activity survey immediately, so your own account of the work is captured while you still remember it.<br><br>
             This is the mechanism that turns unpaid work into something that actually counts. Without it, the company's commitments would be a promise with nothing behind them — so the feedback step isn't optional for either side.
           </div>
         </details>
@@ -2867,7 +2892,7 @@ HC-1088,Lionel Messi,Finance,Power BI;SQL;Data Analysis</div>
             &nbsp;&nbsp;• <strong>For Job Consideration</strong> — assessing readiness for the role; open requisition exists<br><br>
             In both types, the employee's headcount, salary, and benefits remain with their home department. No additional allowances or bonuses are provided.<br><br>
             <strong>Service Offer:</strong> The fourth type, and the only one that works in reverse — an employee publishes what they're willing to help with (mentoring, a prototype, a review) and teams request their time. Usually an hour or two at a stretch, capacity set by the person offering.
-            <div class="faq-policy-link">📄 Policy 211_2021 v1.0 — Sections 5.2, 5.3, 5.4</div>
+            <button class="faq-policy-link" onclick="downloadPolicy('policy')" title="Download the policy">📄 Policy 211_2021 v1.0 — Sections 5.2, 5.3, 5.4 &nbsp;⬇</button>
           </div>
         </details>
 
@@ -2879,7 +2904,7 @@ HC-1088,Lionel Messi,Finance,Power BI;SQL;Data Analysis</div>
             3. You, the employee, the Host Manager, and the HRPP all sign off using the official DJI Form<br>
             4. As Direct Manager, you remain responsible for check-ins, evaluation, and formal closure of the DJI<br><br>
             The employee's headcount and all HR obligations remain with you throughout. The DJI closes at the agreed end date, or at 9 months maximum.
-            <div class="faq-policy-link">📄 Policy 211_2021 v1.0 — Sections 4 &amp; 5.4</div>
+            <button class="faq-policy-link" onclick="downloadPolicy('policy')" title="Download the policy">📄 Policy 211_2021 v1.0 — Sections 4 &amp; 5.4 &nbsp;⬇</button>
           </div>
         </details>
 
@@ -2985,7 +3010,7 @@ function setRole(role) {
   document.getElementById('topbarAvatar').textContent = r.initials
   document.getElementById('profileAvatarLg').textContent = r.initials
   document.getElementById('profileName').textContent = r.name
-  const deptMap = { manager: 'People & Culture · Manager', employee: 'Finance · Employee', admin: 'HR Admin · Administrator' }
+  const deptMap = { manager: 'HR · Manager', employee: 'Finance · Employee', admin: 'HR Admin · Administrator' }
   document.getElementById('profileDept').textContent = deptMap[role]
   // Reporting line — Cristiano Ronaldo reports to Taylor Swift, which is what
   // puts his activity in her My Team Activity view.
@@ -3099,7 +3124,7 @@ const LIVE = {
   vacancies: [],   // v2 — promoted requisitions that live in the ATS
   refs: [],        // v2 — one row per handoff click
   viewCount: null, // v2 — exact count of view rows, counted by the database; null until known
-  skills: [],      // v2 — one row per employee / skill, batch-loaded by PCD
+  skills: [],      // v2 — one row per employee / skill, batch-loaded by HR
   timer: null,
 }
 
@@ -3494,27 +3519,27 @@ const SKILL_DEFS = {
 }
 // Development suggestions used when a required skill is missing.
 const SKILL_DEV = {
-  'sql': 'LMS · “SQL for Analysts” (6h) + shadow a Finance BI report build',
-  'power bi': 'LMS · “Power BI Essentials” (4h) then rebuild one of your own trackers as a dashboard',
-  'esg reporting': 'Ask PCD for the ESG primer deck; sit in on one quarterly disclosure review',
+  'sql': 'MyDevelopment · “SQL for Analysts” (6h) + shadow a Finance BI report build',
+  'power bi': 'MyDevelopment · “Power BI Essentials” (4h) then rebuild one of your own trackers as a dashboard',
+  'esg reporting': 'Ask HR for the ESG primer deck; sit in on one quarterly disclosure review',
   'regulatory': 'Shadow a Compliance case review; read the latest BSP circular summary',
-  'financial modelling': 'LMS · “Modelling for Non-Finance” (8h) + rebuild one FP&A scenario',
+  'financial modelling': 'MyDevelopment · “Modelling for Non-Finance” (8h) + rebuild one FP&A scenario',
   'facilitation': 'Co-facilitate one team retro with an experienced host before leading your own',
-  'change management': 'LMS · “Leading Change” (5h); volunteer on a current rollout comms squad',
+  'change management': 'MyDevelopment · “Leading Change” (5h); volunteer on a current rollout comms squad',
   'product design': 'Join a design review as an observer; run one customer interview',
   'pricing': 'Sit in on a pricing committee; work through the commercial planning primer',
   'customer segmentation': 'Pair with Commercial Planning on one segmentation refresh',
-  'process automation': 'LMS · “Automate with Power Automate” (4h) + automate one of your own reports',
+  'process automation': 'MyDevelopment · “Automate with Power Automate” (4h) + automate one of your own reports',
   'supply chain': 'Shadow the S&OP cycle for one month',
-  'workforce planning': 'Sit in on the annual headcount planning session with PCD',
-  'prototyping': 'LMS · “Rapid Prototyping Basics” (3h); rebuild one manual process as a clickable mock',
-  'ai tools': 'LMS · “Working with AI Tools” (2h); use one on a real task this month and write up what changed',
+  'workforce planning': 'Sit in on the annual headcount planning session with HR',
+  'prototyping': 'MyDevelopment · “Rapid Prototyping Basics” (3h); rebuild one manual process as a clickable mock',
+  'ai tools': 'MyDevelopment · “Working with AI Tools” (2h); use one on a real task this month and write up what changed',
   'segmentation': 'Pair with Commercial Planning on one segmentation refresh',
-  'mentoring': 'Complete the PCD mentoring primer; take one mentee through a single cycle',
+  'mentoring': 'Complete the HR mentoring primer; take one mentee through a single cycle',
   'journey mapping': 'Join one customer journey workshop; map a single end-to-end flow yourself',
-  'design thinking': 'LMS · “Design Thinking Foundations” (4h) + one facilitated ideation session',
+  'design thinking': 'MyDevelopment · “Design Thinking Foundations” (4h) + one facilitated ideation session',
   'stakeholder management': 'Shadow a steering committee; own the comms for one workstream',
-  'project management': 'LMS · “Project Delivery Essentials” (6h); run one small cross-team piece end to end',
+  'project management': 'MyDevelopment · “Project Delivery Essentials” (6h); run one small cross-team piece end to end',
 }
 // Normalise so spelling variants ('modeling' / 'modelling') match each other.
 const skillKey = t => String(t || '').replace(/[✅×]/g, '').trim().toLowerCase()
@@ -3522,7 +3547,7 @@ const skillKey = t => String(t || '').replace(/[✅×]/g, '').trim().toLowerCase
   .replace(/\bcomms\b/g, 'communications').replace(/\s+/g, ' ')
 
 // Fallback for a profile with nothing loaded. mySkills() prefers whatever
-// People & Culture has pre-filled for the persona — see the skills upload.
+// HR has pre-filled for the persona — see the skills upload.
 const MY_SKILLS = ['sql', 'excel', 'financial modelling', 'stakeholder management']
 
 function defFor(text) {
@@ -3648,7 +3673,7 @@ function submitAsk(title, btn) {
    ITEM 13 — 7-day no-response escalation.
 
    An application left untouched for 7 days triggers a reminder to the
-   post owner, copied to PCD. The ageing and the escalation state are
+   post owner, copied to HR. The ageing and the escalation state are
    computed here from real timestamps; actually putting mail in an inbox
    needs a mail service (SES/SendGrid) behind a backend, which a static
    page cannot do. The prototype therefore shows exactly what would be
@@ -3681,7 +3706,7 @@ function previewReminder(appId) {
       <div style="border:1px solid #E5E7EB;border-radius:10px;overflow:hidden;">
         <div style="background:#F9FAFB;padding:12px 14px;border-bottom:1px solid #E5E7EB;font-size:11.5px;color:#374151;line-height:1.8;">
           <div><strong>To:</strong> the post owner</div>
-          <div><strong>Cc:</strong> People &amp; Culture Department</div>
+          <div><strong>Cc:</strong> HR Department</div>
           <div><strong>Subject:</strong> Action needed — an application has been waiting ${d} days</div>
         </div>
         <div style="padding:16px 14px;font-size:12.5px;color:#374151;line-height:1.75;">
@@ -3892,6 +3917,50 @@ function sendNudgeMessage(name, btn) {
   toast(`✓ Message sent to ${name}${cc ? ' (line manager copied)' : ''}.${rem ? ' You\u2019ll be reminded in 7 days if nothing changes.' : ''}`)
 }
 
+/* ══ THE DJI POLICY AND ITS FORM ═══════════════════════════════════
+   Both documents are classified Internal by Home Credit — "do not distribute
+   outside of the organization" — and this repository is public, so the file
+   bytes are injected at build time from a directory git does not track. In
+   the source you are reading, `data` is null and the button says where the
+   document actually lives rather than serving a substitute for it. */
+const POLICY_DOCS = {
+  policy: { file: '211_2021_P_Developmental_Job_Immersion_v1.0.pdf',
+            name: 'Policy 211_2021 — Developmental Job Immersion v1.0', data: null },
+  form:   { file: 'Annex_1_Developmental_Job_Immersion_Form.pdf',
+            name: 'Annex 1 — Developmental Job Immersion Form', data: null },
+}
+
+function b64ToBlob(b64, type) {
+  const bin = atob(b64), a = new Uint8Array(bin.length)
+  for (let i = 0; i < bin.length; i++) a[i] = bin.charCodeAt(i)
+  return new Blob([a], { type: type })
+}
+
+async function downloadPolicy(id) {
+  const d = POLICY_DOCS[id]
+  if (!d) return
+  if (!d.data) {
+    toast('That document is classified Internal, so it is not bundled in this build. HR holds the current copy — ask your HRPP.', 'warning')
+    return
+  }
+  const blob = b64ToBlob(d.data, 'application/pdf')
+  const dl = (typeof claude !== 'undefined' && claude.use) ? await claude.use('downloads').catch(() => null) : null
+  if (dl) {
+    try { await dl.save({ filename: d.file, data: blob }); toast('✓ ' + d.name + ' saved.'); return }
+    catch (e) {
+      if (e && e.code === 'declined') return
+      toast('Could not save it from here — ask HR for ' + d.file + '.', 'warning')
+      return
+    }
+  }
+  const a = document.createElement('a')
+  a.href = URL.createObjectURL(blob)
+  a.download = d.file
+  document.body.appendChild(a); a.click(); a.remove()
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000)
+  toast('✓ ' + d.name + ' downloaded.')
+}
+
 function closeLogin() { document.getElementById('loginShell').classList.remove('visible') }
 
 function toast(msg, type = 'success') {
@@ -4013,7 +4082,7 @@ function openFeedbackDialog(title, counterpart, perspective) {
     change: 'What would you change?',
     changePh: 'About how the work was set up, briefed, or supported \u2014 not about the people. This is what improves the next one.',
     lead: 'Where do you want this to lead?',
-    leadPh: 'A move into this function? More work like this? A skill to build on? Say it plainly \u2014 PCD reads this.',
+    leadPh: 'A move into this function? More work like this? A skill to build on? Say it plainly \u2014 HR reads this.',
     again: 'Would you work together again?'
   }
   const overlay = document.createElement('div')
@@ -4038,8 +4107,8 @@ function openFeedbackDialog(title, counterpart, perspective) {
       <textarea id="fbComment" placeholder="Be specific and be kind — this goes on the record and helps the next person." style="width:100%;padding:10px 12px;border:1px solid #E5E7EB;border-radius:8px;font-size:13px;font-family:Arial,system-ui,sans-serif;min-height:90px;resize:vertical;outline:none;color:#111827;margin-bottom:18px;"></textarea>
 
       <div style="border-top:1px solid #F3F4F6;padding-top:18px;margin-bottom:4px;">
-        <div style="font-size:12px;font-weight:700;color:#111827;margin-bottom:3px;">The three questions PCD actually acts on</div>
-        <div style="font-size:11px;color:#6B7280;line-height:1.55;margin-bottom:16px;">The star rating goes to the person you worked with. These three go to PCD — they're how Growth gets better, and how anyone knows what you want next.</div>
+        <div style="font-size:12px;font-weight:700;color:#111827;margin-bottom:3px;">The three questions HR actually acts on</div>
+        <div style="font-size:11px;color:#6B7280;line-height:1.55;margin-bottom:16px;">The star rating goes to the person you worked with. These three go to HR — they're how Growth gets better, and how anyone knows what you want next.</div>
 
         <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;color:#374151;display:block;margin-bottom:6px;">${C.learned} <span style="color:#C00000;">*</span></label>
         <textarea id="fbLearned" placeholder="${C.learnedPh}" style="width:100%;padding:10px 12px;border:1px solid #E5E7EB;border-radius:8px;font-size:13px;font-family:Arial,system-ui,sans-serif;min-height:80px;resize:vertical;outline:none;color:#111827;margin-bottom:16px;"></textarea>
@@ -4126,15 +4195,15 @@ function submitFeedback(title, btn, perspective, counterpart) {
     if (!hostBanner) return
     hostBanner.style.background = '#F0FDF4'
     hostBanner.style.borderColor = '#BBF7D0'
-    hostBanner.innerHTML = `<div style="font-size:13px;font-weight:700;color:#065F46;">✓ Survey submitted — ${title}</div><div style="font-size:12px;color:#047857;margin-top:3px;line-height:1.55;">Both ratings are now released. Your three answers have gone to PCD and are attached to the engagement record.</div>`
-    toast(`✓ Survey submitted. Both ratings released and sent to PCD.`)
+    hostBanner.innerHTML = `<div style="font-size:13px;font-weight:700;color:#065F46;">✓ Survey submitted — ${title}</div><div style="font-size:12px;color:#047857;margin-top:3px;line-height:1.55;">Both ratings are now released. Your three answers have gone to HR and are attached to the engagement record.</div>`
+    toast(`✓ Survey submitted. Both ratings released and sent to HR.`)
     return
   }
   const appBanner = document.querySelector('#page-applications > div[style*="FFFBEB"]')
   if (appBanner) {
     appBanner.style.background = '#F0FDF4'
     appBanner.style.borderColor = '#BBF7D0'
-    appBanner.innerHTML = `<div style="font-size:13px;font-weight:700;color:#065F46;">✓ Survey submitted — ${title}</div><div style="font-size:12px;color:#047857;margin-top:3px;line-height:1.55;">Both ratings are now released and recorded on your profile. Your three survey answers have gone to PCD — what you learned and where you want it to lead are now on your record ahead of the talent review.</div>`
+    appBanner.innerHTML = `<div style="font-size:13px;font-weight:700;color:#065F46;">✓ Survey submitted — ${title}</div><div style="font-size:12px;color:#047857;margin-top:3px;line-height:1.55;">Both ratings are now released and recorded on your profile. Your three survey answers have gone to HR — what you learned and where you want it to lead are now on your record ahead of the talent review.</div>`
   }
   toast(`✓ Feedback submitted. Both ratings released and added to your record.`)
 }
@@ -4539,7 +4608,7 @@ const SEED_VACANCIES = [
       ],
       nice: ['Collibra, Alation or a similar catalogue tool', 'CIPP/E, CIPM or CISA', 'Cloud data platform experience'],
     } },
-  { req_id: 'REQ-2533', title: 'Workforce Planning Partner', department: 'People & Culture',
+  { req_id: 'REQ-2533', title: 'Workforce Planning Partner', department: 'HR',
     location: 'Manila · Hybrid', closes_on: '2026-09-08', score: 47,
     skills: ['Workforce Planning', 'Stakeholder Management'], seeded: true,
     jd: {
@@ -4550,7 +4619,7 @@ const SEED_VACANCIES = [
       responsibilities: [
         'Run the annual headcount planning cycle with Finance and each business unit.',
         'Maintain the rolling 12-month view of demand, attrition and time-to-fill by function.',
-        'Build the skills supply picture from the HRIS and the LMS, and name the gaps early enough to act on them.',
+        'Build the skills supply picture from the HRIS and MyDevelopment, and name the gaps early enough to act on them.',
         'Model the cost and capability trade-off between hiring externally, moving people internally, and building the skill.',
         'Report on internal mobility as a channel — including what Growth contributes to it.',
       ],
@@ -4573,7 +4642,7 @@ const SEED_REFS = [
   { code: 'GRW-B7T3JC', req_id: 'REQ-2517', vacancy_title: 'Senior Accountant — Tax & Compliance',      department: 'Finance', employee: 'Zendaya Coleman',   source: 'matches', created_at: '2026-07-11T09:05:00Z', outcome: 'applied', outcome_at: '2026-07-12T00:30:00Z', verified: true,  seeded: true },
   { code: 'GRW-Q8L5FN', req_id: 'REQ-2528', vacancy_title: 'Data Governance Analyst — IT Risk',         department: 'IT & Innovation', employee: 'Will Smith', source: 'digest', created_at: '2026-07-13T06:18:00Z', outcome: 'no',      outcome_at: '2026-07-13T06:40:00Z', verified: false, seeded: true },
   { code: 'GRW-M6R9ZK', req_id: 'REQ-2502', vacancy_title: 'Sustainability Reporting Lead — ESG',       department: 'Legal & Compliance', employee: 'Jennifer Lopez', source: 'board', created_at: '2026-07-15T02:55:00Z', outcome: null, outcome_at: null,             verified: false, seeded: true },
-  { code: 'GRW-D4W8PS', req_id: 'REQ-2533', vacancy_title: 'Workforce Planning Partner',                department: 'People & Culture', employee: 'Harry Styles', source: 'matches', created_at: '2026-07-16T08:30:00Z', outcome: 'applied', outcome_at: '2026-07-16T09:15:00Z', verified: false, seeded: true },
+  { code: 'GRW-D4W8PS', req_id: 'REQ-2533', vacancy_title: 'Workforce Planning Partner',                department: 'HR', employee: 'Harry Styles', source: 'matches', created_at: '2026-07-16T08:30:00Z', outcome: 'applied', outcome_at: '2026-07-16T09:15:00Z', verified: false, seeded: true },
 ]
 // Seeded impressions and confirmed hires — the two figures that in production
 // come from the view log and from HR's quarterly outcome file, not from here.
@@ -5074,7 +5143,7 @@ function exportReferralsCsv() {
 
    Provenance is kept, because it decides how much a claim is worth:
 
-     verified     manager endorsement, a 4★+ host rating, or an LMS
+     verified     manager endorsement, a 4★+ host rating, or a MyDevelopment
                   certification. Ranks highest.
      pre-filled   loaded here from an HR system. Trusted more than a
                   self-claim, less than a verified one, and visibly
@@ -5104,8 +5173,8 @@ const SEED_SKILLS = [
   ['HC-1177', 'Ed Sheeran',        'IT & Innovation',    ['Power BI', 'Data Analysis']],
   ['HC-1204', 'Rihanna',           'Operations',         ['Supply Chain', 'Excel', 'Analytics']],
   ['HC-1233', 'Will Smith',        'Finance',            ['Excel', 'Project Management']],
-  ['HC-1260', 'Harry Styles',      'People & Culture',   ['Workforce Planning', 'Stakeholder Management']],
-  ['HC-1011', 'Taylor Swift',      'People & Culture',   ['Excel', 'Data Analysis', 'Stakeholder Management']],
+  ['HC-1260', 'Harry Styles',      'HR',   ['Workforce Planning', 'Stakeholder Management']],
+  ['HC-1011', 'Taylor Swift',      'HR',   ['Excel', 'Data Analysis', 'Stakeholder Management']],
   ['HC-1291', 'Adele Adkins',      'Legal & Compliance', ['ESG Reporting', 'Regulatory']],
   ['HC-1315', 'Priyanka Chopra',   'Operations',         ['Change Management', 'Facilitation', 'Process Automation']],
 ].flatMap(([id, name, dept, skills]) =>
@@ -5152,7 +5221,7 @@ const SEED_COMPLETED = [
     comment:'Solid SQL and a clean data model. Needed a nudge on stakeholder comms early on, then ran it himself.',
     skills:['SQL','Data Analysis'], seeded:true },
   { person:'Taylor Swift', title:'HR Analytics Gig — Workforce Planning', type:'Gig',
-    host:'Beyoncé Knowles', dept:'People & Culture', ended:'2026-06-20', rating:5,
+    host:'Beyoncé Knowles', dept:'HR', ended:'2026-06-20', rating:5,
     comment:'Turned a spreadsheet nobody trusted into the headcount view the leadership team now runs planning from.',
     skills:['HRBP','Workforce Planning'], seeded:true },
   { person:'Jennifer Lopez', title:'DJI: Digital Transformation — Strategy', type:'DJI',
@@ -5169,7 +5238,7 @@ const completedFor = p => allCompleted().filter(c => c.person === p)
 
      verified   a manager endorsed it, or a host manager rated the work
                 4★+. Evidence rather than opinion, so it counts full.
-     uploaded   loaded in bulk by HR from the HRIS or the LMS. Trusted
+     uploaded   loaded in bulk by HR from the HRIS or MyDevelopment. Trusted
                 more than a self-claim, less than an endorsement.
      self       typed by the employee on their own profile.
 
@@ -5268,12 +5337,22 @@ const REL = [
   ['journey mapping', 'customer segmentation'], ['agile', 'project management'],
 ].reduce((m, [a, b]) => { (m[a] = m[a] || []).push(b); (m[b] = m[b] || []).push(a); return m }, {})
 
-const SRC_W = { verified: 1.00, uploaded: 0.90, self: 0.80 }
+/* The four factors, weighted to 100. Holding a required skill is worth 20;
+   evidence for it is worth 50 more. Everything HR uploads from the HRIS sits
+   between the two, because a personnel record is better than a claim and
+   weaker than an endorsement. */
+const W_SKILLS = 70, W_ASPIRATION = 20, W_TRACK = 10
+const SRC_PTS = { verified: 70, uploaded: 55, self: 20 }   // out of W_SKILLS
+
+// What you said you want next, read live off the profile.
+const developList = () => [...document.querySelectorAll('#develop-skills .skill-chip')]
+  .map(c => skillKey(c.textContent)).filter(Boolean)
 
 function matchFor(labels, person) {
   const req = (labels || []).map(l => ({ label: String(l).trim(), key: skillKey(l) })).filter(r => r.key)
   if (!req.length) return null
-  const rows = skillRowsFor(person || personaName())
+  const who = person || personaName()
+  const rows = skillRowsFor(who)
   const mine = rows.length ? rows : MY_SKILLS.map(k => ({ skill: k, source: 'uploaded' }))
   const grade = k => {
     let best = { w: 0, src: null, via: null }
@@ -5282,14 +5361,30 @@ function matchFor(labels, person) {
       const kin = (REL[k] || []).indexOf(mk) > -1 || (REL[mk] || []).indexOf(k) > -1
       const fit = mk === k ? 1 : (mk.indexOf(k) > -1 || k.indexOf(mk) > -1) ? 0.75 : kin ? 0.5 : 0
       if (!fit) return
-      const w = SRC_W[r.source] * fit
+      const w = (SRC_PTS[r.source] / W_SKILLS) * fit
       if (w > best.w) best = { w, src: r.source, via: fit === 1 ? null : r.skill }
     })
     return best
   }
   const graded = req.map(r => Object.assign({ label: r.label, key: r.key }, grade(r.key)))
-  const score = Math.round(30 + 65 * graded.reduce((a, r) => a + r.w, 0) / graded.length)
-  return { score, rows: graded }
+
+  // 1-2 · required skills held, and how well evidenced
+  const skills = W_SKILLS * graded.reduce((a, r) => a + r.w, 0) / graded.length
+
+  // 3 · aspiration: a requirement counts as "your direction" if you hold it
+  //     or you have written it under Skills to Develop.
+  const want = developList()
+  const wanted = k => want.some(d => d === k || d.indexOf(k) > -1 || k.indexOf(d) > -1)
+  const asp = W_ASPIRATION * graded.filter(r => r.w > 0 || wanted(r.key)).length / graded.length
+
+  // 4 · track record: what you have finished here, and how it was rated.
+  const done = completedFor(who)
+  const rated = done.filter(c => c.rating)
+  const avg = rated.length ? rated.reduce((a, c) => a + c.rating, 0) / rated.length : 0
+  const track = W_TRACK * (Math.min(done.length, 2) / 2) * (avg / 5)
+
+  const score = Math.round(skills + asp + track)
+  return { score, rows: graded, parts: { skills, asp, track } }
 }
 
 /* ── CSV, properly: quoted fields, embedded commas, CRLF, BOM ───── */
@@ -5585,7 +5680,10 @@ function matchBarInner(m, label) {
       <span class="match-bar-label">${esc(label)}</span>
       <span class="why-match" tabindex="0" style="font-weight:700;color:${col};">${m.score}%${scoreTag(m.score)} <span style="font-size:10px;color:#9CA3AF;">\u24d8</span>
         <span class="why-match-pop"><b>Why ${m.score}%?</b>${rows}
-          <span class="m-note">Scored against your profile as it stands right now. \u2705 verified counts in full, \ud83d\udce5 uploaded by HR slightly less, \u270f\ufe0f self-added least. This prototype scores skill overlap live; aspiration, track record and practicalities are held constant, which is the 30-point base. Not an assessment of your performance \u2014 the post owner decides.</span>
+          <span class="m-row" style="border-top:1px solid #374151;margin-top:5px;padding-top:5px;"><span>Skills held &amp; verified</span><span style="color:#E5E7EB;font-weight:700;">${Math.round(m.parts.skills)} / 70</span></span>
+          <span class="m-row"><span>Aspiration fit</span><span style="color:#E5E7EB;font-weight:700;">${Math.round(m.parts.asp)} / 20</span></span>
+          <span class="m-row"><span>Track record</span><span style="color:#E5E7EB;font-weight:700;">${Math.round(m.parts.track)} / 10</span></span>
+          <span class="m-note">Scored against your profile as it stands right now. \u2705 verified counts in full, \ud83d\udce5 uploaded by HR slightly less, \u270f\ufe0f self-declared earns 20 of the 70. Aspiration counts a skill you already hold or have listed under Skills to Develop. Edit your profile and every one of these moves. Not an assessment of your performance \u2014 the post owner decides.</span>
         </span>
       </span>
     </div>
