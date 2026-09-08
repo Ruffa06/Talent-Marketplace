@@ -11,7 +11,11 @@ import base64, io, os, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(ROOT, 'prototype', 'talent-marketplace-v2.html')
-OUT = sys.argv[1] if len(sys.argv) > 1 else os.path.join(ROOT, 'build', 'growth-home-credit-ph.html')
+ARGS = [a for a in sys.argv[1:] if not a.startswith('--')]
+# --no-private builds for an audience that should not receive the Internal
+# DJI documents: the download buttons ship, with nothing behind them.
+NO_PRIVATE = '--no-private' in sys.argv[1:]
+OUT = ARGS[0] if ARGS else os.path.join(ROOT, 'build', 'growth-home-credit-ph.html')
 PRIVATE = os.path.join(ROOT, 'assets', 'private')
 
 src = io.open(SRC, encoding='utf-8').read()
@@ -145,8 +149,9 @@ for doc_id, fname, name in DOCS:
     path = os.path.join(PRIVATE, fname)
     anchor = "name: '%s', data: null }" % name
     assert s.count(anchor) == 1, ('no anchor for ' + doc_id)
-    if not os.path.exists(path):
-        print('  ! %-6s not in assets/private — the button will say so' % doc_id)
+    if NO_PRIVATE or not os.path.exists(path):
+        print('  - %-6s left out%s' % (doc_id, ' (--no-private)' if NO_PRIVATE
+              else ' — not in assets/private'))
         continue
     b64 = base64.b64encode(io.open(path, 'rb').read()).decode('ascii')
     s = s.replace(anchor, "name: '%s', data: '%s' }" % (name, b64))
