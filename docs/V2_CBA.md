@@ -219,7 +219,9 @@ cover them and it is 3.5. Both halves would have to be wrong simultaneously for
 this to fail.
 
 **Break-even is 2.0 attributed hires per year** — roughly two internal fills out
-of the ~60 internal requisitions opened annually, or a 3.1% hit rate.
+of the ~60 internal requisitions opened annually, or a 3.3% hit rate. The 60 is a
+planning assumption from the BRD, scoped to the pilot; if requisitions scale with the
+larger population the denominator grows and the required hit rate falls further.
 
 ---
 

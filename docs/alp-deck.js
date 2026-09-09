@@ -735,7 +735,7 @@ const next = (dark) => {
   tintCard(s, { x:rx, y:3.62, w:rw, h:1.42 }, INK)
   s.addText('Break-even: 2 hires a year', { x:rx+0.3, y:3.78, w:rw-0.6, h:0.28, fontFace:F,
     fontSize:17, bold:true, color:WHITE, isTextBox:true, margin:0 })
-  s.addText('Two internal fills out of roughly 60 internal requisitions a year — a 3.1% hit rate — repay the whole three-year cost.',
+  s.addText('Two internal fills out of roughly 60 internal requisitions a year — a 3.3% hit rate — repay the whole three-year cost.',
     { x:rx+0.3, y:4.10, w:rw-0.6, h:0.86, fontFace:F, fontSize:14, color:'CBD5E1',
       lineSpacing:19, isTextBox:true, margin:0, valign:'top' })
   tintCard(s, { x:rx, y:5.20, w:rw, h:1.42 }, TINT)
