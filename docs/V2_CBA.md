@@ -3,7 +3,8 @@
 **Population:** 1,113 employees — the 637-person pilot in IT, Operations and HR, plus
 476 in mass operations · **Horizon:** 3 years · **FX:** ₱61 = US$1 · **Discount rate:** 10%
 **Recruitment system:** HC Connect Internal Job Posting (“HC Connect” throughout)
-**Prepared:** 18 August 2026 · **Revised:** 8 September 2026 — costed at 1,113, FX ₱61
+**Prepared:** 18 August 2026 · **Revised:** 11 September 2026 — costed at 1,113, FX ₱61,
+benefit side rebuilt on Payroll and TA data
 **Model:** [`docs/v2-cba-model.py`](v2-cba-model.py)
 **Working spreadsheet:** [`docs/Growth-v2-CBA.xlsx`](Growth-v2-CBA.xlsx) — every figure below as a
 live model, with the vendor comparison. Change an assumption and the case recalculates.
@@ -129,8 +130,8 @@ comfortably; it no longer clears on price alone.
 **5× – 14× cheaper.** The vendor bands are quoted in dollars, so they rose with the
 exchange rate exactly as our run lines did; the multiple is unchanged. The framing
 that lands in a decision forum is not the multiple, it is the break-even: **a vendor
-at the low band needs 30 attributed internal hires over three years just to cover its
-own licence. v2-lean needs 6.**
+at the low band needs 94 attributed internal fills over three years just to cover its
+own licence. v2-lean needs 18.**
 
 Vendor pricing remains a planning band derived from how enterprise HR SaaS is
 structured, **not a quote** — none of these vendors publish per-seat pricing, and
@@ -142,46 +143,85 @@ for minimum ACV; replace this table with real numbers before deciding.
 
 ## 4. Benefits
 
+### 4.1 What the benefit side is built on
+
+Two planning assumptions have been retired and replaced with company data.
+
+| Retired | Replaced by |
+|---|---|
+| ₱480,000 loaded annual salary — a planning assumption with no traceable source | Payroll's average monthly basic salary by band, September 2026 |
+| ₱260,000 mass-operations salary — flagged as an unconfirmed assumption | Payroll's mass-operations average, same file |
+| ₱350,000 avoided agency fee per fill — cited to the v1 business case, which does not contain it | TA's 2025 cost-per-hire file, blended on the mix TA actually hired |
+
 | Assumption | Value | Source |
 |---|---:|---|
-| Avoided agency fee per internal permanent fill | ₱350,000 | v1 business case |
-| Loaded annual salary, population average | ₱480,000 | planning assumption |
-| Full replacement cost (recruitment + ramp + lost output) | ₱360,000 | 75% of salary |
+| Average monthly basic — Band B | ₱36,333.85 | Payroll, Sep 2026 |
+| Average monthly basic — Band C | ₱92,821.09 | Payroll, Sep 2026 |
+| Average monthly basic — IT + Operations (non-mass) + HR | ₱85,802.89 | Payroll, Sep 2026 |
+| Average monthly basic — mass operations | ₱15,144.06 | Payroll, Sep 2026 |
+| Annualisation | **×12** | basic only — 13th month and employer contributions **excluded** |
+| Annual basic, non-mass / mass ops | ₱1,029,635 / ₱181,729 | ×12 of the above |
+| Full replacement cost (recruitment + ramp + lost output) | 75% of annual basic | ₱772,226 non-mass · ₱136,297 mass ops |
+| TA cost per hire — Band B / Band C | ₱6,977 / ₱35,367 | TA 2025 cost-per-hire file |
+| External hires 2025 — Band B / Band C | 186 / 103 | TA 2025 |
+| Blended cost per external fill | **₱17,095** | weighted on that 186/103 mix |
 | Vacancy days saved per internal fill | 37 | 21 days internal vs 58 external |
-| Gig / DJI / service-offer participants per year | 120 non-mass + 54 mass ops | 19% of non-mass, 11% of mass ops |
+| Blended Band B/C annual basic | ₱677,592 | ₱56,466/mo × 12 |
+| Cost of 37 vacancy days | **₱96,427** | ₱677,592 ÷ 260 working days × 37 |
+| **Total avoided per internal fill** | **₱113,522** | ₱17,095 + ₱96,427 |
+| Gig / DJI / service-offer participants per year | 120 non-mass + 54 mass ops | 19% of non-mass, 60% of that rate for mass ops |
 | Retention lift among participants | **3 points** | **see below** |
-| Loaded annual salary, mass operations | ₱260,000 | **assumption — confirm with HR** |
 | Mass-operations participation, relative to non-mass | 60% | **assumption — shift roles** |
 
-Two streams, and they are **not** equally defensible:
+> **Annualising at ×12 is a deliberate understatement.** Philippine employment
+> law makes the 13th month mandatory, and employer SSS / PhilHealth / Pag-IBIG
+> contributions sit on top of basic. Counting the 13th month alone would raise
+> the retention benefit from ₱3,000,005 to ₱3,250,006 a year. It is not claimed.
 
-**Attributed** — avoided agency fees and vacancy days on permanent roles. These
+### 4.2 The two streams
+
+They are **not** equally defensible:
+
+**Attributed** — avoided hiring cost and vacancy days on permanent roles. These
 exist *only because of the tracking spend*: without a confirmed referral the
 hire is invisible in your data and belongs, as far as anyone can tell, to HC Connect.
 
-| Scenario | Attributed hires/yr | Agency fees | Vacancy days | Total |
+| Scenario | Attributed fills/yr | Hiring cost avoided | Vacancy days | Total |
 |---|---:|---:|---:|---:|
-| Conservative | 2 | ₱700,000 | ₱136,615 | ₱836,615 |
-| Base | 4 | ₱1,400,000 | ₱273,231 | ₱1,673,231 |
-| Optimistic | 7 | ₱2,450,000 | ₱478,154 | ₱2,928,154 |
+| Conservative | 2 | ₱34,190 | ₱192,853 | ₱227,044 |
+| Base | 4 | ₱68,381 | ₱385,706 | ₱454,087 |
+| Optimistic | 7 | ₱119,667 | ₱674,986 | ₱794,652 |
 
-Attributed hires are **not** scaled up for mass operations. Those roles are hired in
-volume without an agency, so claiming an avoided agency fee on them would not survive
-a challenge. The 2 / 4 / 7 scenarios stay anchored on the 637 non-mass population.
+This stream is now **an order of magnitude smaller** than it was on the ₱350,000
+figure — ₱454,087 a year in the base case against ₱1,673,231 before. That is the
+honest consequence of pricing a fill at what TA actually spends. Note also that
+TA still does work on an internal move: only about ₱13,717 of the blended
+₱17,095 disappears entirely. The full figure is used here because the external
+requisition itself disappears; §5 reports the case without any vacancy-day credit
+for anyone who wants the harder floor.
+
+Attributed fills are **not** scaled up for mass operations. Those roles are hired
+in volume at ₱5,140–₱6,391 a head, so claiming a meaningful avoided cost on them
+would not survive a challenge. The 2 / 4 / 7 scenarios stay anchored on the 637
+non-mass population.
 
 **Owned** — retention among gig, DJI and service-offer participants. Needs no
 attribution at all, because the marketplace runs those end to end.
 
 | | Participants | Replacement cost | Retention benefit |
 |---|---:|---:|---:|
-| Non-mass | 120 | ₱360,000 | ₱1,296,000/yr |
-| Mass operations | 54 | ₱195,000 | ₱314,743/yr |
-| **Total at 1,113** | **174** | | **₱1,610,743/yr** |
+| Non-mass | 120 | ₱772,226 | ₱2,780,014/yr |
+| Mass operations | 54 | ₱136,297 | ₱219,992/yr |
+| **Total at 1,113** | **174** | | **₱3,000,005/yr** |
 
-> **The two mass-operations assumptions.** A ₱260,000 loaded salary and a 60%
-> relative participation rate are both judgements, not HR figures. They are worth
-> ₱314,743 a year between them. §5 reports the case with mass-operations benefit
-> removed entirely — BCR 3.5 — so nothing in the recommendation rests on either.
+Each row is participants × 3 points × replacement cost. Participants come from
+the v1 pilot's observed rate — 120 people out of 637 — applied to the non-mass
+population, and at 60% of that rate to mass operations.
+
+> **Mass operations is now mostly real.** The salary is Payroll's own figure;
+> only the 60% relative participation rate remains a judgement, worth ₱219,992
+> a year. §5 reports the case with mass-operations benefit removed entirely —
+> BCR 3.8 — so nothing in the recommendation rests on it.
 
 > **On the retention lift — read this before quoting the number.** The v1
 > dashboard shows 94% retention among participants against an 81% company
@@ -204,24 +244,39 @@ assumes build spend lands in months 1–3 with no benefit until month 4.
 
 | Scenario | 3-yr benefit | 3-yr cost | Net | BCR | NPV @10% | Payback |
 |---|---:|---:|---:|---:|---:|---:|
-| Conservative — 2 hires/yr | ₱5,873,660 | ₱2,049,953 | ₱3,823,707 | 2.9 | ₱2,936,996 | 17 mo |
-| **Base — 4 hires/yr** | **₱7,881,537** | **₱2,049,953** | **₱5,831,584** | **3.8** | **₱4,561,199** | **14 mo** |
-| Optimistic — 7 hires/yr | ₱10,893,352 | ₱2,049,953 | ₱8,843,399 | 5.3 | ₱6,997,504 | 11 mo |
-| *Base, retention excluded entirely* | ₱4,015,754 | ₱2,049,953 | ₱1,965,801 | 2.0 | ₱1,434,107 | 22 mo |
-| *Retention only, zero vacancy hires* | ₱3,865,783 | ₱2,049,953 | ₱1,815,830 | 1.9 | ₱1,312,793 | 22 mo |
-| *Base, mass-operations benefit excluded* | ₱7,126,154 | ₱2,049,953 | ₱5,076,201 | 3.5 | ₱3,950,158 | 15 mo |
+| Conservative — 2 fills/yr | ₱7,744,917 | ₱2,049,953 | ₱5,694,964 | 3.8 | ₱4,450,685 | 14 mo |
+| **Base — 4 fills/yr** | **₱8,289,821** | **₱2,049,953** | **₱6,239,868** | **4.0** | **₱4,891,467** | **13 mo** |
+| Optimistic — 7 fills/yr | ₱9,107,178 | ₱2,049,953 | ₱7,057,225 | 4.4 | ₱5,552,640 | 13 mo |
+| *Base, retention excluded entirely* | ₱1,089,809 | ₱2,049,953 | −₱960,144 | **0.5** | −₱932,735 | >36 mo |
+| *Retention only, zero attributed fills* | ₱7,200,013 | ₱2,049,953 | ₱5,150,060 | 3.5 | ₱4,009,904 | 15 mo |
+| *Base, mass-operations benefit excluded* | ₱7,761,842 | ₱2,049,953 | ₱5,711,889 | 3.8 | ₱4,464,376 | 14 mo |
+| *Base, no vacancy-day credit at all* | ₱7,364,127 | ₱2,049,953 | ₱5,314,174 | 3.6 | ₱4,142,658 | 15 mo |
 
-**The case survives the removal of either benefit stream.** Strip retention out
-entirely — the softest input — and it is still BCR 2.0, payback 22 months. Strip
-out every vacancy hire instead and retention alone repays the three-year TCO in
-1.3 years. Delete every peso claimed for mass operations while still paying to
-cover them and it is 3.5. Both halves would have to be wrong simultaneously for
-this to fail.
+**Read the fourth row before you quote the first.** Pricing a fill at what TA
+actually spends rather than at the old ₱350,000 has moved where this case comes
+from. It no longer stands on avoided hiring cost: at ₱113,522 per fill, four
+fills a year is ₱454,087 — a fifth of the three-year cost. **The case now rests
+on retention**, which contributes ₱3,000,005 of the ₱3,454,092 annual base
+benefit. Retention only has to be worth 0.7 points of lift rather than 3 for the
+programme to break even; but if it is worth nothing at all, this does not pay for
+itself on attributed fills alone, and the paper should say so rather than hide
+behind a blended BCR of 4.0.
 
-**Break-even is 2.0 attributed hires per year** — roughly two internal fills out
-of the ~60 internal requisitions opened annually, or a 3.3% hit rate. The 60 is a
-planning assumption from the BRD, scoped to the pilot; if requisitions scale with the
-larger population the denominator grows and the required hit rate falls further.
+What that changes, practically: the holdout measurement in `V2_EXPLORATION.md` §7
+moves from *nice to have* to **the gating instrument of the business case**, and
+it should be designed before the build starts, not after.
+
+Everything else is robust. Delete every peso claimed for mass operations while
+still paying to cover them and it is 3.8. Refuse the vacancy-day credit entirely
+and it is 3.6. Lose the attribution tier completely and retention alone repays
+the three-year TCO in 0.7 years.
+
+**Break-even is 6.0 attributed fills per year** — 18 internal fills over three
+years, against the ~60 internal requisitions opened annually, or a **10% hit
+rate**. On avoided hiring cost alone with no vacancy-day credit it is 120 fills
+over three years. The 60 is a planning assumption from the BRD, scoped to the
+pilot; if requisitions scale with the larger population the denominator grows and
+the required hit rate falls.
 
 ---
 
@@ -229,18 +284,18 @@ larger population the denominator grows and the required hit rate falls further.
 
 | Risk | Effect | Mitigation |
 |---|---|---|
-| **Recruitment declines the `Growth Marketplace` source field** | Every attributed peso becomes unprovable, and lever A's Q1 measurement disappears. BCR falls to the retention-only row (1.6). | Secure it **before** committing to the build. It is a form configuration change, not an integration — the single highest-leverage ask in the programme. |
-| **Retention lift is zero** | Benefits fall to the attributed rows. Still BCR 2.0. | Already modelled. Run the holdout in `V2_EXPLORATION.md` §7 to measure it properly. |
-| **Adoption below 174 participants/yr** | Retention benefit scales linearly — halving participation costs ₱805,000/yr. | Case still clears at BCR ~2.9 in the base scenario. |
+| **Recruitment declines the `Growth Marketplace` source field** | Every attributed peso becomes unprovable, and lever A's Q1 measurement disappears. BCR falls to the retention-only row (3.5). | Secure it **before** committing to the build. It is a form configuration change, not an integration — the single highest-leverage ask in the programme. |
+| **Retention lift is zero** | Benefits fall to the attributed rows — **BCR 0.5, the case fails**. | The one risk that can sink this. Design the holdout in `V2_EXPLORATION.md` §7 **before** the build, and treat its first read as a go/no-go on wave two. |
+| **Adoption below 174 participants/yr** | Retention benefit scales linearly — halving participation costs ₱1,500,003/yr. | Case still clears at BCR ~2.3 in the base scenario. |
 | **DPO blocks the referral log** | The whole attribution tier is unavailable. | Gating item — get the position before build, not after. Retention benefits are unaffected. |
-| **Build overruns by half** | 3-yr TCO ≈ ₱2.94M. BCR base falls to 2.7. | Still clears; still 3.6×–10× under the vendor bands. |
+| **Build overruns by half** | 3-yr TCO ≈ ₱2.94M. BCR base falls to 2.8. | Still clears; still 3.6×–10× under the vendor bands. |
 | **FX to ₱68/US$** | Four of five run lines are bought in dollars: run rises ~11%, about ₱10,000/yr. The build is peso labour and does not move, and the vendor bands rise with it. | Conclusion unchanged. |
-| **The two mass-operations assumptions are wrong** | Retention benefit falls ₱314,743/yr. BCR 3.5. | Already modelled as a row in §5. Ask HR for mass-ops loaded salary and shift-participation data before wave two. |
+| **Mass-operations participation is over-estimated** | Retention benefit falls up to ₱219,992/yr. BCR 3.8. | Already modelled as a row in §5. The salary behind it is now Payroll's; ask Operations for shift-participation data before wave two. |
 
 **Excluded and material, as in v1:** ongoing internal ownership from year 2.
 Budget 0.2–0.3 FTE (₱360k–₱540k/yr fully loaded) before comparing against a
 vendor whose support SLA is contractual. At 0.25 FTE the three-year cost is ₱3.40M and the
-base-case BCR falls from 3.8 to roughly 2.3 — still a clear yes, but it is the
+base-case BCR falls from 4.0 to roughly 2.4 — still a clear yes, but it is the
 most under-estimated line in any build-vs-buy and should not be left out of the paper.
 
 ---
@@ -254,10 +309,10 @@ by referral volume rather than by people.
 
 | Scope | People | Year 1 | Year 2 | Year 3 | **3-year total** | US$ | Per employee/yr | BCR |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|
-| Pilot — IT, Operations, HR | 637 | 1,512,174 | 395,274 | 63,974 | ₱1,971,422 | $32,318 | ₱1,032 | 3.6 |
-| **Pilot + mass operations** | **1,113** | **1,536,351** | **422,451** | **91,151** | **₱2,049,953** | **$33,606** | **₱614** | **3.8** |
-| All non-mass | 1,991 | 1,580,946 | 470,046 | 138,746 | ₱2,189,738 | $35,897 | ₱367 | 10.4 |
-| Full organisation | 20,587 | 2,576,712 | 1,513,812 | 1,182,512 | ₱5,273,036 | $86,443 | ₱85 | 9.9 |
+| Pilot — IT, Operations, HR | 637 | 1,512,174 | 395,274 | 63,974 | ₱1,971,422 | $32,318 | ₱1,032 | 3.9 |
+| **Pilot + mass operations** | **1,113** | **1,536,351** | **422,451** | **91,151** | **₱2,049,953** | **$33,606** | **₱614** | **4.0** |
+| All non-mass | 1,991 | 1,580,946 | 470,046 | 138,746 | ₱2,189,738 | $35,897 | ₱367 | 11.1 |
+| Full organisation | 20,587 | 2,576,712 | 1,513,812 | 1,182,512 | ₱5,273,036 | $86,443 | ₱85 | 8.5 |
 
 **₱1,785,500 of build is 91% of the pilot's three-year cost and 34% of the full
 organisation's.** Going from 1,113 to all 1,991 non-mass people adds ₱139,785 over
@@ -266,10 +321,10 @@ the build on a pilot: the asset is bought once and every wave after it is nearly
 
 Two cautions on the wider scopes, before anyone quotes them:
 
-- **The ratio jump at 1,991 is the least tested number here.** It assumes attributed
-  hires scale linearly with the non-mass population while the build does not move at
-  all. The direction is right; the magnitude is untested, which is why the
-  recommendation is made at 1,113.
+- **The ratio jump at 1,991 is the least tested number here.** It assumes both
+  attributed fills and participation scale linearly with the non-mass population
+  while the build does not move at all. The direction is right; the magnitude is
+  untested, which is why the recommendation is made at 1,113.
 - **The full-organisation column is software cost only.** At 20,587 the binding
   constraint stops being infrastructure and becomes rollout, enablement and HR
   capacity, none of which is in that row — and the value case for mass roles needs
@@ -280,9 +335,9 @@ Two cautions on the wider scopes, before anyone quotes them:
 ## 8. Recommendation
 
 1. **Build v2-lean.** ₱1,536,351 in year 1 and ₱2,049,953 over three years at 1,113
-   people on IT's costed build, base-case BCR 3.8 with a 14-month payback. The case
-   clears every stress scenario in §5, including the one that deletes the retention
-   benefit outright and the one that deletes every peso claimed for mass operations.
+   people on IT's costed build, base-case BCR 4.0 with a 13-month payback. The case
+   clears every stress scenario in §5 except one: deleting the retention benefit
+   outright takes it to BCR 0.5. See point 5 — that is now the gating measurement.
 2. **Get the source field committed first.** It is free, it carries Q1
    attribution on its own, and without it the attributed half of the case
    evaporates. Do not start the build until recruitment has agreed.
@@ -291,9 +346,14 @@ Two cautions on the wider scopes, before anyone quotes them:
    arriving with nothing to show.
 4. **Decide phase 2 on year-1 data.** Automate the ATS join only if referral
    volume justifies ₱108,000. Assume it does not until it does.
-5. **Get mass-operations salary and participation data before wave two.** Two
-   assumptions in §4 are carrying ₱314,743 a year between them. They are not load-
-   bearing, but they should be measured rather than argued.
-6. **Re-run the benefit side once real data exists.** Everything in §4 is a
-   planning assumption. The pilot replaces them with measurements within two
-   quarters, and the holdout replaces the causal claim within three.
+5. **Design the retention holdout before the build, not after.** Now that a fill
+   is priced at what TA actually spends, retention carries 87% of the base-case
+   benefit. `V2_EXPLORATION.md` §7 stops being a research nicety and becomes the
+   instrument that proves or disproves this case. Put its first read on the wave-two
+   go/no-go.
+6. **Get mass-operations participation data before wave two.** The salary behind
+   that row is now Payroll's; the 60% relative participation rate is still a
+   judgement carrying ₱219,992 a year. Not load-bearing, but measurable.
+7. **Re-run the benefit side once the pilot produces its own data.** Salaries and
+   cost per hire are now company figures; participation, fill volume and the
+   retention lift are not. The pilot replaces them within two quarters.

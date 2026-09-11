@@ -126,11 +126,11 @@ const next = (dark) => {
     'Everything that follows is evidence for this slide.')
   const bx = [
     ['THE PROBLEM', RED, REDT,
-     'We fill 16.9% of roles internally against a ~30% benchmark. In 2025 we spent ₱13.4M hiring, ₱6.1M of it to headhunters for Band C alone — while 88% of our people say they can grow here.'],
+     'We fill 16.9% of roles internally against a ~30% benchmark. In 2025 we spent ₱13.4M hiring, ₱2.8M of it to headhunters for Band C alone — while 88% of our people say they can grow here.'],
     ['THE SOLUTION', BLUE, BLUET,
      'One internal marketplace for gigs, immersions and service offers, with AI matching. It promotes HC Connect vacancies rather than duplicating them — and proves which applications it caused.'],
     ['THE MONEY', GREEN, GREENT,
-     '₱2.05M over three years for 1,113 people — the pilot plus mass operations — on IT\'s costed build. Benefit ₱7.88M, benefit–cost ratio 3.8, payback in 14 months. Buying Gloat or Fuel50 costs ₱10.7M–₱29.3M.'],
+     '₱2.05M over three years for 1,113 people — the pilot plus mass operations — on IT\'s costed build. Benefit ₱8.29M, benefit–cost ratio 4.0, payback in 13 months. Buying Gloat or Fuel50 costs ₱10.7M–₱29.3M.'],
     ['THE ASK', INK, TINT,
      'Approve the ₱1.54M year one: a three-month pilot in IT, Operations and HR, extended to mass operations in wave two. And ask recruitment for one new source value in HC Connect — free to them, and what makes the benefit provable.'],
   ]
@@ -248,7 +248,7 @@ const next = (dark) => {
   head(s, 'The pain', 'What it costs us to leave this alone.',
     'Five costs we are already paying, every year, for a problem we can see.')
   const items = [
-    ['₱6.1M','a year to headhunters, Band C alone','₱58,823 per hire — 68% of the cost of filling a Band C role. Every internal fill returns that fee.', RED],
+    ['₱2.8M','a year to headhunters, Band C','₱27,480 a hire — 78% of the ₱35,367 cost of a Band C fill. Every internal fill returns it.', RED],
     ['37 days','of lost output per external hire','58 days to fill externally against 21 internally, on 289 Band B and C roles a year.', AMBER],
     ['22%','of exits cite career opportunity','The top controllable reason people leave. Replacing one costs 50–200% of annual salary.', RED],
   ]
@@ -279,10 +279,10 @@ const next = (dark) => {
   tintCard(s, { x:M, y:5.74, w:CW, h:0.86 }, REDT)
   s.addText([
     { text:'The cost of doing nothing is not zero. ', options:{ bold:true, color:RED } },
-    { text:'₱6.1M a year in avoidable fees, plus the people we will replace at 50–200% of salary — for want of a mechanism that costs ₱550 per employee a year.', options:{ color:BODY } },
+    { text:'₱2.8M a year in avoidable Band C fees, plus ₱158,510 of lost output per external Band C fill, for want of a mechanism costing ₱614 a head a year.', options:{ color:BODY } },
   ], { x:M+0.34, y:5.74, w:CW-0.68, h:0.86, fontFace:F, fontSize:16, valign:'middle',
     lineSpacing:22, isTextBox:true, margin:0 })
-  foot(s, 'Sources: 2024 cost-per-hire · 2025 hiring volumes · HCPH exit survey · SHRM replacement-cost range.', N)
+  foot(s, 'Sources: TA cost-per-hire 2025 · 2025 hiring volumes · Payroll average basic Sep 2026 · HCPH exit survey · SHRM replacement-cost range.', N)
   s.addNotes('This is the slide that answers "why now". Every number here is a cost we are already paying. Nothing on it depends on the project working.')
 }
 
@@ -577,7 +577,7 @@ const next = (dark) => {
     'The vendors are proven — and a per-head cost that never stops.')
   const cw = (CW - 2*0.22)/3
   const usp = [
-    ['Cheaper than hiring out','₱86,796 saved on every Band C internal fill. It pays for itself on Band C alone.'],
+    ['Cheaper than hiring out','₱193,877 avoided on every Band C internal fill — hiring cost plus 37 vacancy days.'],
     ['Faster than recruiting','A priority project staffed in days from people already on payroll.'],
     ['A skills map, free','Answers "who can do X?" as a by-product of simply running.'],
     ['We own it','Our asset, our data, our logic. No per-head licence and no lock-in.'],
@@ -698,44 +698,44 @@ const next = (dark) => {
 /* ═══ 16 · COST–BENEFIT ══════════════════════════════════════════ */
 {
   const s = next(); N++
-  head(s, 'Cost–benefit analysis', 'Ratio 3.8, payback in fourteen months.',
-    'Three years, 10% discount rate, on IT\'s costed build. Break-even is two attributed internal hires a year.')
+  head(s, 'Cost–benefit analysis', 'Ratio 4.0, payback in thirteen months.',
+    'Three years, 10% discount rate, on IT\'s costed build. Break-even is six attributed internal fills a year.')
   const cw = (CW - 3*0.22)/4
-  ;[['₱7.88M','three-year benefit','hires + retention', GREEN],
-    ['₱5.83M','net of every peso of cost','after all build and run', GREEN],
-    ['3.8','benefit–cost ratio','NPV ₱4.56M at 10%', INK],
-    ['14 months','payback','benefit from month 4', RED]]
+  ;[['₱8.29M','three-year benefit','fills + retention', GREEN],
+    ['₱6.24M','net of every peso of cost','after all build and run', GREEN],
+    ['4.0','benefit–cost ratio','NPV ₱4.89M at 10%', INK],
+    ['13 months','payback','benefit from month 4', RED]]
    .forEach((v,i) => stat(s, M+i*(cw+0.22), 1.88, cw, v[0], v[1], v[2], v[3], 1.72))
   const lw = CW*0.60
   card(s, { x:M, y:3.62, w:lw, h:3.00 })
   s.addText('How sensitive is it?', { x:M+0.28, y:3.76, w:lw-0.56, h:0.28, fontFace:F,
     fontSize:17, bold:true, color:INK, isTextBox:true, margin:0 })
-  s.addText('The case survives the removal of either benefit stream.', { x:M+0.28, y:4.04,
+  s.addText('Retention carries the case. Everything else can be deleted.', { x:M+0.28, y:4.04,
     w:lw-0.56, h:0.24, fontFace:F, fontSize:14, color:MUTE, isTextBox:true, margin:0 })
   s.addTable([
     [{text:'Scenario',options:{bold:true,color:MUTE}},{text:'Benefit',options:{bold:true,color:MUTE,align:'right'}},
      {text:'Net',options:{bold:true,color:MUTE,align:'right'}},{text:'BCR',options:{bold:true,color:MUTE,align:'right'}},
      {text:'Payback',options:{bold:true,color:MUTE,align:'right'}}],
-    ['Conservative · 2 hires/yr', {text:'₱5.87M',options:{align:'right'}},
-     {text:'₱3.82M',options:{align:'right'}}, {text:'2.9',options:{align:'right'}}, {text:'17 mo',options:{align:'right'}}],
-    [{text:'Base · 4 hires/yr',options:{bold:true,color:INK}},
-     {text:'₱7.88M',options:{align:'right',bold:true}}, {text:'₱5.83M',options:{align:'right',bold:true}},
-     {text:'3.8',options:{align:'right',bold:true,color:GREEN}}, {text:'14 mo',options:{align:'right',bold:true}}],
-    ['Optimistic · 7 hires/yr', {text:'₱10.89M',options:{align:'right'}},
-     {text:'₱8.84M',options:{align:'right'}}, {text:'5.3',options:{align:'right'}}, {text:'11 mo',options:{align:'right'}}],
-    [{text:'Retention removed',options:{italic:true}}, {text:'₱4.02M',options:{align:'right',italic:true}},
-     {text:'₱1.97M',options:{align:'right',italic:true}}, {text:'2.0',options:{align:'right',italic:true}}, {text:'22 mo',options:{align:'right',italic:true}}],
-    [{text:'Retention only, no hires',options:{italic:true}}, {text:'₱3.87M',options:{align:'right',italic:true}},
-     {text:'₱1.82M',options:{align:'right',italic:true}}, {text:'1.9',options:{align:'right',italic:true}}, {text:'22 mo',options:{align:'right',italic:true}}],
-    [{text:'Mass-ops benefit out',options:{italic:true}}, {text:'₱7.13M',options:{align:'right',italic:true}},
-     {text:'₱5.08M',options:{align:'right',italic:true}}, {text:'3.5',options:{align:'right',italic:true}}, {text:'15 mo',options:{align:'right',italic:true}}],
+    ['Conservative · 2 fills/yr', {text:'₱7.74M',options:{align:'right'}},
+     {text:'₱5.69M',options:{align:'right'}}, {text:'3.8',options:{align:'right'}}, {text:'14 mo',options:{align:'right'}}],
+    [{text:'Base · 4 fills/yr',options:{bold:true,color:INK}},
+     {text:'₱8.29M',options:{align:'right',bold:true}}, {text:'₱6.24M',options:{align:'right',bold:true}},
+     {text:'4.0',options:{align:'right',bold:true,color:GREEN}}, {text:'13 mo',options:{align:'right',bold:true}}],
+    ['Optimistic · 7 fills/yr', {text:'₱9.11M',options:{align:'right'}},
+     {text:'₱7.06M',options:{align:'right'}}, {text:'4.4',options:{align:'right'}}, {text:'13 mo',options:{align:'right'}}],
+    [{text:'Retention removed',options:{italic:true}}, {text:'₱1.09M',options:{align:'right',italic:true}},
+     {text:'−₱0.96M',options:{align:'right',italic:true}}, {text:'0.5',options:{align:'right',italic:true,color:RED}}, {text:'—',options:{align:'right',italic:true}}],
+    [{text:'Retention only, no fills',options:{italic:true}}, {text:'₱7.20M',options:{align:'right',italic:true}},
+     {text:'₱5.15M',options:{align:'right',italic:true}}, {text:'3.5',options:{align:'right',italic:true}}, {text:'15 mo',options:{align:'right',italic:true}}],
+    [{text:'Mass-ops benefit out',options:{italic:true}}, {text:'₱7.76M',options:{align:'right',italic:true}},
+     {text:'₱5.71M',options:{align:'right',italic:true}}, {text:'3.8',options:{align:'right',italic:true}}, {text:'14 mo',options:{align:'right',italic:true}}],
   ], { x:M+0.28, y:4.30, w:lw-0.56, colW:[2.48,1.16,1.12,0.86,1.16], fontFace:F, fontSize:14, color:BODY, rowH:0.25,
     border:{ type:'solid', color:'F1F5F9', pt:1 }, valign:'middle' })
   const rx = M + lw + 0.26, rw = CW - lw - 0.26
   tintCard(s, { x:rx, y:3.62, w:rw, h:1.42 }, INK)
-  s.addText('Break-even: 2 hires a year', { x:rx+0.3, y:3.78, w:rw-0.6, h:0.28, fontFace:F,
+  s.addText('Break-even: 6 fills a year', { x:rx+0.3, y:3.78, w:rw-0.6, h:0.28, fontFace:F,
     fontSize:17, bold:true, color:WHITE, isTextBox:true, margin:0 })
-  s.addText('Two internal fills out of roughly 60 internal requisitions a year — a 3.3% hit rate — repay the whole three-year cost.',
+  s.addText('18 internal fills over three years, against roughly 60 internal requisitions a year — a 10% hit rate.',
     { x:rx+0.3, y:4.10, w:rw-0.6, h:0.86, fontFace:F, fontSize:14, color:'CBD5E1',
       lineSpacing:19, isTextBox:true, margin:0, valign:'top' })
   tintCard(s, { x:rx, y:5.20, w:rw, h:1.42 }, TINT)
@@ -743,13 +743,13 @@ const next = (dark) => {
     fontSize:17, bold:true, color:INK, isTextBox:true, margin:0 })
   s.addText([
     { text:'Attributed — ', options:{ bold:true, color:RED } },
-    { text:'agency fees and vacancy days avoided.\n', options:{ color:BODY } },
+    { text:'₱0.45M/yr. Hiring cost and vacancy days avoided.\n', options:{ color:BODY } },
     { text:'Owned — ', options:{ bold:true, color:GREEN } },
-    { text:'retention among participants, needing no attribution.', options:{ color:BODY } },
+    { text:'₱3.00M/yr. Retention among participants, needing no attribution.', options:{ color:BODY } },
   ], { x:rx+0.3, y:5.64, w:rw-0.6, h:0.94, fontFace:F, fontSize:14, lineSpacing:18,
     isTextBox:true, margin:0, valign:'top' })
-  foot(s, 'Basis: Growth-v2-CBA.xlsx. Excludes gig output value, skills built and network effects — real, but not reliably measurable.', N)
-  s.addNotes('Lead with the two italic rows. Volunteering that the softest input can be deleted entirely and the case still clears at 2.0 is what makes the other numbers believable. If challenged on the drop from the earlier 6.8: that used our planning estimate; this uses IT\'s costed man-hours, and the case still clears every stress case.')
+  foot(s, 'Salaries: Payroll average monthly basic, Sep 2026, annualised ×12. Cost per hire: TA 2025 file. Excludes gig output value, skills built and network effects.', N)
+  s.addNotes('Say the 0.5 row out loud before anyone finds it. We repriced a fill from an unsourced ₱350,000 agency fee down to ₱113,522 — what TA actually spends plus 37 vacancy days on real Payroll salaries. That honesty costs us the attributed half of the case and moves the weight onto retention, which is why the year-one holdout is now a gate on wave two rather than a research nicety. Everything else survives: delete mass operations, 3.8; refuse the vacancy-day credit, 3.6; lose attribution entirely, 3.5.')
 }
 
 /* ═══ 17 · VS BUYING ═════════════════════════════════════════════ */
@@ -779,12 +779,12 @@ const next = (dark) => {
       color:MUTE, isTextBox:true, margin:0, valign:'middle' })
   })
   tintCard(s, { x:M, y:4.72, w:CW, h:1.86 }, INK)
-  s.addText('The framing that actually decides it: break-even in internal hires', { x:M+0.36,
+  s.addText('The framing that actually decides it: break-even in internal fills', { x:M+0.36,
     y:4.92, w:CW-0.72, h:0.3, fontFace:F, fontSize:19, bold:true, color:WHITE, isTextBox:true, margin:0 })
   const bw = (CW - 0.72 - 2*0.3)/3
-  ;[['30','internal hires over 3 years just to cover the licence','External platform — low band','94A3B8'],
-    ['84','internal hires over 3 years to cover the licence','External platform — high band','94A3B8'],
-    ['6','internal hires over 3 years — two a year','Growth, built in-house','4ADE80']]
+  ;[['94','internal fills over 3 years just to cover the licence','External platform — low band','94A3B8'],
+    ['258','internal fills over 3 years to cover the licence','External platform — high band','94A3B8'],
+    ['18','internal fills over 3 years — six a year','Growth, built in-house','4ADE80']]
    .forEach((k,i) => {
     const x = M+0.36+i*(bw+0.3)
     s.addText(k[0], { x, y:5.30, w:bw, h:0.52, fontFace:F, fontSize:36, bold:true, color:k[3],
@@ -883,7 +883,7 @@ const next = (dark) => {
     'Listed worst-first. The top two are gates: we settle them before a peso is spent.')
   const rows = [
     ['Recruitment declines the HC Connect source field','GATE',
-     'Attributed benefit becomes unprovable. BCR falls to 3.0.',
+     'Attributed benefit becomes unprovable. BCR falls to 3.5.',
      'Secure it before the build starts. Configuration, not integration.', RED],
     ['The DPO blocks the referral log','GATE',
      'The attribution tier is unavailable. Retention benefits are unaffected.',
@@ -894,11 +894,11 @@ const next = (dark) => {
     ['Employees arrive to an empty profile','HIGH',
      'No skills on file means no matches, an empty board, and no return visit.',
      'Pre-load from HRIS and MyDevelopment. Correcting beats authoring.', AMBER],
-    ['The retention lift is zero','MED',
-     'Benefits fall to the attributed rows — still BCR 3.8, 14-month payback.',
-     'Already modelled. A year-one holdout measures it properly.', MUTE],
+    ['The retention lift is zero','GATE',
+     'Benefits fall to the attributed rows alone — BCR 0.5. The case fails.',
+     'Design the year-one holdout before build. Its first read gates wave two.', RED],
     ['Build effort doubles','MED',
-     'Three-year cost rises to ₱1.76M; base BCR falls to 4.0.',
+     'Three-year cost rises to ₱3.84M; base BCR falls to 2.2.',
      'Still clears, and still far under the vendor bands.', MUTE],
   ]
   const rowH = 0.62
@@ -979,7 +979,7 @@ const next = (dark) => {
     w:11.4, h:2.3, fontFace:F, fontSize:42, bold:true, color:WHITE, lineSpacing:52,
     isTextBox:true, margin:0, valign:'top' })
   s.addShape(p.ShapeType.line, { x:M, y:5.06, w:5.4, h:0, line:{ color:RED, width:3 } })
-  s.addText('₱2.05M over three years to stop doing that. Benefit–cost ratio 3.8, payback in fourteen months, and a live skills map we have never had.',
+  s.addText('₱2.05M over three years to stop doing that. Benefit–cost ratio 4.0, payback in thirteen months, and a live skills map we have never had.',
     { x:M, y:5.28, w:10.4, h:0.8, fontFace:F, fontSize:19, color:'CBD5E1', lineSpacing:27,
       isTextBox:true, margin:0, valign:'top' })
   s.addText('Thank you.   Questions welcome.', { x:M, y:6.2, w:8, h:0.36, fontFace:F,
@@ -1016,12 +1016,12 @@ const next = (dark) => {
      {text:'Year 1',options:{bold:true,color:MUTE,align:'right'}},{text:'Year 2',options:{bold:true,color:MUTE,align:'right'}},
      {text:'Year 3',options:{bold:true,color:MUTE,align:'right'}},{text:'Three-year',options:{bold:true,color:MUTE,align:'right'}},
      {text:'Per emp/yr',options:{bold:true,color:MUTE,align:'right'}},{text:'BCR',options:{bold:true,color:MUTE,align:'right'}}],
-    ['Pilot — IT, Operations, HR', R('637'), R('1,512,174'), R('395,274'), R('63,974'), R('1,971,422'), R('₱1,032'), R('3.6')],
+    ['Pilot — IT, Operations, HR', R('637'), R('1,512,174'), R('395,274'), R('63,974'), R('1,971,422'), R('₱1,032'), R('3.9')],
     [{text:'Pilot + mass operations',options:{bold:true,color:INK}}, R('1,113'), R('1,536,351'), R('422,451'), R('91,151'),
      {text:'2,049,953',options:{align:'right',bold:true,color:RED}}, {text:'₱614',options:{align:'right',bold:true}},
-     {text:'3.8',options:{align:'right',bold:true,color:GREEN}}],
-    ['All non-mass', R('1,991'), R('1,580,946'), R('470,046'), R('138,746'), R('2,189,738'), R('₱367'), R('10.4')],
-    ['Full organisation', R('20,587'), R('2,576,712'), R('1,513,812'), R('1,182,512'), R('5,273,036'), R('₱85'), R('9.9')],
+     {text:'4.0',options:{align:'right',bold:true,color:GREEN}}],
+    ['All non-mass', R('1,991'), R('1,580,946'), R('470,046'), R('138,746'), R('2,189,738'), R('₱367'), R('11.1')],
+    ['Full organisation', R('20,587'), R('2,576,712'), R('1,513,812'), R('1,182,512'), R('5,273,036'), R('₱85'), R('8.5')],
   ], { x:M+0.28, y:4.14, w:CW-0.56, colW:[2.85,0.88,1.42,1.36,1.36,1.66,1.40,0.75], fontFace:F,
        fontSize:14, color:BODY, rowH:0.26, border:{ type:'solid', color:'F1F5F9', pt:1 }, valign:'middle' })
   tintCard(s, { x:M, y:5.86, w:CW, h:0.76 }, INK)
@@ -1042,11 +1042,11 @@ const next = (dark) => {
   const cw = (CW - 0.28)/2
   const bands = [
     ['BAND B','The upward pivot','Employees growing into a reachable next-level role — the natural, believable step up.',
-     [['Roles filled per year','186'],['Cost per hire','₱22,446'],['Headhunter fee per hire','₱9,791']],
-     '₱22,446 saved per internal fill', BLUE, BLUET],
+     [['Roles filled per year','186'],['TA cost per hire','₱6,977'],['37 vacancy days at ₱1,677','₱62,047']],
+     '₱69,024 avoided per internal fill', BLUE, BLUET],
     ['BAND C','Lateral mobility','Existing managers and senior managers moving across functions. Not a level leap — a sideways move.',
-     [['Roles filled per year','103'],['Cost per hire','₱86,796'],['Headhunter fee per hire (68%)','₱58,823']],
-     '₱86,796 saved per internal fill', RED, REDT],
+     [['Roles filled per year','103'],['TA cost per hire','₱35,367'],['37 vacancy days at ₱4,284','₱158,510']],
+     '₱193,877 avoided per internal fill', RED, REDT],
   ]
   bands.forEach((b,i) => {
     const x = M + i*(cw+0.28)
@@ -1074,7 +1074,7 @@ const next = (dark) => {
     h:0.28, fontFace:F, fontSize:17, bold:true, color:INK, isTextBox:true, margin:0 })
   const kw = (CW - 0.68 - 2*0.3)/3
   ;[['≈ 87','internal fills a year','56 Band B + 31 Band C'],
-    ['₱3.9M','gross avoided cost a year','2025 volumes, 2024 cost-per-hire']]
+    ['₱9.9M','gross avoided cost a year','₱1.5M hiring + ₱8.4M vacancy days']]
    .forEach((k,i) => {
     const x = M+0.34+i*(kw+0.3)
     s.addText(k[0], { x, y:5.64, w:kw, h:0.40, fontFace:F, fontSize:24, bold:true,
@@ -1085,10 +1085,10 @@ const next = (dark) => {
       isTextBox:true, margin:0, valign:'top' })
   })
   s.addText([{ text:'Caveats we own:  ', options:{ bold:true, color:INK } },
-    { text:'internal moves create backfill, usually cheaper · some external hiring is healthy · 2024 costs applied to 2025 volumes', options:{ color:MUTE } }],
+    { text:'internal moves create backfill · some external hiring is healthy · vacancy days are lost output, not cash', options:{ color:MUTE } }],
     { x:M+0.34+2*(kw+0.3), y:5.64, w:kw, h:0.94, fontFace:F, fontSize:14, lineSpacing:18,
       isTextBox:true, margin:0, valign:'middle' })
-  foot(s, 'The cost–benefit slides use a narrower, attribution-safe subset of this figure — not the ₱3.9M gross.', N)
+  foot(s, 'The cost–benefit slides use a narrower, attribution-safe subset of this figure — not the ₱9.9M gross.', N)
   s.addNotes('This answers "can people really jump into management?". Band B is a reachable step up; Band C is a sideways move by people who are already managers. Neither requires a heroic leap.')
 }
 
@@ -1098,7 +1098,7 @@ const next = (dark) => {
   head(s, 'Appendix · Business model canvas', 'An internal-fill engine, not an engagement tool.',
     'Career growth is the employee-facing promise. Cheaper fills and faster capacity are the argument.')
   const blocks = [
-    ['PROBLEM','16.9% internal fill vs ~30%\n₱6.1M a year to headhunters\nProjects staffed by contractors\nNo visibility of skills'],
+    ['PROBLEM','16.9% internal fill vs ~30%\n₱2.8M a year to headhunters, Band C\nProjects staffed by contractors\nNo visibility of skills'],
     ['SOLUTION','One board: gigs, immersions, offers\nHC Connect vacancies scored\nAI matching on skills\nSkills inventory as a by-product'],
     ['CUSTOMER SEGMENTS','Talent Acquisition — cheaper fills\nManagers — capacity\nEmployees — growth and pivots\nHR — workforce intelligence'],
     ['VALUE PROPOSITION','Business: cut headhunter spend,\nstaff priority work in days\nEmployee: see and reach real\ninternal opportunities'],
@@ -1106,7 +1106,7 @@ const next = (dark) => {
     ['KEY RESOURCES','Claude API matching engine\nInternal development capacity\nProgramme owner in HR\nSkills data from HRIS and MyDevt'],
     ['CHANNELS','HC Connect, intranet, newsletter\nManager cascades and town halls\nRecruitment as the first funnel\nChampion network'],
     ['COST STRUCTURE','₱1.79M build, costed by IT\n₱55k–₱61k a year to run\n0.2–0.3 FTE ownership from year two'],
-    ['RETURN','₱86,796 saved per Band C fill\n₱22,446 saved per Band B fill\n37 vacancy days avoided per fill\nRetention lift among movers'],
+    ['RETURN','₱193,877 avoided per Band C fill\n₱69,024 per Band B fill\n₱113,522 blended per attributed fill\nRetention lift among movers'],
   ]
   const cw = (CW - 2*0.18)/3
   blocks.forEach((b,i) => {
@@ -1185,24 +1185,20 @@ const next = (dark) => {
   const cw = (CW - 0.28)/2
   const cols = [
     ['HOME CREDIT DATA', [
-      'Internal job posting data, 2024–2026 — 1,008 vacancies, 463 internal applicants, 170 accepted: a 16.9% internal fill rate.',
-      '2025 hiring volumes: 324 roles, of which 186 Band B and 103 Band C.',
-      '2024 cost-per-hire: ₱22,446 Band B, ₱86,796 Band C; headhunter fee 68% of Band C cost.',
-      'Exit survey — "Career & Better Opportunity", 22% of exits.',
-      'eNPS on growth opportunity — 88% believe they can grow here.',
-      '2026 IDP filings (1,249) and career movement preferences (1,109).',
-      'HRIS headcount — 637 pilot, 1,113 with mass operations, 1,991 non-mass, 20,587 full organisation.',
+      'Internal job posting data, 2024–2026 — 1,008 vacancies, 463 internal applicants, 170 accepted: 16.9% internal fill.',
+      '2025 hiring: 324 roles, of which 186 Band B and 103 Band C. TA cost per hire ₱6,977 Band B, ₱35,367 Band C; headhunter 77.7% of Band C. Supersedes the 2024 figures.',
+      'Payroll average basic/month, Sep 2026: B ₱36,334 · C ₱92,821 · non-mass ₱85,803 · mass ops ₱15,144.',
+      'Exit survey — "Career & Better Opportunity", 22% of exits. eNPS on growth — 88% believe they can grow here. 2026 IDP filings 1,249; career movement preferences 1,109.',
+      'HRIS headcount — 637 pilot, 1,113 with mass ops, 1,991 non-mass, 20,587 full organisation.',
       "HCPH Strategic Priorities '27–'29 (draft) · HR Strategic Priorities · OneHR Operating Model.",
     ]],
     ['MODEL AND PLANNING ASSUMPTIONS', [
       'Build costed by IT in man-hours at ₱1,785,500, phased ₱1,454,200 in year one and ₱331,300 in year two.',
       'FX ₱61 = US$1. Discount rate 10%. Three-year horizon. Four of the five run lines are bought in dollars.',
-      'Avoided agency fee per attributed fill ₱350,000; 37 vacancy days saved.',
-      'Retention lift modelled at 3 points, discounted from the 13-point gap in v1 data — that gap is almost certainly selection bias.',
-      '120 gig, immersion and service-offer participants a year.',
+      'Avoided per attributed fill ₱113,522 — ₱17,095 TA cost on the 2025 Band B/C mix plus 37 vacancy days (₱96,427). Replaces the unsourced ₱350,000 agency fee. Salaries annualised ×12, basic only.',
+      'Retention lift 3 points, discounted from the 13-point gap in v1 data — almost certainly selection bias. 120 participants a year.',
       'Vendor comparison is an RFP planning band, not a quote — no vendor publishes per-seat pricing.',
-      'Excluded from benefits: gig output, skills built, network effects.',
-      'Excluded from costs: 0.2–0.3 FTE ownership from year two.',
+      'Excluded from benefits: gig output, skills built, network effects. From costs: 0.2–0.3 FTE ownership from year 2.',
     ]],
   ]
   cols.forEach((c,i) => {
@@ -1212,7 +1208,7 @@ const next = (dark) => {
       color:i ? AMBER : RED, charSpacing:1.4, isTextBox:true, margin:0 })
     s.addText(c[1].map((t,j,a) => ({ text:t, options:{ bullet:true, breakLine:j<a.length-1 } })),
       { x:x+0.28, y:2.44, w:cw-0.56, h:4.02, fontFace:F, fontSize:14, color:BODY,
-        lineSpacing:18, paraSpaceAfter:5, isTextBox:true, margin:0, valign:'top' })
+        lineSpacing:18, paraSpaceAfter:4, isTextBox:true, margin:0, valign:'top' })
   })
   foot(s, 'Working model: Growth-v2-CBA.xlsx · Requirements: BRD_V2 · Prototype: Growth v2. Internal — do not distribute outside the organization.', N)
 }
