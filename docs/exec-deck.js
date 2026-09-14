@@ -1,0 +1,776 @@
+/* Growth — executive ALP deck.  Arial throughout, minimum 14pt.
+   Numbers come from docs/exec-model.py. Detail lives in the speaker notes:
+   the slides are a visual aid, not a handout. */
+const pptx = require('pptxgenjs')
+const fs = require('fs')
+const p = new pptx()
+p.layout = 'LAYOUT_WIDE'                       // 13.333 x 7.5
+p.author = 'Ruffa Gayla Gonzales'
+p.company = 'Home Credit Philippines'
+p.title = 'Growth — a talent marketplace for Home Credit PH'
+
+/* ── palette: Home Credit red on warm neutrals ──────────────────── */
+const RED='C00000', RED2='E11D26', REDT='FCEDED'
+const INK='141821', BODY='3C4350', MUTE='7C8595'
+const SAND='F7F4EF', SANDD='EDE6D9', LINE='E4DFD6'
+const TEAL='0E7C66', TEALT='E9F4F1'
+const GOLD='A9761A', GOLDT='FBF2DF'
+const NAVY='1B2437', WHITE='FFFFFF', PAPER='FCFBF9'
+const F='Arial'
+const W=13.333, H=7.5, M=0.62, CW=W-2*M
+
+const img = f => ({ data:'image/png;base64,'+fs.readFileSync(__dirname+'/'+f).toString('base64') })
+const soft = () => ({ type:'outer', color:'6B5B45', blur:12, offset:2, angle:90, opacity:0.10 })
+
+/* ── overflow auditor ───────────────────────────────────────────── */
+let N = 0
+const WARN = []
+function estHeight(txt, w, fs, bold, ls) {
+  const cpi = w / ((fs/72) * (bold ? 0.545 : 0.50))
+  let lines = 0
+  String(txt).split('\n').forEach(para => {
+    const words = para.split(/\s+/).filter(Boolean)
+    if (!words.length) { lines += 1; return }
+    let cur = 0, n = 1
+    words.forEach(wd => {
+      const add = cur ? wd.length + 1 : wd.length
+      if (cur + add > cpi && cur) { n++; cur = wd.length } else cur += add
+    })
+    lines += n
+  })
+  return lines <= 1 ? fs * 1.16 / 72 : lines * ((ls || fs * 1.20) / 72)
+}
+const next = (bg) => {
+  const s = p.addSlide()
+  s.background = { color: bg || WHITE }
+  const raw = s.addText.bind(s)
+  s.addText = function (t, o) {
+    const txt = Array.isArray(t) ? t.map(r => r.text).join('') : String(t)
+    if (o && o.w && o.h && !o.bullet) {
+      const need = estHeight(txt, o.w, o.fontSize || 18, o.bold, o.lineSpacing)
+      if (need > o.h * 1.06 + 0.04) {
+        const fs = o.fontSize || 18
+        const cpi = o.w / ((fs/72) * (o.bold ? 0.545 : 0.50))
+        const maxLines = Math.floor((o.h + 0.02) / ((o.lineSpacing || fs*1.20)/72))
+        WARN.push('s' + N + ' | ' + txt.length + ' chars, fits ' +
+          Math.max(0, Math.floor(cpi*maxLines*0.94)) + ' | ' + txt.slice(0,46).replace(/\s+/g,' '))
+      }
+    }
+    return raw(t, o)
+  }
+  return s
+}
+
+/* ── chrome ─────────────────────────────────────────────────────── */
+function head(s, eyebrow, title, sub) {
+  s.addShape(p.ShapeType.rect, { x:M, y:0.46, w:0.46, h:0.075, fill:{ color:RED }, line:{ width:0 } })
+  s.addText(eyebrow.toUpperCase(), { x:M+0.60, y:0.37, w:CW-0.6, h:0.26, fontFace:F, fontSize:14,
+    bold:true, color:RED, charSpacing:2.4, isTextBox:true, margin:0, valign:'middle' })
+  s.addText(title, { x:M, y:0.76, w:CW, h:0.62, fontFace:F, fontSize:title.length>52?29:33,
+    bold:true, color:INK, isTextBox:true, margin:0, valign:'top' })
+  if (sub) s.addText(sub, { x:M, y:1.42, w:CW*0.86, h:0.34, fontFace:F, fontSize:16,
+    color:MUTE, isTextBox:true, margin:0, valign:'top' })
+}
+function pageNo(s, col) {
+  s.addText(String(N), { x:W-M-0.5, y:H-0.52, w:0.5, h:0.28, fontFace:F, fontSize:14,
+    color:col||'B6AFA3', align:'right', isTextBox:true, margin:0 })
+}
+function src(s, txt) {
+  s.addText(txt, { x:M, y:H-0.56, w:CW-0.7, h:0.36, fontFace:F, fontSize:14, color:'A69E92',
+    lineSpacing:17, isTextBox:true, margin:0, valign:'top' })
+}
+const card = (s,o) => s.addShape(p.ShapeType.roundRect, Object.assign({
+  rectRadius:0.04, fill:{ color:WHITE }, line:{ color:LINE, width:1 }, shadow:soft() }, o))
+const panel = (s,o,c) => s.addShape(p.ShapeType.roundRect, Object.assign({
+  rectRadius:0.04, fill:{ color:c||SAND }, line:{ width:0 } }, o))
+const rule = (s,x,y,w,c) => s.addShape(p.ShapeType.line,
+  { x, y, w, h:0, line:{ color:c||LINE, width:1 } })
+
+/* A big editorial figure with a label underneath. */
+function figure(s, x, y, w, big, lbl, col, size) {
+  s.addText(big, { x, y, w, h:0.62, fontFace:F, fontSize:size||44, bold:true, color:col||INK,
+    isTextBox:true, margin:0, valign:'middle' })
+  s.addText(lbl, { x, y:y+0.62, w, h:0.52, fontFace:F, fontSize:15, color:BODY,
+    lineSpacing:19, isTextBox:true, margin:0, valign:'top' })
+}
+/* Numbered step chip used on the plan slides. */
+function chip(s, x, y, n, fill) {
+  s.addShape(p.ShapeType.ellipse, { x, y, w:0.40, h:0.40, fill:{ color:fill||RED }, line:{ width:0 } })
+  s.addText(String(n), { x, y, w:0.40, h:0.40, fontFace:F, fontSize:15, bold:true, color:WHITE,
+    align:'center', valign:'middle', isTextBox:true, margin:0 })
+}
+
+/* ═══ 1 · TITLE ═════════════════════════════════════════════════ */
+{
+  const s = next(NAVY); N++
+  s.addShape(p.ShapeType.rect, { x:0, y:0, w:0.26, h:H, fill:{ color:RED }, line:{ width:0 } })
+  s.addImage(Object.assign(img('mark-white.png'), { x:1.15, y:1.30, w:0.82, h:0.82 }))
+  s.addText('Growth', { x:1.15, y:2.30, w:9, h:1.05, fontFace:F, fontSize:62, bold:true,
+    color:WHITE, isTextBox:true, margin:0, valign:'middle' })
+  s.addText('An internal talent marketplace for Home Credit Philippines',
+    { x:1.15, y:3.36, w:9.4, h:0.42, fontFace:F, fontSize:20, color:'D8CFC2',
+      isTextBox:true, margin:0, valign:'middle' })
+  s.addShape(p.ShapeType.rect, { x:1.15, y:4.00, w:1.5, h:0.06, fill:{ color:RED2 }, line:{ width:0 } })
+  s.addText([
+    { text:'Action Learning Project', options:{ bold:true, color:WHITE } },
+    { text:'   ·   Ruffa Gayla Gonzales, Organisational Effectiveness   ·   September 2026',
+      options:{ color:'A79C8C' } },
+  ], { x:1.15, y:4.28, w:11.2, h:0.34, fontFace:F, fontSize:16, isTextBox:true, margin:0 })
+
+  ;[['17%', 'of roles filled\nfrom inside'],
+    ['₱5.3M', 'a year that\ncosts us'],
+    ['₱2.05M', 'to build and run\nfor three years'],
+    ['12 mo', 'to pay for\nitself']]
+   .forEach((k,i) => {
+    const x = 1.15 + i*2.55
+    rule(s, x, 5.28, 2.15, '3E4757')
+    s.addText(k[0], { x, y:5.38, w:2.2, h:0.46, fontFace:F, fontSize:28, bold:true,
+      color: i?WHITE:RED2, isTextBox:true, margin:0, valign:'middle' })
+    s.addText(k[1], { x, y:5.86, w:2.2, h:0.56, fontFace:F, fontSize:14, color:'9A9080',
+      lineSpacing:17, isTextBox:true, margin:0, valign:'top' })
+  })
+  s.addNotes('Fifteen minutes: roughly seven on the deck, eight in the product. I will show you the problem, show you the thing working, then show you the money.\n\nOne sentence up front: we fill 17% of our roles from the inside, the benchmark is 30%, and the gap is costing us about 5.3 million pesos a year. Growth closes it for 2.05 million over three years, which is 614 pesos per employee per year.')
+}
+
+/* ═══ 2 · EXECUTIVE SUMMARY ═════════════════════════════════════ */
+{
+  const s = next(); N++
+  head(s, 'Executive summary', 'We are buying from outside what we already have inside.')
+
+  const lw = CW*0.545
+  panel(s, { x:M, y:1.86, w:lw, h:5.02 }, SAND)
+  s.addText('THE PROBLEM', { x:M+0.34, y:2.06, w:lw-0.68, h:0.26, fontFace:F, fontSize:14,
+    bold:true, color:RED, charSpacing:1.8, isTextBox:true, margin:0 })
+  s.addText('Over 2024–2026 we opened 1,008 vacancies. 463 people applied from inside. 170 got the job — a 17% internal fill rate against a 30% market benchmark.',
+    { x:M+0.34, y:2.42, w:lw-0.68, h:1.04, fontFace:F, fontSize:17, color:INK,
+      lineSpacing:24, isTextBox:true, margin:0, valign:'top' })
+  rule(s, M+0.34, 3.58, lw-0.68, SANDD)
+  s.addText([
+    { text:'And saying no has a price. ', options:{ bold:true, color:INK } },
+    { text:'Of the 67 internal applicants we turned down in 2025, only 38 are still with Home Credit. 43% have gone, against a company average of 19%.',
+      options:{ color:BODY } },
+  ], { x:M+0.34, y:3.74, w:lw-0.68, h:1.28, fontFace:F, fontSize:16, lineSpacing:22,
+       isTextBox:true, margin:0, valign:'top' })
+  rule(s, M+0.34, 5.10, lw-0.68, SANDD)
+  s.addText('THE CAUSE', { x:M+0.34, y:5.26, w:lw-0.68, h:0.26, fontFace:F, fontSize:14,
+    bold:true, color:RED, charSpacing:1.8, isTextBox:true, margin:0 })
+  s.addText('Not selection — visibility. Nothing shows an employee a role they would fit, and nothing tells a manager the person they need is already on payroll.',
+    { x:M+0.34, y:5.58, w:lw-0.68, h:1.04, fontFace:F, fontSize:15, color:BODY, lineSpacing:21,
+      isTextBox:true, margin:0, valign:'top' })
+
+  const rx = M+lw+0.30, rw = CW-lw-0.30
+  s.addText('WHAT WE ARE ASKING FOR', { x:rx, y:1.90, w:rw, h:0.26, fontFace:F, fontSize:14,
+    bold:true, color:RED, charSpacing:1.8, isTextBox:true, margin:0 })
+  s.addText('Build Growth for a 1,113-person pilot — IT, HR and Operations, mass and non-mass.',
+    { x:rx, y:2.22, w:rw, h:0.66, fontFace:F, fontSize:17, bold:true, color:INK,
+      lineSpacing:23, isTextBox:true, margin:0, valign:'top' })
+  ;[['₱2.05M', 'three-year cost, all in', INK],
+    ['₱614', 'per employee a year', INK],
+    ['12 months', 'to pay for itself', TEAL],
+    ['5× – 14×', 'cheaper than buying a platform', TEAL]]
+   .forEach((k,i) => {
+    const y = 2.98 + i*0.80
+    s.addText(k[0], { x:rx, y, w:rw*0.42, h:0.40, fontFace:F, fontSize:21, bold:true,
+      color:k[2], isTextBox:true, margin:0, valign:'middle' })
+    s.addText(k[1], { x:rx+rw*0.42, y, w:rw*0.58, h:0.40, fontFace:F, fontSize:15, color:BODY,
+      isTextBox:true, margin:0, valign:'middle' })
+    if (i<3) rule(s, rx, y+0.60, rw, LINE)
+  })
+  panel(s, { x:rx, y:6.26, w:rw, h:0.62 }, REDT)
+  s.addText([{ text:'Working prototype already built. ', options:{ bold:true, color:RED } },
+             { text:'You will see it in eight minutes.', options:{ color:BODY } }],
+    { x:rx+0.24, y:6.26, w:rw-0.48, h:0.62, fontFace:F, fontSize:15, valign:'middle',
+      isTextBox:true, margin:0 })
+  pageNo(s)
+  s.addNotes('This is the whole case on one slide. Everything after it is evidence.\n\nThe 17% is ours: 170 accepted out of 1,008 vacancies posted between 2024 and 2026. The 30% is the published market benchmark for internal fill; mature marketplaces run 40-50%.\n\nThe 67/38 number is the one I would hold onto. It is not modelled, it is a headcount we can check in the HRIS: 67 people raised their hand in 2025, we told them no, and 29 of them have since left. That is 43% versus a company average of 19%.\n\nIf asked "is this causal" — no, not proven. It is an association, and the exposure window runs longer than a year so the true excess is smaller than 24 points. I model it at 15. The holdout in the adoption plan is how we settle it.')
+}
+
+/* ═══ 3 · THE PROBLEM — THE FUNNEL ══════════════════════════════ */
+{
+  const s = next(); N++
+  head(s, 'The problem', 'Four out of five roles go to someone we have not met.',
+    'Internal job posting data, 2024 to 2026.')
+
+  const steps = [
+    ['1,008', 'vacancies opened',   3.90, 1.70, SANDD,    INK],
+    ['463',   'internal applicants', 2.80, 1.42, 'DCCFC0', INK],
+    ['170',   'internal hires',      1.80, 1.14, RED,      WHITE],
+  ]
+  let fx = M
+  steps.forEach(st => {
+    const y = 2.90 - st[3]/2
+    s.addShape(p.ShapeType.roundRect, { x:fx, y, w:st[2], h:st[3], rectRadius:0.04,
+      fill:{ color:st[4] }, line:{ width:0 } })
+    s.addText(st[0], { x:fx+0.24, y:y+0.14, w:st[2]-0.48, h:0.58, fontFace:F, fontSize:34,
+      bold:true, color:st[5], isTextBox:true, margin:0, valign:'middle' })
+    s.addText(st[1], { x:fx+0.24, y:y+0.74, w:st[2]-0.48, h:0.30, fontFace:F, fontSize:14.5,
+      bold:true, color:st[5]===WHITE?'F4DCDC':BODY, isTextBox:true, margin:0, valign:'top' })
+    fx += st[2] + 0.28
+  })
+  s.addShape(p.ShapeType.rect, { x:10.02, y:2.28, w:0.05, h:1.24, fill:{ color:RED }, line:{ width:0 } })
+  s.addText('17%', { x:10.26, y:2.24, w:2.44, h:0.58, fontFace:F, fontSize:38, bold:true,
+    color:RED, isTextBox:true, margin:0, valign:'middle' })
+  s.addText('internal fill rate', { x:10.26, y:2.84, w:2.44, h:0.28, fontFace:F, fontSize:15,
+    bold:true, color:BODY, isTextBox:true, margin:0, valign:'top' })
+  s.addText('the benchmark is 30%', { x:10.26, y:3.14, w:2.44, h:0.28, fontFace:F, fontSize:14,
+    color:MUTE, isTextBox:true, margin:0, valign:'top' })
+
+  panel(s, { x:M, y:4.36, w:CW, h:2.12 }, NAVY)
+  s.addShape(p.ShapeType.rect, { x:M, y:4.36, w:0.10, h:2.12, fill:{ color:RED }, line:{ width:0 } })
+  s.addText('Then look at the people we turned down.',
+    { x:M+0.46, y:4.62, w:5.70, h:0.36, fontFace:F, fontSize:20, bold:true, color:WHITE,
+      isTextBox:true, margin:0, valign:'middle' })
+  s.addText('In 2025 we said no to 67 internal applicants. Today 38 are still here. We have already lost 29 of them.',
+    { x:M+0.46, y:5.08, w:5.70, h:1.06, fontFace:F, fontSize:16, color:'C6BCAE',
+      lineSpacing:23, isTextBox:true, margin:0, valign:'top' })
+  ;[['43%',   'left after being\nturned down',        RED2],
+    ['19%',   'company average\nattrition',            '8E95A3'],
+    ['₱8.3M', 'replacement cost of\n16 extra leavers', WHITE]]
+   .forEach((k,i) => {
+    const x = 7.00 + i*1.92
+    s.addText(k[0], { x, y:4.66, w:1.82, h:0.54, fontFace:F, fontSize:29, bold:true, color:k[2],
+      isTextBox:true, margin:0, valign:'middle' })
+    s.addText(k[1], { x, y:5.24, w:1.82, h:0.76, fontFace:F, fontSize:14, color:'9A9080',
+      lineSpacing:17, isTextBox:true, margin:0, valign:'top' })
+  })
+  src(s, 'HC Connect internal job posting data 2024–2026 · 2025 turned-down cohort tracked against HRIS, September 2026.')
+  pageNo(s)
+  s.addNotes('Read the funnel left to right and it looks like a selection problem. It is not.\n\n463 applications across three years, from a company of 20,587 people. That is the real number: fewer than eight internal applications a week, company-wide. People are not being rejected in droves — they are not applying, because they cannot see the roles.\n\nThe bottom band is the part that should worry us. 67 people put their hand up in 2025 and we said no. 29 have left. At a 19% company average we would have expected 13. So 16 people left who probably would not have, and at a blended Band B/C replacement cost of 508,194 pesos that is 8.3 million pesos of avoidable replacement spend, concentrated entirely in people who had already told us they wanted to stay and grow.\n\nIf asked: yes, some of those 29 would have left anyway, and yes, the window is longer than twelve months. That is exactly why I discount the effect by half everywhere in the financials.')
+}
+
+/* ═══ 4 · WHY IT HAPPENS ════════════════════════════════════════ */
+{
+  const s = next(); N++
+  head(s, 'Why it happens', 'Three blind spots, none of which is a people problem.')
+
+  const cw = (CW - 2*0.30)/3
+  const cards = [
+    ['01', 'Employees cannot see it',
+     'Vacancies sit in a tool nobody browses. Gigs and immersions are arranged privately. You hear about the role after it is filled.', RED],
+    ['02', 'The manager cannot find them',
+     'There is no skills inventory. A hiring manager cannot ask "who inside can already do this?", so the default is to post externally.', GOLD],
+    ['03', 'The record does not exist',
+     'Skills live in CVs, IDPs and people\'s memories. Nothing is verified, nothing is current, none of it is searchable.', TEAL],
+  ]
+  cards.forEach((c,i) => {
+    const x = M + i*(cw+0.30)
+    card(s, { x, y:2.10, w:cw, h:2.86 })
+    s.addShape(p.ShapeType.rect, { x, y:2.10, w:cw, h:0.075, fill:{ color:c[3] }, line:{ width:0 } })
+    s.addText(c[0], { x:x+0.30, y:2.32, w:1.0, h:0.44, fontFace:F, fontSize:24, bold:true,
+      color:c[3], charSpacing:1, isTextBox:true, margin:0, valign:'middle' })
+    s.addText(c[1], { x:x+0.30, y:2.86, w:cw-0.60, h:0.66, fontFace:F, fontSize:18, bold:true,
+      color:INK, lineSpacing:24, isTextBox:true, margin:0, valign:'top' })
+    s.addText(c[2], { x:x+0.30, y:3.58, w:cw-0.60, h:1.22, fontFace:F, fontSize:15, color:BODY,
+      lineSpacing:20, isTextBox:true, margin:0, valign:'top' })
+  })
+
+  panel(s, { x:M, y:5.24, w:CW, h:1.58 }, SAND)
+  s.addText('The constraint is not that our people are unqualified. It is that the market inside Home Credit has no shelves.',
+    { x:M+0.40, y:5.46, w:CW*0.60, h:0.68, fontFace:F, fontSize:19, bold:true, color:INK,
+      lineSpacing:26, isTextBox:true, margin:0, valign:'middle' })
+  s.addText('463 applications in three years is not apathy. People say they believe they can grow here — they cannot find where.',
+    { x:M+0.40, y:6.14, w:CW*0.60, h:0.60, fontFace:F, fontSize:15, color:BODY,
+      lineSpacing:20, isTextBox:true, margin:0, valign:'top' })
+  s.addShape(p.ShapeType.rect, { x:M+CW*0.66, y:5.52, w:0.05, h:0.96, fill:{ color:RED }, line:{ width:0 } })
+  s.addText('88%', { x:M+CW*0.70, y:5.48, w:CW*0.29, h:0.52, fontFace:F, fontSize:32, bold:true,
+    color:RED, isTextBox:true, margin:0, valign:'middle' })
+  s.addText('believe they can grow at Home Credit\neNPS on growth opportunity',
+    { x:M+CW*0.70, y:6.00, w:CW*0.29, h:0.56, fontFace:F, fontSize:14, color:BODY,
+      lineSpacing:18, isTextBox:true, margin:0, valign:'top' })
+  pageNo(s)
+  s.addNotes('Keep this to twenty seconds. It is the bridge between the problem and the product.\n\nThe point to land: every one of these three is a systems gap, not a talent gap or a manager-attitude gap. That matters because it means the fix is buildable rather than cultural, and buildable things have costs and timelines you can approve.\n\nIf a panel member pushes on manager hoarding — it is real, and it is on the risk slide. But hoarding cannot explain 463 applications; you cannot hoard a role nobody applied to.')
+}
+
+/* ═══ 5 · WHAT GROWTH IS ════════════════════════════════════════ */
+{
+  const s = next(); N++
+  head(s, 'The solution', 'One place. Every opportunity. Scored against you.')
+
+  const lw = CW*0.455
+  const shelves = [
+    ['Vacancies',      'Permanent internal roles, mirrored from HC Connect', RED],
+    ['Gigs',           'Short projects, days to weeks, alongside the day job', GOLD],
+    ['Job immersions', 'Three to nine months in another function', TEAL],
+    ['Service offers', 'An employee offering a skill to the business', '4A5468'],
+  ]
+  s.addText('FOUR SHELVES', { x:M, y:2.06, w:lw, h:0.26, fontFace:F, fontSize:14, bold:true,
+    color:RED, charSpacing:1.8, isTextBox:true, margin:0 })
+  shelves.forEach((sh,i) => {
+    const y = 2.48 + i*0.92
+    s.addShape(p.ShapeType.rect, { x:M, y:y+0.04, w:0.055, h:0.66, fill:{ color:sh[2] }, line:{ width:0 } })
+    s.addText(sh[0], { x:M+0.26, y, w:lw-0.26, h:0.32, fontFace:F, fontSize:17, bold:true,
+      color:INK, isTextBox:true, margin:0, valign:'top' })
+    s.addText(sh[1], { x:M+0.26, y:y+0.32, w:lw-0.26, h:0.46, fontFace:F, fontSize:14.5,
+      color:BODY, lineSpacing:19, isTextBox:true, margin:0, valign:'top' })
+  })
+  panel(s, { x:M, y:6.10, w:lw, h:0.80 }, SAND)
+  s.addText([{ text:'Plus a skills passport. ', options:{ bold:true, color:INK } },
+             { text:'Seeded from MyDevelopment and LinkedIn, verified by delivery.', options:{ color:BODY } }],
+    { x:M+0.26, y:6.10, w:lw-0.52, h:0.80, fontFace:F, fontSize:14.5, lineSpacing:19,
+      valign:'middle', isTextBox:true, margin:0 })
+
+  const rx = M+lw+0.46, rw = CW-lw-0.46
+  s.addText('EVERY POST IS SCORED AGAINST YOUR PROFILE', { x:rx, y:2.06, w:rw, h:0.26, fontFace:F,
+    fontSize:14, bold:true, color:RED, charSpacing:1.4, isTextBox:true, margin:0 })
+  s.addImage(Object.assign(img('exec-card.png'),
+    { x:rx, y:2.48, w:rw, h:rw*0.583, shadow:soft() }))
+  s.addText('An AI model reads the post and your profile, returns a score, and says why. It never blocks an application.',
+    { x:rx, y:2.62+rw*0.583, w:rw, h:0.56, fontFace:F, fontSize:15, color:MUTE,
+      lineSpacing:20, isTextBox:true, margin:0, valign:'top' })
+  pageNo(s)
+  s.addNotes('Thirty seconds, then straight into the demo.\n\nThe four shelves matter because a vacancy is a once-a-year event but a gig is a once-a-month one. If the only thing on the marketplace is permanent roles, most people have no reason to come back, and the people we turn down leave with nothing. The gigs, immersions and service offers are the second door — and they are the answer to the 67/38 problem.\n\nOn the AI: it is Claude, called in batch when a post goes live. It scores against verified skills, self-declared skills, stated aspiration and track record. The reasoning is shown on every card, and a low score never stops anyone applying. That was a deliberate design decision — an opaque gate would have killed trust in week one.\n\nCost of the AI is 40,544 pesos a year at 1,113 people. It is on the cost slide and it is not inside IT\'s 1,785,500 build figure.')
+}
+
+/* ═══ 6 · DEMO ══════════════════════════════════════════════════ */
+{
+  const s = next(NAVY); N++
+  s.addShape(p.ShapeType.rect, { x:0, y:0, w:0.26, h:H, fill:{ color:RED }, line:{ width:0 } })
+  s.addText('LIVE DEMONSTRATION', { x:1.15, y:1.50, w:8, h:0.30, fontFace:F, fontSize:14,
+    bold:true, color:RED2, charSpacing:2.4, isTextBox:true, margin:0 })
+  s.addText('Let me show you\nthe working product.', { x:1.15, y:1.96, w:7.6, h:1.70, fontFace:F,
+    fontSize:40, bold:true, color:WHITE, lineSpacing:50, isTextBox:true, margin:0, valign:'top' })
+  s.addShape(p.ShapeType.rect, { x:1.15, y:3.86, w:1.5, h:0.06, fill:{ color:RED2 }, line:{ width:0 } })
+  ;[['1', 'An employee finds a match they never would have seen'],
+    ['2', 'They add one skill — and the matches change in front of you'],
+    ['3', 'A manager posts a gig; HR approves it; it appears on the shelf'],
+    ['4', 'Work is closed out — and lands on the employee profile']]
+   .forEach((k,i) => {
+    const y = 4.20 + i*0.62
+    chip(s, 1.15, y, k[0], RED)
+    s.addText(k[1], { x:1.72, y, w:6.9, h:0.40, fontFace:F, fontSize:16, color:'D2C9BB',
+      isTextBox:true, margin:0, valign:'middle' })
+  })
+  s.addImage(Object.assign(img('exec-matches.png'), { x:8.30, y:1.42, w:4.40, h:3.44, shadow:soft() }))
+  s.addText('Built and running today. No vendor, no licence, no integration project.',
+    { x:8.30, y:5.06, w:4.40, h:0.70, fontFace:F, fontSize:15, color:'9A9080', lineSpacing:20,
+      isTextBox:true, margin:0, valign:'top' })
+  pageNo(s, '5E6676')
+  s.addNotes('Eight minutes. Four beats, in this order, and do not improvise beyond them.\n\n1. Sign in as Taylor Swift. Go to My Matches. Point out that the matches are 80% and above, and read one "why this score" line out loud. The panel needs to hear that the machine explains itself.\n\n2. Go to My Profile and add a skill. Come back to My Matches. New opportunities appear. This is the single most persuasive twenty seconds in the demo — the marketplace is live, not a mockup.\n\n3. Switch role to a manager. Post a gig. Switch to HR admin, approve it. Switch back to employee, and it is on the shelf with an applicant count. This proves the full loop, including governance.\n\n4. Close out a completed immersion with a rating, then open the employee profile and show it recorded there. That is how a skill becomes verified rather than claimed.\n\nIf the demo fails: the screenshots in the appendix cover beats 1 and 3. Do not spend more than thirty seconds troubleshooting.')
+}
+
+/* ═══ 7 · THE COST OF STAYING AT 17% ════════════════════════════ */
+{
+  const s = next(); N++
+  head(s, 'The financial case', 'Staying at 17% costs us ₱5.3M a year.',
+    'Company-wide, at 336 vacancies a year. Every peso is net of the backfill an internal move creates.')
+
+  const COL = [4.95, 7.55, 10.15], CWD = 2.55
+  panel(s, { x:COL[1]-0.10, y:1.92, w:CWD+0.20, h:3.46 }, REDT)
+  ;[['17%','where we are',MUTE],['30%','the benchmark',RED],['50%','mature marketplaces',TEAL]]
+   .forEach((c,i) => {
+    s.addText(c[0], { x:COL[i], y:2.00, w:CWD, h:0.44, fontFace:F, fontSize:26, bold:true,
+      color:c[2], align:'center', isTextBox:true, margin:0, valign:'middle' })
+    s.addText(c[1], { x:COL[i], y:2.46, w:CWD, h:0.26, fontFace:F, fontSize:14, color:MUTE,
+      align:'center', isTextBox:true, margin:0 })
+  })
+
+  const rows = [
+    ['Internal fills a year', '57',  '101',    '168'],
+    ['Hiring cost avoided',   '—',   '₱0.35M', '₱0.88M'],
+    ['Vacancy days saved',    '—',   '₱1.57M', '₱3.97M'],
+    ['Turnover avoided',      '—',   '₱3.36M', '₱8.49M'],
+  ]
+  rows.forEach((r,i) => {
+    const y = 2.92 + i*0.62
+    s.addText(r[0], { x:M+0.04, y, w:4.10, h:0.56, fontFace:F, fontSize:16, color:BODY,
+      isTextBox:true, margin:0, valign:'middle' })
+    ;[1,2,3].forEach(k => s.addText(r[k], { x:COL[k-1], y, w:CWD, h:0.56, fontFace:F,
+      fontSize:17, bold:k===2, color:k===1?MUTE:INK, align:'center', isTextBox:true,
+      margin:0, valign:'middle' }))
+    if (i<3) rule(s, M, y+0.58, CW, LINE)
+  })
+
+  panel(s, { x:M, y:5.46, w:CW, h:0.72 }, NAVY)
+  s.addText('ANNUAL VALUE WE FORGO TODAY', { x:M+0.30, y:5.46, w:4.10, h:0.72, fontFace:F,
+    fontSize:15, bold:true, color:WHITE, charSpacing:0.8, isTextBox:true, margin:0, valign:'middle' })
+  ;[['baseline','8E95A3',18],['₱5.29M','FF9A9A',22],['₱13.34M',WHITE,22]].forEach((v,i) =>
+    s.addText(v[0], { x:COL[i], y:5.46, w:CWD, h:0.72, fontFace:F, fontSize:v[2], bold:true,
+      color:v[1], align:'center', isTextBox:true, margin:0, valign:'middle' }))
+
+  panel(s, { x:M, y:6.30, w:CW, h:0.62 }, SAND)
+  s.addText([{ text:'One extra internal fill is worth ₱119,822.  ', options:{ bold:true, color:INK } },
+             { text:'₱43,593 of hiring cost and vacancy days after the backfill, plus ₱76,229 of turnover we do not pay.', options:{ color:BODY } }],
+    { x:M+0.30, y:6.30, w:CW-0.60, h:0.62, fontFace:F, fontSize:15, valign:'middle',
+      isTextBox:true, margin:0 })
+  pageNo(s)
+  s.addNotes('This is the slide the CFO will test. Three things to say before being asked.\n\nFIRST — the hiring-cost row is small on purpose. A Band C hire costs 35,367 pesos through TA. Of that, 3,378 is HR and TA cost per hire which we still pay on an internal move, so it is not a saving. And filling a Band C role internally creates a Band B vacancy we then hire for externally at 6,977. Net of both, one Band C internal fill saves 25,012 pesos of hiring cost, not 35,367. I have netted the backfill everywhere.\n\nSECOND — vacancy days. 58 days to fill externally versus 21 internally. 37 days saved on the senior role at its own day rate, minus 58 days on the backfilled seat at its lower day rate. That nets to 61,247 on a Band C move. It is lost output, not cash.\n\nTHIRD — turnover is the biggest line and it rests on the measured 67/38 cohort, discounted from 24 points of excess attrition to 15, and priced at 75% of blended Band B/C annual basic, which is 508,194.\n\nIf challenged that 5.3 million is too small to matter: agreed, on its own. The point is that we capture it for 614 pesos per employee per year.')
+}
+
+/* ═══ 8 · WHAT 30% ACTUALLY TAKES ═══════════════════════════════ */
+{
+  const s = next(); N++
+  head(s, 'What 30% actually takes', 'We cannot get there on today\'s applicant flow.',
+    '463 applications produced 170 hires — a 37% success rate. Hold it, and the arithmetic is fixed.')
+
+  const lw = CW*0.52
+  ;[['154', 'applications today', MUTE, SANDD],
+    ['275', 'needed for 30%', RED, REDT],
+    ['458', 'needed for 50%', TEAL, TEALT]]
+   .forEach((k,i) => {
+    const y = 2.14 + i*1.10
+    const bw = (parseInt(k[0])/458) * 2.85
+    s.addShape(p.ShapeType.roundRect, { x:M+1.55, y:y+0.08, w:Math.max(bw,0.4), h:0.62,
+      rectRadius:0.03, fill:{ color:k[3] }, line:{ width:0 } })
+    s.addShape(p.ShapeType.rect, { x:M+1.55, y:y+0.08, w:0.05, h:0.62, fill:{ color:k[2] }, line:{ width:0 } })
+    s.addText(k[0], { x:M, y:y+0.04, w:1.42, h:0.70, fontFace:F, fontSize:30, bold:true,
+      color:k[2], align:'right', isTextBox:true, margin:0, valign:'middle' })
+    s.addText(k[1], { x:M+1.72+Math.max(bw,0.4)-0.10, y:y+0.08, w:2.20, h:0.62, fontFace:F,
+      fontSize:15.5, bold:i>0, color:i?INK:BODY, isTextBox:true, margin:0, valign:'middle' })
+  })
+  s.addText('Internal applications have to rise 1.8× to reach the benchmark, and 3× to reach 50%. That is the whole job: make the roles visible and make people worth matching.',
+    { x:M, y:5.50, w:lw, h:0.86, fontFace:F, fontSize:15, color:BODY, lineSpacing:21,
+      isTextBox:true, margin:0, valign:'top' })
+
+  const rx = M+lw+0.42, rw = CW-lw-0.42
+  panel(s, { x:rx, y:2.08, w:rw, h:4.28 }, NAVY)
+  s.addShape(p.ShapeType.rect, { x:rx, y:2.08, w:rw, h:0.085, fill:{ color:GOLD }, line:{ width:0 } })
+  s.addText('AND HERE IS THE CATCH', { x:rx+0.36, y:2.32, w:rw-0.72, h:0.26, fontFace:F,
+    fontSize:14, bold:true, color:'E3B457', charSpacing:1.8, isTextBox:true, margin:0 })
+  s.addText('More applications means more rejections.', { x:rx+0.36, y:2.62, w:rw-0.72, h:0.76,
+    fontFace:F, fontSize:22, bold:true, color:WHITE, lineSpacing:28, isTextBox:true, margin:0, valign:'top' })
+  s.addText('At a 30% fill rate we turn down 174 people a year instead of 98. On today\'s evidence, rejection is what makes them leave.',
+    { x:rx+0.36, y:3.48, w:rw-0.72, h:0.86, fontFace:F, fontSize:15.5, color:'C6BCAE',
+      lineSpacing:21, isTextBox:true, margin:0, valign:'top' })
+  rule(s, rx+0.36, 4.44, rw-0.72, '3E4757')
+  s.addText('So it cannot only sell jobs.', { x:rx+0.36, y:4.60, w:rw-0.72, h:0.34,
+    fontFace:F, fontSize:16, bold:true, color:WHITE, isTextBox:true, margin:0, valign:'middle' })
+  s.addText('A "no" routes to a gig, an immersion or a service offer instead of to the exit. That is why Growth has four shelves and not one.',
+    { x:rx+0.36, y:5.00, w:rw-0.72, h:1.22, fontFace:F, fontSize:15, color:'C6BCAE',
+      lineSpacing:21, isTextBox:true, margin:0, valign:'top' })
+  pageNo(s)
+  s.addNotes('This slide exists because "let us get to 30%" is the kind of target that gets approved and then quietly missed. The arithmetic says why.\n\n463 applications produced 170 hires over three years — a 37% success rate. If that rate holds, 30% of 336 vacancies means 101 internal hires a year, which needs 275 applications, up from 154. Nearly double.\n\nThe catch is genuine and I would rather raise it than have it raised at me. Doubling applications while holding the success rate means rejecting 174 people a year instead of 98. Our own data says a rejected internal applicant leaves at 43%. Scale that naively and we would be building a machine that generates attrition.\n\nThe four shelves are the mitigation. A vacancy is zero-sum — one slot, one winner. A gig is not. An immersion is not. A service offer is not. Those absorb the people a vacancy turns away, and they are the reason the retention benefit in the model is defensible rather than wishful.\n\nThis is the answer if anyone asks what is actually innovative here versus a job board.')
+}
+
+/* ═══ 9 · COST, PAYBACK, AND BUYING IT INSTEAD ══════════════════ */
+{
+  const s = next(); N++
+  head(s, 'Cost and payback', '₱2.05M over three years. Paid back in twelve months.',
+    'Pilot scope: 1,113 people across IT, HR and Operations — mass and non-mass.')
+
+  const lw = 7.00
+  card(s, { x:M, y:2.00, w:lw, h:3.40 })
+  s.addText('WHAT IT COSTS', { x:M+0.32, y:2.22, w:lw-0.64, h:0.26, fontFace:F, fontSize:14,
+    bold:true, color:RED, charSpacing:1.8, isTextBox:true, margin:0 })
+  ;[['Build — costed by IT in man-hours', '₱1,785,500', true],
+    ['AI matching (Claude), a year',      '₱40,544',    false],
+    ['Platform, email, monitoring, a year','₱41,607',   false],
+    ['HR reconciliation, year 2 onward',  '₱9,000',     false]]
+   .forEach((r,i) => {
+    const y = 2.60 + i*0.50
+    s.addText(r[0], { x:M+0.32, y, w:lw-2.30, h:0.44, fontFace:F, fontSize:15, bold:r[2],
+      color:r[2]?INK:BODY, isTextBox:true, margin:0, valign:'middle' })
+    s.addText(r[1], { x:M+lw-1.94, y, w:1.62, h:0.44, fontFace:F, fontSize:15.5, bold:true,
+      color:r[2]?INK:BODY, align:'right', isTextBox:true, margin:0, valign:'middle' })
+    rule(s, M+0.32, y+0.46, lw-0.64, LINE)
+  })
+  s.addText('THREE-YEAR TOTAL', { x:M+0.32, y:4.64, w:lw-2.30, h:0.40, fontFace:F, fontSize:15,
+    bold:true, color:INK, charSpacing:0.8, isTextBox:true, margin:0, valign:'middle' })
+  s.addText('₱2,049,954', { x:M+lw-2.44, y:4.62, w:2.12, h:0.44, fontFace:F, fontSize:22,
+    bold:true, color:RED, align:'right', isTextBox:true, margin:0, valign:'middle' })
+  s.addText('US$33,606  ·  ₱614 per employee a year', { x:M+0.32, y:5.06, w:lw-0.64, h:0.26,
+    fontFace:F, fontSize:14, color:MUTE, isTextBox:true, margin:0 })
+
+  const mw = (lw - 2*0.22)/3
+  ;[['12 months', 'to pay back',    'expected case',       TEAL, TEALT],
+    ['4.6',       'benefit : cost', 'NPV ₱5.84M',          TEAL, TEALT],
+    ['1.1',       'the floor',      'measured only',       GOLD, GOLDT]]
+   .forEach((k,i) => {
+    const x = M + i*(mw+0.22)
+    panel(s, { x, y:5.52, w:mw, h:1.22 }, k[4])
+    s.addText(k[0], { x:x+0.24, y:5.62, w:mw-0.48, h:0.44, fontFace:F, fontSize:23, bold:true,
+      color:k[3], isTextBox:true, margin:0, valign:'middle' })
+    s.addText(k[1], { x:x+0.24, y:6.06, w:mw-0.48, h:0.28, fontFace:F, fontSize:14.5, bold:true,
+      color:INK, isTextBox:true, margin:0, valign:'top' })
+    s.addText(k[2], { x:x+0.24, y:6.36, w:mw-0.48, h:0.30, fontFace:F, fontSize:14, color:MUTE,
+      lineSpacing:17, isTextBox:true, margin:0, valign:'top' })
+  })
+
+  const rx = M+lw+0.44, rw = CW-lw-0.44
+  s.addText('OR WE COULD BUY ONE', { x:rx, y:2.22, w:rw, h:0.26, fontFace:F, fontSize:14,
+    bold:true, color:RED, charSpacing:1.8, isTextBox:true, margin:0 })
+  ;[['Growth, built in-house', 2.05,  RED,      '₱2.05M'],
+    ['Platform, low band',     10.68, 'B9B0A2', '₱10.7M'],
+    ['Platform, high band',    29.28, '8E877B', '₱29.3M']]
+   .forEach((b,i) => {
+    const y = 2.68 + i*1.02
+    const bw = Math.max(rw*0.78*(b[1]/29.28), 0.34)
+    s.addText(b[0], { x:rx, y, w:rw, h:0.28, fontFace:F, fontSize:14.5, color:BODY,
+      isTextBox:true, margin:0, valign:'top' })
+    s.addShape(p.ShapeType.roundRect, { x:rx, y:y+0.32, w:bw, h:0.40, rectRadius:0.03,
+      fill:{ color:b[2] }, line:{ width:0 } })
+    s.addText(b[3], { x:rx+bw+0.14, y:y+0.32, w:1.40, h:0.40, fontFace:F, fontSize:14.5,
+      bold:true, color:INK, isTextBox:true, margin:0, valign:'middle' })
+  })
+  panel(s, { x:rx, y:5.84, w:rw, h:1.06 }, SAND)
+  s.addText([{ text:'5× to 14× cheaper.\n', options:{ bold:true, color:INK } },
+             { text:'A vendor needs 89 extra internal fills to cover its licence. Growth needs 17.', options:{ color:BODY } }],
+    { x:rx+0.24, y:5.84, w:rw-0.48, h:1.06, fontFace:F, fontSize:14.5, lineSpacing:19,
+      valign:'middle', isTextBox:true, margin:0 })
+  src(s, 'Build costed by IT in man-hours, excluding AI. Vendor figures are RFP planning bands, not quotes. ₱61 = US$1.')
+  pageNo(s)
+  s.addNotes('Three numbers to hold: 2.05 million over three years, 614 pesos per employee per year, twelve-month payback.\n\nOn the two ratios. 4.6 is the expected case and it includes retention across the 174 people a year who take a gig, an immersion or a service offer — that stream is a judgement, discounted from a 13-point observed gap in the v1 data to 3 points. 1.1 is the floor: it counts only the extra internal fills and the turnover we can measure on the 67/38 cohort, and nothing else. I am showing both deliberately. The honest position is that this clears on measured benefits alone, and clears comfortably once the shelves work.\n\nOn the build: 1,785,500 is IT\'s own man-hour costing, not my estimate. It excludes AI, which is why Claude sits on its own line at 40,544 a year. Our earlier bottom-up planning estimate was 873,000 — IT\'s number is higher and I am using theirs.\n\nOn buying: nobody in that vendor set publishes per-seat pricing, so treat the band as an RFP planning range. At 1,113 seats the binding constraint is their minimum contract value, not the rate. The break-even framing survives even if the band is wrong by half.\n\nExcluded from the cost, and material: 0.2 to 0.3 FTE of internal ownership from year two. At 0.25 FTE the three-year cost is about 3.4 million and the expected ratio falls to roughly 2.8.\n\nBreak-even is 17 extra internal fills across the three years — about six a year, against roughly 60 internal requisitions a year in the pilot.')
+}
+
+/* ═══ 10 · STRATEGIC FIT ════════════════════════════════════════ */
+{
+  const s = next(); N++
+  head(s, 'Strategic fit', 'Four priorities we have already signed up to.')
+
+  const rows = [
+    ['Build tech and data capability from inside',
+     'Gigs and immersions let Operations, Risk and HR people do real IT and analytics work before we pay a headhunter for it.', RED],
+    ['Retain the people we already trained',
+     'Career opportunity is the top controllable reason people leave. This is the mechanism that answers it.', GOLD],
+    ['Staff priority work without new headcount',
+     'ExCo initiatives get staffed by contractors today because we cannot see who inside could do the work.', TEAL],
+    ['Workforce planning on data',
+     'A live, verified skills inventory is the asset. The marketplace is how we get people to maintain it.', '4A5468'],
+  ]
+  rows.forEach((r,i) => {
+    const y = 2.06 + i*1.06
+    s.addShape(p.ShapeType.rect, { x:M, y:y+0.02, w:0.06, h:0.82, fill:{ color:r[2] }, line:{ width:0 } })
+    s.addText(r[0], { x:M+0.28, y, w:CW*0.42, h:0.86, fontFace:F, fontSize:18, bold:true,
+      color:INK, lineSpacing:24, isTextBox:true, margin:0, valign:'middle' })
+    s.addText(r[1], { x:M+CW*0.46, y, w:CW*0.54, h:0.86, fontFace:F, fontSize:15, color:BODY,
+      lineSpacing:21, isTextBox:true, margin:0, valign:'middle' })
+    if (i<3) rule(s, M, y+0.94, CW, LINE)
+  })
+  panel(s, { x:M, y:6.22, w:CW, h:0.66 }, SAND)
+  s.addText([{ text:'The asset is not the app. ', options:{ bold:true, color:RED } },
+             { text:'It is the first live, verified skills inventory Home Credit Philippines has ever had — and it keeps itself current because people update it to get matched.', options:{ color:BODY } }],
+    { x:M+0.34, y:6.22, w:CW-0.68, h:0.66, fontFace:F, fontSize:15, lineSpacing:20,
+      valign:'middle', isTextBox:true, margin:0 })
+  src(s, 'Mapped to HCPH Strategic Priorities \'27–\'29 (draft), HR Strategic Priorities and the OneHR Operating Model.')
+  pageNo(s)
+  s.addNotes('Forty seconds. Do not read the right column — the panel can read.\n\nThe line that matters is the one at the bottom. Every skills-inventory project this company has attempted has died because nobody maintains the data. Growth solves the maintenance problem by making the data the thing that gets you matched. The inventory is a by-product of people pursuing their own interest, which is the only kind of data that stays current.\n\nIf the Chief AI Officer asks where AI actually sits: it reads job posts and profiles and produces an explained score. It is not making selection decisions, it is not ranking people against each other, and it does not gate applications. That was a design constraint from the start, and it is what keeps this inside policy.')
+}
+
+/* ═══ 11 · ADOPTION ═════════════════════════════════════════════ */
+{
+  const s = next(); N++
+  head(s, 'Adoption', 'An empty marketplace dies in week one.',
+    'So we do not launch an empty one. Stock the shelves and seed the profiles before anyone is invited in.')
+
+  const cw = (CW - 0.34)/2
+  const before = [
+    ['Seed the shelves', '25 opportunities live before anyone is invited in, each committed by a named manager.'],
+    ['Seed the skills', 'Pre-filled from MyDevelopment and LinkedIn. People correct a draft, not fill a blank page.'],
+    ['Recruit six champions', 'Managers who post and hire early. "Talent Exporter" recognition to ExCo.'],
+  ]
+  const after = [
+    ['Launch comms', 'Town hall demo, a film of one real internal move, and the CEO posting the first opportunity.'],
+    ['Quarterly top-match email', 'Your three best matches, by name, one click to apply. This is what doubles applications.'],
+    ['Measure it properly', 'Hold back half of requisitions from promotion for a quarter. That settles the retention claim.'],
+  ]
+  ;[['BEFORE LAUNCH — 90 DAYS', before, RED, M],
+    ['AT LAUNCH AND AFTER', after, TEAL, M+cw+0.34]].forEach(col => {
+    s.addText(col[0], { x:col[3], y:2.30, w:cw, h:0.26, fontFace:F, fontSize:14, bold:true,
+      color:col[2], charSpacing:1.8, isTextBox:true, margin:0 })
+    col[1].forEach((it,i) => {
+      const y = 2.74 + i*1.26
+      chip(s, col[3], y, i+1, col[2])
+      s.addText(it[0], { x:col[3]+0.58, y:y-0.02, w:cw-0.58, h:0.34, fontFace:F, fontSize:17,
+        bold:true, color:INK, isTextBox:true, margin:0, valign:'top' })
+      s.addText(it[1], { x:col[3]+0.58, y:y+0.34, w:cw-0.62, h:0.66, fontFace:F, fontSize:15,
+        color:BODY, lineSpacing:20, isTextBox:true, margin:0, valign:'top' })
+    })
+  })
+  panel(s, { x:M, y:6.32, w:CW, h:0.60 }, SAND)
+  s.addText([{ text:'Year-one target:  ', options:{ bold:true, color:INK } },
+             { text:'275 internal applications · 60% of the pilot with a populated profile · 25 opportunities live at any time.', options:{ color:BODY } }],
+    { x:M+0.30, y:6.32, w:CW-0.60, h:0.60, fontFace:F, fontSize:15, valign:'middle',
+      isTextBox:true, margin:0 })
+  pageNo(s)
+  s.addNotes('The failure mode for every internal marketplace is the same: it launches, it is empty, people look once and never return. So the first three items all happen before anyone is invited in.\n\nOn seeding skills — this is why MyDevelopment and LinkedIn matter. A blank profile is a dead profile. If we pre-fill from records we already hold and ask the employee to correct rather than author, completion goes from a twenty-minute chore to a two-minute one. Data protection position: LinkedIn data is employee-supplied and opt-in, and the DPIA covers it.\n\nOn the quarterly email — this is the mechanism that does the heavy lifting on the previous slide. We need applications to go from 154 to 275 a year. A quarterly note saying "here are your three best matches, by name" is the cheapest way to get there. It costs 15,987 pesos a year, it is on the cost slide, and it is the line I would defend last if the budget were cut.\n\nOn measurement — the holdout is not optional. It is what turns the retention number from an argument into a finding, and it is what I would want to bring back to this room in twelve months.\n\nFurther comms detail if asked: the launch film features one real internal mover telling their own story; a monthly "new on the shelves" digest; and a standing item in the ExCo pack showing posts, applications and fills by function — visibility of who is NOT posting is what moves managers.')
+}
+
+/* ═══ 12 · THE ASK ══════════════════════════════════════════════ */
+{
+  const s = next(NAVY); N++
+  s.addShape(p.ShapeType.rect, { x:0, y:0, w:0.26, h:H, fill:{ color:RED }, line:{ width:0 } })
+  s.addText('THE ASK', { x:1.15, y:0.92, w:8, h:0.30, fontFace:F, fontSize:14, bold:true,
+    color:RED2, charSpacing:2.4, isTextBox:true, margin:0 })
+  s.addText('Three decisions.', { x:1.15, y:1.32, w:9, h:0.72, fontFace:F, fontSize:38,
+    bold:true, color:WHITE, isTextBox:true, margin:0, valign:'middle' })
+
+  const asks = [
+    ['Approve the build', '₱1.54M in year one, ₱2.05M over three. Pilot goes live in IT, HR and Operations — 1,113 people.', 'CFO'],
+    ['Commit the source field', 'Recruitment adds a "Growth Marketplace" value to HC Connect. A form change, free, and without it no attributed hire can be proved.', 'CPO'],
+    ['Name the six champion managers', 'Six leaders who commit to posting a gig or an immersion before launch. Without stock on the shelves, nothing else here works.', 'ExCo'],
+  ]
+  asks.forEach((a,i) => {
+    const y = 2.34 + i*1.34
+    chip(s, 1.15, y+0.10, i+1, RED)
+    s.addText(a[0], { x:1.78, y:y, w:5.2, h:0.40, fontFace:F, fontSize:21, bold:true,
+      color:WHITE, isTextBox:true, margin:0, valign:'middle' })
+    s.addText(a[1], { x:1.78, y:y+0.42, w:7.6, h:0.76, fontFace:F, fontSize:15.5,
+      color:'C6BCAE', lineSpacing:21, isTextBox:true, margin:0, valign:'top' })
+    s.addShape(p.ShapeType.roundRect, { x:9.62, y:y+0.04, w:0.96, h:0.36, rectRadius:0.18,
+      fill:{ color:'2C3648' }, line:{ width:0 } })
+    s.addText(a[2], { x:9.62, y:y+0.04, w:0.96, h:0.36, fontFace:F, fontSize:14, bold:true,
+      color:'E3B457', align:'center', valign:'middle', isTextBox:true, margin:0 })
+    if (i<2) rule(s, 1.15, y+1.22, 9.43, '333D4E')
+  })
+  s.addShape(p.ShapeType.rect, { x:1.15, y:6.42, w:1.5, h:0.06, fill:{ color:RED2 }, line:{ width:0 } })
+  s.addText('We are paying to find people we may already employ. ₱614 per employee a year stops that.',
+    { x:1.15, y:6.62, w:11.4, h:0.44, fontFace:F, fontSize:17, bold:true, color:WHITE,
+      isTextBox:true, margin:0, valign:'middle' })
+  pageNo(s, '5E6676')
+  s.addNotes('Close on the three asks and then stop talking. Do not summarise.\n\nThe second ask is the one people underestimate. Without a "Growth Marketplace" source value in HC Connect, every internal hire that came through the marketplace is invisible in our own data and gets attributed to the recruitment tool. It costs nothing and it is the difference between coming back here in a year with evidence and coming back with anecdotes. Get it agreed before the build starts, not after.\n\nThe third ask is the one that determines whether this works. Six managers, each committing one gig or one immersion before launch. If nobody in this room will name them, the honest answer is that the organisation is not ready and we should not spend the 1.78 million yet.')
+}
+
+/* ═══ 13 · APPENDIX — HOW ONE FILL IS VALUED ════════════════════ */
+{
+  const s = next(); N++
+  head(s, 'Appendix', 'What one internal fill is worth, net of the backfill.',
+    'The hiring-cost saving is smaller than it looks, and this is why.')
+
+  const lw = CW*0.56
+  const steps = [
+    ['We do not pay TA to hire a Band C from outside', '+₱35,367', TEAL],
+    ['But HR and TA still run the internal process', '−₱3,378', RED],
+    ['And the Band B seat they vacate is hired externally', '−₱6,977', RED],
+    ['Band C seat filled in 21 days, not 58 — output kept', '+₱158,510', TEAL],
+    ['The Band B seat is now empty for 58 days', '−₱97,266', RED],
+  ]
+  steps.forEach((st,i) => {
+    const y = 2.10 + i*0.66
+    s.addText(st[0], { x:M, y, w:lw-1.70, h:0.56, fontFace:F, fontSize:15, color:BODY,
+      lineSpacing:20, isTextBox:true, margin:0, valign:'middle' })
+    s.addText(st[1], { x:M+lw-1.66, y, w:1.60, h:0.56, fontFace:F, fontSize:16, bold:true,
+      color:st[2], align:'right', isTextBox:true, margin:0, valign:'middle' })
+    rule(s, M, y+0.58, lw, LINE)
+  })
+  panel(s, { x:M, y:5.48, w:lw, h:0.74 }, NAVY)
+  s.addText('NET VALUE, ONE BAND C INTERNAL FILL', { x:M+0.28, y:5.48, w:lw-2.10, h:0.74,
+    fontFace:F, fontSize:15, bold:true, color:WHITE, charSpacing:0.6, isTextBox:true,
+    margin:0, valign:'middle' })
+  s.addText('₱86,259', { x:M+lw-2.06, y:5.48, w:1.80, h:0.74, fontFace:F, fontSize:22, bold:true,
+    color:'FF9A9A', align:'right', isTextBox:true, margin:0, valign:'middle' })
+
+  const rx = M+lw+0.40, rw = CW-lw-0.40
+  s.addText('BLENDED ON THE 2025 HIRING MIX', { x:rx, y:2.02, w:rw, h:0.26, fontFace:F,
+    fontSize:14, bold:true, color:RED, charSpacing:1.4, isTextBox:true, margin:0 })
+  ;[['Band B fills', '186 a year', '₱19,967 each'],
+    ['Band C fills', '103 a year', '₱86,259 each'],
+    ['Blended', '289 a year', '₱43,593 each']]
+   .forEach((r,i) => {
+    const y = 2.44 + i*0.70
+    const last = i===2
+    if (last) panel(s, { x:rx-0.18, y:y-0.06, w:rw+0.40, h:0.62 }, SAND)
+    s.addText(r[0], { x:rx, y, w:rw*0.40, h:0.50, fontFace:F, fontSize:15, bold:last,
+      color:INK, isTextBox:true, margin:0, valign:'middle' })
+    s.addText(r[1], { x:rx+rw*0.38, y, w:rw*0.28, h:0.50, fontFace:F, fontSize:14.5, color:MUTE,
+      isTextBox:true, margin:0, valign:'middle' })
+    s.addText(r[2], { x:rx+rw*0.56, y, w:rw*0.42, h:0.50, fontFace:F, fontSize:15, bold:true,
+      color:last?RED:BODY, align:'right', isTextBox:true, margin:0, valign:'middle' })
+  })
+  rule(s, rx, 4.62, rw, LINE)
+  s.addText('Plus turnover we avoid', { x:rx, y:4.76, w:rw, h:0.30, fontFace:F, fontSize:15,
+    bold:true, color:INK, isTextBox:true, margin:0, valign:'top' })
+  s.addText('15 points of excess attrition × ₱508,194 replacement cost = ₱76,229 for every person who gets the move.',
+    { x:rx, y:5.08, w:rw, h:0.80, fontFace:F, fontSize:14.5, color:BODY, lineSpacing:19,
+      isTextBox:true, margin:0, valign:'top' })
+  panel(s, { x:rx-0.16, y:5.92, w:rw+0.2, h:0.72 }, REDT)
+  s.addText([{ text:'₱119,822  ', options:{ fontSize:20, bold:true, color:RED } },
+             { text:'total, per extra internal fill', options:{ fontSize:14.5, color:BODY } }],
+    { x:rx, y:5.92, w:rw, h:0.72, fontFace:F, valign:'middle', isTextBox:true, margin:0 })
+  pageNo(s)
+  s.addNotes('This is the slide to turn to when someone says the hiring-cost saving looks small.\n\nIt is small, and that is the honest answer. Internal mobility does not eliminate a hire — it moves the hire one band down the chain, where it is cheaper and faster but not free. Most business cases for talent marketplaces quietly skip this. Ours does not.\n\nThe earlier draft of this business case used a 350,000-peso avoided agency fee per internal fill. I retired it: it was cited to the v1 paper, that paper does not contain it, and it conflicts with TA\'s own 2025 cost-per-hire file. Everything here now comes from that file and from Payroll.\n\nWhere the value genuinely is: the 158,510 of output we keep by filling a Band C role in 21 days instead of 58, and the 76,229 of replacement cost we do not pay because the person stayed.')
+}
+
+/* ═══ 14 · APPENDIX — SOURCES AND ASSUMPTIONS ═══════════════════ */
+{
+  const s = next(); N++
+  head(s, 'Appendix', 'Every number, and where it came from.',
+    'Anything marked as a planning assumption has not been measured and should be challenged.')
+
+  const cw = (CW-0.34)/2
+  const cols = [
+    ['MEASURED — HOME CREDIT DATA', RED, [
+      'Internal job posting, 2024–2026: 1,008 vacancies, 463 internal applicants, 170 accepted. Internal fill rate 17%.',
+      '2025 turned-down cohort: 67 applicants, 38 still employed as of September 2026. Attrition 43% against a company average of 19%.',
+      'TA cost per hire, 2025: ₱5,140 band M, ₱6,977 band B, ₱35,367 band C. HR/TA cost per hire ₱3,378, incurred on internal fills too.',
+      '2025 external hires: 186 band B, 103 band C.',
+      'Payroll average monthly basic, September 2026: ₱15,144 band M, ₱36,334 band B, ₱92,821 band C.',
+      'Build: ₱1,785,500, costed by IT in man-hours, excluding AI.',
+      'HRIS headcount: 1,113 in the pilot scope.',
+    ]],
+    ['MODELLED — AND HOW HARD', GOLD, [
+      'Salaries annualised ×12, basic only. 13th month and employer contributions excluded.',
+      'Replacement cost at 75% of annual basic; ₱508,194 blended band B/C.',
+      'Excess attrition among the turned down modelled at 15 points, halved from the 24 observed.',
+      'Days to fill: 58 external, 21 internal. Backfill assumed one band down and hired externally.',
+      '336 vacancies a year company-wide; 60 internal requisitions a year in the pilot (BRD).',
+      'Shelf retention: 174 participants a year at a 3-point lift, cut from 13 observed.',
+      'Vendor band is an RFP planning range, not a quote. ₱61 = US$1, 10% discount.',
+    ]],
+  ]
+  cols.forEach((c,i) => {
+    const x = M + i*(cw+0.34)
+    card(s, { x, y:2.00, w:cw, h:4.66 })
+    s.addShape(p.ShapeType.rect, { x, y:2.00, w:cw, h:0.075, fill:{ color:c[1] }, line:{ width:0 } })
+    s.addText(c[0], { x:x+0.30, y:2.22, w:cw-0.60, h:0.26, fontFace:F, fontSize:14, bold:true,
+      color:c[1], charSpacing:1.4, isTextBox:true, margin:0 })
+    s.addText(c[2].map((t,j,a) => ({ text:t, options:{ bullet:true, breakLine:j<a.length-1 } })),
+      { x:x+0.30, y:2.58, w:cw-0.60, h:3.94, fontFace:F, fontSize:14, color:BODY,
+        lineSpacing:18, paraSpaceAfter:5, isTextBox:true, margin:0, valign:'top' })
+  })
+  src(s, 'Working model: exec-model.py · Full CBA: V2_CBA.md · Internal — do not distribute outside the organization.')
+  pageNo(s)
+  s.addNotes('Do not present this. It is here so that any number challenged from the floor can be answered by turning to one slide.\n\nThe division is deliberate: the left column is data we hold and can re-pull, the right column is judgement. If a panel member wants to argue, point them at the right column — that is where the argument is, and I have already taken the conservative side of every item in it.')
+}
+
+/* ═══ 15 · APPENDIX — RISKS ═════════════════════════════════════ */
+{
+  const s = next(); N++
+  head(s, 'Appendix', 'What could go wrong, and what we have done about it.',
+    'The two gates are free — both are decisions, not budget. If neither can be secured, do not start the build.')
+
+  const rows = [
+    ['Managers do not post', 'GATE',
+     'Empty shelves, and the marketplace dies in week one.',
+     'Twenty-five opportunities committed before launch. Six named champions. "Talent Exporter" recognition to ExCo.', RED],
+    ['Recruitment declines the source field', 'GATE',
+     'No attributed hire can be proved. We come back in a year with anecdotes.',
+     'Secure it before the build starts. It is a form configuration, not an integration.', RED],
+    ['Employees arrive to an empty profile', 'HIGH',
+     'No skills on file means no matches, an empty board, and no second visit.',
+     'Pre-load from MyDevelopment and LinkedIn. Correcting a draft beats authoring one.', GOLD],
+    ['The retention lift is smaller than modelled', 'HIGH',
+     'The benefit case thins. At zero it falls back to the measured floor.',
+     'Already halved from what the data shows. The year-one holdout settles it either way.', GOLD],
+    ['Build overruns', 'MED',
+     'Three-year cost rises toward ₱2.9M; ratio falls to about 3.2.',
+     'Still clears, and still far under the vendor bands.', MUTE],
+  ]
+  s.addText('RISK', { x:M+0.02, y:2.16, w:3.3, h:0.24, fontFace:F, fontSize:14, bold:true,
+    color:MUTE, charSpacing:1.4, isTextBox:true, margin:0 })
+  s.addText('IMPACT', { x:M+4.28, y:2.16, w:3.3, h:0.24, fontFace:F, fontSize:14, bold:true,
+    color:MUTE, charSpacing:1.4, isTextBox:true, margin:0 })
+  s.addText('WHAT WE HAVE DONE', { x:M+7.98, y:2.16, w:4.0, h:0.24, fontFace:F, fontSize:14,
+    bold:true, color:MUTE, charSpacing:1.4, isTextBox:true, margin:0 })
+  rows.forEach((r,i) => {
+    const y = 2.52 + i*0.86
+    s.addShape(p.ShapeType.roundRect, { x:M, y:y+0.20, w:0.74, h:0.30, rectRadius:0.15,
+      fill:{ color:r[4]===MUTE?'ECEAE5':(r[4]===RED?REDT:GOLDT) }, line:{ width:0 } })
+    s.addText(r[1], { x:M, y:y+0.20, w:0.74, h:0.30, fontFace:F, fontSize:14, bold:true,
+      color:r[4], align:'center', valign:'middle', isTextBox:true, margin:0 })
+    s.addText(r[0], { x:M+0.88, y, w:3.24, h:0.72, fontFace:F, fontSize:15.5, bold:true,
+      color:INK, lineSpacing:20, isTextBox:true, margin:0, valign:'middle' })
+    s.addText(r[2], { x:M+4.28, y, w:3.50, h:0.72, fontFace:F, fontSize:14.5, color:BODY,
+      lineSpacing:19, isTextBox:true, margin:0, valign:'middle' })
+    s.addText(r[3], { x:M+7.98, y, w:4.05, h:0.72, fontFace:F, fontSize:14.5, color:BODY,
+      lineSpacing:19, isTextBox:true, margin:0, valign:'middle' })
+    if (i<rows.length-1) rule(s, M, y+0.78, CW, LINE)
+  })
+  pageNo(s)
+  s.addNotes('Two of these are gates rather than risks: manager supply and the source field. Both are decisions this room can make today, both cost nothing, and the project should not start without them. Saying that out loud is what makes the rest of the risk table credible.')
+}
+
+/* ── write ──────────────────────────────────────────────────────── */
+p.writeFile({ fileName: __dirname + '/Growth_Executive_ALP.pptx' }).then(() => {
+  if (WARN.length) { console.log('OVERFLOW RISKS (' + WARN.length + '):'); WARN.forEach(w => console.log('  ' + w)) }
+  else console.log('no overflow risks')
+  console.log('WROTE Growth_Executive_ALP.pptx · ' + N + ' slides')
+})
