@@ -156,6 +156,7 @@ R1, R2 = sum(run_y1.values()), sum(run_y2.values())
 cost = [B1+R1, B2+R2, R2]; TCO = sum(cost)
 
 pf, pa, ptd = scenario(FILL_RATE, PILOT_REQS)
+PART_RATE = 120/637
 def pilot_value(rate):
     f, a, td = scenario(rate, PILOT_REQS)
     extra = f - pf
@@ -211,6 +212,52 @@ for c in COMPARATORS:
     exp = (mob+ret+SHELVES)*2.4/TCO
     print(f'   {c*100:>11.0f}%{ex*100:>8.0f}pt{fl:>12.1f}{exp:>15.1f}{m(PER_FILL+ex*REPLACE):>17}')
 print('   Even at a 35% comparator the expected case clears 4. The floor is what moves.')
+
+# ══ SCALING TO THE WHOLE COMPANY ══════════════════════════════════
+# The build is bought once and does not move. Only run scales, and it scales
+# by what actually drives each line: Claude and email by headcount, Supabase by
+# tier, monitoring by log volume, reconciliation by referral volume.
+FULL = 20_470
+FULL_NONMASS = 1_991
+FULL_MASS = FULL - FULL_NONMASS
+
+def run_at(n, year_two):
+    big = n > 2_000
+    return {
+        'Supabase Pro + Auth':        (85*12 if big else SUPABASE_USD) * FX,
+        'Claude API (AI matching)':   CLAUDE_USD * FX * n / 637,
+        'Transactional email':        EMAIL_USD  * FX * n / 637,
+        'Monitoring and logging':     MONITOR_USD * FX * (2 if big else 1),
+        'Reconciliation, HR analyst': (160 if big else RECON_HRS) * ANALYST_HR if year_two else 0,
+    }
+
+fr1, fr2 = run_at(FULL, False), run_at(FULL, True)
+FR1, FR2 = sum(fr1.values()), sum(fr2.values())
+fcost = [B1+FR1, B2+FR2, FR2]; FTCO = sum(fcost)
+
+print(f'\n══ SCALING TO ALL {FULL:,} EMPLOYEES ══')
+print(f'   BUILD  {m(IT_BUILD)} — unchanged. The same software serves {PILOT:,} or {FULL:,}.')
+print(f'   RUN, a year')
+for k in fr2:
+    print(f'     {k:<30}{m(fr2[k]):>12}   (pilot {m(dict(run_at(PILOT, True))[k])})')
+print(f'     {"year 1 / year 2+":<30}{m(FR1)+" / "+m(FR2):>12}')
+print(f'   YEAR 1 {m(fcost[0])} · YEAR 2 {m(fcost[1])} · YEAR 3 {m(fcost[2])}')
+print(f'   THREE-YEAR {m(FTCO)}  US${FTCO/FX:,.0f}  ·  {m(FTCO/FULL/3)} per employee a year')
+print(f'   vs the pilot: {m(FTCO-TCO)} more over three years for {FULL-PILOT:,} more people')
+print(f'                 = {m((FTCO-TCO)/(FULL-PILOT)/3)} per extra employee a year')
+print(f'   AI is {100*fr2["Claude API (AI matching)"]/FR2:.0f}% of the full-org run, against '
+      f'{100*dict(run_at(PILOT,True))["Claude API (AI matching)"]/R2:.0f}% at the pilot — the only line that really scales.')
+
+print(f'\n   BENEFIT at full scale')
+print(f'     Mobility — the 30% case on slide 8 IS company-wide      {m(rows[1][7]):>13}/yr')
+print(f'       (the pilot only captures its own slice: {m(MOBILITY)}/yr)')
+fp_nm = FULL_NONMASS*PART_RATE if False else FULL_NONMASS*(120/637)
+fp_ms = FULL_MASS*(120/637)*0.60
+fshelves = fp_nm*0.03*(annual('nonmass')*0.75) + fp_ms*0.03*(annual('mass')*0.75)
+print(f'     Shelves — JUDGEMENT, {fp_nm+fp_ms:,.0f} participants a year     {m(fshelves):>13}/yr')
+print(f'       ({fp_nm:.0f} non-mass + {fp_ms:,.0f} mass ops at 60% of the office rate)')
+print(f'   BCR, mobility only  {rows[1][7]*2.4/FTCO:>5.1f}   |  with the shelves {(rows[1][7]+fshelves)*2.4/FTCO:>5.1f}')
+print(f'   The pilot spends {m(TCO)} to capture {m(MOBILITY*2.4)} of a {m(rows[1][7]*2.4)} three-year prize.')
 
 # ══ vs BUYING ═════════════════════════════════════════════════════
 vlo, vhi = (75_000+2*50_000)*FX, (240_000+2*120_000)*FX

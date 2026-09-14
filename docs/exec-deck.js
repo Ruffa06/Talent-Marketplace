@@ -646,7 +646,139 @@ function chip(s, x, y, n, fill) {
   s.addNotes('Three numbers to hold: 2.05 million over three years, 614 pesos per employee per year, twelve-month payback.\n\nNote the time base, because the two money slides differ. Slide 8 is per year — the value we forgo annually. This slide is a three-year total, because that is how the build is funded.\n\nOn the two ratios. 4.6 is the expected case and it includes retention across the 174 people a year who take a gig, an immersion or a service offer — that stream is a judgement, discounted from a 13-point observed gap in the v1 data to 3 points. 1.1 is the floor: only the extra internal fills and the turnover we can measure, nothing else. I am showing both deliberately. The honest position is that this clears on measured benefits alone, and clears comfortably once the shelves work.\n\nOn the build: 1,785,500 is IT\'s own man-hour costing, not my estimate, and it excludes AI — which is why Claude sits on its own line at 40,544 a year. Our earlier bottom-up planning estimate was 873,000; IT\'s number is higher and I am using theirs.\n\nExcluded from the cost, and material: 0.2 to 0.3 FTE of internal ownership from year two. At 0.25 FTE the three-year cost is about 3.4 million and the expected ratio falls to roughly 2.8. I would rather you heard that from me.')
 }
 
-/* ═══ 13 · ADOPTION ═════════════════════════════════════════════ */
+/* ═══ 13 · SCALING TO THE WHOLE COMPANY ═════════════════════════ */
+{
+  const s = next(); N++
+  head(s, 'Scaling up', 'All 20,470 people costs ₱5.26M — not ₱38M.',
+    'The build is bought once. Only the run scales, by what actually drives each line.')
+
+  const lw = CW*0.53
+  s.addText('THREE-YEAR COST, PILOT AND FULL ROLLOUT', { x:M, y:2.10, w:lw, h:0.26, fontFace:F,
+    fontSize:14, bold:true, color:RED, charSpacing:1.4, isTextBox:true, margin:0 })
+  s.addTable([
+    [{text:'',options:{}}, {text:'Pilot · 1,113',options:{bold:true,color:MUTE,align:'right'}},
+     {text:'Full · 20,470',options:{bold:true,color:MUTE,align:'right'}}],
+    [{text:'Build — bought once',options:{bold:true,color:INK}},
+     {text:'₱1,785,500',options:{align:'right'}}, {text:'₱1,785,500',options:{align:'right',bold:true,color:TEAL}}],
+    ['AI matching (Claude), a year', {text:'₱40,544',options:{align:'right'}}, {text:'₱745,674',options:{align:'right'}}],
+    ['Email, a year', {text:'₱15,987',options:{align:'right'}}, {text:'₱294,035',options:{align:'right'}}],
+    ['Platform and monitoring, a year', {text:'₱25,620',options:{align:'right'}}, {text:'₱76,860',options:{align:'right'}}],
+    ['HR reconciliation, a year', {text:'₱9,000',options:{align:'right'}}, {text:'₱60,000',options:{align:'right'}}],
+    [{text:'THREE-YEAR TOTAL',options:{bold:true,color:INK}},
+     {text:'₱2,049,954',options:{align:'right',bold:true}}, {text:'₱5,255,207',options:{align:'right',bold:true,color:RED}}],
+    [{text:'Per employee, a year',options:{color:MUTE}},
+     {text:'₱614',options:{align:'right',color:MUTE}}, {text:'₱86',options:{align:'right',bold:true,color:TEAL}}],
+  ], { x:M, y:2.48, w:lw, colW:[3.04,1.80,1.80], fontFace:F, fontSize:14.5, color:BODY,
+       rowH:0.34, border:{ type:'solid', color:LINE, pt:1 }, valign:'middle' })
+  panel(s, { x:M, y:5.36, w:lw, h:0.84 }, SAND)
+  s.addText([{ text:'₱55 per extra employee a year. ', options:{ bold:true, color:INK } },
+             { text:'Going from 1,113 to 20,470 adds ₱3.21M over three years for 19,357 more people.', options:{ color:BODY } }],
+    { x:M+0.28, y:5.36, w:lw-0.56, h:0.84, fontFace:F, fontSize:14.5, lineSpacing:19,
+      valign:'middle', isTextBox:true, margin:0 })
+  panel(s, { x:M, y:6.30, w:lw, h:0.58 }, GOLDT)
+  s.addText([{ text:'Watch the AI line. ', options:{ bold:true, color:GOLD } },
+             { text:'63% of the full-org run, against 44% at the pilot.', options:{ color:BODY } }],
+    { x:M+0.28, y:6.30, w:lw-0.56, h:0.58, fontFace:F, fontSize:14.5, valign:'middle',
+      isTextBox:true, margin:0 })
+
+  const rx = M+lw+0.40, rw = CW-lw-0.40
+  s.addText('AND THE BENEFIT SIDE GROWS FASTER', { x:rx, y:2.10, w:rw, h:0.26, fontFace:F,
+    fontSize:14, bold:true, color:TEAL, charSpacing:1.4, isTextBox:true, margin:0 })
+  ;[['₱0.94M', 'a year captured by the pilot', 'its slice of the 60 requisitions', MUTE, SAND],
+    ['₱5.29M', 'a year at full rollout', 'the whole ₱5.3M on slide 8', TEAL, TEALT]]
+   .forEach((k,i) => {
+    const y = 2.52 + i*1.16
+    panel(s, { x:rx, y, w:rw, h:1.04 }, k[4])
+    s.addText(k[0], { x:rx+0.28, y:y+0.08, w:rw-0.56, h:0.44, fontFace:F, fontSize:26, bold:true,
+      color:k[3], isTextBox:true, margin:0, valign:'middle' })
+    s.addText(k[1], { x:rx+0.28, y:y+0.52, w:rw-0.56, h:0.28, fontFace:F, fontSize:15, bold:true,
+      color:INK, isTextBox:true, margin:0, valign:'top' })
+    s.addText(k[2], { x:rx+0.28, y:y+0.78, w:rw-0.56, h:0.24, fontFace:F, fontSize:14, color:MUTE,
+      isTextBox:true, margin:0, valign:'top' })
+  })
+  s.addText('2.6× the cost. 5.6× the mobility benefit.', { x:rx, y:4.92, w:rw, h:0.34, fontFace:F,
+    fontSize:17, bold:true, color:INK, isTextBox:true, margin:0, valign:'middle' })
+  s.addText('The pilot is not where the money is — it is where the proof is. Benefit–cost at full rollout is 2.4 on measured mobility alone, before any shelf retention.',
+    { x:rx, y:5.30, w:rw, h:0.96, fontFace:F, fontSize:14.5, color:BODY, lineSpacing:19,
+      isTextBox:true, margin:0, valign:'top' })
+  panel(s, { x:rx, y:6.24, w:rw, h:0.66 }, REDT)
+  s.addText('Do not approve this scope today. Approve the pilot.',
+    { x:rx+0.28, y:6.24, w:rw-0.56, h:0.66, fontFace:F, fontSize:14.5, bold:true, color:RED,
+      valign:'middle', isTextBox:true, margin:0 })
+  src(s, 'Each run line scales by its own driver — Claude and email by headcount, the rest by tier or volume.')
+  pageNo(s)
+  s.addNotes('This slide exists to answer the question the CFO is already forming: if the pilot is 2 million, is the company 38 million? No. It is 5.26 million, because the build never moves.\n\nThe number to say out loud is 86 pesos per employee per year at full rollout, against 614 at the pilot. Going from 1,113 people to all 20,470 costs 55 pesos per extra employee per year. That is the argument for approving a pilot rather than haggling over scope: the asset is bought once and every wave after it is nearly free.\n\nThe AI line deserves a sentence. It is 63% of the run at full scale because it is the only cost that tracks headcount directly. Three things control it and all three are already designed in: we score in batch rather than per page view, we only rescore when a post or a profile actually changes, and we run on the cheaper model tier. The figure here is costed on the older Sonnet price we budgeted with — current pricing would cut this line by roughly a third, which I have deliberately not claimed.\n\nOn the benefit side, be careful and be honest. The 5.29 million a year on slide 8 was always a company-wide number — 336 vacancies a year is the whole company. The pilot only ever captures its own slice, about 0.94 million. So full rollout is 2.6 times the cost for 5.6 times the mobility benefit.\n\nIf someone asks about the shelf retention benefit at full scale: it models out at about 17 million a year, because mass operations is 18,479 people. I am deliberately not putting that on the slide. It rests on a 3-point judgement applied to a population we have never tested it on, and quoting a 10:1 ratio would damage everything else in this pack. Mention it only if asked, and label it as untested.\n\nClose with the red box: this is context, not the ask. The ask is still the pilot.')
+}
+
+/* ═══ 14 · HOW IT RUNS ══════════════════════════════════════════ */
+{
+  const s = next(); N++
+  head(s, 'How it runs', 'Where the data comes from, and where it stops.',
+    'No new system of record. Growth reads from what we already run, and writes back one field.')
+
+  const cols = [
+    ['SOURCES', RED, [
+      ['HRIS', 'Band, function, manager. Nightly.'],
+      ['MyDevelopment', 'Learning and LinkedIn seed skills.'],
+      ['HC Connect', 'Open vacancies onto the shelf.'],
+      ['People', 'Employees correct. Managers post.'],
+    ]],
+    ['STORE', SLATE, [
+      ['Supabase Postgres', 'Encrypted in transit and at rest.'],
+      ['Row-level security', 'You see yours. A manager sees theirs.'],
+      ['SSO via Azure AD', 'No separate password or leaver process.'],
+      ['Retention', 'Profile +12 months. Log 24 months.'],
+    ]],
+    ['MATCH', GOLD, [
+      ['Claude scores fit', 'A score, plus its reasoning in words.'],
+      ['Batch, on change', 'Not per page view. The cost control.'],
+      ['Four factors', 'Verified 50 · claimed 20 · rest 30.'],
+      ['What we send', 'Skills and role text. No name or ID.'],
+    ]],
+    ['SURFACES', TEAL, [
+      ['My Matches', 'Everything at 80% and above.'],
+      ['Quarterly email', 'Three best matches. One click.'],
+      ['Manager shortlist', 'Their own applicants, with evidence.'],
+      ['Skills inventory', 'The planning asset, kept current.'],
+    ]],
+  ]
+  const cw = (CW - 3*0.22)/4
+  cols.forEach((c,i) => {
+    const x = M + i*(cw+0.22)
+    card(s, { x, y:2.06, w:cw, h:3.72 })
+    s.addShape(p.ShapeType.rect, { x, y:2.06, w:cw, h:0.075, fill:{ color:c[1] }, line:{ width:0 } })
+    s.addText(c[0], { x:x+0.24, y:2.24, w:cw-0.48, h:0.26, fontFace:F, fontSize:14, bold:true,
+      color:c[1], charSpacing:1.6, isTextBox:true, margin:0 })
+    c[2].forEach((r,j) => {
+      const y = 2.62 + j*0.76
+      s.addText(r[0], { x:x+0.24, y, w:cw-0.48, h:0.24, fontFace:F, fontSize:14.5, bold:true,
+        color:INK, isTextBox:true, margin:0, valign:'top' })
+      s.addText(r[1], { x:x+0.24, y:y+0.24, w:cw-0.48, h:0.50, fontFace:F, fontSize:14,
+        color:MUTE, lineSpacing:16, isTextBox:true, margin:0, valign:'top' })
+    })
+    if (i<3) s.addText('›', { x:x+cw+0.02, y:3.72, w:0.18, h:0.40, fontFace:F, fontSize:26,
+      bold:true, color:'C4BCAE', align:'center', valign:'middle', isTextBox:true, margin:0 })
+  })
+
+  panel(s, { x:M, y:5.88, w:CW, h:1.00 }, SAND)
+  s.addText('GOVERNANCE', { x:M+0.30, y:6.04, w:1.60, h:0.26, fontFace:F, fontSize:14, bold:true,
+    color:RED, charSpacing:1.6, isTextBox:true, margin:0 })
+  ;[['DPIA signed before build starts'],
+    ['Immersions governed by Policy 211_2021'],
+    ['HR approves every post before it goes live'],
+    ['The model never gates an application'],
+    ['Audit trail on every match']]
+   .forEach((g,i) => {
+    const x = M + 2.00 + i*2.02
+    s.addShape(p.ShapeType.rect, { x, y:6.06, w:0.04, h:0.58, fill:{ color:TEAL }, line:{ width:0 } })
+    s.addText(g[0], { x:x+0.16, y:6.02, w:1.80, h:0.66, fontFace:F, fontSize:14, color:BODY,
+      lineSpacing:17, isTextBox:true, margin:0, valign:'middle' })
+  })
+  pageNo(s)
+  s.addNotes('One minute. This is the slide IT, the DPO and the Chief AI Officer will each want, for different reasons.\n\nFor IT: there is no new system of record. Growth reads from HRIS, MyDevelopment and HC Connect, and the only thing it writes back into a corporate system is one source-field value on a requisition. Supabase gives us Postgres, authentication, row-level security and scheduled jobs in one managed service — that is the lever that took a separate API service out of the build.\n\nFor the DPO: row-level security means a manager sees applicants to their own post and nothing else. Authentication is Azure AD single sign-on, so joiners and leavers are handled by the process we already run — nobody has to remember to deprovision. LinkedIn data is employee-supplied and opt-in. Retention is profile-while-employed plus twelve months, referral log twenty-four. The DPIA is costed into the build and is a launch gate, not a follow-up.\n\nFor the Chief AI Officer, four design constraints, and I would say all four out loud. One: the prompt carries skills, role text and stated aspiration — no name, no employee ID, no band, no salary, no protected attributes. Two: it scores a person against a post, never people against each other. Three: it never gates an application; a low score is advice, and anyone can apply anyway. Four: the reasoning is shown on every card, so an employee can see why and disagree.\n\nOn commercial data terms specifically: zero-data-retention is an available enterprise configuration, and confirming it in the DPA with Anthropic is on the pre-build checklist. I am not claiming it is already in place — that is a procurement action, and it should be closed before the first real profile is loaded.\n\nOn cost control, since the previous slide raised it: batch scoring, rescoring only on change, and the cheaper model tier are the three levers, and all three are already in the design rather than being things we would bolt on later.')
+}
+
+/* ═══ 15 · ADOPTION ═════════════════════════════════════════════ */
 {
   const s = next(); N++
   head(s, 'Adoption', 'An empty marketplace dies in week one.',
@@ -685,7 +817,7 @@ function chip(s, x, y, n, fill) {
   s.addNotes('The failure mode for every internal marketplace is the same: it launches, it is empty, people look once and never return. So the first three items all happen before anyone is invited in.\n\nOn seeding skills — this is why MyDevelopment and LinkedIn matter. A blank profile is a dead profile. If we pre-fill from records we already hold and ask the employee to correct rather than author, completion goes from a twenty-minute chore to a two-minute one. Data protection position: LinkedIn data is employee-supplied and opt-in, and the DPIA covers it.\n\nOn the quarterly email — this is the mechanism that does the heavy lifting on the previous slide. We need applications to go from 154 to 275 a year. A quarterly note saying "here are your three best matches, by name" is the cheapest way to get there. It costs 15,987 pesos a year, it is on the cost slide, and it is the line I would defend last if the budget were cut.\n\nOn measurement — the holdout is not optional. It is what turns the retention number from an argument into a finding, and it is what I would want to bring back to this room in twelve months.\n\nFurther comms detail if asked: the launch film features one real internal mover telling their own story; a monthly "new on the shelves" digest; and a standing item in the ExCo pack showing posts, applications and fills by function — visibility of who is NOT posting is what moves managers.')
 }
 
-/* ═══ 14 · THE ASK ══════════════════════════════════════════════ */
+/* ═══ 16 · THE ASK ══════════════════════════════════════════════ */
 {
   const s = next(CREAM); N++
   s.addShape(p.ShapeType.rect, { x:0, y:0, w:0.26, h:H, fill:{ color:RED }, line:{ width:0 } })
@@ -720,7 +852,7 @@ function chip(s, x, y, n, fill) {
   s.addNotes('Close on the three asks and then stop talking. Do not summarise.\n\nThe second ask is the one people underestimate. Without a "Growth Marketplace" source value in HC Connect, every internal hire that came through the marketplace is invisible in our own data and gets attributed to the recruitment tool. It costs nothing and it is the difference between coming back here in a year with evidence and coming back with anecdotes. Get it agreed before the build starts, not after.\n\nThe third ask is the one that determines whether this works. Six managers, each committing one gig or one immersion before launch. If nobody in this room will name them, the honest answer is that the organisation is not ready and we should not spend the 1.78 million yet.')
 }
 
-/* ═══ 15 · APPENDIX — HOW ONE FILL IS VALUED ════════════════════ */
+/* ═══ 17 · APPENDIX — HOW ONE FILL IS VALUED ════════════════════ */
 {
   const s = next(); N++
   head(s, 'Appendix', 'What one internal fill is worth, net of the backfill.',
@@ -780,7 +912,7 @@ function chip(s, x, y, n, fill) {
   s.addNotes('This is the slide to turn to when someone says the hiring-cost saving looks small.\n\nIt is small, and that is the honest answer. Internal mobility does not eliminate a hire — it moves the hire one band down the chain, where it is cheaper and faster but not free. Most business cases for talent marketplaces quietly skip this. Ours does not.\n\nThe earlier draft of this business case used a 350,000-peso avoided agency fee per internal fill. I retired it: it was cited to the v1 paper, that paper does not contain it, and it conflicts with TA\'s own 2025 cost-per-hire file. Everything here now comes from that file and from Payroll.\n\nWhere the value genuinely is: the 158,510 of output we keep by filling a Band C role in 21 days instead of 58, and the 76,229 of replacement cost we do not pay because the person stayed.')
 }
 
-/* ═══ 16 · APPENDIX — THE TURNOVER INPUT ════════════════════════ */
+/* ═══ 18 · APPENDIX — THE TURNOVER INPUT ════════════════════════ */
 {
   const s = next(); N++
   head(s, 'Appendix', 'The turnover line, and the number HR still owes us.',
@@ -845,7 +977,7 @@ function chip(s, x, y, n, fill) {
   s.addNotes('Turn to this the moment anyone questions the turnover line, and volunteer it if the CFO looks sceptical.\n\nThree layers, and I want them kept apart.\n\nMEASURED: 67 turned down in 2025, 38 still employed in September 2026. HRIS fact, re-pullable. Payroll band averages are also fact.\n\nDERIVED: the blend. 186 Band B and 103 Band C external hires in 2025 weight the two band averages into 56,466 a month, 677,592 a year. Arithmetic, no judgement.\n\nASSUMED: two things. First, replacement at 75% of annual basic — published ranges run 50 to 200% of salary depending on seniority, so 75% of basic is deliberately at the low end, and using basic rather than total cost understates it again. Second, the comparator attrition rate, which we do not have.\n\nOn that second one: I had 19% in an earlier draft. It came from a demo tile in the v1 prototype that read "94% versus 81% company average" — illustrative placeholder text I wrote, never a Payroll figure. Withdrawing it is the right call and I would rather say so than have it found.\n\nThe table is the answer to "what if you are wrong". Across the whole plausible range the expected case stays above 4.3. What moves is the floor — the measured-only case — which is exactly why confirming this number is the first thing on the measurement plan.')
 }
 
-/* ═══ 17 · APPENDIX — SOURCES AND ASSUMPTIONS ═══════════════════ */
+/* ═══ 19 · APPENDIX — SOURCES AND ASSUMPTIONS ═══════════════════ */
 {
   const s = next(); N++
   head(s, 'Appendix', 'Every number, and where it came from.',
@@ -887,7 +1019,7 @@ function chip(s, x, y, n, fill) {
   s.addNotes('Do not present this. It is here so that any number challenged from the floor can be answered by turning to one slide.\n\nThe division is deliberate: the left column is data we hold and can re-pull, the right column is judgement. If a panel member wants to argue, point them at the right column — that is where the argument is, and I have already taken the conservative side of every item in it.')
 }
 
-/* ═══ 18 · APPENDIX — RISKS ═════════════════════════════════════ */
+/* ═══ 20 · APPENDIX — RISKS ═════════════════════════════════════ */
 {
   const s = next(); N++
   head(s, 'Appendix', 'What could go wrong, and what we have done about it.',
