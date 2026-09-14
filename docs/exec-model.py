@@ -44,12 +44,20 @@ FILL_RATE = ACCEPTED / VAC_TOTAL
 SUCCESS = ACCEPTED / APPLICANTS    # applications needed per fill
 
 # The 2025 turned-down cohort — the measured retention input.
+# 67 turned down, 38 still employed in September 2026, is HRIS fact.
+# The COMPARATOR is not. The 19% that earlier drafts used came from a
+# placeholder tile in the v1 prototype dashboard ("94% vs 81% company
+# average") — illustrative demo data, never a Payroll or HRIS figure. It is
+# withdrawn here. The right comparator is attrition among band B and C
+# non-mass staff, which is who these applicants are; a whole-company rate
+# would be dragged up by mass operations and would understate the excess.
+# HR has been asked for it. Until it lands, the benefit is modelled at 15
+# points of excess and stress-tested across the plausible range below.
 TD_2025, TD_STILL_HERE = 67, 38
 TD_LEFT = TD_2025 - TD_STILL_HERE
 TD_ATTRITION = TD_LEFT / TD_2025
-CO_ATTRITION = 0.19                # company average, 81% retention
-EXCESS_OBSERVED = TD_ATTRITION - CO_ATTRITION
-EXCESS = 0.15                      # halved: the window runs longer than a year
+EXCESS = 0.15                      # modelled; implies a comparator of ~28%
+COMPARATORS = (0.20, 0.25, 0.28, 0.30, 0.35)
 
 # Pilot.
 PILOT_NONMASS, PILOT_MASS = 637, 476
@@ -94,12 +102,17 @@ print(f'   Band C external hire costs {m(HIRE["C"])}; {m(HRTA)} of that is HR/TA
 SAL_BLEND = sum(SAL_MO[b]*MIX[b] for b in MIX) / NMIX * MONTHS
 REPLACE = SAL_BLEND * 0.75
 print(f'\n══ THE COST OF SAYING NO ══')
-print(f'   2025: {TD_2025} internal applicants turned down. {TD_STILL_HERE} are still here.')
-print(f'   {TD_LEFT} have left — {TD_ATTRITION*100:.0f}% against a company average of {CO_ATTRITION*100:.0f}%.')
-print(f'   Observed excess {EXCESS_OBSERVED*100:.0f} points; modelled at {EXCESS*100:.0f}.')
+print(f'   MEASURED  {TD_2025} internal applicants turned down in 2025. {TD_STILL_HERE} are still here.')
+print(f'             {TD_LEFT} have left — {TD_ATTRITION*100:.1f}% of the cohort.')
 print(f'   Blended band B/C annual basic {m(SAL_BLEND)} -> replacement at 75% = {m(REPLACE)}')
-print(f'   Expected leavers at company average: {TD_2025*CO_ATTRITION:.0f}. Actual: {TD_LEFT}. '
-      f'Excess: {TD_LEFT - TD_2025*CO_ATTRITION:.0f} people, {m((TD_LEFT-TD_2025*CO_ATTRITION)*REPLACE)}.')
+print(f'   NOT MEASURED  the comparator. Attrition among band B/C non-mass staff, 2025 — HR to confirm.')
+print(f'   {"comparator":>12}{"expected leavers":>18}{"excess people":>15}{"excess points":>15}{"cost of the excess":>20}')
+for c in COMPARATORS:
+    exp = TD_2025*c
+    print(f'   {c*100:>11.0f}%{exp:>18.1f}{TD_LEFT-exp:>15.1f}{(TD_ATTRITION-c)*100:>14.0f}pt'
+          f'{m((TD_LEFT-exp)*REPLACE):>20}' + ('   <- modelled' if abs((TD_ATTRITION-c)-EXCESS)<0.015 else ''))
+print(f'   The model uses {EXCESS*100:.0f} points throughout. Every peso of turnover benefit scales')
+print(f'   linearly with this input, so it is the single number most worth confirming.')
 
 # ══ 17% vs 30% vs 50%, COMPANY-WIDE ══════════════════════════════
 def scenario(rate, vac):
@@ -188,6 +201,16 @@ case(SHELVES, 'Shelves only, no extra fills')
 print(f'\n   Break-even needs {TCO/(PER_FILL+EXCESS*REPLACE)/3:.1f} extra internal fills a year, '
       f'{TCO/(PER_FILL+EXCESS*REPLACE):.0f} over three years.')
 print(f'   One extra internal fill is worth {m(PER_FILL+EXCESS*REPLACE)}.')
+
+print(f'\n══ HOW MUCH THE UNCONFIRMED COMPARATOR MATTERS ══')
+print(f'   {"comparator":>12}{"excess":>9}{"floor BCR":>12}{"expected BCR":>15}{"worth per fill":>17}')
+for c in COMPARATORS:
+    ex = TD_ATTRITION - c
+    mob = x30*PER_FILL; ret = x30*ex*REPLACE
+    fl = (mob+ret)*2.4/TCO
+    exp = (mob+ret+SHELVES)*2.4/TCO
+    print(f'   {c*100:>11.0f}%{ex*100:>8.0f}pt{fl:>12.1f}{exp:>15.1f}{m(PER_FILL+ex*REPLACE):>17}')
+print('   Even at a 35% comparator the expected case clears 4. The floor is what moves.')
 
 # ══ vs BUYING ═════════════════════════════════════════════════════
 vlo, vhi = (75_000+2*50_000)*FX, (240_000+2*120_000)*FX
