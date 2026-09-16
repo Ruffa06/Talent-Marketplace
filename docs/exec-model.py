@@ -267,3 +267,31 @@ print(f'   Gloat · Fuel50 · Eightfold · Workday  {m(vlo)} - {m(vhi)}   US$175
 print(f'   {vlo/TCO:.0f}x to {vhi/TCO:.0f}x cheaper. A vendor at the low band needs '
       f'{vlo/(PER_FILL+EXCESS*REPLACE):.0f} extra internal fills just to cover its licence; Growth needs '
       f'{TCO/(PER_FILL+EXCESS*REPLACE):.0f}.')
+
+# ── the same question at full scale ───────────────────────────────
+# Below every vendor minimum at 1,113 seats we would pay a floor price.
+# At 20,470 we are past the minimums, so the per-seat rate drives it and
+# the gap widens rather than closes. Bands are modelled from how enterprise
+# HR SaaS is structured — US$/employee/year plus a one-off implementation.
+# They are NOT quotes; none of these vendors publishes per-seat pricing.
+VENDOR_FULL = {
+    # tier: (seat_lo, seat_hi, impl_lo, impl_hi)  all US$
+    'Fuel50 · Gloat  (opportunity marketplace)':      (8,  18,  50_000, 120_000),
+    'Eightfold · Workday  (skills engine in a suite)': (20, 45, 150_000, 400_000),
+}
+print(f'\n══ vs AN EXTERNAL PLATFORM, three years at {FULL:,} seats ══')
+print(f'   {"Growth, built in-house":<42}{m(FTCO):>14}  US${FTCO/FX:>9,.0f}   {m(FTCO/FULL/3)}/employee/yr')
+for tier, (slo, shi, ilo, ihi) in VENDOR_FULL.items():
+    tlo, thi = (ilo + 3*FULL*slo), (ihi + 3*FULL*shi)
+    print(f'   {tier:<42}{m(tlo*FX)} - {m(thi*FX)}   US${tlo:,.0f} - {thi:,.0f}')
+    print(f'   {"":<42}US${slo}-{shi}/employee/yr licence + US${ilo//1000}-{ihi//1000}k implementation'
+          f'  =  {m(tlo*FX/FULL/3)}-{m(thi*FX/FULL/3)}/employee/yr')
+_lo = (50_000 + 3*FULL*8)*FX
+_hi = (400_000 + 3*FULL*45)*FX
+_unit = PER_FILL + EXCESS*REPLACE
+print(f'   {_lo/FTCO:.0f}x to {_hi/FTCO:.0f}x more than building it. To cover its own licence a vendor needs')
+print(f'   {_lo/_unit:.0f} to {_hi/_unit:,.0f} extra internal fills over three years; Growth needs {FTCO/_unit:.0f}.')
+print(f'   There are only {VAC_YR*3:,.0f} vacancies in three years, so the top of the Eightfold band has to')
+print(f'   fill {100*_hi/_unit/(VAC_YR*3):.0f}% of every requisition internally before it breaks even.')
+print( '   CAVEAT: Workday Talent Marketplace is a module on Workday HCM, which we do not run —')
+print( '   buying it means buying the core HCM first, an order of magnitude above these numbers.')
