@@ -1210,7 +1210,7 @@
     <!-- ══ MATCHES ══ -->
     <div class="page" id="page-matches">
       <div class="page-header">
-        <div class="page-title">✨ My Matches</div>
+        <div class="page-title">✨ My Top Matches</div>
         <div class="page-sub">Opportunities at <strong>80% and above</strong>, scored against your profile as it stands right now</div>
       </div>
 
@@ -1234,7 +1234,7 @@
               <thead><tr><th>Factor</th><th>Weight</th><th>What the model looks at</th></tr></thead>
               <tbody>
                 <tr><td>Required skills — self-declared</td><td>20%</td><td>Every required skill on your profile earns a share of this, however it got there. Typing it is enough.</td></tr>
-                <tr><td>Required skills — verified</td><td>50%</td><td>A further, larger share for each of those skills that is <em>evidenced</em>: endorsed by a manager, earned on work a host manager rated 4★+, or certified in MyDevelopment. Skills HR uploaded from the HRIS sit in between.</td></tr>
+                <tr><td>Required skills — verified</td><td>50%</td><td>A further, larger share for each of those skills that is <em>evidenced</em>: endorsed by a manager, earned on work a host manager rated 4★+, or certified in MyDevelopment. Skills HR uploaded from HC Connect, MyDevelopment or your public LinkedIn sit in between.</td></tr>
                 <tr><td>Aspiration fit</td><td>20%</td><td>Whether the work moves you toward what you said you want — a required skill you already hold, or one you listed under <em>Skills to Develop</em>.</td></tr>
                 <tr><td>Track record</td><td>10%</td><td>Gigs, DJIs and service offers you have finished, and the ratings host managers gave you.</td></tr>
               </tbody>
@@ -2121,7 +2121,7 @@
             <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;padding:11px 13px;font-size:11px;color:#1E40AF;line-height:1.6;margin-bottom:14px;">
               ✅ <strong>Where each skill came from, and what it is worth.</strong>
               <span style="display:block;margin-top:6px;">✅ <strong>Verified</strong> — endorsed by a manager, or earned on work a host manager rated 4★ or better. Counts in full.<br>
-              📥 <strong>Uploaded by HR</strong> — loaded in bulk from HRIS and MyDevelopment records. Trusted more than a claim, less than an endorsement.<br>
+              📥 <strong>Uploaded by HR</strong> — loaded in bulk from HC Connect and MyDevelopment records, and from the skills you have published publicly on your LinkedIn profile. Trusted more than a claim, less than an endorsement.<br>
               ✏️ <strong>Added by you</strong> — typed on this page. It counts, but least.</span>
               <span style="display:block;margin-top:6px;">Anyone can claim a skill — so claims alone don't carry much weight here. Add or remove anything below and every match score on this app is recalculated the moment you do.</span>
             </div>
@@ -2184,9 +2184,9 @@
         <div style="font-size:12px;color:#94A3B8;margin-bottom:18px;">Gigs, DJIs and service offers run end to end in Growth. Vacancy outcomes are on the band below — those we contribute to, we do not own.</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:18px;">
           <div>
-            <div style="font-size:26px;font-weight:700;color:#4ADE80;font-variant-numeric:tabular-nums;">₱424K</div>
-            <div style="font-size:11px;color:#CBD5E1;font-weight:600;">Recruitment cost avoided</div>
-            <div style="font-size:10px;color:#64748B;">12 roles × ₱35,367 Band C hiring cost</div>
+            <div style="font-size:26px;font-weight:700;color:#4ADE80;font-variant-numeric:tabular-nums;">₱1.04M</div>
+            <div style="font-size:11px;color:#CBD5E1;font-weight:600;">Value of filling 12 roles inside</div>
+            <div style="font-size:10px;color:#64748B;">12 Band C fills × ₱86,256 net</div>
           </div>
           <div>
             <div style="font-size:26px;font-weight:700;color:#fff;font-variant-numeric:tabular-nums;">12</div>
@@ -2524,7 +2524,7 @@
           Matching only sees what is written down. A person with no skills on file matches nothing, sees an empty
           board, and does not come back — and asking 637 people to sit down and type their own skills before the
           Growth does anything for them is the wrong order of events.<br><br>
-          You almost certainly already hold this data: the HRIS competency table, the MyDevelopment completion export, the
+          You almost certainly already hold this data: the HC Connect competency table, the MyDevelopment completion export, the
           last capability assessment. Load it here and every profile starts populated. People then <strong>correct</strong>
           their skills, which is a far easier ask than <strong>authoring</strong> them, and Growth works on day one.
         </div>
@@ -2835,7 +2835,7 @@ const ROLES = {
       ]},
       { sec: 'Work' },
       { group: 'discover', emoji: '🧭', label: 'Discover', children: [
-        { id: 'matches', emoji: '✨', label: 'My Matches' },
+        { id: 'matches', emoji: '✨', label: 'My Top Matches' },
         { id: 'all-opps', emoji: '📃', label: 'All Opportunities' },
         { id: 'vacancies', emoji: '🏢', label: 'Internal Vacancies' },
       ]},
@@ -2860,7 +2860,7 @@ const ROLES = {
       ]},
       { sec: 'Work' },
       { group: 'discover', emoji: '🧭', label: 'Discover', children: [
-        { id: 'matches', emoji: '✨', label: 'My Matches' },
+        { id: 'matches', emoji: '✨', label: 'My Top Matches' },
         { id: 'all-opps', emoji: '📃', label: 'All Opportunities' },
         { id: 'vacancies', emoji: '🏢', label: 'Internal Vacancies' },
       ]},
@@ -2938,7 +2938,7 @@ function setRole(role) {
    page whose own nav entry is hidden. */
 // Groups that start expanded. "My activity" holds the poster's applicant
 // review — the one screen a hiring manager comes here for — and leaving it
-// collapsed meant people never found it. Discover holds My Matches, which is
+// collapsed meant people never found it. Discover holds My Top Matches, which
 // the employee's equivalent. Both are open at rest for every role.
 const NAV_OPEN = { 'manager:mine': true, 'manager:discover': true,
                    'employee:mine': true, 'employee:discover': true,
@@ -4396,7 +4396,7 @@ function switchTab(btn) {
 const ATS_NAME  = 'HC Connect Internal Job Posting'   // formal / first mention
 const ATS_SHORT = 'HC Connect'                        // buttons and repeated inline use
 const ATTRIB_WINDOW_DAYS = 30
-const REF_SOURCE_LABEL = { board: 'Vacancy board', matches: 'My Matches', search: 'Search', digest: 'Digest email' }
+const REF_SOURCE_LABEL = { board: 'Vacancy board', matches: 'My Top Matches', search: 'Search', digest: 'Digest email' }
 
 // Seeded board so the page is not empty before HC Connect is wired in.
 const SEED_VACANCIES = [
@@ -4527,7 +4527,7 @@ const SEED_VACANCIES = [
       responsibilities: [
         'Run the annual headcount planning cycle with Finance and each business unit.',
         'Maintain the rolling 12-month view of demand, attrition and time-to-fill by function.',
-        'Build the skills supply picture from the HRIS and MyDevelopment, and name the gaps early enough to act on them.',
+        'Build the skills supply picture from HC Connect and MyDevelopment, and name the gaps early enough to act on them.',
         'Model the cost and capability trade-off between hiring externally, moving people internally, and building the skill.',
         'Report on internal mobility as a channel — including what Growth contributes to it.',
       ],
@@ -5146,7 +5146,8 @@ const completedFor = p => allCompleted().filter(c => c.person === p)
 
      verified   a manager endorsed it, or a host manager rated the work
                 4★+. Evidence rather than opinion, so it counts full.
-     uploaded   loaded in bulk by HR from the HRIS or MyDevelopment. Trusted
+     uploaded   loaded in bulk by HR from HC Connect, MyDevelopment or a
+                public LinkedIn profile. Trusted
                 more than a self-claim, less than an endorsement.
      self       typed by the employee on their own profile.
 
@@ -5171,7 +5172,7 @@ const SEED_VERIFIED = {
 }
 // Skills the personas typed themselves, before anyone edits anything.
 const SEED_SELF = {
-  'Taylor Swift':      ['Labor Relations', 'Excel'],
+  'Taylor Swift':      ['Labor Relations'],
   'Beyoncé Knowles':   ['Stakeholder Management'],
 }
 
@@ -5246,7 +5247,7 @@ const REL = [
 ].reduce((m, [a, b]) => { (m[a] = m[a] || []).push(b); (m[b] = m[b] || []).push(a); return m }, {})
 
 /* The four factors, weighted to 100. Holding a required skill is worth 20;
-   evidence for it is worth 50 more. Everything HR uploads from the HRIS sits
+   evidence for it is worth 50 more. Everything HR uploads from HC Connect sits
    between the two, because a personnel record is better than a claim and
    weaker than an endorsement. */
 const W_SKILLS = 70, W_ASPIRATION = 20, W_TRACK = 10
@@ -5518,7 +5519,7 @@ function downloadSkillTemplate() {
   a.download = 'growth-skills-template.csv'
   document.body.appendChild(a); a.click(); a.remove()
   setTimeout(() => URL.revokeObjectURL(a.href), 4000)
-  toast('Template downloaded. Fill it from your HRIS competency export.')
+  toast('Template downloaded. Fill it from your HC Connect competency export.')
 }
 
 function loadSkillSample() {
@@ -5569,7 +5570,7 @@ function renderSkillProvenance() {
    Every match score on the page is computed from the profile as it stands
    this second. Edit a skill and the numbers move — which is the only way
    anyone believes the score means anything. */
-// The bands are the ones published in the rubric on My Matches: 70+ is a
+// The bands are the ones published in the rubric on My Top Matches: 70+ is a
 // match worth applying to, 50-69 a stretch, below that a long shot.
 const scoreColour = sc => sc >= 70 ? '#16A34A' : sc >= 50 ? '#D97706' : '#9CA3AF'
 const scoreTag = sc => sc >= 70 ? '' : sc >= 50 ? ' \u00b7 stretch' : ' \u00b7 long shot'
