@@ -32,13 +32,25 @@ MONTHS, WORKDAYS = 12, 260         # basic only: no 13th month, no employer cont
 def annual(b): return SAL_MO[b] * MONTHS
 def day(b):    return annual(b) / WORKDAYS
 
-DAYS_EXT, DAYS_INT = 58, 21        # days to fill
-MIX = {'B': 186, 'C': 103}         # external hires, 2025
-NMIX = sum(MIX.values())
+DAYS_EXT, DAYS_INT = 43, 23        # days to fill — 20 days saved on an internal move
 BACKFILL = {'C': 'B', 'B': 'M'}    # who backfills whom, one band down
 
 # Internal job posting, 2024-2026.
 VAC_TOTAL, APPLICANTS, ACCEPTED, YEARS = 1_008, 463, 170, 3
+
+# Band mix of external hires, on the same three-year base as everything else.
+# Band-level counts exist only in the 2025 TA file (186 band B, 103 band C).
+# Those proportions are held constant and scaled onto the three-year external
+# hire volume: 1,008 vacancies less the 170 filled internally = 838 external
+# hires, 2024-2026. Holding the proportions constant IS the assumption — it is
+# what makes the blend a three-year figure in volume but a 2025 figure in shape.
+# Drop real 2024 and 2026 band counts into MIX_3YR and every blended number
+# below moves with them.
+MIX_2025 = {'B': 186, 'C': 103}
+EXT_3YR  = VAC_TOTAL - ACCEPTED
+MIX = {b: round(EXT_3YR * n / sum(MIX_2025.values())) for b, n in MIX_2025.items()}
+MIX_3YR = MIX
+NMIX = sum(MIX.values())
 VAC_YR = VAC_TOTAL / YEARS
 FILL_RATE = ACCEPTED / VAC_TOTAL
 SUCCESS = ACCEPTED / APPLICANTS    # applications needed per fill
@@ -93,8 +105,8 @@ for b in ('C', 'B'):
 HIRE_PART = sum(parts[b][0]*MIX[b] for b in MIX) / NMIX
 VAC_PART  = sum(parts[b][1]*MIX[b] for b in MIX) / NMIX
 PER_FILL  = HIRE_PART + VAC_PART
-print(f'   {"Blended on 2025 mix":22}{m(HIRE_PART):>12}{m(VAC_PART):>15}{m(PER_FILL):>12}'
-      f'   ({MIX["B"]} band B, {MIX["C"]} band C)')
+print(f'   {"Blended, 2024-2026":22}{m(HIRE_PART):>12}{m(VAC_PART):>15}{m(PER_FILL):>12}'
+      f'   ({MIX["B"]} band B, {MIX["C"]} band C over 3 yrs)')
 print(f'   Band C external hire costs {m(HIRE["C"])}; {m(HRTA)} of that is HR/TA cost we still pay '
       f'internally, so {m(HIRE["C"]-HRTA)} is avoidable before the backfill.')
 
@@ -180,18 +192,36 @@ print(f'     {"":<49}{m(MOBILITY):>12}  floor')
 print(f'     Judgement · retention across 174 shelf participants {m(SHELVES):>10}')
 print(f'     {"":<49}{m(MOBILITY+SHELVES):>12}  expected')
 
+def payback(costs, build, annual_benefit, horizon=84):
+    """The month cumulative benefit overtakes cumulative cost.
+
+    Build spend lands in the first quarter of the year it falls in; run cost
+    spreads evenly over its twelve months. Benefit does not start on day one —
+    shelves have to be seeded and skills loaded — so it begins in month 4 and
+    runs at 40% of rate through year 1. Past the modelled horizon both sides
+    continue at the year-3 run rate.
+    """
+    if annual_benefit <= 0: return None
+    cb = cc = 0.0
+    n = len(costs)
+    for mo in range(1, horizon + 1):
+        y = (mo - 1) // 12
+        yc = min(y, n - 1)
+        run, bld = costs[yc] - build[yc], (build[yc] if y < n else 0)
+        cc += run / 12 + (bld / 3 if (mo - 1) % 12 < 3 else 0)
+        if mo >= 4:
+            cb += annual_benefit * 0.4 / 9 if y == 0 else annual_benefit / 12
+        if cb >= cc: return mo
+    return None
+
+
 def case(annual_benefit, label):
     flow = [annual_benefit*0.4, annual_benefit, annual_benefit]
     B3 = sum(flow)
     npv = sum((flow[i]-cost[i])/(1+DISC)**(i+1) for i in range(3))
-    cb = cc = 0; pay = None
-    for mo in range(1, 61):
-        y = min((mo-1)//12, 2)
-        cc += (cost[y]-[B1,B2,0][y])/12 + ([B1,B2,0][y]/3 if (mo-1) % 12 < 3 else 0)
-        if mo >= 4: cb += flow[y]/9 if y == 0 else flow[y]/12
-        if pay is None and cb >= cc: pay = mo
+    pay = payback(cost, [B1, B2, 0], annual_benefit)
     print(f'   {label:<34}{m(B3):>13}{m(TCO):>12}{B3/TCO:>7.1f}{m(npv):>13}'
-          f'{(str(pay)+" mo") if pay else ">60 mo":>9}')
+          f'{(str(pay)+" mo") if pay else ">84 mo":>9}')
     return B3/TCO, pay
 
 print(f'\n══ THE CASE — three years, {DISC*100:.0f}% discount rate ══')
@@ -259,6 +289,14 @@ print(f'       ({fp_nm:.0f} non-mass + {fp_ms:,.0f} mass ops at 60% of the offic
 print(f'   BCR, mobility only  {rows[1][7]*2.4/FTCO:>5.1f}   |  with the shelves {(rows[1][7]+fshelves)*2.4/FTCO:>5.1f}')
 print(f'   The pilot spends {m(TCO)} to capture {m(MOBILITY*2.4)} of a {m(rows[1][7]*2.4)} three-year prize.')
 
+FULL_BEN_FLOOR = rows[1][7]                 # mobility + turnover, company-wide, 30% case
+FULL_BEN_EXP   = FULL_BEN_FLOOR + fshelves  # plus the shelves
+fbuild = [B1, B2, 0]
+print(f'   PAYBACK on the {m(FTCO)} full-org spend')
+for lbl, ben in (('measured only', FULL_BEN_FLOOR), ('expected, with shelves', FULL_BEN_EXP)):
+    pay = payback(fcost, fbuild, ben)
+    print(f'     {lbl:<24}{m(ben)}/yr  ->  {(str(pay)+" months") if pay else ">84 months"}')
+
 # ══ vs BUYING ═════════════════════════════════════════════════════
 vlo, vhi = (75_000+2*50_000)*FX, (240_000+2*120_000)*FX
 print(f'\n══ vs AN EXTERNAL PLATFORM, three years at {PILOT:,} seats ══')
@@ -295,3 +333,22 @@ print(f'   There are only {VAC_YR*3:,.0f} vacancies in three years, so the top o
 print(f'   fill {100*_hi/_unit/(VAC_YR*3):.0f}% of every requisition internally before it breaks even.')
 print( '   CAVEAT: Workday Talent Marketplace is a module on Workday HCM, which we do not run —')
 print( '   buying it means buying the core HCM first, an order of magnitude above these numbers.')
+
+# ── payback at the two spend levels people keep asking about ──────
+# P2,049,954 is the pilot as costed. P5,315,207 is the full-org figure with one
+# extra analyst year in it (P60,000 above FTCO), which is the number circulating
+# in the spreadsheet — carried here so both answers sit on the same benefit base.
+print('\n══ PAYBACK, SIDE BY SIDE ══')
+ASKED = {
+    f'Pilot — 1,113 people  {m(TCO)}':  (cost,  [B1, B2, 0], MOBILITY,       MOBILITY + SHELVES),
+    f'Full org — 20,470     {m(FTCO)}': (fcost, fbuild,      FULL_BEN_FLOOR, FULL_BEN_EXP),
+    f'Full org as budgeted  {m(FTCO+60_000)}':
+        ([fcost[0], fcost[1], fcost[2] + 60_000], fbuild, FULL_BEN_FLOOR, FULL_BEN_EXP),
+}
+print(f'   {"":<40}{"floor":>24}{"expected":>26}')
+for lbl, (cs, bd, flo, exp) in ASKED.items():
+    pf_, pe_ = payback(cs, bd, flo), payback(cs, bd, exp)
+    print(f'   {lbl:<40}{m(flo)+"/yr":>15}{(str(pf_)+" mo") if pf_ else ">84 mo":>9}'
+          f'{m(exp)+"/yr":>17}{(str(pe_)+" mo") if pe_ else ">84 mo":>9}')
+print('   Benefit starts in month 4 and runs at 40% of rate through year 1: shelves have to be')
+print('   seeded and skills loaded before anything matches. Build spend lands in the first quarter.')
