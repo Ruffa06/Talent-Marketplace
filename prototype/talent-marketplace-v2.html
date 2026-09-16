@@ -2936,7 +2936,13 @@ function setRole(role) {
    Groups are open/closed per role and remembered for the session. Navigating
    to a page always opens the group holding it, so you can never end up on a
    page whose own nav entry is hidden. */
-const NAV_OPEN = {}
+// Groups that start expanded. "My activity" holds the poster's applicant
+// review — the one screen a hiring manager comes here for — and leaving it
+// collapsed meant people never found it. Discover holds My Matches, which is
+// the employee's equivalent. Both are open at rest for every role.
+const NAV_OPEN = { 'manager:mine': true, 'manager:discover': true,
+                   'employee:mine': true, 'employee:discover': true,
+                   'admin:mine': true, 'admin:discover': true }
 let currentPage = 'home'
 const navKey = it => it.group || it.id
 const navOpenKey = (role, key) => role + ':' + key
