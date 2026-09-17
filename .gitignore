@@ -1,0 +1,11 @@
+# Home Credit documents classified Internal ("do not distribute outside the
+# organization"). This repository is public, so the files themselves stay out
+# of it — the prototype's download buttons are wired to them at build time and
+# degrade to an explanatory message when they are absent.
+assets/private/
+
+# Build output and tooling
+build/
+node_modules/
+package-lock.json
+package.json

@@ -3,6 +3,10 @@
 **Version:** v1.0 (`07e848e`) · **Prepared:** 18 August 2026
 **Population:** 637 employees · **Horizon:** 3 years
 
+> For the v2 exploration — which drops Internal Vacancy and the Recruiter role
+> and adds referral attribution — see [`docs/V2_COSTING.md`](V2_COSTING.md).
+> It prices the difference against this document and re-tests its conclusions.
+
 ---
 
 ## Read this first
