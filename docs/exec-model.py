@@ -352,3 +352,63 @@ for lbl, (cs, bd, flo, exp) in ASKED.items():
           f'{m(exp)+"/yr":>17}{(str(pe_)+" mo") if pe_ else ">84 mo":>9}')
 print('   Benefit starts in month 4 and runs at 40% of rate through year 1: shelves have to be')
 print('   seeded and skills loaded before anything matches. Build spend lands in the first quarter.')
+
+# ══ A THIRD SCOPE — ALL NON-MASS, NOBODY ELSE ═════════════════════
+# 1,986 head office and non-mass staff. This is the scope that matters most
+# to the mobility case, because band B and C vacancies ARE non-mass roles:
+# a non-mass-only rollout is 10% of headcount but captures essentially the
+# whole mobility prize. What it gives up is the shelf benefit in mass
+# operations, which is the larger and far softer of the two streams.
+NM = 1_986
+nm1, nm2 = run_at(NM, False), run_at(NM, True)
+NR1, NR2 = sum(nm1.values()), sum(nm2.values())
+ncost = [B1 + NR1, B2 + NR2, NR2]
+NTCO = sum(ncost)
+
+print(f'\n══ SCOPE: ALL NON-MASS, {NM:,} PEOPLE ══')
+print(f'   BUILD  {m(IT_BUILD)} — unchanged. The same software serves 1,113, 1,986 or 20,470.')
+print(f'   RUN, a year{"":22}{"non-mass":>12}{"pilot":>12}{"full org":>12}')
+for k in nm2:
+    print(f'     {k:<31}{m(nm2[k]):>12}{m(dict(run_at(PILOT,True))[k]):>12}{m(fr2[k]):>12}')
+print(f'     {"year 1 / year 2+":<31}{m(NR1)+" / "+m(NR2):>12}')
+print(f'   YEAR 1 {m(ncost[0])} · YEAR 2 {m(ncost[1])} · YEAR 3 {m(ncost[2])}')
+print(f'   THREE-YEAR {m(NTCO)}  US${NTCO/FX:,.0f}  ·  {m(NTCO/NM/3)} per employee a year')
+print(f'   NOTE  {NM:,} sits {2_000-NM} people under the 2,000 threshold where this model steps')
+print(f'         Supabase up a tier. If it tips, add {m((85*12-SUPABASE_USD)*FX)} a year plus '
+      f'{m(MONITOR_USD*FX)} monitoring.')
+
+# Benefit. Mobility is a band B/C story, so a non-mass rollout captures it all.
+NM_MOB = rows[1][7]
+NM_PARTS = NM * (120/637)
+NM_SHELF = NM_PARTS * 0.03 * (annual('nonmass') * 0.75)
+print(f'\n   BENEFIT, a year')
+print(f'     Mobility — the 30% case, ASSUMED fully inside this scope        {m(NM_MOB):>12}')
+print(f'     Shelves — JUDGEMENT, {NM_PARTS:,.0f} participants a year{"":18}{m(NM_SHELF):>12}')
+print(f'     {"":<62}{m(NM_MOB+NM_SHELF):>12}  expected')
+print(f'   BCR  {NM_MOB*2.4/NTCO:.1f} on mobility alone  |  {(NM_MOB+NM_SHELF)*2.4/NTCO:.1f} with the shelves')
+print(f'   PAYBACK  floor {payback(ncost, fbuild, NM_MOB)} months  ·  '
+      f'expected {payback(ncost, fbuild, NM_MOB+NM_SHELF)} months')
+print(f'   vs FULL ORG  {m(FTCO-NTCO)} cheaper over three years, keeping the whole mobility stream')
+print(f'   ASSUMPTION, and it is the load-bearing one on this scope: that the 1,008 internally')
+print(f'   posted vacancies are band B and C roles, i.e. non-mass. The hiring-cost file only gives')
+print(f'   us band-level counts for external hires, not for the internal postings. If some share')
+print(f'   of the 1,008 are band M, that share of the mobility benefit sits outside this scope and')
+print(f'   the BCR falls with it. Recruitment can settle this from the posting log.')
+print(f'   The {FULL-NM:,} mass operations staff cost {m(FTCO-NTCO)} to add and bring only the shelf')
+print(f'   stream — {m(FULL_BEN_EXP-NM_MOB-NM_SHELF)}/yr of judgement, none of it measured.')
+
+# vs buying, at this scope.
+print(f'\n   vs AN EXTERNAL PLATFORM at {NM:,} seats, three years')
+print(f'     {"Growth, built in-house":<42}{m(NTCO):>14}  US${NTCO/FX:>9,.0f}   {m(NTCO/NM/3)}/employee/yr')
+for tier, (slo, shi, ilo, ihi) in VENDOR_FULL.items():
+    # Below ~2,000 seats every vendor in the set is under its own minimum, so
+    # the licence is a floor price, not a per-seat rate. Both are shown.
+    seat_lo, seat_hi = ilo + 3*NM*slo, ihi + 3*NM*shi
+    flo_lo, flo_hi = 175_000, 480_000                    # the same minimum-contract floor
+                                                         # quoted at the pilot: below a vendor's
+                                                         # seat minimum the price stops moving
+    tlo, thi = max(seat_lo, flo_lo), max(seat_hi, flo_hi)
+    print(f'     {tier:<42}{m(tlo*FX)} - {m(thi*FX)}   US${tlo:,.0f} - {thi:,.0f}')
+    binds = ('the vendor minimum binds' if tlo > seat_lo else 'the per-seat rate binds')
+    print(f'     {"":<42}at seats US${seat_lo:,.0f}-{seat_hi:,.0f}; {binds} at this size')
+    print(f'     {"":<42}= {m(tlo*FX/NM/3)}-{m(thi*FX/NM/3)}/employee/yr, {tlo*FX/NTCO:.0f}x-{thi*FX/NTCO:.0f}x building it')
