@@ -1,3 +1,12 @@
+> **SUPERSEDED — do not cite the figures below.**
+> This CBA is built on the v1 basis: backfill-netted hiring costs, vacancy days
+> priced at salary, and an avoided-turnover benefit. Tab v2 of
+> `ALP_Computations.xlsx` replaced all three — no backfill deduction, vacancy
+> priced as lost revenue (₱5,670 per employee per day × 69 days), and no
+> turnover benefit at all. One internal fill is worth **₱423,219**, not ₱91,276.
+> The live model is `docs/exec-model.py`; the live deck is
+> `Growth_Executive_ALP.pptx`. Kept for traceability only.
+
 # v2-lean — costing and cost-benefit analysis
 
 **Population:** 1,113 employees — the 637-person pilot in IT, Operations and HR, plus

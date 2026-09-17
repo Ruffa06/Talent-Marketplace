@@ -1,414 +1,304 @@
-# -*- coding: utf-8 -*-
-"""The model behind the executive ALP deck (docs/exec-deck.js).
+"""Growth — the executive ALP model.
 
-Everything on the money slides comes from here. Change an input and re-run.
+THE SOURCE OF TRUTH IS docs/ALP_Computations.xlsx, TAB "v2".
+This file reproduces that tab exactly and checks itself against it at the
+bottom. If a number here disagrees with the workbook, the workbook wins and
+this file is wrong. Do not "improve" a figure here without changing the sheet.
 
-    python3 docs/exec-model.py
+What tab v2 changed from the earlier model (tab v1, and the deck built on it):
 
-Three things make this version different from docs/v2-cba-model.py, which it
-supersedes for presentation purposes:
+  1. NO BACKFILL NETTING. The hiring-cost saving is the full Band C cost per
+     hire less the HR/TA cost we still pay internally — P31,989. v1 deducted a
+     Band B backfill hire (P6,977) on the argument that an internal move leaves
+     a seat one band down. v2 drops that deduction.
+  2. VACANCY COST IS REVENUE, NOT SALARY. v1 valued vacant days at the
+     post-holder's day rate. v2 values them at average revenue per employee per
+     day — P5,670 — over 69 days, the observed gap between external and
+     internal time to hire for bands C and D combined (151 days against 82).
+     That is P391,230 a fill, and it is 92% of the whole case.
+  3. THE TURNOVER LINE IS GONE. v1 carried an avoided-replacement-cost benefit
+     built on the 2025 turned-down cohort. v2 removes it (v1 cell I37 reads
+     "consider removing"). Nothing in the benefit now depends on the attrition
+     comparator that HR still owes us, which is a real simplification.
+  4. THREE SCOPES are costed side by side: the 1,113 pilot, all 20,470, and
+     all 1,986 non-mass.
+  5. THE DENOMINATOR IS 3 YEARS OF POSTING DATA, 2023-2026.
 
-1. HRTA cost per hire (P3,378) is NOT avoided on an internal fill. HR still runs
-   the process. Only the rest of the band's cost per hire disappears.
-2. The BACKFILL is paid for. An internal move leaves a seat empty one band down,
-   which we then hire for externally. Every saving below is net of that.
-3. The retention number is MEASURED, not assumed. Of 67 internal applicants
-   turned down in 2025, 38 are still with Home Credit. 29 have gone — 43%,
-   against a company average of 19%. That 24-point gap is halved to 15 here
-   because the observation window runs longer than a year.
+Four places where this file deliberately departs from the sheet's arithmetic.
+Each is a formula error rather than a judgement, each is flagged in output, and
+each is listed again in CHECK at the end:
+
+  a. Sheet N17 and Q17 divide the org-wide and non-mass three-year costs by
+     1,113 — the pilot headcount — instead of 20,470 and 1,986.
+  b. Sheet Q19/Q20 price a vendor at 1,986 seats on the per-seat rate alone,
+     which comes out BELOW the flat minimum the same sheet uses for the
+     1,113-seat pilot. Below a vendor's contract minimum the price stops
+     moving; this file takes the greater of the two.
+  c. The sheet's payback divides cost by a three-year benefit and multiplies
+     by 36. That is the right answer for a benefit that arrives evenly from
+     day one. It does not, so a ramped payback is reported alongside it.
+  d. Benefit is ORG-WIDE at every fill rate (336 vacancies a year is the whole
+     company), so dividing it by the PILOT's cost is not a benefit-cost ratio.
+     The sheet asks this itself at B51, "All data are org-wide except cost?".
+     Answered below.
 """
 
-# ══ INPUTS ════════════════════════════════════════════════════════
-FX, DISC = 61.0, 0.10
+FX = 61.0
 
-# TA cost-per-hire file, 2025. Mass operations is band M.
-HIRE = {'M': 5_140, 'A': 6_391, 'B': 6_977, 'C': 35_367, 'D': 83_567, 'E': 1_761_790}
-HRTA = 3_378                       # HR/TA cost per hire — incurred on internal fills too
+# ══ INPUTS — tab v2, column B/C ═══════════════════════════════════
+RATE_NOW, RATES = 0.17, (0.17, 0.30, 0.50)   # C3, E28:G28
+ENPS_GROWTH = 0.88                            # C5  MyPulse eNPS on growth
+VAC_YR = 336                                  # C7  ave non-mass hirings a year
+VAC_TOTAL, APPLICANTS, ACCEPTED = 1_008, 463, 170   # C9:C11, 2023-2026
+APPLY_RATE = APPLICANTS / VAC_TOTAL           # D10  46%
+SUCCESS    = ACCEPTED / APPLICANTS            # D11  37%
+FILL_RATE  = ACCEPTED / VAC_TOTAL             # D12  17%
 
-# Payroll average monthly basic, September 2026.
-SAL_MO = {'M': 15_144.06, 'B': 36_333.85, 'C': 92_821.09,
-          'nonmass': 85_802.89, 'mass': 15_144.06}
-MONTHS, WORKDAYS = 12, 260         # basic only: no 13th month, no employer contributions
-def annual(b): return SAL_MO[b] * MONTHS
-def day(b):    return annual(b) / WORKDAYS
+# Rejected and resigned, by year — C16:E17. Context only: v2 carries no
+# turnover benefit, so none of this reaches a peso in the case.
+REJECTED = {2024: 51, 2025: 67, 2026: 175}
+RESIGNED = {2024: 20, 2025: 29, 2026: 30}
+REJ, RES = sum(REJECTED.values()), sum(RESIGNED.values())
+REJ_ATTRITION = RES / REJ                     # F18  27%, career the top reason
+ATTRITION_AVE = 0.17                          # C19
 
-DAYS_EXT, DAYS_INT = 43, 23        # days to fill — 20 days saved on an internal move
-BACKFILL = {'C': 'B', 'B': 'M'}    # who backfills whom, one band down
+# Benefit per internal fill — C32:C36.
+HIRE_C, HRTA = 35_367, 3_378
+HIRE_AVOIDED = HIRE_C - HRTA                  # C33  P31,989
+REV_PER_EMP_DAY = 5_670                       # C36  net revenue / headcount / day
+DAYS_FASTER = 69                              # E59  bands C+D: 151 external, 82 internal
+REV_LOST = REV_PER_EMP_DAY * DAYS_FASTER      # C36  P391,230
+PER_FILL = HIRE_AVOIDED + REV_LOST            # F48  P423,219
 
-# Internal job posting, 2024-2026.
-VAC_TOTAL, APPLICANTS, ACCEPTED, YEARS = 1_008, 463, 170, 3
+# Cost — tab v2, columns J to R.
+SCOPES = {                      # label:            headcount
+    'Pilot — IT, HR, Ops':       1_113,
+    'Non-mass only':             1_986,
+    'Org wide':                 20_470,
+}
+RUN = {   # line:                            pilot,   non-mass,  org wide
+    'AI matching (Claude)':                 (40_544,   72_345,   745_674),
+    'Transactional email':                  (15_987,   28_527,   294_035),
+    'Platform, monitoring':                 (25_620,   25_620,    76_860),
+    'HR reconciliation':                    ( 9_000,    9_000,    60_000),
+}
+IT_BUILD = 1_785_500            # L7/N7/Q7 — one off, costed by IT in man-hours
 
-# Band mix of external hires, on the same three-year base as everything else.
-# Band-level counts exist only in the 2025 TA file (186 band B, 103 band C).
-# Those proportions are held constant and scaled onto the three-year external
-# hire volume: 1,008 vacancies less the 170 filled internally = 838 external
-# hires, 2024-2026. Holding the proportions constant IS the assumption — it is
-# what makes the blend a three-year figure in volume but a 2025 figure in shape.
-# Drop real 2024 and 2026 band counts into MIX_3YR and every blended number
-# below moves with them.
-MIX_2025 = {'B': 186, 'C': 103}
-EXT_3YR  = VAC_TOTAL - ACCEPTED
-MIX = {b: round(EXT_3YR * n / sum(MIX_2025.values())) for b, n in MIX_2025.items()}
-MIX_3YR = MIX
-NMIX = sum(MIX.values())
-VAC_YR = VAC_TOTAL / YEARS
-FILL_RATE = ACCEPTED / VAC_TOTAL
-SUCCESS = ACCEPTED / APPLICANTS    # applications needed per fill
+# Vendors — J19:R20. Per seat a year, plus a one-off implementation, in US$.
+# Below a vendor's own contract minimum the licence is a floor price: the sheet
+# uses US$175,000 and US$480,000 for the 1,113-seat pilot, and those floors are
+# applied at every scope here.
+VENDORS = {
+    'Gloat · Fuel50':            (12, 70_000,  175_000),
+    'Eightfold · Workday TM':    (30, 250_000, 480_000),
+}
 
-# The 2025 turned-down cohort — the measured retention input.
-# 67 turned down, 38 still employed in September 2026, is HRIS fact.
-# The COMPARATOR is not. The 19% that earlier drafts used came from a
-# placeholder tile in the v1 prototype dashboard ("94% vs 81% company
-# average") — illustrative demo data, never a Payroll or HRIS figure. It is
-# withdrawn here. The right comparator is attrition among band B and C
-# non-mass staff, which is who these applicants are; a whole-company rate
-# would be dragged up by mass operations and would understate the excess.
-# HR has been asked for it. Until it lands, the benefit is modelled at 15
-# points of excess and stress-tested across the plausible range below.
-TD_2025, TD_STILL_HERE = 67, 38
-TD_LEFT = TD_2025 - TD_STILL_HERE
-TD_ATTRITION = TD_LEFT / TD_2025
-EXCESS = 0.15                      # modelled; implies a comparator of ~28%
-COMPARATORS = (0.20, 0.25, 0.28, 0.30, 0.35)
+def m(v):  return f'P{v:,.0f}'
+def mm(v): return f'P{v/1e6:,.2f}M'
 
-# Pilot.
-PILOT_NONMASS, PILOT_MASS = 637, 476
-PILOT = PILOT_NONMASS + PILOT_MASS
-PILOT_REQS = 60                    # internal requisitions a year — BRD planning assumption
-IT_BUILD = 1_785_500               # costed by IT in man-hours, EXCLUDING AI
-B1, B2 = 1_454_200, 331_300        # phased: promotion first, referral engine in year 2
+# ══ WHAT ONE INTERNAL FILL IS WORTH ═══════════════════════════════
+print('══ WHAT ONE INTERNAL FILL IS WORTH ══')
+print(f'   Band C cost per hire {m(HIRE_C)} less HR/TA cost {m(HRTA)}, which we')
+print(f'   pay on an internal move too{"":19}hiring cost avoided {m(HIRE_AVOIDED):>12}')
+print(f'   Revenue per employee per day {m(REV_PER_EMP_DAY)} x {DAYS_FASTER} days faster')
+print(f'   (bands C+D: 151 days external, 82 internal){"":3}revenue not lost {m(REV_LOST):>12}')
+print(f'   {"":<62}{"":->12}')
+print(f'   {"":<62}{m(PER_FILL):>12}  a fill')
+print(f'   Revenue is {100*REV_LOST/PER_FILL:.0f}% of it. This is a speed case, not a cost-per-hire case.')
 
-SUPABASE_USD, CLAUDE_USD, EMAIL_USD, MONITOR_USD = 25*12, 380.4, 150.0, 120.0
-ANALYST_HR, RECON_HRS = 375, 24
+# ══ THE THREE FILL RATES ══════════════════════════════════════════
+fills   = {r: VAC_YR * r for r in RATES}
+hiring  = {r: fills[r] * HIRE_AVOIDED for r in RATES}
+revenue = {r: fills[r] * REV_LOST for r in RATES}
+total   = {r: hiring[r] + revenue[r] for r in RATES}
+incr    = {r: total[r] - total[RATE_NOW] for r in RATES}
+incr3   = {r: incr[r] * 3 for r in RATES}
 
-def m(v): return f'P{v:,.0f}'
-
-# ══ NET VALUE OF ONE INTERNAL FILL ════════════════════════════════
-def net_fill(band):
-    """External hire, versus internal move plus the backfill it creates."""
-    bf = BACKFILL[band]
-    ext_cost = HIRE[band] + DAYS_EXT * day(band)
-    int_cost = (HRTA + DAYS_INT * day(band)          # the role itself, filled faster
-                + HIRE[bf] + DAYS_EXT * day(bf))     # the seat left behind
-    hire_part = HIRE[band] - HRTA - HIRE[bf]
-    vac_part  = (DAYS_EXT - DAYS_INT) * day(band) - DAYS_EXT * day(bf)
-    return ext_cost - int_cost, hire_part, vac_part
-
-print('══ WHAT ONE INTERNAL FILL IS ACTUALLY WORTH ══')
-print(f'   {"":22}{"hiring":>12}{"vacancy days":>15}{"NET":>12}')
-parts = {}
-for b in ('C', 'B'):
-    net, h, v = net_fill(b)
-    parts[b] = (h, v, net)
-    print(f'   Band {b} filled inside {m(h):>12}{m(v):>15}{m(net):>12}'
-          f'   (backfilled from band {BACKFILL[b]})')
-HIRE_PART = sum(parts[b][0]*MIX[b] for b in MIX) / NMIX
-VAC_PART  = sum(parts[b][1]*MIX[b] for b in MIX) / NMIX
-PER_FILL  = HIRE_PART + VAC_PART
-print(f'   {"Blended, 2024-2026":22}{m(HIRE_PART):>12}{m(VAC_PART):>15}{m(PER_FILL):>12}'
-      f'   ({MIX["B"]} band B, {MIX["C"]} band C over 3 yrs)')
-print(f'   Band C external hire costs {m(HIRE["C"])}; {m(HRTA)} of that is HR/TA cost we still pay '
-      f'internally, so {m(HIRE["C"]-HRTA)} is avoidable before the backfill.')
-
-# ══ COST OF TURNOVER AMONG THE TURNED DOWN ════════════════════════
-SAL_BLEND = sum(SAL_MO[b]*MIX[b] for b in MIX) / NMIX * MONTHS
-REPLACE = SAL_BLEND * 0.75
-print(f'\n══ THE COST OF SAYING NO ══')
-print(f'   MEASURED  {TD_2025} internal applicants turned down in 2025. {TD_STILL_HERE} are still here.')
-print(f'             {TD_LEFT} have left — {TD_ATTRITION*100:.1f}% of the cohort.')
-print(f'   Blended band B/C annual basic {m(SAL_BLEND)} -> replacement at 75% = {m(REPLACE)}')
-print(f'   NOT MEASURED  the comparator. Attrition among band B/C non-mass staff, 2025 — HR to confirm.')
-print(f'   {"comparator":>12}{"expected leavers":>18}{"excess people":>15}{"excess points":>15}{"cost of the excess":>20}')
-for c in COMPARATORS:
-    exp = TD_2025*c
-    print(f'   {c*100:>11.0f}%{exp:>18.1f}{TD_LEFT-exp:>15.1f}{(TD_ATTRITION-c)*100:>14.0f}pt'
-          f'{m((TD_LEFT-exp)*REPLACE):>20}' + ('   <- modelled' if abs((TD_ATTRITION-c)-EXCESS)<0.015 else ''))
-print(f'   The model uses {EXCESS*100:.0f} points throughout. Every peso of turnover benefit scales')
-print(f'   linearly with this input, so it is the single number most worth confirming.')
-
-# ══ 17% vs 30% vs 50%, COMPANY-WIDE ══════════════════════════════
-def scenario(rate, vac):
-    fills = vac * rate
-    apps  = fills / SUCCESS
-    return fills, apps, apps - fills
-
-print(f'\n══ STAYING AT {FILL_RATE*100:.0f}% vs 30% vs 50% — company-wide, {VAC_YR:.0f} vacancies a year ══')
-base_f, base_a, base_td = scenario(FILL_RATE, VAC_YR)
-rows = []
-for r in (FILL_RATE, 0.30, 0.50):
-    f, a, td = scenario(r, VAC_YR)
-    extra = f - base_f
-    h, v = extra*HIRE_PART, extra*VAC_PART
-    t = extra * EXCESS * REPLACE
-    rows.append((r, f, a, td, h, v, t, h+v+t))
-hdr = f'   {"internal fill rate":<22}{"17% today":>14}{"30%":>14}{"50%":>14}'
+print(f'\n══ STAYING AT 17% vs 30% vs 50% — company-wide, {VAC_YR} vacancies a year ══')
+hdr = f'   {"":<34}' + ''.join(f'{f"{r*100:.0f}%":>16}' for r in RATES)
 print(hdr)
-def line(lbl, fmt, idx):
-    print(f'   {lbl:<22}' + ''.join(f'{fmt(r[idx]):>14}' for r in rows))
-line('internal fills / yr',  lambda v: f'{v:,.0f}', 1)
-line('applications needed',  lambda v: f'{v:,.0f}', 2)
-line('turned down / yr',     lambda v: f'{v:,.0f}', 3)
-print(f'   {"":-<64}')
-line('hiring cost avoided',  lambda v: m(v) if v else '—', 4)
-line('vacancy days saved',   lambda v: m(v) if v else '—', 5)
-line('turnover avoided',     lambda v: m(v) if v else '—', 6)
-line('ANNUAL VALUE',         lambda v: m(v) if v else 'baseline', 7)
-print(f'\n   Staying at {FILL_RATE*100:.0f}% costs {m(rows[1][7])} a year against 30%, '
-      f'{m(rows[2][7])} against 50%.')
-print(f'   Reaching 30% needs internal applications to go from {base_a:,.0f} to {rows[1][2]:,.0f} a year '
-      f'({rows[1][2]/base_a:.1f}x). 50% needs {rows[2][2]/base_a:.1f}x.')
-print(f'   It also creates {rows[1][3]-base_td:,.0f} more rejections a year at 30% — which is why the '
-      f'gig, immersion and service-offer shelves exist.')
+print(f'   {"":<34}' + ''.join(f'{lbl:>16}' for lbl in
+      ('do nothing', 'benchmark', 'mature')))
+print('   ' + '-' * (34 + 16*3))
+for lbl, row in (('Internal fills a year', fills),
+                 ('Hiring cost avoided a year', hiring),
+                 ('Revenue lost to vacancy a year', revenue)):
+    fmt = (lambda v: f'{v:,.1f}') if row is fills else (lambda v: m(v))
+    print(f'   {lbl:<34}' + ''.join(f'{fmt(row[r]):>16}' for r in RATES))
+print('   ' + '-' * (34 + 16*3))
+print(f'   {"TOTAL a year":<34}' + ''.join(f'{m(total[r]):>16}' for r in RATES))
+print(f'   {"INCREMENTAL a year":<34}{"baseline":>16}' +
+      ''.join(f'{m(incr[r]):>16}' for r in RATES[1:]))
+print(f'   {"INCREMENTAL x 3 years":<34}{"baseline":>16}' +
+      ''.join(f'{m(incr3[r]):>16}' for r in RATES[1:]))
+print(f'\n   Applications have to rise from {fills[0.17]/SUCCESS:,.0f} a year to '
+      f'{fills[0.30]/SUCCESS:,.0f} for 30% ({fills[0.30]/fills[0.17]:.1f}x), '
+      f'{fills[0.50]/SUCCESS:,.0f} for 50% ({fills[0.50]/fills[0.17]:.1f}x).')
+print(f'   {APPLY_RATE*100:.0f}% of vacancies drew an internal applicant; {SUCCESS*100:.0f}% of applicants got the job.')
 
-# ══ THE PILOT: COST, BENEFIT, PAYBACK ════════════════════════════
-run_y1 = {'Supabase Pro + Auth': SUPABASE_USD*FX, 'Claude API (AI matching)': CLAUDE_USD*FX*PILOT/637,
-          'Transactional email': EMAIL_USD*FX*PILOT/637, 'Monitoring and logging': MONITOR_USD*FX}
-run_y2 = dict(run_y1, **{'Reconciliation, HR analyst': RECON_HRS*ANALYST_HR})
-R1, R2 = sum(run_y1.values()), sum(run_y2.values())
-cost = [B1+R1, B2+R2, R2]; TCO = sum(cost)
+# ══ COST, THREE SCOPES ════════════════════════════════════════════
+def cost_rows(i):
+    """Year 1 carries the whole build and a full year of run, per the sheet."""
+    run = sum(v[i] for v in RUN.values())
+    y1  = IT_BUILD + run
+    return [y1, run, run]
 
-pf, pa, ptd = scenario(FILL_RATE, PILOT_REQS)
-PART_RATE = 120/637
-def pilot_value(rate):
-    f, a, td = scenario(rate, PILOT_REQS)
-    extra = f - pf
-    return extra, extra*PER_FILL, extra*EXCESS*REPLACE
-x30, mob30, ret30 = pilot_value(0.30)
-MOBILITY = mob30 + ret30
-SHELVES = 120*0.03*(annual('nonmass')*0.75) + 54*0.03*(annual('mass')*0.75)
+costs = {}
+print(f'\n══ COST, THREE SCOPES ══')
+print(f'   {"":<34}' + ''.join(f'{lbl.split(" —")[0]:>15}' for lbl in SCOPES))
+print(f'   {"headcount":<34}' + ''.join(f'{n:>15,}' for n in SCOPES.values()))
+print(f'   {"Build (IT man-hours), one off":<34}' + ''.join(f'{m(IT_BUILD):>15}' for _ in SCOPES))
+for line, vals in RUN.items():
+    print(f'   {line + ", a year":<34}' + ''.join(f'{m(v):>15}' for v in vals))
+for lbl, idx in (('YEAR 1', 0), ('YEAR 2', 1), ('YEAR 3', 2)):
+    print(f'   {lbl:<34}' + ''.join(f'{m(cost_rows(i)[idx]):>15}' for i in range(3)))
+print('   ' + '-' * (34 + 15*3))
+for i, (lbl, n) in enumerate(SCOPES.items()):
+    costs[lbl] = sum(cost_rows(i))
+print(f'   {"THREE-YEAR TOTAL":<34}' + ''.join(f'{m(costs[l]):>15}' for l in SCOPES))
+print(f'   {"per employee a year":<34}' +
+      ''.join(f'{m(costs[l]/n/3):>15}' for l, n in SCOPES.items()))
+print(f'   NOTE  sheet N17/Q17 divide all three by 1,113. Corrected here: org wide is')
+print(f'         {m(costs["Org wide"]/20_470/3)} an employee a year, non-mass {m(costs["Non-mass only"]/1_986/3)} — not '
+      f'{m(costs["Org wide"]/1_113/3)} and {m(costs["Non-mass only"]/1_113/3)}.')
 
-print(f'\n══ THE PILOT — {PILOT:,} people (IT, HR, operations mass and non-mass) ══')
-print(f'   BUILD, costed by IT in man-hours (excludes AI)  {m(IT_BUILD)}  '
-      f'-> year 1 {m(B1)} · year 2 {m(B2)}')
-print(f'   RUN, a year')
-for k in run_y2: print(f'     {k:<34}{m(run_y2[k]):>10}' + ('' if k in run_y1 else '  year 2+'))
-print(f'     {"year 1 / year 2+":<34}{m(R1)+" / "+m(R2):>10}')
-print(f'   YEAR 1 {m(cost[0])} · YEAR 2 {m(cost[1])} · YEAR 3 {m(cost[2])}')
-print(f'   THREE-YEAR COST {m(TCO)}  US${TCO/FX:,.0f}  ·  {m(TCO/PILOT/3)} per employee a year')
-print(f'\n   BENEFIT, a year, at a 30% internal fill rate on {PILOT_REQS} requisitions')
-print(f'     Measured  · mobility, {x30:.0f} more internal fills  {m(mob30):>12}')
-print(f'     Measured  · turnover among those {x30:.0f} people   {m(ret30):>12}')
-print(f'     {"":<49}{m(MOBILITY):>12}  floor')
-print(f'     Judgement · retention across 174 shelf participants {m(SHELVES):>10}')
-print(f'     {"":<49}{m(MOBILITY+SHELVES):>12}  expected')
+# ══ THE CASE ══════════════════════════════════════════════════════
+def payback_simple(cost, benefit3):
+    """The sheet's payback: cost as a share of three years of benefit."""
+    return cost / benefit3 * 36
 
-def payback(costs, build, annual_benefit, horizon=84):
-    """The month cumulative benefit overtakes cumulative cost.
+def payback_ramped(cost_years, benefit_yr, horizon=84):
+    """The same question with the build paid up front and the benefit ramping.
 
-    Build spend lands in the first quarter of the year it falls in; run cost
-    spreads evenly over its twelve months. Benefit does not start on day one —
-    shelves have to be seeded and skills loaded — so it begins in month 4 and
-    runs at 40% of rate through year 1. Past the modelled horizon both sides
-    continue at the year-3 run rate.
+    Build lands in the first quarter. Benefit starts in month 4 — shelves have
+    to be seeded and skills loaded before anything matches — and runs at 40% of
+    rate through year one.
     """
-    if annual_benefit <= 0: return None
+    if benefit_yr <= 0: return None
     cb = cc = 0.0
-    n = len(costs)
     for mo in range(1, horizon + 1):
-        y = (mo - 1) // 12
-        yc = min(y, n - 1)
-        run, bld = costs[yc] - build[yc], (build[yc] if y < n else 0)
-        cc += run / 12 + (bld / 3 if (mo - 1) % 12 < 3 else 0)
+        y  = (mo - 1) // 12
+        yc = min(y, len(cost_years) - 1)
+        bld = IT_BUILD if (y == 0 and (mo - 1) % 12 < 3) else 0
+        cc += (cost_years[yc] - (IT_BUILD if y == 0 else 0)) / 12 + bld / 3
         if mo >= 4:
-            cb += annual_benefit * 0.4 / 9 if y == 0 else annual_benefit / 12
+            cb += benefit_yr * 0.4 / 9 if y == 0 else benefit_yr / 12
         if cb >= cc: return mo
     return None
 
+B30, B50 = incr3[0.30], incr3[0.50]
+print(f'\n══ THE CASE — three years at the 30% benchmark ══')
+print(f'   Benefit is ORG-WIDE at every rate: {VAC_YR} vacancies a year is the whole')
+print(f'   company. So only the org-wide column is a true benefit-cost ratio. The other')
+print(f'   two compare a company-wide prize against a fenced-off cost — useful for')
+print(f'   "what would it take to be wrong", not a return. (Sheet B51 asks this.)')
+print(f'\n   {"":<24}{"3-yr cost":>14}{"BCR @30%":>11}{"BCR @50%":>11}'
+      f'{"payback":>10}{"ramped":>9}{"fills":>8}')
+for lbl, n in SCOPES.items():
+    c = costs[lbl]
+    i = list(SCOPES).index(lbl)
+    pr = payback_ramped(cost_rows(i), incr[0.30])
+    tag = '' if lbl == 'Org wide' else '  *'
+    print(f'   {lbl:<24}{m(c):>14}{B30/c:>11.1f}{B50/c:>11.1f}'
+          f'{payback_simple(c, B30):>9.1f}mo{(str(pr)+"mo") if pr else ">84mo":>9}'
+          f'{c/PER_FILL:>8.1f}{tag}')
+print(f'   * benefit is org-wide; not a like-for-like ratio')
+print(f'\n   Contribution margin, org wide (sheet H2/H3, savings less cost)')
+print(f'     at 30%  {mm(B30)} - {mm(costs["Org wide"])} = {mm(B30 - costs["Org wide"])}')
+print(f'     at 50%  {mm(B50)} - {mm(costs["Org wide"])} = {mm(B50 - costs["Org wide"])}')
+print(f'   Break-even is {costs["Org wide"]/PER_FILL:.1f} extra internal fills over three years,')
+print(f'   against {fills[0.30]-fills[0.17]:.0f} more a year at the benchmark. It clears in the first year.')
 
-def case(annual_benefit, label):
-    flow = [annual_benefit*0.4, annual_benefit, annual_benefit]
-    B3 = sum(flow)
-    npv = sum((flow[i]-cost[i])/(1+DISC)**(i+1) for i in range(3))
-    pay = payback(cost, [B1, B2, 0], annual_benefit)
-    print(f'   {label:<34}{m(B3):>13}{m(TCO):>12}{B3/TCO:>7.1f}{m(npv):>13}'
-          f'{(str(pay)+" mo") if pay else ">84 mo":>9}')
-    return B3/TCO, pay
+# ══ BUILD VS BUY ══════════════════════════════════════════════════
+print(f'\n══ BUILD VS BUY — three years, US${FX:.0f} = P1 ══')
+print(f'   {"":<26}' + ''.join(f'{lbl.split(" —")[0]:>17}' for lbl in SCOPES))
+print(f'   {"Growth, built in-house":<26}' + ''.join(f'{m(costs[l]):>17}' for l in SCOPES))
+for vlbl, (seat, impl, floor) in VENDORS.items():
+    cells, notes = [], []
+    for lbl, n in SCOPES.items():
+        quoted = impl + seat * n * 3
+        binding = max(quoted, floor)
+        cells.append(f'{m(binding*FX):>17}')
+        notes.append('minimum' if binding > quoted else 'per seat')
+    print(f'   {vlbl:<26}' + ''.join(cells))
+    print(f'   {"  US$" + str(seat) + "/seat/yr + $" + f"{impl:,}" + " impl":<26}'
+          + ''.join(f'{nt:>17}' for nt in notes))
+    print(f'   {"  multiple vs building":<26}'
+          + ''.join(f'{max(impl+seat*n*3, floor)*FX/costs[l]:>16.1f}x'
+                    for l, n in SCOPES.items()))
+print(f'   NOTE  sheet Q19/Q20 price 1,986 seats on the per-seat rate alone, giving')
+print(f'         {m((70_000+12*1986*3)*FX)} and {m((250_000+30*1986*3)*FX)} — both BELOW the flat minimum the same')
+print(f'         sheet applies at 1,113 seats. Below a vendor minimum the price stops')
+print(f'         moving, so the floor is used here at both of the smaller scopes.')
+print(f'   Workday Talent Marketplace is a module on Workday HCM, which we do not run.')
+print(f'   Buying it means buying the core HCM first, well above these numbers.')
 
-print(f'\n══ THE CASE — three years, {DISC*100:.0f}% discount rate ══')
-print(f'   {"":<34}{"benefit":>13}{"cost":>12}{"BCR":>7}{"NPV":>13}{"payback":>9}')
-case(MOBILITY, 'Measured only — the floor')
-case(MOBILITY+SHELVES, 'Expected — both streams')
-case(SHELVES, 'Shelves only, no extra fills')
-print(f'\n   Break-even needs {TCO/(PER_FILL+EXCESS*REPLACE)/3:.1f} extra internal fills a year, '
-      f'{TCO/(PER_FILL+EXCESS*REPLACE):.0f} over three years.')
-print(f'   One extra internal fill is worth {m(PER_FILL+EXCESS*REPLACE)}.')
+# ══ WHAT v2 TOOK OUT, AND WHY IT MATTERS ══════════════════════════
+print(f'\n══ WHAT IS NO LONGER IN THE CASE ══')
+print(f'   TURNOVER. v2 removes the avoided-replacement-cost benefit entirely, so')
+print(f'   nothing in the numbers above depends on the band B/C attrition comparator')
+print(f'   HR has not yet given us. That is a simplification worth saying out loud.')
+print(f'   The evidence still stands on its own as a reason the shelves exist:')
+print(f'     {REJ} internal applicants turned down 2024-2026 ({", ".join(f"{y}: {v}" for y,v in REJECTED.items())})')
+print(f'     {RES} of them have since resigned — {REJ_ATTRITION*100:.0f}%, against a {ATTRITION_AVE*100:.0f}% company average,')
+print(f'     with career the top reason given. That is {(REJ_ATTRITION-ATTRITION_AVE)*100:.0f} points of excess.')
+print(f'   MyPulse eNPS on growth is {ENPS_GROWTH*100:.0f}% — people want this; they cannot find it.')
+print(f'   BACKFILL NETTING. v2 counts the full P{HIRE_AVOIDED:,} of hiring cost avoided. An')
+print(f'   internal move does leave a seat one band down, and v1 deducted P6,977 for it.')
+print(f'   Reinstating that deduction would cut the hiring line by {6977/PER_FILL*100:.1f}% of the case.')
 
-print(f'\n══ HOW MUCH THE UNCONFIRMED COMPARATOR MATTERS ══')
-print(f'   {"comparator":>12}{"excess":>9}{"floor BCR":>12}{"expected BCR":>15}{"worth per fill":>17}')
-for c in COMPARATORS:
-    ex = TD_ATTRITION - c
-    mob = x30*PER_FILL; ret = x30*ex*REPLACE
-    fl = (mob+ret)*2.4/TCO
-    exp = (mob+ret+SHELVES)*2.4/TCO
-    print(f'   {c*100:>11.0f}%{ex*100:>8.0f}pt{fl:>12.1f}{exp:>15.1f}{m(PER_FILL+ex*REPLACE):>17}')
-print('   Even at a 35% comparator the expected case clears 4. The floor is what moves.')
+# ══ THE ONE NUMBER THAT CARRIES EVERYTHING ════════════════════════
+print(f'\n══ SENSITIVITY — revenue per employee per day ══')
+print(f'   {REV_LOST/PER_FILL*100:.0f}% of the benefit is one input, so it is the only one worth stress-testing.')
+print(f'   The sheet header reads "Contribution Margin". If the CFO applies one —')
+print(f'   lost revenue is not lost profit — the whole case scales with it:')
+print(f'   {"margin applied":>16}{"per fill":>13}{"3-yr @30%":>15}{"BCR org wide":>15}')
+for margin in (1.00, 0.50, 0.30, 0.20):
+    pf = HIRE_AVOIDED + REV_LOST * margin
+    b3 = (fills[0.30] - fills[0.17]) * pf * 3
+    lab = 'none (as built)' if margin == 1 else f'{margin*100:.0f}%'
+    print(f'   {lab:>16}{m(pf):>13}{mm(b3):>15}{b3/costs["Org wide"]:>15.1f}')
+print(f'   Even at a 20% contribution margin the org-wide case returns '
+      f'{((fills[0.30]-fills[0.17])*(HIRE_AVOIDED+REV_LOST*0.20)*3)/costs["Org wide"]:.1f}x.')
+print(f'   Also worth naming: the {DAYS_FASTER}-day gap is bands C+D combined, while the')
+print(f'   hiring-cost line is band C alone. Band C on its own is 42 days (177 vs 135),')
+print(f'   which would put revenue lost at {m(REV_PER_EMP_DAY*42)} and a fill at '
+      f'{m(HIRE_AVOIDED + REV_PER_EMP_DAY*42)}.')
 
-# ══ SCALING TO THE WHOLE COMPANY ══════════════════════════════════
-# The build is bought once and does not move. Only run scales, and it scales
-# by what actually drives each line: Claude and email by headcount, Supabase by
-# tier, monitoring by log volume, reconciliation by referral volume.
-FULL = 20_470
-FULL_NONMASS = 1_991
-FULL_MASS = FULL - FULL_NONMASS
-
-def run_at(n, year_two):
-    big = n > 2_000
-    return {
-        'Supabase Pro + Auth':        (85*12 if big else SUPABASE_USD) * FX,
-        'Claude API (AI matching)':   CLAUDE_USD * FX * n / 637,
-        'Transactional email':        EMAIL_USD  * FX * n / 637,
-        'Monitoring and logging':     MONITOR_USD * FX * (2 if big else 1),
-        'Reconciliation, HR analyst': (160 if big else RECON_HRS) * ANALYST_HR if year_two else 0,
-    }
-
-fr1, fr2 = run_at(FULL, False), run_at(FULL, True)
-FR1, FR2 = sum(fr1.values()), sum(fr2.values())
-fcost = [B1+FR1, B2+FR2, FR2]; FTCO = sum(fcost)
-
-print(f'\n══ SCALING TO ALL {FULL:,} EMPLOYEES ══')
-print(f'   BUILD  {m(IT_BUILD)} — unchanged. The same software serves {PILOT:,} or {FULL:,}.')
-print(f'   RUN, a year')
-for k in fr2:
-    print(f'     {k:<30}{m(fr2[k]):>12}   (pilot {m(dict(run_at(PILOT, True))[k])})')
-print(f'     {"year 1 / year 2+":<30}{m(FR1)+" / "+m(FR2):>12}')
-print(f'   YEAR 1 {m(fcost[0])} · YEAR 2 {m(fcost[1])} · YEAR 3 {m(fcost[2])}')
-print(f'   THREE-YEAR {m(FTCO)}  US${FTCO/FX:,.0f}  ·  {m(FTCO/FULL/3)} per employee a year')
-print(f'   vs the pilot: {m(FTCO-TCO)} more over three years for {FULL-PILOT:,} more people')
-print(f'                 = {m((FTCO-TCO)/(FULL-PILOT)/3)} per extra employee a year')
-print(f'   AI is {100*fr2["Claude API (AI matching)"]/FR2:.0f}% of the full-org run, against '
-      f'{100*dict(run_at(PILOT,True))["Claude API (AI matching)"]/R2:.0f}% at the pilot — the only line that really scales.')
-
-print(f'\n   BENEFIT at full scale')
-print(f'     Mobility — the 30% case on slide 8 IS company-wide      {m(rows[1][7]):>13}/yr')
-print(f'       (the pilot only captures its own slice: {m(MOBILITY)}/yr)')
-fp_nm = FULL_NONMASS*PART_RATE if False else FULL_NONMASS*(120/637)
-fp_ms = FULL_MASS*(120/637)*0.60
-fshelves = fp_nm*0.03*(annual('nonmass')*0.75) + fp_ms*0.03*(annual('mass')*0.75)
-print(f'     Shelves — JUDGEMENT, {fp_nm+fp_ms:,.0f} participants a year     {m(fshelves):>13}/yr')
-print(f'       ({fp_nm:.0f} non-mass + {fp_ms:,.0f} mass ops at 60% of the office rate)')
-print(f'   BCR, mobility only  {rows[1][7]*2.4/FTCO:>5.1f}   |  with the shelves {(rows[1][7]+fshelves)*2.4/FTCO:>5.1f}')
-print(f'   The pilot spends {m(TCO)} to capture {m(MOBILITY*2.4)} of a {m(rows[1][7]*2.4)} three-year prize.')
-
-FULL_BEN_FLOOR = rows[1][7]                 # mobility + turnover, company-wide, 30% case
-FULL_BEN_EXP   = FULL_BEN_FLOOR + fshelves  # plus the shelves
-fbuild = [B1, B2, 0]
-print(f'   PAYBACK on the {m(FTCO)} full-org spend')
-for lbl, ben in (('measured only', FULL_BEN_FLOOR), ('expected, with shelves', FULL_BEN_EXP)):
-    pay = payback(fcost, fbuild, ben)
-    print(f'     {lbl:<24}{m(ben)}/yr  ->  {(str(pay)+" months") if pay else ">84 months"}')
-
-# ══ vs BUYING ═════════════════════════════════════════════════════
-vlo, vhi = (75_000+2*50_000)*FX, (240_000+2*120_000)*FX
-print(f'\n══ vs AN EXTERNAL PLATFORM, three years at {PILOT:,} seats ══')
-print(f'   Growth, built in-house  {m(TCO):>12}  US${TCO/FX:>9,.0f}   {m(TCO/PILOT)}/seat')
-print(f'   Gloat · Fuel50 · Eightfold · Workday  {m(vlo)} - {m(vhi)}   US$175,000 - 480,000')
-print(f'   {vlo/TCO:.0f}x to {vhi/TCO:.0f}x cheaper. A vendor at the low band needs '
-      f'{vlo/(PER_FILL+EXCESS*REPLACE):.0f} extra internal fills just to cover its licence; Growth needs '
-      f'{TCO/(PER_FILL+EXCESS*REPLACE):.0f}.')
-
-# ── the same question at full scale ───────────────────────────────
-# Below every vendor minimum at 1,113 seats we would pay a floor price.
-# At 20,470 we are past the minimums, so the per-seat rate drives it and
-# the gap widens rather than closes. Bands are modelled from how enterprise
-# HR SaaS is structured — US$/employee/year plus a one-off implementation.
-# They are NOT quotes; none of these vendors publishes per-seat pricing.
-VENDOR_FULL = {
-    # tier: (seat_lo, seat_hi, impl_lo, impl_hi)  all US$
-    'Fuel50 · Gloat  (opportunity marketplace)':      (8,  18,  50_000, 120_000),
-    'Eightfold · Workday  (skills engine in a suite)': (20, 45, 150_000, 400_000),
+# ══ CHECK AGAINST THE WORKBOOK ════════════════════════════════════
+CELLS = {   # tab v2 cell: value openpyxl reads
+    'C33 hiring cost avoided':      (HIRE_AVOIDED,        31_989),
+    'C36 revenue lost':             (REV_LOST,            391_230),
+    'F48 value per fill':           (PER_FILL,            423_219),
+    'E31 fills at 17%':             (fills[0.17],         57.120000000000005),
+    'F31 fills at 30%':             (fills[0.30],         100.8),
+    'G31 fills at 50%':             (fills[0.50],         168),
+    'E38 total at 17%':             (total[0.17],         24_174_269.28),
+    'F38 total at 30%':             (total[0.30],         42_660_475.2),
+    'G38 total at 50%':             (total[0.50],         71_100_792),
+    'F39 incremental at 30%':       (incr[0.30],          18_486_205.92),
+    'G39 incremental at 50%':       (incr[0.50],          46_926_522.72),
+    'F40 x3 at 30%':                (incr3[0.30],         55_458_617.76),
+    'G40 x3 at 50%':                (incr3[0.50],         140_779_568.16),
+    'L16 pilot 3-yr cost':          (costs['Pilot — IT, HR, Ops'], 2_058_953),
+    'N16 org 3-yr cost':            (costs['Org wide'],   5_315_207),
+    'Q16 non-mass 3-yr cost':       (costs['Non-mass only'], 2_191_976),
+    'N19 Gloat org wide':           (max(70_000+12*20_470*3, 175_000)*FX, 49_222_120),
+    'N20 Eightfold org wide':       (max(250_000+30*20_470*3, 480_000)*FX, 127_630_300),
+    'L19 Gloat pilot':              (max(70_000+12*1_113*3, 175_000)*FX, 10_675_000),
+    'L20 Eightfold pilot':          (max(250_000+30*1_113*3, 480_000)*FX, 29_280_000),
+    'E50 payback, org wide':        (payback_simple(costs['Org wide'], B30), 3.4502744519898756),
+    'E49 fills to break even':      (costs['Org wide']/PER_FILL, 12.558999005243146),
+    'F18 rejected-cohort attrition':(REJ_ATTRITION,       0.2696245733788396),
 }
-print(f'\n══ vs AN EXTERNAL PLATFORM, three years at {FULL:,} seats ══')
-print(f'   {"Growth, built in-house":<42}{m(FTCO):>14}  US${FTCO/FX:>9,.0f}   {m(FTCO/FULL/3)}/employee/yr')
-for tier, (slo, shi, ilo, ihi) in VENDOR_FULL.items():
-    tlo, thi = (ilo + 3*FULL*slo), (ihi + 3*FULL*shi)
-    print(f'   {tier:<42}{m(tlo*FX)} - {m(thi*FX)}   US${tlo:,.0f} - {thi:,.0f}')
-    print(f'   {"":<42}US${slo}-{shi}/employee/yr licence + US${ilo//1000}-{ihi//1000}k implementation'
-          f'  =  {m(tlo*FX/FULL/3)}-{m(thi*FX/FULL/3)}/employee/yr')
-_lo = (50_000 + 3*FULL*8)*FX
-_hi = (400_000 + 3*FULL*45)*FX
-_unit = PER_FILL + EXCESS*REPLACE
-print(f'   {_lo/FTCO:.0f}x to {_hi/FTCO:.0f}x more than building it. To cover its own licence a vendor needs')
-print(f'   {_lo/_unit:.0f} to {_hi/_unit:,.0f} extra internal fills over three years; Growth needs {FTCO/_unit:.0f}.')
-print(f'   There are only {VAC_YR*3:,.0f} vacancies in three years, so the top of the Eightfold band has to')
-print(f'   fill {100*_hi/_unit/(VAC_YR*3):.0f}% of every requisition internally before it breaks even.')
-print( '   CAVEAT: Workday Talent Marketplace is a module on Workday HCM, which we do not run —')
-print( '   buying it means buying the core HCM first, an order of magnitude above these numbers.')
-
-# ── payback at the two spend levels people keep asking about ──────
-# P2,049,954 is the pilot as costed. P5,315,207 is the full-org figure with one
-# extra analyst year in it (P60,000 above FTCO), which is the number circulating
-# in the spreadsheet — carried here so both answers sit on the same benefit base.
-print('\n══ PAYBACK, SIDE BY SIDE ══')
-ASKED = {
-    f'Pilot — 1,113 people  {m(TCO)}':  (cost,  [B1, B2, 0], MOBILITY,       MOBILITY + SHELVES),
-    f'Full org — 20,470     {m(FTCO)}': (fcost, fbuild,      FULL_BEN_FLOOR, FULL_BEN_EXP),
-    f'Full org as budgeted  {m(FTCO+60_000)}':
-        ([fcost[0], fcost[1], fcost[2] + 60_000], fbuild, FULL_BEN_FLOOR, FULL_BEN_EXP),
-}
-print(f'   {"":<40}{"floor":>24}{"expected":>26}')
-for lbl, (cs, bd, flo, exp) in ASKED.items():
-    pf_, pe_ = payback(cs, bd, flo), payback(cs, bd, exp)
-    print(f'   {lbl:<40}{m(flo)+"/yr":>15}{(str(pf_)+" mo") if pf_ else ">84 mo":>9}'
-          f'{m(exp)+"/yr":>17}{(str(pe_)+" mo") if pe_ else ">84 mo":>9}')
-print('   Benefit starts in month 4 and runs at 40% of rate through year 1: shelves have to be')
-print('   seeded and skills loaded before anything matches. Build spend lands in the first quarter.')
-
-# ══ A THIRD SCOPE — ALL NON-MASS, NOBODY ELSE ═════════════════════
-# 1,986 head office and non-mass staff. This is the scope that matters most
-# to the mobility case, because band B and C vacancies ARE non-mass roles:
-# a non-mass-only rollout is 10% of headcount but captures essentially the
-# whole mobility prize. What it gives up is the shelf benefit in mass
-# operations, which is the larger and far softer of the two streams.
-NM = 1_986
-nm1, nm2 = run_at(NM, False), run_at(NM, True)
-NR1, NR2 = sum(nm1.values()), sum(nm2.values())
-ncost = [B1 + NR1, B2 + NR2, NR2]
-NTCO = sum(ncost)
-
-print(f'\n══ SCOPE: ALL NON-MASS, {NM:,} PEOPLE ══')
-print(f'   BUILD  {m(IT_BUILD)} — unchanged. The same software serves 1,113, 1,986 or 20,470.')
-print(f'   RUN, a year{"":22}{"non-mass":>12}{"pilot":>12}{"full org":>12}')
-for k in nm2:
-    print(f'     {k:<31}{m(nm2[k]):>12}{m(dict(run_at(PILOT,True))[k]):>12}{m(fr2[k]):>12}')
-print(f'     {"year 1 / year 2+":<31}{m(NR1)+" / "+m(NR2):>12}')
-print(f'   YEAR 1 {m(ncost[0])} · YEAR 2 {m(ncost[1])} · YEAR 3 {m(ncost[2])}')
-print(f'   THREE-YEAR {m(NTCO)}  US${NTCO/FX:,.0f}  ·  {m(NTCO/NM/3)} per employee a year')
-print(f'   NOTE  {NM:,} sits {2_000-NM} people under the 2,000 threshold where this model steps')
-print(f'         Supabase up a tier. If it tips, add {m((85*12-SUPABASE_USD)*FX)} a year plus '
-      f'{m(MONITOR_USD*FX)} monitoring.')
-
-# Benefit. Mobility is a band B/C story, so a non-mass rollout captures it all.
-NM_MOB = rows[1][7]
-NM_PARTS = NM * (120/637)
-NM_SHELF = NM_PARTS * 0.03 * (annual('nonmass') * 0.75)
-print(f'\n   BENEFIT, a year')
-print(f'     Mobility — the 30% case, ASSUMED fully inside this scope        {m(NM_MOB):>12}')
-print(f'     Shelves — JUDGEMENT, {NM_PARTS:,.0f} participants a year{"":18}{m(NM_SHELF):>12}')
-print(f'     {"":<62}{m(NM_MOB+NM_SHELF):>12}  expected')
-print(f'   BCR  {NM_MOB*2.4/NTCO:.1f} on mobility alone  |  {(NM_MOB+NM_SHELF)*2.4/NTCO:.1f} with the shelves')
-print(f'   PAYBACK  floor {payback(ncost, fbuild, NM_MOB)} months  ·  '
-      f'expected {payback(ncost, fbuild, NM_MOB+NM_SHELF)} months')
-print(f'   vs FULL ORG  {m(FTCO-NTCO)} cheaper over three years, keeping the whole mobility stream')
-print(f'   ASSUMPTION, and it is the load-bearing one on this scope: that the 1,008 internally')
-print(f'   posted vacancies are band B and C roles, i.e. non-mass. The hiring-cost file only gives')
-print(f'   us band-level counts for external hires, not for the internal postings. If some share')
-print(f'   of the 1,008 are band M, that share of the mobility benefit sits outside this scope and')
-print(f'   the BCR falls with it. Recruitment can settle this from the posting log.')
-print(f'   The {FULL-NM:,} mass operations staff cost {m(FTCO-NTCO)} to add and bring only the shelf')
-print(f'   stream — {m(FULL_BEN_EXP-NM_MOB-NM_SHELF)}/yr of judgement, none of it measured.')
-
-# vs buying, at this scope.
-print(f'\n   vs AN EXTERNAL PLATFORM at {NM:,} seats, three years')
-print(f'     {"Growth, built in-house":<42}{m(NTCO):>14}  US${NTCO/FX:>9,.0f}   {m(NTCO/NM/3)}/employee/yr')
-for tier, (slo, shi, ilo, ihi) in VENDOR_FULL.items():
-    # Below ~2,000 seats every vendor in the set is under its own minimum, so
-    # the licence is a floor price, not a per-seat rate. Both are shown.
-    seat_lo, seat_hi = ilo + 3*NM*slo, ihi + 3*NM*shi
-    flo_lo, flo_hi = 175_000, 480_000                    # the same minimum-contract floor
-                                                         # quoted at the pilot: below a vendor's
-                                                         # seat minimum the price stops moving
-    tlo, thi = max(seat_lo, flo_lo), max(seat_hi, flo_hi)
-    print(f'     {tier:<42}{m(tlo*FX)} - {m(thi*FX)}   US${tlo:,.0f} - {thi:,.0f}')
-    binds = ('the vendor minimum binds' if tlo > seat_lo else 'the per-seat rate binds')
-    print(f'     {"":<42}at seats US${seat_lo:,.0f}-{seat_hi:,.0f}; {binds} at this size')
-    print(f'     {"":<42}= {m(tlo*FX/NM/3)}-{m(thi*FX/NM/3)}/employee/yr, {tlo*FX/NTCO:.0f}x-{thi*FX/NTCO:.0f}x building it')
+bad = [(k, a, b) for k, (a, b) in CELLS.items() if abs(a - b) > max(1.0, abs(b) * 1e-9)]
+print(f'\n══ CHECK — {len(CELLS)-len(bad)}/{len(CELLS)} cells reproduce tab v2 exactly ══')
+for k, a, b in bad:
+    print(f'   MISMATCH {k}: model {a:,.4f} vs sheet {b:,.4f}')
+if not bad:
+    print('   Every figure above is the workbook. The four departures are formula')
+    print('   corrections, listed in the docstring and flagged where they appear:')
+    print('     N17/Q17 per-employee cost divided by the wrong headcount')
+    print('     Q19/Q20 vendor priced below the sheet\'s own contract minimum')
+    print('     E50 payback ignores the build landing up front — ramped figure added')
+    print('     B51 answered: benefit is org-wide, so only that column is a true BCR')
