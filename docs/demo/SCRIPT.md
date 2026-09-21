@@ -1,45 +1,53 @@
-# Growth — 89-second demo film
-**Narration script and shot list.** 175 words · 89 seconds · 14 beats.
+# Growth — 95-second walkthrough
+**Narration script and shot list.** 172 words · 95 seconds · 13 beats.
+
+One continuous journey, shot live against the real prototype: a manager posts
+a gig, HR approves it, an employee finds it, applies, their manager releases
+the time, the host picks them, the work is rated, and the dashboard counts it.
+The gig posted in beat 3 is the same gig applied for in beat 9 — nothing is
+staged between takes.
 
 ## Files
 | File | Use |
 |---|---|
-| `growth-90s.mp4` | The film with narration. |
-| `growth-90s-silent.mp4` | Same cut, captions only — for narrating live. |
+| `growth-walkthrough.mp4` | The film with narration. |
+| `growth-walkthrough-silent.mp4` | Same cut, captions only — for narrating live. |
 | `narration-guide.wav` | The narration track on its own. |
 | `record.js` | Reshoots the film against the current prototype. |
 
 ## Delivery direction
-Unhurried and warm. Think natural-history documentary, not advertisement:
-the pace of someone describing something they find genuinely interesting,
-with a beat of silence after each full stop. Drop pitch slightly on the last
-three words of each section. Never sell — the numbers do that.
+Unhurried and warm. Documentary, not advertisement: the pace of someone
+describing something they find genuinely interesting, with a beat of silence
+after each full stop. Drop pitch slightly on the last three words of each
+section. Never sell — the numbers do that.
 
-Two lines carry the argument and are given extra air in the cut:
-*"You correct it. You don't write it."* and *"A stretch is a choice, not a
-permission."* Both have a longer pause after them. Keep that if you re-record.
+Three lines carry the argument and are given extra air in the cut:
+*"You correct it. You don't begin from scratch."*, *"A stretch is a choice,
+not a permission."* and the closing pair.
 
 ## The cut
 | # | In | On screen | Narration |
 |---|----|-----------|-----------|
 | 1 | 0:00.00 | Home hero | Home Credit fills seventeen per cent of its roles from the inside. Growth is how that changes. |
-| 2 | 0:07.75 | The four opportunity cards | Four ways to move. A gig. An immersion. A service offer, where you publish what you can teach. And permanent roles, applied for in HC Connect. |
-| 3 | 0:20.11 | Profile, skills already populated | Nobody begins with an empty profile. |
-| 4 | 0:23.79 | Skills upload — HC Connect, MyDevelopment, LinkedIn, CSV | HR loads what the company already knows. HC Connect, MyDevelopment, your public LinkedIn skills. |
-| 5 | 0:32.75 | Provenance chips on the profile | You correct it. You don't write it. |
-| 6 | 0:36.61 | My Top Matches, score reasoning open | Every opportunity is scored against that profile, and shows its reasoning. |
-| 7 | 0:42.72 | All Opportunities, nothing filtered | The score never blocks you. Every opportunity stays visible. A stretch is a choice, not a permission. |
-| 8 | 0:51.31 | Post Opportunity form | Anyone can post. Five minutes, and HR approves it before it goes live. |
-| 9 | 0:57.99 | Host reviewing an applicant — 87% fit, endorsements | A host sees what each applicant has finished, and who vouched for it. |
-| 10 | 1:03.70 | HR dashboard — impact tiles, approvals, stale posts | HR sees the whole pilot. What is waiting, what has gone stale, what it has been worth. |
-| 11 | 1:11.34 | Download raw reports | Every figure downloads as the rows behind it. |
-| 12 | 1:15.32 | Rate Growth | People rate the product itself, one to five. |
-| 13 | 1:19.75 | FAQ, an answer open | The questions people actually ask are answered in the app. |
-| 14 | 1:24.34 | Close on the hero | Work people can see. Skills we can prove. |
+| 2 | 0:07.80 | The four shelves — gig, immersion, service offer, permanent vacancy | Four ways to grow. A gig. An immersion. A service offer you publish yourself. And a permanent vacancy, applied for in HC Connect. |
+| 3 | 0:19.43 | A manager fills the Post Opportunity form | It starts with someone posting. A title, the work, and the skills it needs. |
+| 4 | 0:28.63 | HR approves it out of the queue — it goes live | Nothing goes live until HR approves it. |
+| 5 | 0:34.63 | The employee profile, already populated | Nobody begins with an empty profile. HR has already loaded what the company knows. |
+| 6 | 0:44.43 | Provenance chips on the skills | You correct it. You don't begin from scratch. |
+| 7 | 0:49.07 | My Top Matches, the score explaining itself | Every opportunity is scored against that profile, and shows its reasoning. |
+| 8 | 0:55.37 | All Opportunities — nothing filtered out | The score never blocks you. A stretch is a choice, not a permission. |
+| 9 | 1:01.37 | Applying, with the manager release checkbox | You apply in one click, and your manager releases the time before anything starts. |
+| 10 | 1:09.97 | The host opens the applicant's evidence | The host sees what each applicant has finished, and who vouched for it. |
+| 11 | 1:15.97 | Close-out — the host rates the work five stars | At the end, the host rates the work. Four stars verifies the skills it used. |
+| 12 | 1:22.97 | HR dashboard — ₱4.23M across twelve hires | Twelve internal hires. Four point two three million pesos we did not spend on recruitment. |
+| 13 | 1:30.48 | Close on the hero | Work people can see. Skills we can prove. |
 
 ## Re-recording the voice
-The beats are cut to the narration, so a re-recorded track must match the
-timings above or the film needs reshooting — `node docs/demo/record.js <dir>`
-reads its beat lengths from the same table and will re-cut to whatever you
-record. Record at 48 kHz in a soft room; a duvet over the microphone beats
-any plugin.
+Beats are cut to the narration, so a replacement track must match the in-points
+above. `node docs/demo/record.js <dir>` reads its beat lengths from the same
+table and re-cuts to whatever you record. Record at 48 kHz in a soft room.
+
+## A note on the narration shipped here
+It is espeak-ng, a formant synthesiser — the only engine reachable from the
+build environment. Accurate and correctly timed; it does not sound like a
+person. Use the silent cut in front of a panel unless the voice is replaced.
