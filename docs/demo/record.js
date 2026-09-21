@@ -9,19 +9,19 @@ const { chromium } = require('/opt/node22/lib/node_modules/playwright')
 const OUT = process.argv[2]
 
 const BEATS = [
-  { t: 7800,  cap: 'Home Credit fills 17% of its roles from the inside.\nGrowth is how that changes.' },
-  { t: 11630, cap: 'Four ways to grow — a gig, an immersion, a service offer,\nand a permanent vacancy applied for in HC Connect.' },
-  { t: 9200, cap: 'It starts with someone posting — a title, the work,\nand the skills it needs.' },
-  { t: 6000,  cap: 'Nothing goes live until HR approves it.' },
-  { t: 9800,  cap: 'Nobody begins with an empty profile — HR has already\nloaded what the company knows.' },
-  { t: 4645,  cap: "You correct it. You don't begin from scratch." },
-  { t: 6300,  cap: 'Every opportunity is scored against that profile,\nand shows its reasoning.' },
-  { t: 6000,  cap: 'The score never blocks you.\nA stretch is a choice, not a permission.' },
-  { t: 8600, cap: 'You apply in one click — and your manager releases\nthe time before anything starts.' },
-  { t: 6000,  cap: 'The host sees what each applicant has finished,\nand who vouched for it.' },
-  { t: 7000,  cap: 'At the end, the host rates the work.\nFour stars verifies the skills it used.' },
-  { t: 7508,  cap: 'Twelve internal hires. ₱4.23M we did not spend\non recruitment.' },
-  { t: 4661,  cap: 'Work people can see. Skills we can prove.' },
+  { t: 5876,  cap: 'Home Credit fills 17% of its roles from the inside.\nGrowth is how that changes.' },
+  { t: 11075, cap: 'Four ways to grow — a gig, an immersion, a service offer,\nand a permanent vacancy applied for in HC Connect.' },
+  { t: 6443, cap: 'It starts with someone posting — a title, the work,\nand the skills it needs.' },
+  { t: 3378,  cap: 'Nothing goes live until HR approves it.' },
+  { t: 6289,  cap: 'Nobody begins with an empty profile — HR has already\nloaded what the company knows.' },
+  { t: 3661,  cap: "You correct it. You don't begin from scratch." },
+  { t: 5020,  cap: 'Every opportunity is scored against that profile,\nand shows its reasoning.' },
+  { t: 5267,  cap: 'The score never blocks you.\nA stretch is a choice, not a permission.' },
+  { t: 5108, cap: 'You apply in one click — and your manager releases\nthe time before anything starts.' },
+  { t: 4283,  cap: 'The host sees what each applicant has finished,\nand who vouched for it.' },
+  { t: 6515,  cap: 'At the end, the host rates the work.\nFour stars verifies the skills it used.' },
+  { t: 6086,  cap: 'Twelve internal hires. ₱4.23M we did not spend\non recruitment.' },
+  { t: 3569,  cap: 'Work people can see. Skills we can prove.' },
 ]
 
 ;(async () => {
@@ -39,7 +39,7 @@ const BEATS = [
      Without it every click looks like a jump cut. */
   await pg.addStyleTag({ content: `
     #filmCur { position:fixed; z-index:100001; width:22px; height:22px; margin:-2px 0 0 -2px;
-      pointer-events:none; transition:left .5s cubic-bezier(.4,.0,.2,1), top .5s cubic-bezier(.4,.0,.2,1);
+      pointer-events:none; transition:left .3s cubic-bezier(.4,.0,.2,1), top .3s cubic-bezier(.4,.0,.2,1);
       filter:drop-shadow(0 2px 4px rgba(0,0,0,.45)); left:640px; top:380px; }
     #filmRip { position:fixed; z-index:100000; width:16px; height:16px; margin:-8px 0 0 -8px;
       border-radius:50%; background:rgba(192,0,0,.45); pointer-events:none; opacity:0; transform:scale(.4); }
@@ -75,28 +75,28 @@ const BEATS = [
   const box = async sel => {
     const el = await pg.$(sel); if (!el) return null
     await el.scrollIntoViewIfNeeded()
-    await pg.waitForTimeout(180)
+    await pg.waitForTimeout(140)
     return el.boundingBox()
   }
   const point = async sel => {                       // glide the cursor to something
     const bb = await box(sel); if (!bb) return null
     const x = Math.round(bb.x + bb.width / 2), y = Math.round(bb.y + Math.min(bb.height / 2, 22))
     await pg.evaluate(([a, b]) => window.__cur(a, b), [x, y])
-    await pg.waitForTimeout(520)
+    await pg.waitForTimeout(320)
     return { x, y, sel }
   }
   const tap = async sel => {                         // …and press it for real
     const p = await point(sel); if (!p) { console.log('MISS ' + sel); return false }
     await pg.evaluate(([a, b]) => window.__rip(a, b), [p.x, p.y])
-    await pg.waitForTimeout(150)
+    await pg.waitForTimeout(110)
     await pg.click(sel).catch(e => console.log('CLICK FAIL ' + sel))
-    await pg.waitForTimeout(260)
+    await pg.waitForTimeout(190)
     return true
   }
   const write = async (sel, text, ms) => {           // typed, not pasted
     if (!(await tap(sel))) return
     await pg.fill(sel, '')
-    await pg.type(sel, text, { delay: ms || 26 })
+    await pg.type(sel, text, { delay: ms || 12 })
   }
   /* The app is a flex shell — body never scrolls, .content does. Scrolling
      the window here is a silent no-op, which is exactly how it was missed. */
@@ -135,8 +135,8 @@ const BEATS = [
   // 3 · a manager posts
   await beat(2, async () => {
     await tap('#nav-post')
-    await write('#postTitle', 'Workforce Planning Sprint — FY27', 18)
-    await write('#postEffort', '~20 hours', 18)
+    await write('#postTitle', 'Workforce Planning Sprint — FY27', 11)
+    await write('#postEffort', '~20 hours', 11)
     await glide(420)
   })
   // 4 · HR approves it
@@ -169,7 +169,7 @@ const BEATS = [
     await pg.evaluate(() => navigate('matches')); await pg.waitForTimeout(300)
     await glideTo('#matchGrid', 90); await pg.waitForTimeout(400)
     await tap('#matchGrid .btn-red')
-    await write('#applyEssay', 'I rebuilt our headcount model and ran the FY26 cycle.', 16)
+    await write('#applyEssay', 'I rebuilt our headcount model this year.', 11)
     await tap('#applyMgrAware')
     await tap('button[onclick^="submitApplication"]')
   })
