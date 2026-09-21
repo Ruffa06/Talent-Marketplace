@@ -15,13 +15,13 @@ const BEATS = [
   { t: 3415,  cap: 'Nothing goes live until HR approves it.' },
   { t: 6170,  cap: 'Nobody begins with an empty profile — HR has already\nloaded what the company knows.' },
   { t: 3129,  cap: "You correct it. You don't begin from scratch." },
-  { t: 7782,  cap: 'Every opportunity is scored against that profile,\nand shows its reasoning.' },
-  { t: 5776,  cap: 'The score never blocks you.\nA stretch is a choice, not a permission.' },
-  { t: 8951, cap: 'You apply in one click — and your manager releases\nthe time before anything starts.' },
-  { t: 6845,  cap: 'The host sees what each applicant has finished,\nand who vouched for it.' },
-  { t: 7289,  cap: 'At the end, the host rates the work.\nFour stars verifies the skills it used.' },
-  { t: 10419,  cap: 'Sixteen internal hires. ₱5.64M we did not spend\non recruitment.' },
-  { t: 4986,  cap: 'Work people can see. Skills we can prove.' },
+  { t: 5337,  cap: 'Every opportunity is scored against that profile,\nand shows its reasoning.' },
+  { t: 6183,  cap: 'The score never blocks you.\nA stretch is a choice, not a permission.' },
+  { t: 6044, cap: 'You apply in one click — and your manager releases\nthe time before anything starts.' },
+  { t: 4945,  cap: 'The host sees what each applicant has finished,\nand who vouched for it.' },
+  { t: 6845,  cap: 'At the end, the host rates the work.\nFour stars verifies the skills it used.' },
+  { t: 12758,  cap: 'The admin dashboard gives a snapshot of the platform’s progress.\n16 internal hires. ₱5.6M we did not spend on recruitment.' },
+  { t: 9936,  cap: 'Opportunities people can see. Skills we can prove.\nThis is Growth — where talent meets opportunities intelligently.' },
 ]
 
 ;(async () => {
@@ -193,10 +193,17 @@ const BEATS = [
       setRole('admin'); navigate('dashboard') })
     await pg.waitForTimeout(400); await glide(0)
     await point('#page-dashboard .tipq')
+    await pg.waitForTimeout(2600)
+    await glide(360); await pg.waitForTimeout(2200)   // the vacancy contribution row
+    await glide(760)
   })
   // 13 · close
   await beat(12, async () => {
     await pg.evaluate(() => { setRole('manager'); navigate('home') })
+    await pg.waitForTimeout(2800)
+    await glideTo('#page-home .growth-grid-4', 120)   // the shelves once more
+    await pg.waitForTimeout(3200)
+    await glide(0)                                    // and back to the hero
   })
 
   await ctx.close(); await b.close()

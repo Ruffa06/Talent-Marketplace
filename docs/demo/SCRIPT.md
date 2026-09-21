@@ -1,5 +1,5 @@
 # Growth — 89-second walkthrough
-**Narration script and shot list.** 175 words · 89.34 seconds · 13 beats.
+**Narration script and shot list.** 191 words · 89.34 seconds · 13 beats.
 Voice: ElevenLabs "Bill".
 
 One continuous journey, shot live against the real prototype: a manager posts
@@ -30,13 +30,13 @@ mid-sentence.
 | 4 | 0:24.58 | 3.42s | HR approves it out of the queue — it goes live | Nothing goes live until HR approves it. |
 | 5 | 0:27.99 | 6.17s | The employee profile, already populated | Nobody begins with an empty profile. HR has already loaded what the company knows. |
 | 6 | 0:34.16 | 3.13s | Provenance chips on the skills | You correct it. You don't begin from scratch. |
-| 7 | 0:37.29 | 7.78s | My Top Matches, the score explaining itself | Every opportunity is scored against that profile, and shows its reasoning. |
-| 8 | 0:45.07 | 5.78s | All Opportunities — nothing filtered out | The score never blocks you. A stretch is a choice, not a permission. |
-| 9 | 0:50.85 | 8.95s | Applying, with the manager release checkbox | You apply in one click, and your manager releases the time before anything starts. |
-| 10 | 0:59.80 | 6.84s | The host opens the applicant's evidence | The host sees what each applicant has finished, and who vouched for it. |
-| 11 | 1:06.65 | 7.29s | Close-out — the host rates the work five stars | At the end, the host rates the work. Four stars verifies the skills it used. |
-| 12 | 1:13.94 | 10.42s | HR dashboard — ₱5.64M across sixteen hires | Sixteen internal hires. Five point six four million pesos we did not spend on recruitment. |
-| 13 | 1:24.35 | 4.99s | Close on the hero | Work people can see. Skills we can prove. |
+| 7 | 0:37.29 | 5.34s | My Top Matches, the score explaining itself | Every opportunity is scored against that profile, and shows its reasoning. |
+| 8 | 0:42.63 | 6.18s | All Opportunities — nothing filtered out | The score never blocks you. A stretch is a choice, not a permission. |
+| 9 | 0:48.81 | 6.04s | Applying, with the manager release checkbox | You apply in one click, and your manager releases the time before anything starts. |
+| 10 | 0:54.86 | 4.95s | The host opens the applicant's evidence | The host sees what each applicant has finished, and who vouched for it. |
+| 11 | 0:59.80 | 6.84s | Close-out — the host rates the work five stars | At the end, the host rates the work. Four stars verifies the skills it used. |
+| 12 | 1:06.65 | 12.76s | HR dashboard — impact row, then vacancy contribution | The admin dashboard gives a snapshot of the platform’s progress. Sixteen internal hires. Five point six million pesos we did not spend on recruitment. |
+| 13 | 1:19.40 | 9.94s | Home again — the hero, the four shelves, the hero | Opportunities people can see. Skills we can prove. This is Growth — where talent meets opportunities intelligently. |
 
 ## Reshooting
     node docs/demo/record.js /tmp/shot
