@@ -9,7 +9,7 @@ const { chromium } = require('/opt/node22/lib/node_modules/playwright')
 const OUT = process.argv[2]
 
 const BEATS = [
-  { t: 7129,  cap: 'Home Credit fills 17% of its roles from the inside.\nGrowth is how that changes.' },
+  { t: 7129,  cap: 'Home Credit fills 17% of its roles from the inside.\nGrowth is how that improves.' },
   { t: 11270, cap: 'Four ways to grow — a gig, an immersion, a service offer,\nand a permanent vacancy applied for in HC Connect.' },
   { t: 6179, cap: 'It starts with someone posting — a title, the work,\nand the skills it needs.' },
   { t: 3415,  cap: 'Nothing goes live until HR approves it.' },

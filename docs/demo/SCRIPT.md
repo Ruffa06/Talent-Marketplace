@@ -24,7 +24,7 @@ mid-sentence.
 ## The cut
 | # | In | Length | On screen | Narration |
 |---|----|--------|-----------|-----------|
-| 1 | 0:00.00 | 7.13s | Home hero | Home Credit fills seventeen per cent of its roles from the inside. Growth is how that changes. |
+| 1 | 0:00.00 | 7.13s | Home hero | Home Credit fills seventeen per cent of its roles from the inside. Growth is how that improves. |
 | 2 | 0:07.13 | 11.27s | The four shelves — gig, immersion, service offer, permanent vacancy | Four ways to grow. A gig. An immersion. A service offer you publish yourself. And a permanent vacancy, applied for in HC Connect. |
 | 3 | 0:18.40 | 6.18s | A manager fills the Post Opportunity form | It starts with someone posting. A title, the work, and the skills it needs. |
 | 4 | 0:24.58 | 3.42s | HR approves it out of the queue — it goes live | Nothing goes live until HR approves it. |

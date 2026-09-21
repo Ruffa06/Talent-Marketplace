@@ -3,7 +3,7 @@
 # Do NOT pad with silence: the film is re-cut to whatever length each clip is.
 # Current lengths are shown only so you can spot a voice that races or drags.
 
-01  [7.1s]  Home Credit fills seventeen per cent of its roles from the inside. Growth is how that changes.
+01  [7.1s]  Home Credit fills seventeen per cent of its roles from the inside. Growth is how that improves.
 02  [11.3s]  Four ways to grow. A gig. An immersion. A service offer you publish yourself. And a permanent vacancy, applied for in HC Connect.
 03  [6.2s]  It starts with someone posting. A title, the work, and the skills it needs.
 04  [3.4s]  Nothing goes live until HR approves it.
