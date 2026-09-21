@@ -1,0 +1,18 @@
+# Growth walkthrough — narration, one line per clip.
+# Generate each as its own file and name it 01.wav … 13.wav.
+# Do NOT pad with silence: the film is re-cut to whatever length each clip is.
+# Current lengths are shown only so you can spot a voice that races or drags.
+
+01  [7.1s]  Home Credit fills seventeen per cent of its roles from the inside. Growth is how that changes.
+02  [11.0s]  Four ways to grow. A gig. An immersion. A service offer you publish yourself. And a permanent vacancy, applied for in HC Connect.
+03  [6.3s]  It starts with someone posting. A title, the work, and the skills it needs.
+04  [3.2s]  Nothing goes live until HR approves it.
+05  [6.5s]  Nobody begins with an empty profile. HR has already loaded what the company knows.
+06  [3.7s]  You correct it. You don't begin from scratch.
+07  [5.5s]  Every opportunity is scored against that profile, and shows its reasoning.
+08  [5.0s]  The score never blocks you. A stretch is a choice, not a permission.
+09  [5.7s]  You apply in one click, and your manager releases the time before anything starts.
+10  [5.1s]  The host sees what each applicant has finished, and who vouched for it.
+11  [6.1s]  At the end, the host rates the work. Four stars verifies the skills it used.
+12  [6.9s]  Twelve internal hires. Four point two three million pesos we did not spend on recruitment.
+13  [3.7s]  Work people can see. Skills we can prove.
