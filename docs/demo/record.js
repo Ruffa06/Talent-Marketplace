@@ -9,19 +9,19 @@ const { chromium } = require('/opt/node22/lib/node_modules/playwright')
 const OUT = process.argv[2]
 
 const BEATS = [
-  { t: 5876,  cap: 'Home Credit fills 17% of its roles from the inside.\nGrowth is how that changes.' },
-  { t: 11075, cap: 'Four ways to grow — a gig, an immersion, a service offer,\nand a permanent vacancy applied for in HC Connect.' },
-  { t: 6443, cap: 'It starts with someone posting — a title, the work,\nand the skills it needs.' },
-  { t: 3378,  cap: 'Nothing goes live until HR approves it.' },
-  { t: 6289,  cap: 'Nobody begins with an empty profile — HR has already\nloaded what the company knows.' },
-  { t: 3661,  cap: "You correct it. You don't begin from scratch." },
-  { t: 5020,  cap: 'Every opportunity is scored against that profile,\nand shows its reasoning.' },
-  { t: 5267,  cap: 'The score never blocks you.\nA stretch is a choice, not a permission.' },
-  { t: 5108, cap: 'You apply in one click — and your manager releases\nthe time before anything starts.' },
-  { t: 4283,  cap: 'The host sees what each applicant has finished,\nand who vouched for it.' },
-  { t: 6515,  cap: 'At the end, the host rates the work.\nFour stars verifies the skills it used.' },
-  { t: 6086,  cap: 'Twelve internal hires. ₱4.23M we did not spend\non recruitment.' },
-  { t: 3569,  cap: 'Work people can see. Skills we can prove.' },
+  { t: 7129,  cap: 'Home Credit fills 17% of its roles from the inside.\nGrowth is how that changes.' },
+  { t: 11270, cap: 'Four ways to grow — a gig, an immersion, a service offer,\nand a permanent vacancy applied for in HC Connect.' },
+  { t: 6179, cap: 'It starts with someone posting — a title, the work,\nand the skills it needs.' },
+  { t: 3415,  cap: 'Nothing goes live until HR approves it.' },
+  { t: 6170,  cap: 'Nobody begins with an empty profile — HR has already\nloaded what the company knows.' },
+  { t: 3129,  cap: "You correct it. You don't begin from scratch." },
+  { t: 7782,  cap: 'Every opportunity is scored against that profile,\nand shows its reasoning.' },
+  { t: 5776,  cap: 'The score never blocks you.\nA stretch is a choice, not a permission.' },
+  { t: 8951, cap: 'You apply in one click — and your manager releases\nthe time before anything starts.' },
+  { t: 6845,  cap: 'The host sees what each applicant has finished,\nand who vouched for it.' },
+  { t: 7289,  cap: 'At the end, the host rates the work.\nFour stars verifies the skills it used.' },
+  { t: 10419,  cap: 'Sixteen internal hires. ₱5.64M we did not spend\non recruitment.' },
+  { t: 4986,  cap: 'Work people can see. Skills we can prove.' },
 ]
 
 ;(async () => {
