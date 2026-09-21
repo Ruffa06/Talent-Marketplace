@@ -1,16 +1,26 @@
+/* Growth — the demo film.
+   Shot against the real prototype: every screen is the app doing the thing
+   the caption describes. Beat durations are the narration timings from
+   SCRIPT.md, so the cut and the script cannot drift apart.
+   Run: node docs/demo/record.js <output-dir>   (from the repository root) */
 const { chromium } = require('/opt/node22/lib/node_modules/playwright')
 const OUT = process.argv[2]
 
 const BEATS = [
-  { t: 7000, cap: 'Home Credit fills 17% of its roles from the inside.\nGrowth is how that changes.' },
-  { t: 9000, cap: 'Four ways to move — a gig, an immersion, a service offer,\nand permanent roles applied for in HC Connect.' },
-  { t: 8000, cap: 'Nobody begins with an empty profile.' },
-  { t: 8000, cap: 'HR loads what the company already knows:\nHC Connect, MyDevelopment, and your public LinkedIn skills.' },
-  { t: 5000, cap: "You correct it. You don't write it." },
-  { t: 8000, cap: 'Every opportunity is scored against that profile —\nand shows its reasoning.' },
-  { t: 7000, cap: 'The score never blocks you. Every opportunity stays visible.\nA stretch is a choice, not a permission.' },
-  { t: 5000, cap: 'A host sees what each applicant has finished,\nand who vouched for it.' },
-  { t: 3000, cap: 'Work people can see. Skills we can prove.' },
+  { t: 7750, cap: 'Home Credit fills 17% of its roles from the inside.\nGrowth is how that changes.' },
+  { t: 12360, cap: 'Four ways to move — a gig, an immersion, a service offer,\nand permanent roles applied for in HC Connect.' },
+  { t: 3685, cap: 'Nobody begins with an empty profile.' },
+  { t: 8952, cap: 'HR loads what the company already knows: HC Connect,\nMyDevelopment, your public LinkedIn skills.' },
+  { t: 3867, cap: "You correct it. You don't write it." },
+  { t: 6103, cap: 'Every opportunity is scored against that profile —\nand shows its reasoning.' },
+  { t: 8598, cap: 'The score never blocks you. Every opportunity stays visible.\nA stretch is a choice, not a permission.' },
+  { t: 6677, cap: 'Anyone can post. Five minutes, and HR approves it\nbefore it goes live.' },
+  { t: 5704, cap: 'A host sees what each applicant has finished,\nand who vouched for it.' },
+  { t: 7643, cap: 'HR sees the whole pilot — what is waiting, what has gone stale,\nwhat it has been worth.' },
+  { t: 3982, cap: 'Every figure downloads as the rows behind it.' },
+  { t: 4434, cap: 'People rate the product itself, one to five.' },
+  { t: 4581, cap: 'The questions people actually ask are answered in the app.' },
+  { t: 4661, cap: 'Work people can see. Skills we can prove.' },
 ]
 
 ;(async () => {
@@ -25,7 +35,6 @@ const BEATS = [
   await pg.goto('file://' + process.cwd() + '/prototype/talent-marketplace-v2.html')
   await pg.click('.btn-login')
 
-  // Caption bar, injected so it is part of the recording and styled like the app.
   await pg.evaluate(() => {
     const d = document.createElement('div')
     d.id = 'filmCap'
@@ -43,7 +52,7 @@ const BEATS = [
     window.__cap = (text, pct) => {
       const el = document.getElementById('filmCap')
       el.style.opacity = '0'
-      setTimeout(() => { el.textContent = text; el.style.opacity = '1' }, 260)
+      setTimeout(() => { el.textContent = text; el.style.opacity = '1' }, 150)
       document.getElementById('filmProg').style.width = pct + '%'
     }
   })
@@ -56,41 +65,40 @@ const BEATS = [
     await pg.evaluate(([c, p]) => window.__cap(c, p), [BEATS[i].cap, Math.round(done / total * 100)])
     await pg.waitForTimeout(BEATS[i].t)
   }
+  const go = (role, page, y) => pg.evaluate(([r, p, s]) => {
+    if (r) setRole(r); navigate(p); window.scrollTo(0, s || 0)
+  }, [role, page, y])
 
-  // 1 · hero
-  await beat(0)
-  // 2 · the four shelves
-  await beat(1, async () => { await pg.evaluate(() => window.scrollTo(0, 0)); await pg.evaluate(() => {
-    const el = [...document.querySelectorAll('#page-home div')].find(d => d.textContent.trim().startsWith('Three ways to grow here'))
+  await beat(0)                                                   // hero
+  await beat(1, async () => { await pg.evaluate(() => {           // the four shelves
+    const el = [...document.querySelectorAll('#page-home div')]
+      .find(d => d.textContent.trim().startsWith('Three ways to grow here'))
     if (el) el.scrollIntoView({ block: 'start' }) }) })
-  // 3 · seeded profile
-  await beat(2, async () => { await pg.evaluate(() => { navigate('profile'); window.scrollTo(0, 420) }) })
-  // 4 · where the data comes from
-  await beat(3, async () => { await pg.evaluate(() => { setRole('admin'); navigate('admin-skills'); window.scrollTo(0, 260) }) })
-  // 5 · provenance
-  await beat(4, async () => {
-    await pg.evaluate(() => { setRole('employee'); navigate('profile'); window.scrollTo(0, 470) })
+  await beat(2, () => go('employee', 'profile', 430))             // seeded profile
+  await beat(3, () => go('admin', 'admin-skills', 250))           // the four sources
+  await beat(4, () => go('employee', 'profile', 470))             // provenance
+  await beat(5, async () => {                                     // scored, with reasoning
+    await go(null, 'matches', 980); await pg.waitForTimeout(500)
+    const s = await pg.$('#matchGrid .why-match'); if (s) await s.hover()
   })
-  // 6 · scored, with reasoning
-  await beat(5, async () => {
-    await pg.evaluate(() => { navigate('matches'); window.scrollTo(0, 980) })
-    await pg.waitForTimeout(500)
-    const s = await pg.$('#matchGrid .why-match')
-    if (s) await s.hover()
-  })
-  // 7 · nothing is hidden
-  await beat(6, async () => { await pg.evaluate(() => { navigate('all-opps'); window.scrollTo(0, 560) }) })
-  // 8 · the host's side
-  await beat(7, async () => {
-    await pg.evaluate(() => { setRole('manager'); navigate('openings') })
-    await pg.waitForTimeout(400)
+  await beat(6, () => go(null, 'all-opps', 560))                  // nothing hidden
+  await beat(7, () => go('manager', 'post', 260))                 // posting
+  await beat(8, async () => {                                     // the host's side
+    await go(null, 'openings', 0); await pg.waitForTimeout(400)
     await pg.evaluate(() => openApplicantProfile('Cristiano Ronaldo', 'DJI: Business Intelligence — FP&A Team'))
   })
-  // 9 · close
-  await beat(8, async () => {
-    await pg.evaluate(() => { const o = document.querySelector('[data-overlay]'); if (o) o.remove(); navigate('home'); window.scrollTo(0, 0) })
+  await beat(9, async () => {                                     // the HR dashboard
+    await pg.evaluate(() => { const o = document.querySelector('[data-overlay]'); if (o) o.remove() })
+    await go('admin', 'dashboard', 0)
   })
+  await beat(10, () => go(null, 'dashboard', 640))                // raw report export
+  await beat(11, () => go(null, 'rate', 0))                       // rating the product
+  await beat(12, async () => {                                    // the FAQ
+    await go('employee', 'faq', 120); await pg.waitForTimeout(300)
+    await pg.evaluate(() => { const d = document.querySelectorAll('#page-faq details'); if (d[3]) d[3].open = true })
+  })
+  await beat(13, () => go('manager', 'home', 0))                  // close
 
   await ctx.close(); await b.close()
-  console.log('recorded ~' + Math.round(total / 1000) + 's')
+  console.log('recorded ~' + Math.round(total / 1000) + 's of beats')
 })()
