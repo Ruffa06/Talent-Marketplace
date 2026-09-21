@@ -2115,7 +2115,7 @@
             <h3>Basic Info</h3>
             <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
               <div class="field"><label>First Name</label><input id="profileFirst" value="Taylor"></div>
-              <div class="field"><label>Last Name</label><input id="profileLast" value="Winfrey"></div>
+              <div class="field"><label>Last Name</label><input id="profileLast" value="Swift"></div>
             </div>
             <div class="field"><label>Department</label><input id="profileDeptInput" value="HR"></div>
             <div class="field"><label>Reports To (Direct Manager)</label><input id="profileReportsTo" value="Roger Federer" readonly style="background:#F9FAFB;color:#6B7280;"></div>
@@ -6369,8 +6369,7 @@ function renderAppRating() {
   }
 }
 
-renderNav('manager')
-navigate('home')
+setRole('manager')   // not renderNav/navigate: this also syncs the profile fields
 initSkillTip()
 renderProfileSkills()
 renderMatches()
