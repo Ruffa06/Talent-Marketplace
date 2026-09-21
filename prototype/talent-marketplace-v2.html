@@ -591,9 +591,9 @@
 
   /* ── Skill definition tooltip ── */
   #skillTip {
-    position: fixed; z-index: 900; max-width: 270px;
+    position: fixed; z-index: 900; max-width: 320px;
     background: #111827; color: #fff; border-radius: 9px;
-    padding: 10px 12px; font-size: 11px; line-height: 1.55;
+    padding: 10px 12px; font-size: 11.5px; line-height: 1.65;
     box-shadow: 0 8px 24px rgba(0,0,0,0.22);
     opacity: 0; visibility: hidden; transition: opacity .13s;
     pointer-events: none;
@@ -602,6 +602,23 @@
   #skillTip b { display: block; margin-bottom: 4px; font-size: 11.5px; }
   #skillTip .tip-meta { margin-top: 6px; padding-top: 6px; border-top: 1px solid #374151; color: #9CA3AF; font-size: 10px; }
   .skill-chip[data-def] { cursor: help; }
+
+  /* ── The ⓘ affordance ──
+     Detail that a first-time reader needs once and a returning one never
+     wants again lives behind this rather than on the page. Everything it
+     holds used to be body copy. */
+  .tipq {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 15px; height: 15px; border-radius: 50%;
+    background: #E5E7EB; color: #6B7280;
+    font-size: 10px; font-weight: 700; font-style: normal;
+    cursor: help; margin-left: 5px; vertical-align: middle; flex: none;
+    transition: background .12s, color .12s;
+  }
+  .tipq::before { content: 'i'; }
+  .tipq:hover, .tipq:focus { background: #C00000; color: #fff; outline: none; }
+  .tipq.on-dark { background: rgba(255,255,255,0.18); color: #E2E8F0; }
+  .tipq.on-dark:hover, .tipq.on-dark:focus { background: #fff; color: #0F172A; }
 
   /* ── Fit breakdown on opportunity cards ── */
   .fit-box { margin-top: 10px; border-top: 1px dashed #E5E7EB; padding-top: 9px; }
@@ -903,7 +920,7 @@
       <div class="hero hero-lg">
         <div class="hero-eyebrow">Internal opportunities at Home Credit&nbsp;PH</div>
         <div class="hero-title">Your next growth&nbsp;move<br class="hero-br">is already&nbsp;here.</div>
-        <div class="hero-body">Home Credit is full of work that could stretch you — and people who could learn from what you already know. <strong>Growth</strong> puts the two in the same place. Try the interest your role never had room for. Put a skill nobody knows you have to work. Help another business unit while your own career moves.<br><br>No transfer. No waiting for the next cycle. It happens where you already are — and you find out what you are ready for by doing it, not by wondering.</div>
+        <div class="hero-body">Work that could stretch you, and people who could learn from what you already know — in the same place. No transfer, no waiting for the next cycle.</div>
         <svg class="hero-watermark" viewBox="0 0 48 48" fill="none" aria-hidden="true">
           <path d="M10.98 34.93A17 17 0 1 1 37.02 34.93" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
           <path d="M24 36.4V17.9" stroke="currentColor" stroke-width="6" stroke-linecap="round"/>
@@ -926,25 +943,25 @@
           <div style="font-size:26px;margin-bottom:10px;">⚡</div>
           <div style="margin-bottom:8px;"><span class="badge badge-gig">Gig</span></div>
           <div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:6px;">Gig</div>
-          <div style="font-size:12px;color:#6B7280;line-height:1.6;">Short-term project, <strong>a few hours to a few weeks</strong>. Work on real initiatives without changing roles. Done outside work hours or with your manager's written permission.</div>
+          <div style="font-size:12px;color:#6B7280;line-height:1.6;">Short-term project, <strong>a few hours to a few weeks</strong>, without changing roles.<i class="tipq" tabindex="0" data-tip="Done outside office hours, or during them only with your manager's written permission. Your primary role and KPIs are never expected to absorb the difference."></i></div>
         </div>
         <div class="card" style="padding:22px;">
           <div style="font-size:26px;margin-bottom:10px;">🌱</div>
           <div style="margin-bottom:8px;"><span class="badge badge-dji">DJI</span></div>
           <div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:6px;">Developmental Job Immersion</div>
-          <div style="font-size:12px;color:#6B7280;line-height:1.6;">Temporary assignment to another role or function, <strong>3&nbsp;–&nbsp;9&nbsp;months</strong>. Develop yourself for a future role, or be assessed for a target position — without leaving the company.</div>
-          <div class="dji-policy-box">
-            <strong>📄 Policy 211_2021 v1.0 applies</strong>
-            Before starting, you, your Direct Manager, and the Host Manager co-design a DJI Plan: goals, degree of immersion (100% full or partial split), expected outputs, and how performance will be evaluated. All four parties — employee, Direct Manager, Host Manager, and HR People Partner — sign off using the official DJI Form. Your headcount, salary, and benefits remain with your home department throughout.
+          <div style="font-size:12px;color:#6B7280;line-height:1.6;">Temporary assignment to another role or function, <strong>3&nbsp;–&nbsp;9&nbsp;months</strong>, without leaving the company.</div>
+          <div class="dji-policy-box" style="display:flex;align-items:center;gap:7px;">
+            <span>📄 <strong style="display:inline;margin:0;text-transform:none;letter-spacing:0;">Policy 211_2021 v1.0 applies</strong></span>
+            <i class="tipq" tabindex="0" data-tip="Before starting, you, your Direct Manager and the Host co-design a DJI Plan: goals, degree of immersion (100% or a partial split), expected outputs, and how performance will be evaluated. All four parties — employee, Direct Manager, Host and HR People Partner — sign the official DJI Form. Your headcount, salary and benefits stay with your home department throughout."></i>
           </div>
         </div>
         <div class="card" style="padding:22px;border:1px solid #DDD6FE;">
           <div style="font-size:26px;margin-bottom:10px;">🎁</div>
           <div style="margin-bottom:8px;"><span class="badge badge-offer">Offer</span></div>
           <div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:6px;">Service Offer</div>
-          <div style="font-size:12px;color:#6B7280;line-height:1.6;">The only one that works in reverse. Instead of applying for work, you <strong>publish what you're willing to help with</strong> — mentoring on product and customer segments, vibe-coding a prototype, reviewing a pricing model, coaching a first-time presenter. Teams come to you.</div>
+          <div style="font-size:12px;color:#6B7280;line-height:1.6;">The one that works in reverse: you <strong>publish what you're willing to help with</strong> and teams come to you.<i class="tipq" tabindex="0" data-tip="Mentoring on product and customer segments, vibe-coding a prototype, reviewing a pricing model, coaching a first-time presenter. Usually an hour or two at a time — you set your capacity and can pause any time."></i></div>
           <div style="margin-top:12px;background:#F5F3FF;border:1px solid #DDD6FE;border-radius:8px;padding:10px 12px;font-size:11px;color:#5B21B6;line-height:1.5;">
-            <strong>Usually an hour or two at a time.</strong> You set your own capacity and can pause any time. Every completed request is logged on your profile — the fastest way to build an internal reputation for what you're genuinely good at.
+            Every completed request is logged on your profile — the fastest way to build a reputation for what you are genuinely good at.
           </div>
         </div>
       </div>
@@ -982,8 +999,8 @@
         <div class="flow-step">
           <div class="flow-node">4</div>
           <div class="flow-body">
-            <div class="flow-st-t">Sign-off <span class="flow-who">Post owner + your manager</span></div>
-            <div class="flow-st-b">The post owner shortlists and owes you a decision within seven working days. Your manager releases the time. A DJI adds a plan co-designed with the host manager and signed by four parties under Policy&nbsp;211_2021.</div>
+            <div class="flow-st-t">Sign-off <span class="flow-who">Host + your manager</span></div>
+            <div class="flow-st-b">The host shortlists and owes you a decision within seven working days. Your manager releases the time. A DJI adds a plan co-designed with the host and signed by four parties under Policy&nbsp;211_2021.</div>
           </div>
         </div>
         <div class="flow-step">
@@ -997,7 +1014,7 @@
           <div class="flow-node">6</div>
           <div class="flow-body">
             <div class="flow-st-t">Rated, recorded, reviewed <span class="flow-who">HR</span></div>
-            <div class="flow-st-b">The host manager rates the work, a post-activity survey reaches you the day it ends, and the whole engagement lands on your HR file — where it is tabled at the annual talent review. Not a favour someone might remember. A document.</div>
+            <div class="flow-st-b">The host rates the work, a post-activity survey reaches you the day it ends, and the whole engagement lands on your HR file — where it is tabled at the annual talent review. Not a favour someone might remember. A document.</div>
             <div class="flow-branch alt"><strong>The one route that runs backwards.</strong> A Service Offer skips steps&nbsp;2 and&nbsp;3 entirely — you publish what you are willing to help with, teams come and request your time, and every completed request lands on the same record at step&nbsp;6.</div>
           </div>
         </div>
@@ -1008,12 +1025,7 @@
       <div class="handoff-band">
         <div class="handoff-t">🏢 Permanent vacancies: listed here, applied for in HC Connect</div>
         <div class="handoff-b">
-          Growth does not run internal vacancies. <strong>HC Connect Internal Job Posting</strong> — the system HR
-          already uses — owns the requisition, the screening and the offer, and duplicating that here would only split the process in two.<br><br>
-          What Growth adds is the half HC Connect cannot do: it knows what you can already do, scores your fit against every open
-          role, and puts one in front of you that you were never going to go looking for. When you open it, we hand you over on a
-          link that carries a <strong>referral code</strong> — that code is the only thing that tells anyone Growth is
-          what sent you.
+          <strong>HC Connect</strong> owns the requisition, the screening and the offer. Growth scores your fit and hands you over on a link carrying a <strong>referral code</strong>.<i class="tipq" tabindex="0" data-tip="Duplicating HC Connect here would split one process across two systems and lose people in the gap. What Growth adds is the half it cannot do: knowing what you can already do, and putting a role in front of you that you were never going to go looking for. The referral code is the only thing that tells anyone Growth is what sent you."></i>
         </div>
         <div style="margin-top:13px;">
           <button class="btn btn-red btn-sm" onclick="navigate('vacancies')">🏢 See open vacancies →</button>
@@ -1077,11 +1089,11 @@
           <div style="font-size:12px;color:#6B7280;line-height:1.6;">Temporary assignment to another role or function, <strong>3&nbsp;–&nbsp;9&nbsp;months</strong>. Develop yourself for a future role, or be assessed for a target position — without leaving the company.</div>
           <div class="dji-policy-box">
             <strong>📄 Policy 211_2021 v1.0 applies</strong>
-            Before starting, you, your Direct Manager, and the Host Manager co-design a DJI Plan: goals, degree of immersion (100% full or partial split), expected outputs, and how performance will be evaluated. All four parties — employee, Direct Manager, Host Manager, and HR People Partner (HRPP) — sign off using the official DJI Form.
+            Before starting, you, your Direct Manager, and the Host co-design a DJI Plan: goals, degree of immersion (100% full or partial split), expected outputs, and how performance will be evaluated. All four parties — employee, Direct Manager, Host, and HR People Partner (HRPP) — sign off using the official DJI Form.
           </div>
           <div class="dji-pay-box">
             <strong>💰 It does not touch your pay</strong>
-            Your headcount, employment status, <strong>salary and benefits stay exactly where they are</strong> for the whole immersion — none of it moves to the host department (§5.4.3). You are <strong>not</strong> eligible for incentives, bonuses or allowances specific to the host department, and no extra allowance is paid for doing a DJI. Incentives you already qualify for at home are unaffected, as long as you still meet their own rules — and how immersion time affects your evaluation is written into the DJI Plan and signed by all four parties before you start (§5.4.2).
+            Your headcount, <strong>salary and benefits stay exactly where they are</strong> for the whole immersion.<i class="tipq" tabindex="0" data-tip="None of it moves to the host department (§5.4.3). You are not eligible for incentives, bonuses or allowances specific to the host department, and no extra allowance is paid for doing a DJI. Incentives you already qualify for at home are unaffected as long as you still meet their rules. How immersion time affects your evaluation is written into the DJI Plan and signed by all four parties before you start (§5.4.2)."></i>
           </div>
           <div class="dji-dl">
             <span class="dji-dl-t">📄 Read it yourself before you commit to anything</span>
@@ -1103,12 +1115,7 @@
       <div class="handoff-band">
         <div class="handoff-t">🏢 Permanent vacancies: listed here, applied for in HC Connect</div>
         <div class="handoff-b">
-          Growth does not run internal vacancies. <strong>HC Connect Internal Job Posting</strong> — the system HR
-          already uses — owns the requisition, the screening and the offer, and duplicating that here would only split the process in two.<br><br>
-          What Growth adds is the half HC Connect cannot do: it knows what you can already do, scores your fit against every open
-          role, and puts one in front of you that you were never going to go looking for. When you open it, we hand you over on a
-          link that carries a <strong>referral code</strong> — that code is the only thing that tells anyone Growth is
-          what sent you.
+          <strong>HC Connect</strong> owns the requisition, the screening and the offer. Growth scores your fit and hands you over on a link carrying a <strong>referral code</strong>.<i class="tipq" tabindex="0" data-tip="Duplicating HC Connect here would split one process across two systems and lose people in the gap. What Growth adds is the half it cannot do: knowing what you can already do, and putting a role in front of you that you were never going to go looking for. The referral code is the only thing that tells anyone Growth is what sent you."></i>
         </div>
         <div style="margin-top:13px;">
           <button class="btn btn-red btn-sm" onclick="navigate('vacancies')">🏢 See open vacancies →</button>
@@ -1120,13 +1127,13 @@
         <div style="font-size:16px;font-weight:700;color:#111827;margin-bottom:5px;">7 real reasons to apply</div>
         <div style="font-size:13px;color:#6B7280;margin-bottom:16px;">Growth work doesn't come with extra pay — it comes with a formal commitment from Home Credit PH in return. Here's what's in it for you.</div>
         <div class="why-grid">
-          <div class="why-card"><div class="why-icon">⭐</div><div class="why-title">Find out you're readier than you think</div><div class="why-body">The commonest reason people do not apply internally is not lack of interest — it is not feeling ready. A gig is the low-risk way to find out. You do the work, a host manager rates it, and the answer is on your record instead of in your head.</div></div>
-          <div class="why-card"><div class="why-icon">📋</div><div class="why-title">Fulfill your IDP</div><div class="why-body">Turn your Individual Development Plan from a paper exercise into a real, visible action your manager can endorse.</div></div>
-          <div class="why-card"><div class="why-icon">🎨</div><div class="why-title">Work that actually energises you</div><div class="why-body">If your role doesn't let you flex certain muscles, a gig will. Some people simply love a particular kind of problem — that is reason enough, and nobody here will ask you to justify it.</div></div>
-          <div class="why-card"><div class="why-icon">🧭</div><div class="why-title">Career pivot test drive</div><div class="why-body">Curious about another function? A gig or DJI lets you try a different career path with zero risk before committing.</div></div>
-          <div class="why-card"><div class="why-icon">👁️</div><div class="why-title">Visibility with leaders</div><div class="why-body">Work with leaders outside your chain. New sponsors who can advocate for you is one of the fastest career accelerators.</div></div>
-          <div class="why-card"><div class="why-icon">🌐</div><div class="why-title">Build your network</div><div class="why-body">Most opportunities inside companies are word-of-mouth. Cross-functional relationships now compound for your entire career here.</div></div>
-          <div class="why-card"><div class="why-icon">🚀</div><div class="why-title">Move into a new role</div><div class="why-body">Internal vacancies come with a shorter learning curve — you already know our systems, our people, and how things get done. You start contributing on day one, not month three.</div></div>
+          <div class="why-card"><div class="why-icon">⭐</div><div class="why-title">Find out you're readier than you think<i class="tipq" tabindex="0" data-tip="The commonest reason people do not apply internally is not lack of interest — it is not feeling ready. A gig is the low-risk way to find out: you do the work, a host rates it, and the answer is on your record instead of in your head."></i></div></div>
+          <div class="why-card"><div class="why-icon">📋</div><div class="why-title">Fulfill your IDP<i class="tipq" tabindex="0" data-tip="Turns your Individual Development Plan from a paper exercise into a visible action your manager can endorse."></i></div></div>
+          <div class="why-card"><div class="why-icon">🎨</div><div class="why-title">Work that energises you<i class="tipq" tabindex="0" data-tip="If your role does not let you flex certain muscles, a gig will. Some people simply love a particular kind of problem — that is reason enough, and nobody here will ask you to justify it."></i></div></div>
+          <div class="why-card"><div class="why-icon">🧭</div><div class="why-title">Career pivot test drive<i class="tipq" tabindex="0" data-tip="Curious about another function? A gig or DJI lets you try a different path with zero risk before committing to it."></i></div></div>
+          <div class="why-card"><div class="why-icon">👁️</div><div class="why-title">Visibility with leaders<i class="tipq" tabindex="0" data-tip="Work with leaders outside your own chain. A new sponsor who can advocate for you is one of the fastest career accelerators there is."></i></div></div>
+          <div class="why-card"><div class="why-icon">🌐</div><div class="why-title">Build your network<i class="tipq" tabindex="0" data-tip="Most opportunities inside companies travel by word of mouth. Cross-functional relationships now compound for your whole career here."></i></div></div>
+          <div class="why-card"><div class="why-icon">🚀</div><div class="why-title">Move into a new role<i class="tipq" tabindex="0" data-tip="Internal moves come with a shorter learning curve — you already know our systems, our people and how things get done. You contribute on day one, not month three."></i></div></div>
         </div>
         <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:18px;">
           <button class="btn btn-red" onclick="navigate('profile')">👤 Build my profile →</button>
@@ -1137,31 +1144,31 @@
       <!-- What Home Credit PH commits in return -->
       <div style="background:#0F172A;border-radius:12px;padding:24px 26px;margin-bottom:28px;color:#fff;">
         <div style="font-size:16px;font-weight:700;margin-bottom:5px;">What Home Credit PH commits to in return</div>
-        <div style="font-size:12px;color:#94A3B8;margin-bottom:18px;line-height:1.6;">Growth work is unpaid, so the exchange has to be honest. These four commitments are not goodwill — they are policy, and the <strong style="color:#E2E8F0;">HR Department</strong> is accountable for delivering each one. Not your manager, not the host manager, not you — HR owns it centrally, which is why it holds even if the people around you change.</div>
+        <div style="font-size:12px;color:#94A3B8;margin-bottom:18px;line-height:1.6;">Growth work is unpaid, so the exchange has to be honest. Four commitments, owned by <strong style="color:#E2E8F0;">HR</strong> centrally.<i class="tipq on-dark" tabindex="0" data-tip="Not goodwill — policy. Not your manager, not the host, not you: HR owns each one centrally, which is why it holds even if the people around you change."></i></div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;">
           <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:9px;padding:15px;">
             <div style="font-size:19px;margin-bottom:7px;">📁</div>
             <div style="font-size:12px;font-weight:700;margin-bottom:5px;">A formal record on your file</div>
-            <div style="font-size:11px;color:#CBD5E1;line-height:1.55;">Every completed gig, DJI, and service offer is logged permanently in your HR record with the host manager's rating — not a favour someone might remember, a document.</div>
+            <div style="font-size:11px;color:#CBD5E1;line-height:1.55;">Logged permanently with the host's rating.<i class="tipq on-dark" tabindex="0" data-tip="Every completed gig, DJI and service offer goes on your HR record — not a favour someone might remember, a document."></i></div>
           </div>
           <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:9px;padding:15px;">
             <div style="font-size:19px;margin-bottom:7px;">🎯</div>
             <div style="font-size:12px;font-weight:700;margin-bottom:5px;">Inclusion in the talent review</div>
-            <div style="font-size:11px;color:#CBD5E1;line-height:1.55;">Your Growth contributions are tabled at the annual talent review and succession planning discussion — the room where promotions and successor slates are decided.</div>
+            <div style="font-size:11px;color:#CBD5E1;line-height:1.55;">Tabled at the annual talent review.<i class="tipq on-dark" tabindex="0" data-tip="Your Growth contributions go into the succession planning discussion — the room where promotions and successor slates are actually decided."></i></div>
           </div>
           <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:9px;padding:15px;">
             <div style="font-size:19px;margin-bottom:7px;">📝</div>
             <div style="font-size:12px;font-weight:700;margin-bottom:5px;">A post-activity survey, sent immediately</div>
-            <div style="font-size:11px;color:#CBD5E1;line-height:1.55;">The moment the engagement ends, HR sends you the post-activity survey — what you learned, what you'd change, where you want this to lead. It goes out automatically, while the work is still fresh, and your answers route straight to HR.</div>
+            <div style="font-size:11px;color:#CBD5E1;line-height:1.55;">Sent the moment the engagement ends.<i class="tipq on-dark" tabindex="0" data-tip="What you learned, what you would change, where you want this to lead. Automatic, while the work is still fresh, and your answers route straight to HR rather than into a drawer."></i></div>
           </div>
           <div style="background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:9px;padding:15px;">
             <div style="font-size:19px;margin-bottom:7px;">⭐</div>
             <div style="font-size:12px;font-weight:700;margin-bottom:5px;">First look at related roles</div>
-            <div style="font-size:11px;color:#CBD5E1;line-height:1.55;">Complete work in a function and you are flagged as a priority internal candidate when a vacancy opens there. Proven contribution counts ahead of a fresh application.</div>
+            <div style="font-size:11px;color:#CBD5E1;line-height:1.55;">Priority candidate where you have delivered.<i class="tipq on-dark" tabindex="0" data-tip="Complete work in a function and you are flagged when a vacancy opens there. Proven contribution counts ahead of a fresh application."></i></div>
           </div>
         </div>
         <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.1);font-size:11px;color:#94A3B8;line-height:1.6;">
-          <strong style="color:#E2E8F0;">On work hours and workload.</strong> Gigs are done outside office hours, or during office hours only with your manager's written permission. DJIs follow an agreed role split under Policy 211_2021. Your primary role and KPIs are never expected to absorb the difference — if a Growth commitment starts to compromise your core work, raise it with your manager or HR and it will be adjusted or ended. No one is penalised for that conversation.
+          <strong style="color:#E2E8F0;">Your core role always comes first.</strong><i class="tipq on-dark" tabindex="0" data-tip="Gigs are done outside office hours, or during them only with your manager's written permission. DJIs follow an agreed role split under Policy 211_2021. If a Growth commitment starts to compromise your core work, raise it with your manager or HR and it will be adjusted or ended — nobody is penalised for that conversation."></i>
         </div>
       </div>
     </div>
@@ -1221,10 +1228,8 @@
           <span class="badge" style="background:#EDE9FE;color:#5B21B6;border:1px solid #DDD6FE;">Claude</span>
         </div>
         <div style="font-size:12.5px;color:#374151;line-height:1.7;margin-bottom:6px;">
-          Nobody sits and ranks you against every post. When a new opportunity goes live, an AI model reads your profile —
-          your skills, your stated aspiration, your history in Growth — against what the post actually asks for, and
-          returns a score with its reasoning. You can read that reasoning on every card, and you can disagree with it:
-          <strong>the score never blocks an application.</strong> There is deliberately no minimum to apply.
+          A model reads your profile against what each post asks for and returns a score with its reasoning.
+          <strong>The score never blocks an application.</strong><i class="tipq" tabindex="0" data-tip="Nobody sits and ranks you against every post. When an opportunity goes live the model reads your skills, your stated aspiration and your history in Growth against what the post actually needs. You can read its reasoning on every card and disagree with it — there is deliberately no minimum score to apply."></i>
         </div>
         <details style="margin-top:12px;">
           <summary style="padding:11px 13px;">📊 How the score is calculated — the full rubric</summary>
@@ -1234,9 +1239,9 @@
               <thead><tr><th>Factor</th><th>Weight</th><th>What the model looks at</th></tr></thead>
               <tbody>
                 <tr><td>Required skills — self-declared</td><td>20%</td><td>Every required skill on your profile earns a share of this, however it got there. Typing it is enough.</td></tr>
-                <tr><td>Required skills — verified</td><td>50%</td><td>A further, larger share for each of those skills that is <em>evidenced</em>: endorsed by a manager, earned on work a host manager rated 4★+, or certified in MyDevelopment. Skills HR uploaded from HC Connect, MyDevelopment or your public LinkedIn sit in between.</td></tr>
+                <tr><td>Required skills — verified</td><td>50%</td><td>A further, larger share for each of those skills that is <em>evidenced</em>: endorsed by a manager, earned on work a host rated 4★+, or certified in MyDevelopment. Skills HR uploaded from HC Connect, MyDevelopment or your public LinkedIn sit in between.</td></tr>
                 <tr><td>Aspiration fit</td><td>20%</td><td>Whether the work moves you toward what you said you want — a required skill you already hold, or one you listed under <em>Skills to Develop</em>.</td></tr>
-                <tr><td>Track record</td><td>10%</td><td>Gigs, DJIs and service offers you have finished, and the ratings host managers gave you.</td></tr>
+                <tr><td>Track record</td><td>10%</td><td>Gigs, DJIs and service offers you have finished, and the ratings hosts gave you.</td></tr>
               </tbody>
             </table>
             <table class="rubric" style="margin-top:14px;">
@@ -1251,7 +1256,7 @@
             <div style="margin-top:13px;background:#F9FAFB;border:1px solid #F3F4F6;border-radius:8px;padding:11px 13px;font-size:11px;color:#6B7280;line-height:1.65;">
               <strong style="color:#374151;">Worked example.</strong> A post asking for SQL, Power BI and Financial Modelling, against a profile holding SQL and Financial Modelling as verified and nothing else:
               skills <strong>58 of 70</strong> (two verified outright; Power BI counts at half, being adjacent to SQL), aspiration <strong>20 of 20</strong> (all three are in your direction — two held, one adjacent), track record <strong>9 of 10</strong> (two finished engagements at 4.5★) — <strong>87%</strong>, a strong match. Hover any score on a card to see its own version of this.
-              <div style="margin-top:9px;"><strong style="color:#374151;">Where it can be wrong.</strong> The model only knows what is written down. A skill you never added, or experience recorded nowhere, is invisible to it — which is why a thin profile produces low scores that say more about the profile than the person. It also cannot judge motivation. If a score looks wrong to you, it probably is: apply anyway, and tell the post owner why.</div>
+              <div style="margin-top:9px;"><strong style="color:#374151;">Where it can be wrong.</strong> The model only knows what is written down. A skill you never added, or experience recorded nowhere, is invisible to it — which is why a thin profile produces low scores that say more about the profile than the person. It also cannot judge motivation. If a score looks wrong to you, it probably is: apply anyway, and tell the host why.</div>
             </div>
           </div>
         </details>
@@ -2119,11 +2124,9 @@
           <div class="card form-card">
             <h3>Skills</h3>
             <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;padding:11px 13px;font-size:11px;color:#1E40AF;line-height:1.6;margin-bottom:14px;">
-              ✅ <strong>Where each skill came from, and what it is worth.</strong>
-              <span style="display:block;margin-top:6px;">✅ <strong>Verified</strong> — endorsed by a manager, or earned on work a host manager rated 4★ or better. Counts in full.<br>
-              📥 <strong>Uploaded by HR</strong> — loaded in bulk from HC Connect and MyDevelopment records, and from the skills you have published publicly on your LinkedIn profile. Trusted more than a claim, less than an endorsement.<br>
-              ✏️ <strong>Added by you</strong> — typed on this page. It counts, but least.</span>
-              <span style="display:block;margin-top:6px;">Anyone can claim a skill — so claims alone don't carry much weight here. Add or remove anything below and every match score on this app is recalculated the moment you do.</span>
+              ✅ <strong>Where a skill came from decides what it is worth.</strong>
+              <i class="tipq" tabindex="0" data-tip="Verified — endorsed by a manager, or earned on work a host rated 4 stars or better. Counts in full. Uploaded by HR — loaded in bulk from HC Connect and MyDevelopment, and from skills you have published publicly on LinkedIn. Trusted more than a claim, less than an endorsement. Added by you — typed on this page; it counts, but least. Anyone can claim a skill, which is why claims alone carry little weight here."></i>
+              <span style="display:block;margin-top:6px;">✅ Verified · 📥 Uploaded by HR · ✏️ Added by you. Edit anything below and every match score recalculates as you do.</span>
             </div>
             <div class="field">
               <label>Current Skills</label>
@@ -2156,7 +2159,7 @@
           <div class="card form-card">
             <h3>Work completed through Growth</h3>
             <div style="font-size:11.5px;color:#6B7280;line-height:1.6;margin-bottom:14px;">
-              Every gig, DJI and service offer you have finished, with the host manager's rating and what they wrote.
+              Every gig, DJI and service offer you have finished, with the host's rating and what they wrote.
               This is the part that outlives the engagement: a 4★ or better rating verifies the skills the work used,
               and a verified skill is worth more in matching than anything you can type about yourself.
             </div>
@@ -2184,24 +2187,24 @@
         <div style="font-size:12px;color:#94A3B8;margin-bottom:18px;">Gigs, DJIs and service offers run end to end in Growth. Vacancy outcomes are on the band below — those we contribute to, we do not own.</div>
         <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:18px;">
           <div>
-            <div style="font-size:26px;font-weight:700;color:#4ADE80;font-variant-numeric:tabular-nums;">₱5.08M</div>
-            <div style="font-size:11px;color:#CBD5E1;font-weight:600;">Value of filling 12 roles inside</div>
-            <div style="font-size:10px;color:#64748B;">12 fills × ₱423,219 — hiring cost avoided plus revenue kept</div>
+            <div style="font-size:26px;font-weight:700;color:#4ADE80;font-variant-numeric:tabular-nums;">₱352,463</div>
+            <div style="font-size:11px;color:#CBD5E1;font-weight:600;">Cost Saved from Internal Hiring<i class="tipq on-dark" tabindex="0" data-tip-title="Cost Saved from Internal Hiring" data-tip="Recruitment cost we did not pay because the role was filled from inside. A band C hire costs ₱35,367 through TA; ₱3,378 of that is HR and TA cost we still carry on an internal move, so it is not a saving. Vacancy days and retention are counted separately and are not in this figure."></i></div>
+            <div style="font-size:10px;color:#64748B;">Across 12 internal placements</div>
           </div>
           <div>
             <div style="font-size:26px;font-weight:700;color:#fff;font-variant-numeric:tabular-nums;">12</div>
-            <div style="font-size:11px;color:#CBD5E1;font-weight:600;">Internal placements</div>
-            <div style="font-size:10px;color:#64748B;">vs. 3 in same period last year</div>
+            <div style="font-size:11px;color:#CBD5E1;font-weight:600;">Internal placements<i class="tipq on-dark" tabindex="0" data-tip="Gigs, immersions and service offers completed end to end in Growth this pilot period. Against 3 in the same period last year."></i></div>
+            <div style="font-size:10px;color:#64748B;">vs. 3 last year</div>
           </div>
           <div>
             <div style="font-size:26px;font-weight:700;color:#fff;font-variant-numeric:tabular-nums;">21 <span style="font-size:14px;">days</span></div>
-            <div style="font-size:11px;color:#CBD5E1;font-weight:600;">Avg. time to fill</div>
-            <div style="font-size:10px;color:#64748B;">vs. 58 days external hire</div>
+            <div style="font-size:11px;color:#CBD5E1;font-weight:600;">Avg. time to fill<i class="tipq on-dark" tabindex="0" data-tip="Days from post going live to the person starting. Bands C and D take 151 days to fill from outside against 82 from inside — the gap is where most of the financial case sits."></i></div>
+            <div style="font-size:10px;color:#64748B;">vs. 58 days external</div>
           </div>
           <div>
-            <div style="font-size:26px;font-weight:700;color:#4ADE80;font-variant-numeric:tabular-nums;">94%</div>
-            <div style="font-size:11px;color:#CBD5E1;font-weight:600;">Retention — participants</div>
-            <div style="font-size:10px;color:#64748B;">vs. 81% company average</div>
+            <div style="font-size:26px;font-weight:700;color:#4ADE80;font-variant-numeric:tabular-nums;" id="dashAppRating">—</div>
+            <div style="font-size:11px;color:#CBD5E1;font-weight:600;">App rating<i class="tipq on-dark" tabindex="0" data-tip-title="App rating" data-tip="What users think of Growth itself, 1 to 5, collected from the Rate Growth page. Counted live from ratings left in this browser and in the shared pilot database. Not a measure of the work people did — that is the host rating on each engagement."></i></div>
+            <div style="font-size:10px;color:#64748B;" id="dashAppRatingSub">No ratings yet</div>
           </div>
         </div>
       </div>
@@ -2214,14 +2217,30 @@
           <span style="font-size:15px;font-weight:700;">Vacancy contribution — what Growth sent to HC Connect</span>
         </div>
         <div style="font-size:11.5px;color:#94A3B8;margin-bottom:16px;line-height:1.6;">
-          We do not run vacancy applications, so we do not claim vacancy hires. What we can claim is the handoff: who we put in
-          front of a role, who then applied, and how much of that HC Connect can confirm. Every figure below is labelled by how it is known.
+          We do not claim vacancy hires — only the handoff. Every figure is labelled by how it is known.<i class="tipq on-dark" tabindex="0" data-tip="Who we put in front of a role, who then applied, and how much of that HC Connect can confirm. Three tiers: measured here, self-reported, and confirmed in HC Connect. Only the last belongs in a board paper."></i>
         </div>
         <div id="dashVacFunnel"></div>
         <div style="margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.1);font-size:11px;color:#94A3B8;line-height:1.65;">
-          <strong style="color:#E2E8F0;">Attribution rule.</strong> A vacancy application is credited to Growth when a referral click
-          from this app precedes it by no more than <strong style="color:#E2E8F0;">30 days</strong>, last touch. Anything older is
-          not counted, even if the person first saw the role here. Undercounting is the intended failure mode.
+          <strong style="color:#E2E8F0;">Attribution rule.</strong> Credited when a referral click precedes the application by no more than <strong style="color:#E2E8F0;">30 days</strong>, last touch.<i class="tipq on-dark" tabindex="0" data-tip="Anything older is not counted, even if the person first saw the role here. Undercounting is the intended failure mode — an inflated number gets the whole thing disbelieved."></i>
+        </div>
+      </div>
+
+      <!-- Raw report downloads -->
+      <div class="card" style="padding:16px 20px;margin-bottom:24px;">
+        <div style="display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:4px;">
+          <span style="font-size:17px;">⬇</span>
+          <span style="font-size:14px;font-weight:700;color:#111827;">Download raw reports</span>
+          <i class="tipq" tabindex="0" data-tip="Every figure on this dashboard, as the rows behind it. CSV with a byte-order mark so Excel opens peso signs and accented names correctly. Seeded demo rows are included and flagged in a 'source' column, so you can filter them out before quoting anything."></i>
+        </div>
+        <div style="font-size:11.5px;color:#6B7280;line-height:1.6;margin-bottom:12px;">Opens in Excel. One row per record, nothing aggregated.</div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;">
+          <button class="btn btn-outline btn-sm" onclick="exportReport('opportunities')">📋 Opportunities</button>
+          <button class="btn btn-outline btn-sm" onclick="exportReport('applications')">📨 Applications</button>
+          <button class="btn btn-outline btn-sm" onclick="exportReport('referrals')">🎯 Referrals</button>
+          <button class="btn btn-outline btn-sm" onclick="exportReport('skills')">📥 Employee skills</button>
+          <button class="btn btn-outline btn-sm" onclick="exportReport('completed')">⭐ Completed work</button>
+          <button class="btn btn-outline btn-sm" onclick="exportReport('ratings')">💬 App ratings</button>
+          <button class="btn btn-red btn-sm" onclick="exportReport('all')">⬇ Everything</button>
         </div>
       </div>
 
@@ -2232,13 +2251,13 @@
           <div class="stale-h2">Needs Attention — No Applications in 3+ Weeks</div>
           <span class="badge badge-stale">3 posts</span>
         </div>
-        <div style="font-size:12px;color:#92400E;margin-bottom:12px;">These posts have been live for 3+ weeks with zero applicants. Message the post owner directly — tell them what you think is wrong with the post rather than just poking them — or close it if the need has passed.</div>
+        <div style="font-size:12px;color:#92400E;margin-bottom:12px;">Live 3+ weeks, zero applicants. Message the host or close the post.<i class="tipq" tabindex="0" data-tip="Tell them what you think is wrong with the post rather than just poking them. Posts that get rewritten after a specific message fill roughly twice as often as ones that only get nudged."></i></div>
         <div class="stale-row">
           <div style="flex:1;">
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px;"><span class="badge badge-gig">Gig</span><span style="font-size:13px;font-weight:700;color:#111827;">Process Automation Gig — Finance Ops</span></div>
             <div style="font-size:11px;color:#9CA3AF;">Finance · Posted by Drake · <strong style="color:#92400E;">32 days, 0 applications</strong></div>
           </div>
-          <button class="btn btn-amber btn-sm" onclick="openNudgeDialog('Drake', &quot;Process Automation Gig — Finance Ops&quot;)">✉️ Message Post Owner</button>
+          <button class="btn btn-amber btn-sm" onclick="openNudgeDialog('Drake', &quot;Process Automation Gig — Finance Ops&quot;)">✉️ Message Host</button>
           <button class="btn btn-outline btn-sm" style="color:#C00000;" onclick="closeStalePost(this,'Process Automation Gig')">Close Post</button>
         </div>
         <div class="stale-row">
@@ -2246,7 +2265,7 @@
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px;"><span class="badge badge-dji">DJI</span><span style="font-size:13px;font-weight:700;color:#111827;">DJI: Legal & Compliance — Contract Review</span></div>
             <div style="font-size:11px;color:#9CA3AF;">Legal · Posted by Adele · <strong style="color:#92400E;">28 days, 0 applications</strong></div>
           </div>
-          <button class="btn btn-amber btn-sm" onclick="openNudgeDialog('Adele', &quot;DJI: Legal & Compliance — Contract Review&quot;)">✉️ Message Post Owner</button>
+          <button class="btn btn-amber btn-sm" onclick="openNudgeDialog('Adele', &quot;DJI: Legal & Compliance — Contract Review&quot;)">✉️ Message Host</button>
           <button class="btn btn-outline btn-sm" style="color:#C00000;" onclick="closeStalePost(this,'DJI: Legal & Compliance')">Close Post</button>
         </div>
         <div class="stale-row">
@@ -2254,7 +2273,7 @@
             <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px;"><span class="badge badge-dji">DJI</span><span style="font-size:13px;font-weight:700;color:#111827;">DJI: Data Governance — IT Risk</span></div>
             <div style="font-size:11px;color:#9CA3AF;">IT & Innovation · Posted by Dua Lipa · <strong style="color:#92400E;">24 days, 0 applications</strong></div>
           </div>
-          <button class="btn btn-amber btn-sm" onclick="openNudgeDialog('Dua Lipa', &quot;Data Governance Analyst — IT Risk&quot;)">✉️ Message Post Owner</button>
+          <button class="btn btn-amber btn-sm" onclick="openNudgeDialog('Dua Lipa', &quot;Data Governance Analyst — IT Risk&quot;)">✉️ Message Host</button>
           <button class="btn btn-outline btn-sm" style="color:#C00000;" onclick="closeStalePost(this,'Data Governance Analyst')">Close Post</button>
         </div>
       </div>
@@ -2419,14 +2438,32 @@
       </div>
 
       <div style="background:#FFFBEB;border:1px solid #FDE68A;border-radius:10px;padding:13px 16px;margin-bottom:20px;font-size:12px;color:#92400E;line-height:1.65;">
-        ⚠️ <strong>This list is curated by hand, and that is a deliberate stopgap.</strong> HC Connect is the system of record; nothing
-        here creates, edits or closes a requisition. Promoting one only means Growth shows it and can hand people over.
-        In production this form is replaced by a nightly read from the HC Connect requisition feed — a hand-kept board goes stale, and
-        a stale board that sends people to a closed role is worse than no board.
+        ⚠️ <strong>Curated by hand — a deliberate stopgap.</strong> Nothing here creates, edits or closes a requisition.<i class="tipq" tabindex="0" data-tip="HC Connect is the system of record. Promoting a requisition only means Growth shows it and can hand people over. In production this form is replaced by a nightly read from the HC Connect requisition feed — a hand-kept board goes stale, and a stale board that sends people to a closed role is worse than no board."></i>
+      </div>
+
+      <!-- Bulk: drop the JDs, confirm the skills -->
+      <div class="card form-card" style="max-width:680px;margin-bottom:22px;border-left:3px solid #C00000;">
+        <h3>📂 Bulk upload — drop the job descriptions</h3>
+        <div style="font-size:12px;color:#6B7280;line-height:1.65;margin-bottom:12px;">
+          Drop one PDF per requisition. Each is read for the role title and the skills it asks for; you confirm the skills before anything goes on the board.
+          <i class="tipq" tabindex="0" data-tip="Matching is only as good as the skills attached to a role, and a hiring manager typing them by hand is where that quality is lost. Reading them off the JD the manager already wrote removes the extra step. Nothing is promoted until you confirm — the model proposes, you decide."></i>
+        </div>
+        <div id="jd-drop" ondragover="event.preventDefault();this.style.borderColor='#C00000'" ondragleave="this.style.borderColor='#E5E7EB'"
+             ondrop="handleJdDrop(event)" onclick="document.getElementById('jd-file').click()"
+             style="border:2px dashed #E5E7EB;border-radius:9px;padding:20px;text-align:center;cursor:pointer;transition:border-color .2s;margin-bottom:12px;">
+          <div style="font-size:24px;margin-bottom:4px;">📄</div>
+          <div style="font-size:12px;color:#6B7280;">Drop JD PDFs here, or <span style="color:#C00000;font-weight:600;">browse</span></div>
+          <div style="font-size:11px;color:#9CA3AF;margin-top:2px;">Several at once is fine</div>
+          <input id="jd-file" type="file" accept=".pdf,application/pdf" multiple style="display:none" onchange="handleJdFiles(this)">
+        </div>
+        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:4px;">
+          <button class="btn btn-outline btn-sm" onclick="loadJdSample()">Try it with three sample JDs</button>
+        </div>
+        <div id="jdQueue"></div>
       </div>
 
       <div class="card form-card" style="max-width:680px;margin-bottom:22px;">
-        <h3>Promote a requisition</h3>
+        <h3>Or add one by hand</h3>
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
           <div class="field"><label>HC Connect requisition ID</label><input id="vacReq" placeholder="e.g. REQ-2609"></div>
           <div class="field"><label>Department</label><select id="vacDept"><option>Finance</option><option>HR</option><option>IT &amp; Innovation</option><option>Operations</option><option>Legal &amp; Compliance</option><option>Commercial Planning</option><option>Risk Management</option><option>Marketing</option></select></div>
@@ -2460,13 +2497,10 @@
 
       <div style="background:#F8FAFC;border:1px solid #E2E8F0;border-radius:11px;padding:16px 18px;margin-bottom:20px;">
         <div style="font-size:13px;font-weight:700;color:#111827;margin-bottom:8px;">What each number is worth</div>
-        <div style="font-size:12px;color:#374151;line-height:1.75;">
-          <span class="prov prov-hard" style="margin:0 4px 0 0;">Measured here</span> Views and referrals happen inside this app.
-          They are exact, and they are Growth's own contribution — nobody can dispute them.<br>
-          <span class="prov prov-soft" style="margin:6px 4px 0 0;">Self-reported</span> The employee told us they applied. Useful and
-          free, but it flatters: people who applied are likelier to answer than people who did not. Quote it as self-reported or not at all.<br>
-          <span class="prov prov-ext" style="margin:6px 4px 0 0;">From HC Connect</span> A row in the HC Connect export carries the referral
-          code, or a source value of <em>Growth Marketplace</em>. This is the only figure to put in a paper that goes to Exco.
+        <div style="font-size:12px;color:#374151;line-height:1.9;">
+          <span class="prov prov-hard" style="margin:0 4px 0 0;">Measured here</span> Exact, and genuinely ours.<i class="tipq" tabindex="0" data-tip="Views and referrals happen inside this app. Nobody can dispute them — this is Growth's own contribution."></i><br>
+          <span class="prov prov-soft" style="margin:0 4px 0 0;">Self-reported</span> Quote as self-reported or not at all.<i class="tipq" tabindex="0" data-tip="The employee told us they applied. Useful and free, but it flatters: people who applied are likelier to answer than people who did not."></i><br>
+          <span class="prov prov-ext" style="margin:0 4px 0 0;">From HC Connect</span> The only figure fit for a board paper.<i class="tipq" tabindex="0" data-tip="A row in the HC Connect export carrying the referral code, or a source value of 'Growth Marketplace'. Everything else is inference."></i>
         </div>
       </div>
 
@@ -2479,15 +2513,12 @@
 
       <div class="card" style="padding:18px 20px;margin-top:20px;">
         <div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:8px;">Monthly reconciliation — the whole runbook</div>
-        <div style="font-size:12px;color:#374151;line-height:1.8;">
-          <strong>1.</strong> Export referrals from this page. One row per handoff, with the referral code, the requisition, the person and the date.<br>
-          <strong>2.</strong> Ask recruitment for the HC Connect export of internal applications for the same period, including the
-          source field and the free-text "how did you hear" answer.<br>
-          <strong>3.</strong> Join on the referral code. Where there is no code, fall back to matching on employee plus requisition,
-          and count it only if the referral click precedes the application by no more than 30 days.<br>
-          <strong>4.</strong> Rows that join are <strong>confirmed</strong>. Rows that do not are not evidence of anything — the person may
-          have applied without pasting the code, or may never have applied. Leave them out; do not estimate them upward.<br>
-          <strong>5.</strong> Once a quarter, ask HR for hire outcomes on the confirmed applications. That is the only attributable hire number.
+        <div style="font-size:12px;color:#374151;line-height:1.9;">
+          <strong>1.</strong> Export referrals from this page.<i class="tipq" tabindex="0" data-tip="One row per handoff, with the referral code, the requisition, the person and the date."></i><br>
+          <strong>2.</strong> Get the HC Connect export of internal applications for the same period.<i class="tipq" tabindex="0" data-tip="Ask recruitment to include the source field and the free-text 'how did you hear about this role' answer."></i><br>
+          <strong>3.</strong> Join on the referral code.<i class="tipq" tabindex="0" data-tip="Where there is no code, fall back to matching on employee plus requisition, and count it only if the referral click precedes the application by no more than 30 days."></i><br>
+          <strong>4.</strong> Rows that join are <strong>confirmed</strong>. Rows that do not are not evidence.<i class="tipq" tabindex="0" data-tip="The person may have applied without pasting the code, or may never have applied. Leave them out; do not estimate them upward."></i><br>
+          <strong>5.</strong> Quarterly, ask HR for hire outcomes on the confirmed applications.<i class="tipq" tabindex="0" data-tip="That is the only attributable hire number — everything before it is a handoff, not a hire."></i>
         </div>
         <div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:8px;padding:11px 13px;font-size:11.5px;color:#065F46;line-height:1.65;margin-top:14px;">
           ✅ <strong>One change in HC Connect makes all of this cheap.</strong> Ask recruitment to add a source value
@@ -2499,14 +2530,8 @@
       <div class="card" style="padding:18px 20px;margin-top:14px;border-left:3px solid #C00000;">
         <div style="font-size:14px;font-weight:700;color:#111827;margin-bottom:8px;">The honest limit: attribution is not causation</div>
         <div style="font-size:12px;color:#374151;line-height:1.8;">
-          A confirmed referral proves Growth was the last thing the person touched before applying. It does not prove they
-          would not have applied anyway — some of them read the same role in the internal jobs newsletter that morning.<br><br>
-          <strong>If someone challenges the number, there is exactly one clean answer: run a holdout.</strong> For one quarter, promote
-          a random half of open requisitions in Growth and leave the other half listed only in HC Connect. Compare internal
-          applications per requisition across the two groups. The difference is Growth's causal effect, and it is the only
-          version of this number that survives a hostile reading. It costs nothing but the discipline to leave half the reqs alone.<br><br>
-          Until that runs, report the funnel as it is labelled: referrals are ours, applications are HC Connect', and the word
-          "because" belongs to neither of us yet.
+          A confirmed referral proves Growth was the last thing touched before applying — not that the person would not have applied anyway.<i class="tipq" tabindex="0" data-tip="Some of them read the same role in the internal jobs newsletter that morning. Until a holdout runs, report the funnel as it is labelled: referrals are ours, applications are HC Connect's, and the word 'because' belongs to neither of us yet."></i><br><br>
+          <strong>If challenged, there is one clean answer: run a holdout.</strong> Promote a random half of open requisitions for a quarter and leave the rest listed only in HC Connect.<i class="tipq" tabindex="0" data-tip="Compare internal applications per requisition across the two groups. The difference is Growth's causal effect, and it is the only version of this number that survives a hostile reading. It costs nothing but the discipline to leave half the requisitions alone."></i>
         </div>
       </div>
     </div>
@@ -2521,12 +2546,7 @@
       <div class="handoff-band">
         <div class="handoff-t">⚠ An empty profile is the single biggest adoption risk this product has.</div>
         <div class="handoff-b">
-          Matching only sees what is written down. A person with no skills on file matches nothing, sees an empty
-          board, and does not come back — and asking 637 people to sit down and type their own skills before the
-          Growth does anything for them is the wrong order of events.<br><br>
-          You almost certainly already hold this data: the HC Connect competency table, the MyDevelopment completion export, the
-          last capability assessment. Load it here and every profile starts populated. People then <strong>correct</strong>
-          their skills, which is a far easier ask than <strong>authoring</strong> them, and Growth works on day one.
+          Matching only sees what is written down. Load what HR already holds and every profile starts populated — people then <strong>correct</strong> their skills rather than <strong>author</strong> them.<i class="tipq" tabindex="0" data-tip="A person with no skills on file matches nothing, sees an empty board and does not come back. Asking 637 people to type their own skills before the product has done anything for them is the wrong order of events. You almost certainly already hold this data: the HC Connect competency table, the MyDevelopment completion export, the last capability assessment."></i>
         </div>
       </div>
 
@@ -2535,7 +2555,36 @@
       <div class="two-col" style="align-items:start;grid-template-columns:minmax(0,0.82fr) minmax(0,1.18fr);">
         <div>
           <div class="card form-card">
-            <h3>1 · Load the file</h3>
+            <h3>1 · Choose a source</h3>
+            <div style="font-size:12px;color:#6B7280;line-height:1.6;margin-bottom:12px;">
+              Everything lands as <strong>📥 Uploaded by HR</strong> whichever route it takes.
+              <i class="tipq" tabindex="0" data-tip="A provenance of its own, ranked between verified and self-declared. An upload never overwrites a skill an employee has edited themselves, and never removes one — people stay in charge of their own profile."></i>
+            </div>
+            <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(148px,1fr));gap:9px;margin-bottom:14px;">
+              <button class="src-btn" data-src="hcconnect" onclick="pickSkillSource('hcconnect')" style="text-align:left;padding:11px 13px;border:1px solid #E5E7EB;border-radius:9px;background:#fff;cursor:pointer;font-family:inherit;">
+                <div style="font-size:17px;margin-bottom:3px;">🏢</div>
+                <div style="font-size:12px;font-weight:700;color:#111827;">HC Connect</div>
+                <div style="font-size:10.5px;color:#9CA3AF;line-height:1.45;">Competency table</div>
+              </button>
+              <button class="src-btn" data-src="mydev" onclick="pickSkillSource('mydev')" style="text-align:left;padding:11px 13px;border:1px solid #E5E7EB;border-radius:9px;background:#fff;cursor:pointer;font-family:inherit;">
+                <div style="font-size:17px;margin-bottom:3px;">🎓</div>
+                <div style="font-size:12px;font-weight:700;color:#111827;">MyDevelopment</div>
+                <div style="font-size:10.5px;color:#9CA3AF;line-height:1.45;">Completed courses</div>
+              </button>
+              <button class="src-btn" data-src="linkedin" onclick="pickSkillSource('linkedin')" style="text-align:left;padding:11px 13px;border:1px solid #E5E7EB;border-radius:9px;background:#fff;cursor:pointer;font-family:inherit;">
+                <div style="font-size:17px;margin-bottom:3px;">💼</div>
+                <div style="font-size:12px;font-weight:700;color:#111827;">LinkedIn</div>
+                <div style="font-size:10.5px;color:#9CA3AF;line-height:1.45;">Public, opt-in</div>
+              </button>
+              <button class="src-btn" data-src="csv" onclick="pickSkillSource('csv')" style="text-align:left;padding:11px 13px;border:1px solid #E5E7EB;border-radius:9px;background:#fff;cursor:pointer;font-family:inherit;">
+                <div style="font-size:17px;margin-bottom:3px;">📄</div>
+                <div style="font-size:12px;font-weight:700;color:#111827;">Any CSV</div>
+                <div style="font-size:10.5px;color:#9CA3AF;line-height:1.45;">Your own file</div>
+              </button>
+            </div>
+            <div id="srcNote" style="display:none;border-radius:9px;padding:11px 13px;font-size:11.5px;line-height:1.65;margin-bottom:16px;"></div>
+
+            <h3 style="margin-top:4px;">2 · Load the file</h3>
             <div style="font-size:12px;color:#6B7280;line-height:1.65;margin-bottom:14px;">
               CSV with a header row. One line per employee; put multiple skills in the <code>skills</code> column
               separated by semicolons. Columns may appear in any order.
@@ -2570,7 +2619,7 @@ HC-1088,Lionel Messi,Finance,Power BI;SQL;Data Analysis</div>
         </div>
         <div>
           <div class="card form-card">
-            <h3>2 · Check what will be written</h3>
+            <h3>3 · Check what will be written</h3>
             <div id="skillPreview"></div>
           </div>
         </div>
@@ -2586,7 +2635,7 @@ HC-1088,Lionel Messi,Finance,Power BI;SQL;Data Analysis</div>
         <div class="page-sub">Every post and every application, including the ones that were rejected</div>
       </div>
       <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:10px;padding:12px 16px;margin-bottom:20px;font-size:12px;color:#1E40AF;line-height:1.6;">
-        🗂️ <strong>Nothing is deleted.</strong> Rejected posts and declined applications stay on the record — that history is what tells HR whether Growth is working, and protects both applicants and post owners if a decision is questioned later.
+        🗂️ <strong>Nothing is deleted.</strong> Rejected posts and declined applications stay on the record — that history is what tells HR whether Growth is working, and protects both applicants and hosts if a decision is questioned later.
       </div>
 
       <div class="tab-bar">
@@ -2629,7 +2678,7 @@ HC-1088,Lionel Messi,Finance,Power BI;SQL;Data Analysis</div>
 
       <div id="hist-sla" class="hist-pane" style="display:none;">
         <div style="background:#FEF2F2;border:1px solid #FECACA;border-radius:10px;padding:14px 16px;margin-bottom:16px;font-size:12px;color:#7F1D1D;line-height:1.65;">
-          ⏰ <strong>The 7-day rule.</strong> Applicants are promised a decision within seven working days. Past that, an automated reminder goes to the post owner, copied to HR. A silent no is the fastest way to lose someone from Growth for good.
+          ⏰ <strong>The 7-day rule.</strong> Applicants are promised a decision within seven working days. Past that, an automated reminder goes to the host, copied to HR. A silent no is the fastest way to lose someone from Growth for good.
         </div>
         <div class="card" style="overflow:hidden;">
           <div style="padding:14px 16px;border-bottom:1px solid #F3F4F6;font-size:14px;font-weight:700;color:#111827;">Applications past the 7-day commitment</div>
@@ -2657,6 +2706,46 @@ HC-1088,Lionel Messi,Finance,Power BI;SQL;Data Analysis</div>
       </div>
     </div>
 
+    <!-- ══ RATE THE APP ══ -->
+    <div class="page" id="page-rate">
+      <div class="page-header">
+        <div class="page-title">⭐ Rate Growth</div>
+        <div class="page-sub">How is the app itself working for you?<i class="tipq" tabindex="0" data-tip="This rates Growth the product — whether it is easy to use and whether it found you anything worth your time. It is separate from the rating a host gives you on a finished engagement, which goes on your HR record. This one does not."></i></div>
+      </div>
+
+      <div class="two-col">
+        <div>
+          <div class="card form-card">
+            <h3>Your rating</h3>
+            <label style="font-size:11px;font-weight:700;color:#374151;text-transform:uppercase;letter-spacing:0.3px;display:block;margin-bottom:8px;">Overall <span style="color:#C00000;">*</span></label>
+            <div id="appStarRow" style="display:flex;gap:6px;margin-bottom:5px;">
+              <span onclick="setAppRating(1)" onmouseover="paintAppStars(1)" onmouseout="paintAppStars(_appRating)" data-astar="1" style="font-size:32px;cursor:pointer;color:#E5E7EB;line-height:1;user-select:none;transition:color .12s;">★</span><span onclick="setAppRating(2)" onmouseover="paintAppStars(2)" onmouseout="paintAppStars(_appRating)" data-astar="2" style="font-size:32px;cursor:pointer;color:#E5E7EB;line-height:1;user-select:none;transition:color .12s;">★</span><span onclick="setAppRating(3)" onmouseover="paintAppStars(3)" onmouseout="paintAppStars(_appRating)" data-astar="3" style="font-size:32px;cursor:pointer;color:#E5E7EB;line-height:1;user-select:none;transition:color .12s;">★</span><span onclick="setAppRating(4)" onmouseover="paintAppStars(4)" onmouseout="paintAppStars(_appRating)" data-astar="4" style="font-size:32px;cursor:pointer;color:#E5E7EB;line-height:1;user-select:none;transition:color .12s;">★</span><span onclick="setAppRating(5)" onmouseover="paintAppStars(5)" onmouseout="paintAppStars(_appRating)" data-astar="5" style="font-size:32px;cursor:pointer;color:#E5E7EB;line-height:1;user-select:none;transition:color .12s;">★</span>
+            </div>
+            <div id="appRatingLabel" style="font-size:12px;color:#9CA3AF;margin-bottom:16px;height:17px;">Tap a star</div>
+
+            <div class="field">
+              <label>What would you change?<i class="tipq" tabindex="0" data-tip="Optional, and the most useful box on the page. Specific beats polite — &quot;the match reasons are too long to read on a phone&quot; is actionable; &quot;nice app&quot; is not."></i></label>
+              <textarea id="appRatingComment" placeholder="What worked, what got in your way…" style="min-height:90px;"></textarea>
+            </div>
+            <button class="btn btn-red" onclick="submitAppRating()">Submit rating</button>
+            <div style="font-size:10.5px;color:#9CA3AF;line-height:1.6;margin-top:10px;">Goes to the Growth product team, not to your manager. You can rate again any time — your latest replaces your last.</div>
+          </div>
+        </div>
+        <div>
+          <div class="card widget" style="margin-bottom:14px;">
+            <div style="text-align:center;margin-bottom:12px;">
+              <div id="appAvgBig" style="font-size:40px;font-weight:700;color:#111827;line-height:1;">—</div>
+              <div id="appAvgStars" style="color:#D97706;font-size:18px;letter-spacing:2px;">☆☆☆☆☆</div>
+              <div id="appAvgCount" style="font-size:11px;color:#9CA3AF;margin-top:4px;">No ratings yet</div>
+            </div>
+            <div id="appRatingBars"></div>
+          </div>
+          <div class="section-hd"><div class="section-h2">What people said</div></div>
+          <div class="card widget" id="appRatingComments" style="max-height:340px;overflow-y:auto;"></div>
+        </div>
+      </div>
+    </div>
+
     <!-- ══ FAQ ══ -->
     <div class="page" id="page-faq">
       <div class="page-header">
@@ -2676,7 +2765,7 @@ HC-1088,Lionel Messi,Finance,Power BI;SQL;Data Analysis</div>
             <strong>For Developmental Job Immersions (DJI)</strong> — per <strong>Policy 211_2021</strong>, the <em>degree of immersion</em> is agreed upon and documented in the DJI Plan before the immersion begins:<br>
             &nbsp;&nbsp;• <strong>Full immersion (100%)</strong> — you are fully released to the Host Department for the duration<br>
             &nbsp;&nbsp;• <strong>Partial immersion</strong> — the new role is performed alongside your current role at an agreed split<br><br>
-            This is co-designed by you, your Direct Manager, and the Host Manager, then signed off by all three plus your HR People Partner (HRPP) using the official DJI Form.
+            This is co-designed by you, your Direct Manager, and the Host, then signed off by all three plus your HR People Partner (HRPP) using the official DJI Form.
             <button class="faq-policy-link" onclick="downloadPolicy('policy')" title="Download the policy">📄 Policy 211_2021 v1.0 — Section 5.4.2 Goal and Expectation Setting &nbsp;⬇</button>
           </div>
         </details>
@@ -2696,7 +2785,7 @@ HC-1088,Lionel Messi,Finance,Power BI;SQL;Data Analysis</div>
         <details><summary>There's no extra pay — so what does the company actually give me in return? <span>+</span></summary>
           <div class="faq-body">
             A fair question, and the honest answer is that "exposure" isn't payment. Growth work is unpaid, so Home Credit PH commits to four things in exchange. These are policy, not goodwill, and the HR Department is accountable for delivering each — centrally, not devolved to your manager:<br><br>
-            <strong>1. A formal record on your file.</strong> Every completed engagement is logged permanently in your HR record with the host manager's rating. Not a favour someone might remember — a document.<br>
+            <strong>1. A formal record on your file.</strong> Every completed engagement is logged permanently in your HR record with the host's rating. Not a favour someone might remember — a document.<br>
             <strong>2. Inclusion in the talent review.</strong> Your contributions are tabled at the annual talent review and succession planning discussion — the room where promotions and successor slates are decided.<br>
             <strong>3. A post-activity survey, immediately.</strong> The moment the engagement ends, HR sends you the post-activity survey — what you learned, what you'd change, where you want it to lead. Sent automatically while the work is fresh, and it goes to HR, not into a drawer.<br>
             <strong>4. First look at related roles.</strong> Complete work in a function and you're flagged as a priority internal candidate when a vacancy opens there.<br><br>
@@ -2729,9 +2818,9 @@ HC-1088,Lionel Messi,Finance,Power BI;SQL;Data Analysis</div>
           <div class="faq-body">
             Anyone can claim a skill, so claims alone don't carry much weight. A skill becomes <strong>✅ Verified</strong> three ways:<br><br>
             <strong>1. Manager endorsement.</strong> Your direct manager confirms it. Request this from your profile in one click.<br>
-            <strong>2. Growth performance.</strong> A host manager rates you <strong>4★ or higher</strong> on work that used the skill — it's verified automatically. This is the strongest form, because it's evidence rather than opinion.<br>
+            <strong>2. Growth performance.</strong> A host rates you <strong>4★ or higher</strong> on work that used the skill — it's verified automatically. This is the strongest form, because it's evidence rather than opinion.<br>
             <strong>3. Certification.</strong> A completed certification logged in MyDevelopment.<br><br>
-            Verified skills rank higher in matching and are the only ones shown to post owners by default. Self-declared skills still count — they just carry a lighter weight until something backs them up. Over time, completed Growth work becomes the main source of truth about what people here can actually do.
+            Verified skills rank higher in matching and are the only ones shown to hosts by default. Self-declared skills still count — they just carry a lighter weight until something backs them up. Over time, completed Growth work becomes the main source of truth about what people here can actually do.
           </div>
         </details>
 
@@ -2799,8 +2888,8 @@ HC-1088,Lionel Messi,Finance,Power BI;SQL;Data Analysis</div>
           <div class="faq-body">
             Per Policy 211_2021, you are a core part of the process:<br><br>
             1. You and the employee, in consultation with the HRPP, agree the DJI is part of their Individual Development Plan<br>
-            2. You co-design the <strong>DJI Plan</strong> with the employee and Host Manager — covering goals, degree of immersion, expected outputs, and performance evaluation impact<br>
-            3. You, the employee, the Host Manager, and the HRPP all sign off using the official DJI Form<br>
+            2. You co-design the <strong>DJI Plan</strong> with the employee and Host — covering goals, degree of immersion, expected outputs, and performance evaluation impact<br>
+            3. You, the employee, the Host, and the HRPP all sign off using the official DJI Form<br>
             4. As Direct Manager, you remain responsible for check-ins, evaluation, and formal closure of the DJI<br><br>
             The employee's headcount and all HR obligations remain with you throughout. The DJI closes at the agreed end date, or at 9 months maximum.
             <button class="faq-policy-link" onclick="downloadPolicy('policy')" title="Download the policy">📄 Policy 211_2021 v1.0 — Sections 4 &amp; 5.4 &nbsp;⬇</button>
@@ -2816,7 +2905,7 @@ HC-1088,Lionel Messi,Finance,Power BI;SQL;Data Analysis</div>
         </details>
 
         <details><summary>What's expected after the exposure ends? <span>+</span></summary>
-          <div class="faq-body">Both the post owner and the accepted participant complete a short feedback form — a star rating (1–5) and optional comment. Under 2 minutes, and it helps improve the platform over time.</div>
+          <div class="faq-body">Both the host and the accepted participant complete a short feedback form — a star rating (1–5) and optional comment. Under 2 minutes, and it helps improve the platform over time.</div>
         </details>
       </div>
     </div>
@@ -2847,6 +2936,7 @@ const ROLES = {
       { id: 'post', emoji: '➕', label: 'Post Opportunity' },
       { sec: 'Account' },
       { id: 'profile', emoji: '👤', label: 'My Profile' },
+      { id: 'rate', emoji: '⭐', label: 'Rate Growth' },
       { id: 'faq', emoji: '❓', label: 'FAQ' },
       { id: 'notifications', emoji: '🔔', label: 'Notifications', badge: '1' },
     ]
@@ -2871,6 +2961,7 @@ const ROLES = {
       ]},
       { sec: 'Account' },
       { id: 'profile', emoji: '👤', label: 'My Profile' },
+      { id: 'rate', emoji: '⭐', label: 'Rate Growth' },
       { id: 'faq', emoji: '❓', label: 'FAQ' },
       { id: 'notifications', emoji: '🔔', label: 'Notifications', badge: '1' },
     ]
@@ -2891,6 +2982,7 @@ const ROLES = {
       { group: 'people', emoji: '🏆', label: 'People', children: [
         { id: 'admin-skills', emoji: '📥', label: 'Skills Upload' },
         { id: 'admin-noms', emoji: '🏆', label: 'Nomination Dashboard' },
+        { id: 'rate', emoji: '⭐', label: 'App Ratings' },
         { id: 'notifications', emoji: '💬', label: 'Feedbacks' },
       ]},
     ]
@@ -3189,7 +3281,7 @@ function renderLive() {
     'Nothing approved yet. Post one as a manager, then approve it as an administrator.')
 
   livePanel('liveMyApps', 'Your applications',
-    'Everything you have applied to here. These persist across a reload and are visible to the post owner.',
+    'Everything you have applied to here. These persist across a reload and are visible to the host.',
     apps.filter(a => me && a.applicant === me).map(a => `<div class="live-row">
         <div class="live-row-main">
           <div class="live-row-t">${badgeFor(a.opp_type)} ${esc(a.opp_title)}${localTag(a)}</div>
@@ -3225,7 +3317,7 @@ function renderLive() {
         </div>
       </div>`).join('') : ''
   livePanel('liveInbox', `${inbox.length} application${inbox.length === 1 ? '' : 's'} awaiting your decision`,
-    'Open anyone’s profile before you decide — what they have finished and what a host manager said about it is worth more than the paragraph they wrote.',
+    'Open anyone’s profile before you decide — what they have finished and what a host said about it is worth more than the paragraph they wrote.',
     inboxRows + runRows, 'No applications waiting.')
 
   livePanel('liveTeam', `${apps.length} application${apps.length === 1 ? '' : 's'} across the pilot`,
@@ -3314,7 +3406,7 @@ async function liveApply(oppId) {
     applicant_role: currentRole, essay: '', status: 'applied', created_at: new Date().toISOString() }
   LOCAL.apps.unshift(row); saveLocal()
   renderLive(); renderApplicantCounts()
-  toast(`✓ Applied to “${o.title}”. The post owner sees it under My Openings now.`)
+  toast(`✓ Applied to “${o.title}”. The host sees it under My Openings now.`)
   if (LIVE.online && !isLocalId(o.id)) {
     try {
       await livePost('v2_applications', { opp_title: o.title, opp_type: o.type, applicant: me,
@@ -3382,7 +3474,7 @@ async function liveCreateOpportunity(fields) {
    can be put back — nobody wants to present on top of last week's clicking. */
 function resetLocal() {
   if (!confirm('Clear everything done in this browser — posts, applications, skill edits and ratings — and start again from the seeded demo?')) return
-  LOCAL = { opps: [], apps: [], completed: [] }
+  LOCAL = { opps: [], apps: [], completed: [], ratings: [] }
   SKILL_EDITS = {}
   saveLocal(); saveEdits()
   renderLive(); renderProfileSkills(); renderCompletedWork(); renderApplicantCounts(); renderScores(); renderFitBreakdowns(); renderHistory()
@@ -3483,17 +3575,19 @@ function initSkillTip() {
     document.body.appendChild(tip)
   }
   const show = e => {
-    const c = e.target.closest('.skill-chip[data-def]')
+    const c = e.target.closest('.skill-chip[data-def], [data-tip]')
     if (!c) return
-    tip.innerHTML = `<b>${esc(c.dataset.defName)}</b>${esc(c.dataset.def)}` +
-      (c.dataset.verify ? `<div class="tip-meta">${esc(c.dataset.verify)}</div>` : '')
+    tip.innerHTML = c.dataset.tip
+      ? (c.dataset.tipTitle ? `<b>${esc(c.dataset.tipTitle)}</b>` : '') + esc(c.dataset.tip)
+      : `<b>${esc(c.dataset.defName)}</b>${esc(c.dataset.def)}` +
+        (c.dataset.verify ? `<div class="tip-meta">${esc(c.dataset.verify)}</div>` : '')
     tip.classList.add('on')
     const r = c.getBoundingClientRect()
     tip.style.left = Math.min(r.left, window.innerWidth - tip.offsetWidth - 12) + 'px'
     const above = r.top > tip.offsetHeight + 14
     tip.style.top = (above ? r.top - tip.offsetHeight - 9 : r.bottom + 9) + 'px'
   }
-  const hide = e => { if (e.target.closest && e.target.closest('.skill-chip')) tip.classList.remove('on') }
+  const hide = e => { if (e.target.closest && e.target.closest('.skill-chip, [data-tip]')) tip.classList.remove('on') }
   document.addEventListener('mouseover', show)
   document.addEventListener('mouseout', hide)
   document.addEventListener('focusin', show)
@@ -3545,7 +3639,7 @@ function renderFitBreakdowns() {
 }
 
 
-/* Item 8 — ask the post owner a question. */
+/* Item 8 — ask the host a question. */
 function openAskDialog(title) {
   const overlay = document.createElement('div')
   overlay.setAttribute('data-overlay', '1')
@@ -3555,7 +3649,7 @@ function openAskDialog(title) {
       <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#9CA3AF;margin-bottom:6px;">Ask about this opportunity</div>
       <div style="font-size:17px;font-weight:700;color:#111827;margin-bottom:14px;">${esc(title)}</div>
       <div style="background:#EFF6FF;border:1px solid #BFDBFE;border-radius:8px;padding:11px 13px;font-size:11.5px;color:#1E40AF;line-height:1.6;margin-bottom:16px;">
-        💬 Asking a question is <strong>not</strong> an application and nothing is recorded against you. Post owners see the question and your name, and are asked to reply within three working days.
+        💬 Asking a question is <strong>not</strong> an application and nothing is recorded against you. Hosts see the question and your name, and are asked to reply within three working days.
       </div>
       <label style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.3px;color:#374151;display:block;margin-bottom:6px;">What would you like to know? <span style="color:#C00000;">*</span></label>
       <textarea id="askText" placeholder="e.g. How many hours a week does this realistically take? Is it possible alongside a full workload? Would my manager need to approve first? What does success look like at the end?" style="width:100%;min-height:170px;padding:12px 13px;border:1px solid #E5E7EB;border-radius:9px;font-family:inherit;font-size:13px;line-height:1.65;color:#374151;outline:none;resize:vertical;"></textarea>
@@ -3571,16 +3665,16 @@ function openAskDialog(title) {
 
 function submitAsk(title, btn) {
   const q = document.getElementById('askText').value.trim()
-  if (q.length < 10) { toast('Add a bit more detail so the post owner can answer properly.', 'warning'); return }
+  if (q.length < 10) { toast('Add a bit more detail so the host can answer properly.', 'warning'); return }
   btn.closest('[data-overlay]').remove()
-  toast(`✓ Question sent about "${title}". You'll be notified when the post owner replies.`)
+  toast(`✓ Question sent about "${title}". You'll be notified when the host replies.`)
 }
 
 /* ══════════════════════════════════════════════════════════════════
    ITEM 13 — 7-day no-response escalation.
 
    An application left untouched for 7 days triggers a reminder to the
-   post owner, copied to HR. The ageing and the escalation state are
+   host, copied to HR. The ageing and the escalation state are
    computed here from real timestamps; actually putting mail in an inbox
    needs a mail service (SES/SendGrid) behind a backend, which a static
    page cannot do. The prototype therefore shows exactly what would be
@@ -3612,7 +3706,7 @@ function previewReminder(appId) {
       <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.5px;color:#9CA3AF;margin-bottom:10px;">Automated reminder · day ${d}</div>
       <div style="border:1px solid #E5E7EB;border-radius:10px;overflow:hidden;">
         <div style="background:#F9FAFB;padding:12px 14px;border-bottom:1px solid #E5E7EB;font-size:11.5px;color:#374151;line-height:1.8;">
-          <div><strong>To:</strong> the post owner</div>
+          <div><strong>To:</strong> the host</div>
           <div><strong>Cc:</strong> HR Department</div>
           <div><strong>Subject:</strong> Action needed — an application has been waiting ${d} days</div>
         </div>
@@ -3776,7 +3870,7 @@ function openNudgeDialog(name, post) {
   overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.35);z-index:500;display:flex;align-items:center;justify-content:center;padding:20px;overflow-y:auto;'
   overlay.innerHTML = `
     <div style="background:#fff;border-radius:14px;padding:32px;width:540px;max-width:95vw;box-shadow:0 8px 40px rgba(0,0,0,0.14);">
-      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#9CA3AF;margin-bottom:6px;">Message the post owner</div>
+      <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:#9CA3AF;margin-bottom:6px;">Message the host</div>
       <div style="font-size:17px;font-weight:700;color:#111827;margin-bottom:4px;">To: ${name}</div>
       <div style="font-size:12px;color:#6B7280;margin-bottom:16px;">Re: ${post}</div>
 
@@ -3917,7 +4011,7 @@ function submitApplication(title, btn) {
     applicant_role: currentRole, essay, status: 'applied', created_at: new Date().toISOString() }
   LOCAL.apps.unshift(row); saveLocal()
   renderLive(); renderApplicantCounts(); renderHistory()
-  toast(`✓ Application submitted for "${title}". It is on the post owner's list under My Openings.`)
+  toast(`✓ Application submitted for "${title}". It is on the host's list under My Openings.`)
   if (LIVE.online && liveName()) {
     livePost('v2_applications', { opp_title: title, opp_type: row.opp_type, applicant: liveName(), applicant_role: currentRole, essay, status: 'applied' })
       .then(() => { LOCAL.apps = LOCAL.apps.filter(a => a.id !== row.id); saveLocal(); return liveRefresh() })
@@ -3972,7 +4066,7 @@ function openFeedbackDialog(title, counterpart, perspective) {
   _fbRating = 0
   const asHost = perspective === 'host'
   const C = asHost ? {
-    kicker: 'Post-activity survey \u00b7 Host manager',
+    kicker: 'Post-activity survey \u00b7 Host',
     sub: 'Working with',
     learned: 'What did you learn from hosting this?',
     learnedPh: 'What did having someone from outside your team show you \u2014 about the work, the process, or your own assumptions?',
@@ -4089,12 +4183,12 @@ function submitFeedback(title, btn, perspective, counterpart) {
     // The host's rating is the record. 4★ or better verifies the skills the
     // work used — which is why this survey is the spine of the whole product.
     recordCompletion(counterpart, title, { rating: _fbRating, comment,
-      host: liveName() || personaName() || 'Host manager' })
+      host: liveName() || personaName() || 'Host' })
     renderCompletedWork(); renderProfileSkills(); renderScores(); renderFitBreakdowns(); renderLive()
     if (_fbRating >= 4) toast(`✓ ${counterpart} rated ${_fbRating}★. The skills this work used are now verified on their profile.`)
   } else {
     recordCompletion(personaName(), title, { myRating: _fbRating, myComment: comment,
-      host: counterpart || 'Host manager', myLearned: learned.trim() })
+      host: counterpart || 'Host', myLearned: learned.trim() })
     renderCompletedWork(); renderProfileSkills(); renderScores(); renderFitBreakdowns()
   }
   if (asHost) {
@@ -4229,7 +4323,7 @@ function withdrawApplication(btn, title) {
   card.style.opacity = '0.45'
   card.style.borderLeftColor = '#D1D5DB'
   btn.parentElement.innerHTML = '<span style="font-size:12px;color:#9CA3AF;font-weight:600;">Application withdrawn</span>'
-  toast(`Application withdrawn: ${title}. The post owner has been notified.`)
+  toast(`Application withdrawn: ${title}. The host has been notified.`)
 }
 
 function updateAcceptBtn() {
@@ -5030,13 +5124,22 @@ function exportReferralsCsv() {
     r.outcome || '', r.outcome_at || '', r.verified ? 'yes' : 'no', r.verified_at || '',
     ATTRIB_WINDOW_DAYS,
   ].map(csvCell).join(',')))
-  const blob = new Blob(['﻿' + lines.join('\r\n')], { type: 'text/csv;charset=utf-8;' })
+  saveExport('growth-referrals-' + new Date().toISOString().slice(0, 10),
+             '﻿' + lines.join('\r\n'), refs.length)
+}
+
+/* Every exporter on the page funnels through here, so there is one place that
+   knows how a file leaves the app. Opened directly from the repository this is
+   a blob link; the hosted build swaps the body for the viewer's save prompt,
+   which is the only thing that works inside a sandboxed frame. */
+function saveExport(name, csv, n) {
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
   const a = document.createElement('a')
   a.href = URL.createObjectURL(blob)
-  a.download = 'growth-referrals-' + new Date().toISOString().slice(0, 10) + '.csv'
+  a.download = name + '.csv'
   document.body.appendChild(a); a.click(); a.remove()
   setTimeout(() => URL.revokeObjectURL(a.href), 4000)
-  toast('✓ ' + refs.length + ' referrals exported. Join it against the ' + ATS_SHORT + ' export on referral_code.')
+  toast('✓ ' + n + ' rows exported.')
 }
 
 /* ══════════════════════════════════════════════════════════════════
@@ -5106,8 +5209,8 @@ const LS = {
 function loadJson(k, fallback) {
   try { return JSON.parse(LS.get(k)) || fallback } catch (e) { return fallback }
 }
-let LOCAL = loadJson('growth_local_v2', { opps: [], apps: [], completed: [] })
-;['opps','apps','completed'].forEach(k => { if (!Array.isArray(LOCAL[k])) LOCAL[k] = [] })
+let LOCAL = loadJson('growth_local_v2', { opps: [], apps: [], completed: [], ratings: [] })
+;['opps','apps','completed','ratings'].forEach(k => { if (!Array.isArray(LOCAL[k])) LOCAL[k] = [] })
 const saveLocal = () => LS.set('growth_local_v2', JSON.stringify(LOCAL))
 const newLocalId = () => 'L' + Date.now().toString(36) + Math.floor(Math.random()*1e4)
 const isLocalId = id => typeof id === 'string' && id.charAt(0) === 'L'
@@ -5115,7 +5218,7 @@ const allOpps = () => LOCAL.opps.concat(LIVE.opps)
 const allApps = () => LOCAL.apps.concat(LIVE.apps)
 
 /* ══ COMPLETED WORK — the permanent record the whole product promises ══
-   A finished engagement carries the host manager's rating and comment,
+   A finished engagement carries the host's rating and comment,
    and it is what turns an unpaid stretch into something that counts. A
    4-star-or-better rating also verifies the skills the work used, which
    is the strongest form of verification we have: evidence, not opinion. */
@@ -5144,7 +5247,7 @@ const completedFor = p => allCompleted().filter(c => c.person === p)
 /* ══════════════════════════════════════════════════════════════════
    SKILLS — three provenances, and the difference is the whole point.
 
-     verified   a manager endorsed it, or a host manager rated the work
+     verified   a manager endorsed it, or a host rated the work
                 4★+. Evidence rather than opinion, so it counts full.
      uploaded   loaded in bulk by HR from HC Connect, MyDevelopment or a
                 public LinkedIn profile. Trusted
@@ -5592,7 +5695,7 @@ function matchBarInner(m, label) {
           <span class="m-row" style="border-top:1px solid #374151;margin-top:5px;padding-top:5px;"><span>Skills held &amp; verified</span><span style="color:#E5E7EB;font-weight:700;">${Math.round(m.parts.skills)} / 70</span></span>
           <span class="m-row"><span>Aspiration fit</span><span style="color:#E5E7EB;font-weight:700;">${Math.round(m.parts.asp)} / 20</span></span>
           <span class="m-row"><span>Track record</span><span style="color:#E5E7EB;font-weight:700;">${Math.round(m.parts.track)} / 10</span></span>
-          <span class="m-note">Scored against your profile as it stands right now. \u2705 verified counts in full, \ud83d\udce5 uploaded by HR slightly less, \u270f\ufe0f self-declared earns 20 of the 70. Aspiration counts a skill you already hold or have listed under Skills to Develop. Edit your profile and every one of these moves. Not an assessment of your performance \u2014 the post owner decides.</span>
+          <span class="m-note">Scored against your profile as it stands right now. \u2705 verified counts in full, \ud83d\udce5 uploaded by HR slightly less, \u270f\ufe0f self-declared earns 20 of the 70. Aspiration counts a skill you already hold or have listed under Skills to Develop. Edit your profile and every one of these moves. Not an assessment of your performance \u2014 the host decides.</span>
         </span>
       </span>
     </div>
@@ -5715,7 +5818,7 @@ function applicantsFor(title) {
   return real + (SEED_APPLICANTS.hasOwnProperty(t) ? SEED_APPLICANTS[t] : hashN(t, 8))
 }
 
-/* The post owner's view of an applicant, drawn from that applicant's profile
+/* The host's view of an applicant, drawn from that applicant's profile
    rather than from anything typed into this page. */
 function renderApplicantRows() {
   const card = document.getElementById('openingCard')
@@ -5770,7 +5873,7 @@ function doneRowHtml(c) {
         : '<div class="done-m" style="color:#B45309;font-weight:600;">Rating pending</div>'}</div>
     </div>
     ${c.comment ? `<div class="done-q">\u201c${esc(c.comment)}\u201d</div>` : ''}
-    ${!rated ? `<div class="done-m" style="margin-top:7px;color:#92400E;">Your host manager has not submitted their survey yet. Ratings release together, so neither of you is anchored by the other.</div>` : ''}
+    ${!rated ? `<div class="done-m" style="margin-top:7px;color:#92400E;">Your host has not submitted their survey yet. Ratings release together, so neither of you is anchored by the other.</div>` : ''}
     ${rated && c.rating >= 4 && (c.skills || []).length
       ? `<div style="margin-top:9px;font-size:11px;color:#065F46;">\u2705 This verified ${(c.skills || []).map(x => '<strong>' + esc(x) + '</strong>').join(', ')} on your profile \u2014 evidence, not a claim.</div>` : ''}
     ${c.myComment ? `<div style="margin-top:9px;padding-top:9px;border-top:1px solid #F3F4F6;font-size:11.5px;color:#6B7280;line-height:1.6;"><strong>What you said:</strong> \u201c${esc(c.myComment)}\u201d</div>` : ''}
@@ -5784,12 +5887,12 @@ function renderCompletedWork() {
   const avg = rows.filter(r => r.rating).reduce((a, r, i, arr) => a + r.rating / arr.length, 0)
   el.innerHTML = rows.length
     ? (avg ? `<div style="background:#F0FDF4;border:1px solid #BBF7D0;border-radius:9px;padding:11px 14px;margin-bottom:13px;font-size:12px;color:#065F46;">
-        ${stars(Math.round(avg))} <strong>${avg.toFixed(1)} average</strong> across ${rows.filter(r => r.rating).length} rated engagement${rows.filter(r => r.rating).length === 1 ? '' : 's'}. This is what a post owner sees before they read anything you wrote about yourself.</div>` : '')
+        ${stars(Math.round(avg))} <strong>${avg.toFixed(1)} average</strong> across ${rows.filter(r => r.rating).length} rated engagement${rows.filter(r => r.rating).length === 1 ? '' : 's'}. This is what a host sees before they read anything you wrote about yourself.</div>` : '')
       + rows.map(doneRowHtml).join('')
-    : `<div style="font-size:12px;color:#9CA3AF;line-height:1.6;">Nothing finished yet. Once a gig, DJI or service offer closes and your host manager submits their survey, it lands here with their rating and their words \u2014 permanently, and visible to anyone considering you for the next one.</div>`
+    : `<div style="font-size:12px;color:#9CA3AF;line-height:1.6;">Nothing finished yet. Once a gig, DJI or service offer closes and your host submits their survey, it lands here with their rating and their words \u2014 permanently, and visible to anyone considering you for the next one.</div>`
 }
 
-/* Written by the host manager at close-out; updated, never duplicated, so a
+/* Written by the host at close-out; updated, never duplicated, so a
    record cannot be inflated by submitting the same survey twice. */
 function recordCompletion(person, title, patch) {
   if (!person || !title) return
@@ -5798,7 +5901,7 @@ function recordCompletion(person, title, patch) {
     const seeded = SEED_COMPLETED.find(c => c.person === person && c.title === title)
     const o = allOpps().find(x => x.title === title)
     row = Object.assign({ person, title, type: (o && o.type) || (seeded && seeded.type) || 'Gig',
-      host: (seeded && seeded.host) || liveName() || personaName() || 'Host manager',
+      host: (seeded && seeded.host) || liveName() || personaName() || 'Host',
       dept: (o && o.department) || (seeded && seeded.dept) || '\u2014',
       ended: new Date().toISOString().slice(0, 10), rating: 0, comment: '',
       skills: (seeded && seeded.skills) || skillsForOpp(title) }, seeded || {})
@@ -5810,7 +5913,7 @@ function recordCompletion(person, title, patch) {
 }
 
 /* ══ AN APPLICANT'S PROFILE, FROM THE POST OWNER'S SIDE ═══════════
-   A post owner deciding between four people should see what each of them
+   A host deciding between four people should see what each of them
    has actually done, and be able to endorse what they know first-hand. */
 function typeForOpp(title) {
   const t = String(title || '').trim()
@@ -5917,6 +6020,355 @@ function endorseSkill(person, skill, oppTitle) {
   openApplicantProfile(person, oppTitle)
 }
 
+
+/* ══ BULK VACANCY UPLOAD ══════════════════════════════════════════
+   A requisition reaches the board with skills attached or it does not get
+   matched to anybody. Asking a hiring manager to retype them is where that
+   falls down, so the JD they already wrote is read instead.
+
+   PROTOTYPE LIMIT, stated rather than hidden: a static page cannot parse a
+   PDF. Filenames are read for the requisition ID and title, and the skill
+   candidates come from the dictionary the matcher already uses. In
+   production this is one call to the model with the JD text, which is the
+   same shape of answer — a ranked list of proposed skills that a human
+   confirms. The confirm step is not a prototype artefact; it stays. */
+let JD_QUEUE = []
+
+const JD_SAMPLES = [
+  { file: 'JD_REQ-2604_Credit-Risk-Analyst.pdf', req_id: 'REQ-2604', title: 'Credit Risk Analyst — Portfolio',
+    department: 'Risk Management', location: 'Manila · Hybrid',
+    found: ['Data Analysis', 'SQL', 'Financial Modelling', 'Regulatory'], picked: ['Data Analysis', 'SQL', 'Financial Modelling'] },
+  { file: 'JD_REQ-2611_Learning-Partner.pdf', req_id: 'REQ-2611', title: 'Learning & Development Partner',
+    department: 'HR', location: 'Manila · Hybrid',
+    found: ['Facilitation', 'Change Management', 'Stakeholder Management', 'Project Management'], picked: ['Facilitation', 'Change Management', 'Stakeholder Management'] },
+  { file: 'JD_REQ-2618_Automation-Engineer.pdf', req_id: 'REQ-2618', title: 'Process Automation Engineer',
+    department: 'IT & Innovation', location: 'Manila · Remote-friendly',
+    found: ['Process Automation', 'AI Tools', 'Prototyping', 'SQL'], picked: ['Process Automation', 'AI Tools', 'Prototyping'] },
+]
+
+/* Filename in, best guess out. Deliberately conservative: anything it cannot
+   read is left blank for a person to fill rather than invented. */
+function readJdFile(name) {
+  const stem = String(name).replace(/\.pdf$/i, '')
+  const req = (stem.match(/REQ[-_ ]?(\d{3,})/i) || [])[0]
+  const title = stem.replace(/^JD[-_ ]*/i, '').replace(/REQ[-_ ]?\d{3,}[-_ ]*/i, '')
+                    .replace(/[-_]+/g, ' ').replace(/\s+/g, ' ').trim()
+  const pool = Object.values(SKILL_DEFS).map(d => d[0])
+  const hay = stem.toLowerCase()
+  const hits = pool.filter(sk => hay.indexOf(skillKey(sk).split(' ')[0]) > -1)
+  return {
+    file: name, req_id: req ? req.toUpperCase().replace(/[-_ ]/, '-') : '',
+    title: title || '', department: '', location: '',
+    found: hits.length ? hits : [], picked: hits.slice(0, 3),
+  }
+}
+
+function queueJd(rows) {
+  rows.forEach(r => { if (!JD_QUEUE.some(q => q.file === r.file)) JD_QUEUE.push(r) })
+  renderJdQueue()
+}
+function handleJdFiles(input) { queueJd(Array.from(input.files).map(f => readJdFile(f.name))); input.value = '' }
+function handleJdDrop(e) {
+  e.preventDefault()
+  const d = document.getElementById('jd-drop'); if (d) d.style.borderColor = '#E5E7EB'
+  queueJd(Array.from(e.dataTransfer.files).map(f => readJdFile(f.name)))
+}
+function loadJdSample() { queueJd(JD_SAMPLES.map(x => Object.assign({}, x, { picked: x.picked.slice() }))); }
+
+function toggleJdSkill(i, skill) {
+  const row = JD_QUEUE[i]; if (!row) return
+  const at = row.picked.indexOf(skill)
+  if (at > -1) row.picked.splice(at, 1); else row.picked.push(skill)
+  renderJdQueue()
+}
+function addJdSkill(i, input) {
+  const row = JD_QUEUE[i], v = (input.value || '').trim()
+  if (!row || !v) return
+  if (!row.found.some(x => skillKey(x) === skillKey(v))) row.found.push(v)
+  if (!row.picked.some(x => skillKey(x) === skillKey(v))) row.picked.push(v)
+  input.value = ''
+  renderJdQueue()
+}
+function setJdField(i, field, v) { if (JD_QUEUE[i]) JD_QUEUE[i][field] = v }
+function dropJd(i) { JD_QUEUE.splice(i, 1); renderJdQueue() }
+
+function renderJdQueue() {
+  const el = document.getElementById('jdQueue')
+  if (!el) return
+  if (!JD_QUEUE.length) { el.innerHTML = ''; return }
+  const ready = JD_QUEUE.filter(r => r.req_id && r.title && r.picked.length).length
+  el.innerHTML = `<div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;color:#9CA3AF;margin:16px 0 8px;">
+      ${JD_QUEUE.length} job description${JD_QUEUE.length === 1 ? '' : 's'} read · ${ready} ready to promote</div>`
+    + JD_QUEUE.map((r, i) => `<div style="border:1px solid ${r.picked.length ? '#E5E7EB' : '#FDE68A'};border-radius:10px;padding:13px 15px;margin-bottom:10px;background:${r.picked.length ? '#fff' : '#FFFBEB'};">
+      <div style="display:flex;justify-content:space-between;gap:9px;align-items:flex-start;margin-bottom:9px;">
+        <div style="font-size:11.5px;font-weight:700;color:#374151;">📄 ${esc(r.file)}</div>
+        <button class="btn btn-outline btn-sm" onclick="dropJd(${i})">✕</button>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:9px;">
+        <input value="${esc(r.req_id)}" oninput="setJdField(${i},'req_id',this.value)" placeholder="REQ-0000"
+          style="padding:7px 9px;border:1px solid #E5E7EB;border-radius:7px;font-size:12px;font-family:inherit;outline:none;">
+        <input value="${esc(r.department)}" oninput="setJdField(${i},'department',this.value)" placeholder="Department"
+          style="padding:7px 9px;border:1px solid #E5E7EB;border-radius:7px;font-size:12px;font-family:inherit;outline:none;">
+      </div>
+      <input value="${esc(r.title)}" oninput="setJdField(${i},'title',this.value)" placeholder="Role title"
+        style="width:100%;padding:7px 9px;border:1px solid #E5E7EB;border-radius:7px;font-size:12px;font-family:inherit;outline:none;margin-bottom:10px;">
+      <div style="font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;color:#6B7280;margin-bottom:6px;">
+        Skills found in the JD — tap to include or drop</div>
+      <div class="chip-row" style="margin-bottom:8px;">
+        ${r.found.length ? r.found.map(sk => {
+          const on = r.picked.some(x => skillKey(x) === skillKey(sk))
+          return `<span class="skill-chip" onclick="toggleJdSkill(${i},'${jsq(sk)}')" style="cursor:pointer;background:${on ? '#DCFCE7' : '#F3F4F6'};border-color:${on ? '#A7F3D0' : '#E5E7EB'};color:${on ? '#166534' : '#9CA3AF'};">${on ? '✓ ' : ''}${esc(sk)}</span>`
+        }).join('') : '<span style="font-size:11px;color:#92400E;">Nothing recognised — add the skills yourself below.</span>'}
+      </div>
+      <input placeholder="Add a skill the JD asks for and press Enter…" onkeydown="if(event.key==='Enter'){addJdSkill(${i},this);event.preventDefault()}"
+        style="width:100%;padding:7px 9px;border:1px solid #E5E7EB;border-radius:7px;font-size:12px;font-family:inherit;outline:none;">
+    </div>`).join('')
+    + `<div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:4px;">
+        <button class="btn btn-red btn-sm" onclick="promoteJdQueue()">Promote ${ready} to the board</button>
+        <button class="btn btn-outline btn-sm" onclick="JD_QUEUE=[];renderJdQueue()">Clear</button>
+      </div>
+      <div style="font-size:10.5px;color:#9CA3AF;line-height:1.6;margin-top:8px;">
+        A row needs a requisition ID, a title and at least one skill. Rows that do not have all three are left in the queue.</div>`
+}
+
+async function promoteJdQueue() {
+  if (!requireName()) return
+  const ready = JD_QUEUE.filter(r => r.req_id && r.title && r.picked.length)
+  if (!ready.length) { toast('Nothing is ready yet — each row needs an ID, a title and a skill.', 'warning'); return }
+  const dupes = ready.filter(r => allVacancies().some(v => v.req_id === r.req_id))
+  if (dupes.length) { toast(dupes.map(d => d.req_id).join(', ') + ' already on the board.', 'warning') }
+  const fresh = ready.filter(r => !dupes.includes(r))
+  if (!fresh.length) return
+  if (!LIVE.online) {
+    toast('Shared database unreachable — nothing was promoted.', 'error'); return
+  }
+  try {
+    await livePost('v2_vacancies', fresh.map(r => ({
+      req_id: r.req_id, title: r.title, department: r.department || '',
+      location: r.location || '', posted_by: liveName(), status: 'live',
+    })))
+    JD_QUEUE = JD_QUEUE.filter(r => !fresh.includes(r))
+    renderJdQueue()
+    toast('✓ ' + fresh.length + ' requisition' + (fresh.length === 1 ? '' : 's') + ' on the vacancy board, with skills attached.')
+    await liveRefresh()
+  } catch (e) { toast('Could not promote — ' + e.message, 'error') }
+}
+
+/* ══ WHERE SKILLS COME FROM ═══════════════════════════════════════
+   Four routes, one destination. The differences that matter are legal and
+   practical rather than technical: LinkedIn is employee-supplied and opt-in,
+   MyDevelopment carries a completion date that can verify a skill outright,
+   HC Connect is the personnel record. Production reads each on a schedule;
+   here each loads a representative extract so the shape of the data shows. */
+const SKILL_SOURCES = {
+  hcconnect: {
+    label: 'HC Connect competency table',
+    tone: ['#EFF6FF', '#BFDBFE', '#1E40AF'],
+    note: 'The personnel record. Nightly extract, joined on employee ID. The widest source, and the one that gets a profile off zero.',
+    csv: 'employee_id,employee_name,department,skills\r\n' +
+         'HC-1042,Cristiano Ronaldo,Finance,SQL;Excel;Financial Modelling\r\n' +
+         'HC-1088,Lionel Messi,Finance,Power BI;SQL;Data Analysis\r\n' +
+         'HC-1204,Rihanna,Operations,Supply Chain;Excel;Analytics\r\n' +
+         'HC-1402,Roger Federer,Risk Management,"Regulatory;Data Analysis;Stakeholder Management"\r\n',
+  },
+  mydev: {
+    label: 'MyDevelopment completions',
+    tone: ['#F0FDF4', '#BBF7D0', '#065F46'],
+    note: 'Courses actually finished, with the completion date. A completion is evidence rather than a claim, so these are the strongest candidates for promotion to Verified.',
+    csv: 'employee_id,employee_name,department,skills\r\n' +
+         'HC-1042,Cristiano Ronaldo,Finance,Process Automation;Change Management\r\n' +
+         'HC-1150,Jennifer Lopez,IT & Innovation,Design Thinking;Journey Mapping\r\n' +
+         'HC-1455,Dua Lipa,IT & Innovation,AI Tools;Prototyping\r\n' +
+         'HC-1011,Taylor Swift,HR,Facilitation;Project Management\r\n',
+  },
+  linkedin: {
+    label: 'LinkedIn public profiles',
+    tone: ['#FFFBEB', '#FDE68A', '#92400E'],
+    note: 'Only skills an employee has published publicly, and only for those who opted in. Covered by the DPIA. Withdrawing consent removes the skills this route added and nothing else.',
+    csv: 'employee_id,employee_name,department,skills\r\n' +
+         'HC-1088,Lionel Messi,Finance,Financial Modelling;Presentation\r\n' +
+         'HC-1260,Harry Styles,HR,Pricing;Segmentation;Mentoring\r\n' +
+         'HC-1315,Priyanka Chopra,Operations,Coaching;Customer Segmentation\r\n' +
+         'HC-1097,LeBron James,Operations,Project Management;Agile\r\n',
+  },
+  csv: {
+    label: 'Your own CSV',
+    tone: ['#F9FAFB', '#E5E7EB', '#374151'],
+    note: 'Any file with an employee name column and a skills column. Columns may appear in any order; separate multiple skills with semicolons.',
+    csv: '',
+  },
+}
+
+function pickSkillSource(key) {
+  const src = SKILL_SOURCES[key]
+  if (!src) return
+  document.querySelectorAll('.src-btn').forEach(b => {
+    const on = b.dataset.src === key
+    b.style.borderColor = on ? '#C00000' : '#E5E7EB'
+    b.style.background  = on ? '#FEF2F2' : '#fff'
+  })
+  const note = document.getElementById('srcNote')
+  if (!note) return
+  note.style.display = ''
+  note.style.background = src.tone[0]
+  note.style.border = '1px solid ' + src.tone[1]
+  note.style.color = src.tone[2]
+  note.innerHTML = '<strong>' + esc(src.label) + '.</strong> ' + esc(src.note) +
+    (src.csv ? '<button class="btn btn-outline btn-sm" style="margin-top:9px;display:block;" onclick="loadSourceExtract(\'' + key + '\')">Pull today\u2019s extract</button>' : '')
+}
+
+function loadSourceExtract(key) {
+  const src = SKILL_SOURCES[key]
+  const box = document.getElementById('skillCsv')
+  if (!src || !src.csv || !box) return
+  box.value = src.csv
+  parseSkillCsv()
+  toast('Pulled ' + src.label + '. Check what will be written, then commit it.')
+}
+
+/* ══ RAW REPORT EXPORT ════════════════════════════════════════════
+   The dashboard shows conclusions; this hands over the rows they were
+   computed from. Seeded demo content is kept in and marked in a 'source'
+   column rather than stripped — a report that quietly drops rows is
+   worse than one that labels them. */
+const REPORTS = {
+  opportunities: () => ({
+    head: ['title', 'type', 'department', 'posted_by', 'status', 'skills', 'slots', 'created_at', 'source'],
+    rows: allOpps().map(o => [o.title, o.type, o.department, o.posted_by, o.status, o.skills,
+                              o.slots, o.created_at, isLocalId(o.id) ? 'this browser' : 'shared']),
+  }),
+  applications: () => ({
+    head: ['applicant', 'opportunity', 'type', 'status', 'days_waiting', 'answer', 'created_at', 'source'],
+    rows: allApps().map(a => [a.applicant, a.opp_title, a.opp_type, a.status || 'applied',
+                              Math.floor(daysOld(a.created_at)), a.essay, a.created_at,
+                              isLocalId(a.id) ? 'this browser' : 'shared']),
+  }),
+  referrals: () => ({
+    head: ['referral_code', 'requisition_id', 'role_title', 'department', 'employee', 'source_page',
+           'referred_at', 'self_reported', 'self_reported_at', 'ats_confirmed', 'attribution_window_days', 'source'],
+    rows: allRefs().map(r => [r.code, r.req_id, r.vacancy_title, r.department, r.employee,
+                              REF_SOURCE_LABEL[r.source] || r.source, r.created_at, r.outcome || '',
+                              r.outcome_at || '', r.verified ? 'yes' : 'no', ATTRIB_WINDOW_DAYS,
+                              r.seeded ? 'seeded demo' : 'shared']),
+  }),
+  skills: () => ({
+    head: ['employee_id', 'employee', 'department', 'skill', 'provenance', 'uploaded_by', 'created_at', 'source'],
+    rows: allSkillRows().map(r => [r.employee_id || '', r.employee, r.department, r.skill,
+                                   r.source || 'pre-filled', r.uploaded_by || '', r.created_at || '',
+                                   r.seeded ? 'seeded demo' : 'shared']),
+  }),
+  completed: () => ({
+    head: ['person', 'engagement', 'type', 'department', 'host', 'ended', 'host_rating', 'host_comment', 'skills_verified', 'source'],
+    rows: allCompleted().map(c => [c.person, c.title, c.type, c.dept, c.host, c.ended, c.rating || '',
+                                   c.comment || '', (c.skills || []).join('; '),
+                                   c.seeded ? 'seeded demo' : 'this browser']),
+  }),
+  ratings: () => ({
+    head: ['rated_by', 'stars', 'comment', 'rated_at', 'source'],
+    rows: allAppRatings().map(r => [r.by, r.stars, r.comment, r.at, r.seeded ? 'seeded demo' : 'this browser']),
+  }),
+}
+
+const reportCsv = key => {
+  const r = REPORTS[key]()
+  return [r.head.join(',')].concat(r.rows.map(row => row.map(csvCell).join(','))).join('\r\n')
+}
+
+function exportReport(key) {
+  const day = new Date().toISOString().slice(0, 10)
+  if (key === 'all') {
+    // One file, each table under its own banner — a workbook without needing a
+    // spreadsheet library on a static page.
+    const keys = Object.keys(REPORTS)
+    const csv = keys.map(k => '# ' + k.toUpperCase() + ' (' + REPORTS[k]().rows.length + ' rows)\r\n' + reportCsv(k)).join('\r\n\r\n')
+    saveExport('growth-all-reports-' + day, '\ufeff' + csv, keys.reduce((a, k) => a + REPORTS[k]().rows.length, 0))
+    return
+  }
+  if (!REPORTS[key]) return
+  saveExport('growth-' + key + '-' + day, '\ufeff' + reportCsv(key), REPORTS[key]().rows.length)
+}
+
+/* ══ APP RATING ══════════════════════════════════════════════════
+   How the product is doing, as opposed to how a person did on a piece
+   of work. Kept deliberately separate: conflating "the app is clumsy"
+   with "you were rated 3 stars" would poison both numbers. One rating
+   per person, latest wins, so a vocal few cannot stack the average. */
+const SEED_APP_RATINGS = [
+  { by: 'Lionel Messi',    stars: 5, comment: 'Found a DJI in a department I did not know existed. Two clicks.', at: '2026-09-02T01:20:00Z', seeded: true },
+  { by: 'Rihanna',         stars: 4, comment: 'Good. The match reasons are a bit long to read on a phone.',      at: '2026-09-04T07:05:00Z', seeded: true },
+  { by: 'Ed Sheeran',      stars: 5, comment: 'The skills already being filled in is what made me finish it.',   at: '2026-09-08T03:40:00Z', seeded: true },
+  { by: 'Priyanka Chopra', stars: 4, comment: 'Posting a gig took under five minutes. Approval was quick.',      at: '2026-09-11T06:12:00Z', seeded: true },
+  { by: 'Will Smith',      stars: 3, comment: 'Applied twice, no answer on either. The 7-day rule needs teeth.', at: '2026-09-14T02:55:00Z', seeded: true },
+]
+const allAppRatings = () => LOCAL.ratings.concat(SEED_APP_RATINGS)
+let _appRating = 0
+
+function appRatingStats() {
+  const rows = allAppRatings()
+  const n = rows.length
+  const avg = n ? rows.reduce((a, r) => a + r.stars, 0) / n : 0
+  const dist = [5, 4, 3, 2, 1].map(k => ({ k, n: rows.filter(r => r.stars === k).length }))
+  return { rows, n, avg, dist }
+}
+
+function paintAppStars(n) {
+  document.querySelectorAll('[data-astar]').forEach(el => {
+    el.style.color = Number(el.dataset.astar) <= n ? '#F59E0B' : '#E5E7EB'
+  })
+}
+
+function setAppRating(n) {
+  _appRating = n
+  paintAppStars(n)
+  const L = { 1: 'Not working for me', 2: 'Needs work', 3: 'Does the job', 4: 'Good', 5: 'Would recommend it' }
+  const el = document.getElementById('appRatingLabel')
+  if (el) { el.textContent = n + ' of 5 — ' + L[n]; el.style.color = n >= 4 ? '#16A34A' : n === 3 ? '#6B7280' : '#D97706' }
+}
+
+function submitAppRating() {
+  if (!_appRating) { toast('Pick a star rating first.', 'warning'); return }
+  const me = liveName() || personaName() || 'Guest'
+  const box = document.getElementById('appRatingComment')
+  LOCAL.ratings = LOCAL.ratings.filter(r => r.by !== me)     // latest replaces last
+  LOCAL.ratings.unshift({ by: me, stars: _appRating, comment: ((box || {}).value || '').trim(), at: new Date().toISOString() })
+  saveLocal()
+  if (box) box.value = ''
+  renderAppRating()
+  toast('✓ Thanks — ' + _appRating + '★ recorded. The dashboard average has moved.')
+}
+
+function renderAppRating() {
+  const st = appRatingStats()
+  const avg1 = st.n ? st.avg.toFixed(1) : '—'
+  const set = (id, v) => { const e = document.getElementById(id); if (e) e.textContent = v }
+  set('dashAppRating', avg1)
+  set('dashAppRatingSub', st.n ? st.n + ' rating' + (st.n === 1 ? '' : 's') + ' · 1–5' : 'No ratings yet')
+  set('appAvgBig', avg1)
+  set('appAvgCount', st.n ? 'Based on ' + st.n + ' rating' + (st.n === 1 ? '' : 's') : 'No ratings yet')
+  const starEl = document.getElementById('appAvgStars')
+  if (starEl) starEl.textContent = st.n
+    ? '\u2605'.repeat(Math.round(st.avg)) + '\u2606'.repeat(5 - Math.round(st.avg)) : '\u2606\u2606\u2606\u2606\u2606'
+
+  const bars = document.getElementById('appRatingBars')
+  if (bars) bars.innerHTML = st.dist.map(d => `<div class="skill-bar-row">
+      <div class="skill-bar-lbl">${d.k} star${d.k === 1 ? '' : 's'}</div>
+      <div class="skill-bar-track2"><div class="skill-bar-fill2" style="width:${st.n ? Math.round(d.n / st.n * 100) : 0}%;background:#D97706;"></div></div>
+      <div class="skill-bar-n">${d.n}</div></div>`).join('')
+
+  const cm = document.getElementById('appRatingComments')
+  if (cm) {
+    const withText = st.rows.filter(r => r.comment)
+    cm.innerHTML = withText.length ? withText.map(r => `<div style="padding:10px 0;border-bottom:1px solid #F3F4F6;">
+        <div style="display:flex;justify-content:space-between;gap:8px;align-items:center;">
+          <span style="font-size:12px;font-weight:700;color:#111827;">${esc(r.by)}</span>
+          <span class="done-stars" style="font-size:12px;">${'\u2605'.repeat(r.stars)}${'\u2606'.repeat(5 - r.stars)}</span>
+        </div>
+        <div style="font-size:11.5px;color:#4B5563;line-height:1.6;margin-top:4px;">\u201c${esc(r.comment)}\u201d</div>
+        <div style="font-size:10px;color:#9CA3AF;margin-top:3px;">${ago(r.at)}</div>
+      </div>`).join('') : '<div style="font-size:12px;color:#9CA3AF;">Nothing written yet.</div>'
+  }
+}
+
 renderNav('manager')
 navigate('home')
 initSkillTip()
@@ -5927,6 +6379,7 @@ renderApplicantCounts()
 renderScores()
 renderFitBreakdowns()
 renderHistory()
+renderAppRating()
 liveInit()
 </script>
 </body>

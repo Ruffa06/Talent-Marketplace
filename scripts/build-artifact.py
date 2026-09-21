@@ -66,27 +66,24 @@ rep("""    const k = 'tm2_view_' + me + '_' + r + '_' + day
     } catch (e) { /* sandboxed preview — reach data is best-effort */ }
     return true""")
 
-# 3 ── a hosted page cannot start its own download; hand the file over instead
-rep("""  const blob = new Blob(['﻿' + lines.join('\\r\\n')], { type: 'text/csv;charset=utf-8;' })
+# 3 ── a hosted page cannot start its own download; hand the file over instead.
+#      One function to swap, because every exporter routes through it.
+rep("""function saveExport(name, csv, n) {
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
   const a = document.createElement('a')
   a.href = URL.createObjectURL(blob)
-  a.download = 'growth-referrals-' + new Date().toISOString().slice(0, 10) + '.csv'
+  a.download = name + '.csv'
   document.body.appendChild(a); a.click(); a.remove()
   setTimeout(() => URL.revokeObjectURL(a.href), 4000)
-  toast('✓ ' + refs.length + ' referrals exported. Join it against the ' + ATS_SHORT + ' export on referral_code.')
+  toast('✓ ' + n + ' rows exported.')
 }""",
-"""  const csv = '﻿' + lines.join('\\r\\n')
-  const name = 'growth-referrals-' + new Date().toISOString().slice(0, 10)
-  saveExport(name, csv, refs.length)
-}
-
-/* PREVIEW BUILD: a hosted page cannot start its own download, so the file is
+"""/* PREVIEW BUILD: a hosted page cannot start its own download, so the file is
    handed over through the viewer's save prompt. The repository file uses a
    plain blob link, which is what works when the HTML is opened directly. */
 async function saveExport(name, csv, n) {
   const dl = (typeof claude !== 'undefined' && claude.use) ? await claude.use('downloads').catch(() => null) : null
   if (!dl) { showExportFallback(name, csv); return }
-  const ok = () => toast('✓ ' + n + ' referrals exported. Join it against the ' + ATS_SHORT + ' export on referral_code.')
+  const ok = () => toast('✓ ' + n + ' rows exported.')
   try { await dl.save({ filename: name + '.csv', data: csv }); ok() }
   catch (e) {
     if (e && e.code === 'extension_not_enabled') {
