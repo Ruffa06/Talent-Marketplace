@@ -9,19 +9,19 @@ const { chromium } = require('/opt/node22/lib/node_modules/playwright')
 const OUT = process.argv[2]
 
 const BEATS = [
-  { t: 7129,  cap: 'Home Credit fills 17% of its roles from the inside.\nGrowth is how that improves.' },
-  { t: 11270, cap: 'Four ways to grow — a gig, an immersion, a service offer,\nand a permanent vacancy applied for in HC Connect.' },
-  { t: 6179, cap: 'It starts with someone posting — a title, the work,\nand the skills it needs.' },
-  { t: 3415,  cap: 'Nothing goes live until HR approves it.' },
-  { t: 6170,  cap: 'Nobody begins with an empty profile — HR has already\nloaded what the company knows.' },
-  { t: 3129,  cap: "You correct it. You don't begin from scratch." },
-  { t: 5337,  cap: 'Every opportunity is scored against that profile,\nand shows its reasoning.' },
-  { t: 6183,  cap: 'The score never blocks you.\nA stretch is a choice, not a permission.' },
-  { t: 6044, cap: 'You apply in one click — and your manager releases\nthe time before anything starts.' },
-  { t: 4945,  cap: 'The host sees what each applicant has finished,\nand who vouched for it.' },
-  { t: 6845,  cap: 'At the end, the host rates the work.\nFour stars verifies the skills it used.' },
-  { t: 12758,  cap: 'The admin dashboard gives a snapshot of the platform’s progress.\n16 internal hires. ₱5.6M we did not spend on recruitment.' },
-  { t: 9936,  cap: 'Opportunities people can see. Skills we can prove.\nThis is Growth — where talent meets opportunities intelligently.' },
+  { t: 6088,  cap: 'Home Credit fills 17% of its roles from the inside.\nGrowth is how that improves.' },
+  { t: 9763, cap: 'Four ways to grow — a gig, an immersion, a service offer,\nand a permanent vacancy applied for in HC Connect.' },
+  { t: 6085, cap: 'It starts with someone posting — a title, the work,\nand the skills it needs.' },
+  { t: 3127,  cap: 'Nothing goes live until HR approves it.' },
+  { t: 5882,  cap: 'Nobody begins with an empty profile — HR has already\nloaded what the company knows.' },
+  { t: 3834,  cap: "You correct it. You don't begin from scratch." },
+  { t: 4701,  cap: 'Every opportunity is scored against that profile,\nand shows its reasoning.' },
+  { t: 5957,  cap: 'The score never blocks you.\nA stretch is a choice, not a permission.' },
+  { t: 5646, cap: 'You apply in one click — and your manager releases\nthe time before anything starts.' },
+  { t: 4505,  cap: 'The host sees what each applicant has finished,\nand who vouched for it.' },
+  { t: 6300,  cap: 'At the end, the host rates the work.\nFour stars verifies the skills it used.' },
+  { t: 11345,  cap: 'The admin dashboard gives a snapshot of the platform’s progress.\n16 internal hires. ₱5.6M we did not spend on recruitment.' },
+  { t: 9967,  cap: 'Opportunities people can see. Skills we can prove.\nThis is Growth — where talent meets opportunities intelligently.' },
 ]
 
 ;(async () => {

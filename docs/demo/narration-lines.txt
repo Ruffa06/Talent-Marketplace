@@ -3,16 +3,16 @@
 # Do NOT pad with silence: the film is re-cut to whatever length each clip is.
 # Current lengths are shown only so you can spot a voice that races or drags.
 
-01  [7.1s]  Home Credit fills seventeen per cent of its roles from the inside. Growth is how that improves.
-02  [11.3s]  Four ways to grow. A gig. An immersion. A service offer you publish yourself. And a permanent vacancy, applied for in HC Connect.
-03  [6.2s]  It starts with someone posting. A title, the work, and the skills it needs.
-04  [3.4s]  Nothing goes live until HR approves it.
-05  [6.2s]  Nobody begins with an empty profile. HR has already loaded what the company knows.
-06  [3.1s]  You correct it. You don't begin from scratch.
-07  [5.3s]  Every opportunity is scored against that profile, and shows its reasoning.
-08  [6.2s]  The score never blocks you. A stretch is a choice, not a permission.
-09  [6.0s]  You apply in one click, and your manager releases the time before anything starts.
-10  [4.9s]  The host sees what each applicant has finished, and who vouched for it.
-11  [6.8s]  At the end, the host rates the work. Four stars verifies the skills it used.
-12  [12.8s]  The admin dashboard gives a snapshot of the platform’s progress. Sixteen internal hires. Five point six million pesos we did not spend on recruitment.
-13  [9.9s]  Opportunities people can see. Skills we can prove. This is Growth — where talent meets opportunities intelligently.
+01  [6.1s]  Home Credit fills seventeen per cent of its roles from the inside. Growth is how that improves.
+02  [9.8s]  Four ways to grow. A gig. An immersion. A service offer you publish yourself. And a permanent vacancy, applied for in HC Connect.
+03  [6.1s]  It starts with someone posting. A title, the work, and the skills it needs.
+04  [3.1s]  Nothing goes live until HR approves it.
+05  [5.9s]  Nobody begins with an empty profile. HR has already loaded what the company knows.
+06  [3.8s]  You correct it. You don't begin from scratch.
+07  [4.7s]  Every opportunity is scored against that profile, and shows its reasoning.
+08  [6.0s]  The score never blocks you. A stretch is a choice, not a permission.
+09  [5.6s]  You apply in one click, and your manager releases the time before anything starts.
+10  [4.5s]  The host sees what each applicant has finished, and who vouched for it.
+11  [6.3s]  At the end, the host rates the work. Four stars verifies the skills it used.
+12  [11.3s]  The admin dashboard gives a snapshot of the platform’s progress. Sixteen internal hires. Five point six million pesos we did not spend on recruitment.
+13  [10.0s]  Opportunities people can see. Skills we can prove. This is Growth — where talent meets opportunities intelligently.
