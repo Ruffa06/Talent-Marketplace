@@ -46,10 +46,25 @@ const BEATS = [
 
   // 1 · the problem
   await beat(0)
-  // 2 · four ways to move
-  await beat(1, async () => { await glideTo('#page-home .growth-grid-4', 120) })
+  /* 2 · four ways to move. She rattles this line off — all six phrases in
+     5.7s of speech, the fastest in the read — and reaches "a permanent
+     vacancy" with about a second of the beat left. So the cursor walks the
+     shelves in step with her naming them, and beat 3 opens still parked on
+     the fourth card instead of cutting away on the word. */
+  await beat(1, async () => {
+    const card = n => `#page-home .growth-grid-4 .card:nth-child(${n})`
+    await glideTo('#page-home .growth-grid-4', 120)
+    await pg.waitForTimeout(3300)
+    await point(card(1)); await pg.waitForTimeout(500)
+    await point(card(2)); await pg.waitForTimeout(950)
+    await point(card(3)); await pg.waitForTimeout(400)
+    await point(card(4))
+  })
   // 3 · one path through all of them
-  await beat(2, async () => { await glideTo('#page-home .flow', 110) })
+  await beat(2, async () => {
+    await pg.waitForTimeout(3000)               // the vacancy card, still up
+    await glideTo('#page-home .flow', 110)
+  })
   // 4 · a manager posts
   await beat(3, async () => {
     await tap('#nav-post')

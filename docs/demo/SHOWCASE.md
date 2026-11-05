@@ -76,11 +76,22 @@ stretches every beat back onto its spoken line.
 
 ## The bed
 `music.py` synthesises it rather than licensing it, so the repository carries
-no music rights: a I-V-vi-IV loop in A major at 96 BPM, pad plus soft
-arpeggio plus a thump on one and three, low-passed at 2.6 kHz. `cut.py` sets
-it 13 dB down and ducks it a further 7-8 dB off the narration, so it sits
-about 14 dB under her between lines and 22 dB under inside them. The mix
-lands at -16 LUFS, true peak -2.9 dBFS.
+no music rights: I-vi-IV-V in A major at 112 BPM — plucked bass, staccato
+keys on the offbeats, a marimba hook, kick on one and three, clap on two and
+four, shaker on every eighth.
+
+**Every sound in it is struck.** The first attempt was built the obvious way,
+on a held low pad under a low-pass filter, and held low chords with no
+attacks do not read as music — they read as wind. What makes a bed audible
+under speech without competing with it is a clear pulse and defined
+transients, not texture, and keeping its energy out of the sub: measured in
+a gap between lines, the bed now peaks in the 250-800 Hz marimba band with
+everything below 80 Hz some 30 dB down.
+
+`cut.py` high-passes it at 80 Hz, lifts 2.5 dB above 4.5 kHz, sets it 13 dB
+down and ducks it a further 7-8 dB off the narration itself, so it sits about
+15 dB under her between lines and over 20 dB under inside them. The mix lands
+at -16.0 LUFS, true peak -3.1 dBFS.
 
 ## Two claims to keep honest
 **Beat 9 — the weekly email.** The digest is designed, and `Digest email` is

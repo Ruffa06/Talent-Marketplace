@@ -118,7 +118,8 @@ def main():
             # The voice drives the duck AND is mixed in, so it needs splitting.
             mix = ('[1:a]loudnorm=I=-16:TP=-1.5:LRA=11,aresample=48000,'
                    'pan=stereo|c0=c0|c1=c0,asplit=2[vo][key];'
-                   '[2:a]aresample=48000,volume=-13dB[bed];'
+                   '[2:a]aresample=48000,highpass=f=80,treble=g=2.5:f=4500,'
+                   'volume=-13dB[bed];'
                    '[bed][key]sidechaincompress=threshold=0.02:ratio=6:'
                    'attack=20:release=250[duck];'
                    '[duck][vo]amix=inputs=2:normalize=0:duration=shortest[sum];'
