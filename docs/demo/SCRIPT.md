@@ -18,6 +18,7 @@ mid-sentence.
 | `growth-walkthrough.mp4` | The film, with narration. |
 | `growth-walkthrough-silent.mp4` | Same cut, captions only. |
 | `record.js` | Reshoots the film against the current prototype. |
+| `film.js` | The shared rig — cursor, clicks, captions, beats. |
 | `cut.py` | Cuts the capture to the narration and muxes the voice. |
 | `narration-lines.txt` | The script, one line per beat, for regenerating the voice. |
 
@@ -37,6 +38,9 @@ mid-sentence.
 | 11 | 0:55.59 | 6.30s | Close-out — the host rates the work five stars | At the end, the host rates the work. Four stars verifies the skills it used. |
 | 12 | 1:01.89 | 11.35s | HR dashboard — impact row, then vacancy contribution | The admin dashboard gives a snapshot of the platform’s progress. Sixteen internal hires. Five point six million pesos we did not spend on recruitment. |
 | 13 | 1:13.23 | 9.97s | Home again — the hero, the four shelves, the hero | Opportunities people can see. Skills we can prove. This is Growth — where talent meets opportunities intelligently. |
+
+There is a second, longer cut for audiences meeting Growth for the first
+time — see [`SHOWCASE.md`](SHOWCASE.md).
 
 ## Reshooting
     node docs/demo/record.js /tmp/shot

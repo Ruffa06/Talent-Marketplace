@@ -12,19 +12,35 @@ capture by differencing the caption strip frame to frame, and every beat is
 then time-stretched to the length of its spoken line. Boundaries land within
 a frame or two of the narration.
 
-    python3 docs/demo/cut.py <raw.webm> <narration.mp3> <out-dir>
-"""
-import json, re, subprocess, sys, os
-import imageio_ffmpeg
+    python3 docs/demo/cut.py <raw.webm> <narration.mp3|-> <out-dir> [recorder.js]
 
-FF = imageio_ffmpeg.get_ffmpeg_exe()
+Pass "-" for the narration to cut the silent captioned film on its own, which
+is what you do before the voice comes back. The recorder defaults to
+record.js; name record-showcase.js to cut the long one.
+"""
+import json, re, shutil, subprocess, sys, os
+
+
+def _ffmpeg():
+    """System ffmpeg if there is one, else the wheel's (pip install imageio-ffmpeg)."""
+    found = shutil.which('ffmpeg')
+    if found:
+        return found
+    try:
+        import imageio_ffmpeg
+    except ImportError:
+        sys.exit('no ffmpeg: install one, or pip install imageio-ffmpeg')
+    return imageio_ffmpeg.get_ffmpeg_exe()
+
+
+FF = _ffmpeg()
 HERE = os.path.dirname(os.path.abspath(__file__))
 FADE = 0.15          # __cap holds the old text this long before swapping
 STRIP = 'crop=1280:80:0:620'
 
 
-def beats():
-    src = open(os.path.join(HERE, 'record.js')).read()
+def beats(recorder):
+    src = open(recorder).read()
     return [int(t) / 1000 for t in re.findall(r'\{ t: (\d+),', src)]
 
 
@@ -60,7 +76,10 @@ def transitions(path, n):
 
 def main():
     raw, voice, out = sys.argv[1], sys.argv[2], sys.argv[3]
-    B = beats()
+    recorder = sys.argv[4] if len(sys.argv) > 4 else os.path.join(HERE, 'record.js')
+    stem = 'growth-showcase' if 'showcase' in os.path.basename(recorder) \
+        else 'growth-walkthrough'
+    B = beats(recorder)
     full = os.path.join(out, 'full.mp4')
     run('-i', raw, '-vf', 'fps=25', '-c:v', 'libx264', '-preset', 'veryfast',
         '-crf', '20', '-pix_fmt', 'yuv420p', full)
@@ -77,14 +96,15 @@ def main():
     open(script, 'w').write(';'.join(parts) + ';' + ''.join(names) +
                             f'concat=n={len(B)}:v=1:a=0[out]')
 
-    silent = os.path.join(out, 'growth-walkthrough-silent.mp4')
+    silent = os.path.join(out, stem + '-silent.mp4')
     run('-i', full, '-filter_complex_script', script, '-map', '[out]',
         '-r', '25', '-c:v', 'libx264', '-preset', 'slow', '-crf', '22',
         '-pix_fmt', 'yuv420p', '-movflags', '+faststart', silent)
-    run('-i', silent, '-i', voice, '-af',
-        'loudnorm=I=-16:TP=-1.5:LRA=11,aresample=48000', '-ac', '2',
-        '-c:v', 'copy', '-c:a', 'aac', '-b:a', '160k', '-shortest',
-        '-movflags', '+faststart', os.path.join(out, 'growth-walkthrough.mp4'))
+    if voice != '-':
+        run('-i', silent, '-i', voice, '-af',
+            'loudnorm=I=-16:TP=-1.5:LRA=11,aresample=48000', '-ac', '2',
+            '-c:v', 'copy', '-c:a', 'aac', '-b:a', '160k', '-shortest',
+            '-movflags', '+faststart', os.path.join(out, stem + '.mp4'))
 
     # the boundaries, re-read off the finished cut
     got = transitions(silent, len(B))
