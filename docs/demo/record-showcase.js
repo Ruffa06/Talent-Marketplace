@@ -16,27 +16,31 @@ const film = require('./film')
 const OUT = process.argv[2]
 
 const BEATS = [
-  { t: 9286, cap: 'Home Credit fills more than 8 in 10 roles from outside.\nThe talent was already inside.' },
-  { t: 8571, cap: 'Four ways to move — a gig, an immersion,\na service offer, and a permanent vacancy.' },
-  { t: 9286, cap: 'One path through all of them: profile, match, apply,\nsign-off, the work, on record.' },
-  { t: 7143, cap: 'It starts with someone posting — ten minutes,\nno requisition, no recruiter.' },
+  { t: 8571, cap: 'Home Credit fills more than 8 in 10 roles from outside.\nThe talent was already inside.' },
+  { t: 7857, cap: 'Four ways to move — a gig, an immersion,\na service offer, and a permanent vacancy.' },
+  { t: 8214, cap: 'One path through all of them: profile, match, apply,\nsign-off, the work, on record.' },
+  { t: 6429, cap: 'It starts with someone posting —\nten minutes, no requisition.' },
   { t: 5357, cap: 'Nothing goes live until HR approves it.' },
-  { t: 6071, cap: 'Nobody starts with an empty profile — HR has already\nloaded what the company knows about you.' },
-  { t: 9286, cap: "Verified by a manager, uploaded by HR, or added by you.\nYou correct it. You don't begin from scratch." },
-  { t: 8214, cap: 'Every opportunity is scored against that profile —\nand it shows its reasoning.' },
-  { t: 6429, cap: 'Like LinkedIn, your top matches\narrive in your inbox every week.' },
+  { t: 5357, cap: 'Nobody starts with an empty profile — HR has already\nloaded what the company knows.' },
+  { t: 10000, cap: 'Verified by a manager, uploaded by HR from MyDevelopment,\nor added by you. You don\u2019t begin from scratch.' },
+  { t: 7500, cap: 'Every opportunity is scored against that profile —\nand it shows its reasoning.' },
+  { t: 6429, cap: 'Like LinkedIn, your top matches\narrive in your email every week.' },
   { t: 4643, cap: 'The score never blocks you.\nA stretch is a choice, not a permission.' },
+  { t: 11071, cap: 'Anyone can nominate anyone — and the top referrer\neach quarter wins a prize.' },
   { t: 6786, cap: 'One click to apply — and your manager releases\nthe time before anything starts.' },
-  { t: 7500, cap: 'You always know where you stand — in review,\nscheduled, accepted, or told why not.' },
-  { t: 7143, cap: 'The host chooses on evidence — what you finished,\nand who vouched for it.' },
-  { t: 7143, cap: 'The host rates the work, and that rating\nverifies the skill on your record.' },
+  { t: 6071, cap: 'You always know where you stand — in review,\nscheduled, accepted, and a no comes with reasons.' },
+  { t: 6071, cap: 'The host chooses on evidence — what you finished,\nand who vouched for it.' },
+  { t: 6071, cap: 'The host rates the work, and that rating\nverifies the skill on your record.' },
   { t: 5000, cap: "Managers see their whole team's growth\nin one place." },
-  { t: 5357, cap: "HR sees the whole company — what's posted,\nwho's moving, and what it saved." },
-  { t: 7857, cap: 'This is Growth — where talent meets\nopportunity, intelligently.' },
+  { t: 8571, cap: 'Admin sees it in real time — transactions made,\ncareers impacted, and what it saved Home Credit.' },
+  { t: 2857, cap: 'This is Growth — where talent meets\nopportunity, intelligently.' },
 ]
 
 ;(async () => {
   const { pg, beat, point, tap, write, glide, glideTo, go, close } = await film.open(OUT, BEATS)
+  const shut = () => pg.evaluate(() => {
+    const o = document.querySelector('[data-overlay]'); if (o) o.remove()
+  })
 
   await tap('.btn-login')
 
@@ -68,7 +72,7 @@ const BEATS = [
   await beat(6, async () => {
     const chip = await pg.$('#current-skills .skill-chip')
     if (chip) { await point('#current-skills .skill-chip'); await chip.hover() }
-    await pg.waitForTimeout(2600)
+    await pg.waitForTimeout(3000)
     await glide(640)                                  // skills I want to develop
   })
   // 8 · scored, and it explains itself
@@ -87,8 +91,17 @@ const BEATS = [
     await go('all-opps')
     await glideTo('#page-all-opps .opp-grid', 90)
   })
-  // 11 · apply, and the manager releases the time
+  // 11 · anyone can put anyone else forward, and it is worth something
   await beat(10, async () => {
+    await tap('#page-all-opps button[onclick^="openNominateDialog"]')
+    await pg.waitForTimeout(3200)
+    await shut()
+    await go('nominations', 'employee')
+    await pg.waitForTimeout(2400)
+    await glide(300)                                  // the nominations you have made
+  })
+  // 12 · apply, and the manager releases the time
+  await beat(11, async () => {
     await go('matches')
     await glideTo('#matchGrid', 90); await pg.waitForTimeout(300)
     await tap('#matchGrid .btn-red')
@@ -96,45 +109,42 @@ const BEATS = [
     await tap('#applyMgrAware')
     await tap('button[onclick^="submitApplication"]')
   })
-  // 12 · you always know where you stand
-  await beat(11, async () => {
+  // 13 · you always know where you stand
+  await beat(12, async () => {
     await go('applications')
-    await pg.waitForTimeout(1800)
-    await glide(300); await pg.waitForTimeout(1900)   // conversation scheduled
+    await pg.waitForTimeout(1500)
+    await glide(300); await pg.waitForTimeout(1500)   // conversation scheduled
     await glide(700)                                  // accepted, and a no with reasons
   })
-  // 13 · the host reads the evidence
-  await beat(12, async () => {
+  // 14 · the host reads the evidence
+  await beat(13, async () => {
     await go('openings', 'manager')
     await tap('#actions-cr .btn-outline')
   })
-  // 14 · close-out, and the rating that verifies a skill
-  await beat(13, async () => {
-    await pg.evaluate(() => { const o = document.querySelector('[data-overlay]'); if (o) o.remove() })
+  // 15 · close-out, and the rating that verifies a skill
+  await beat(14, async () => {
+    await shut()
     await pg.waitForTimeout(200)
     await tap('#page-openings .btn-amber')
     await pg.waitForTimeout(400)
     await tap('[data-star="5"]')
   })
-  // 15 · what a manager sees
-  await beat(14, async () => {
+  // 16 · what a manager sees
+  await beat(15, async () => {
     await go('team', 'manager')
     await glide(260)
   })
-  // 16 · what HR sees
-  await beat(15, async () => {
+  // 17 · what admin sees, in real time
+  await beat(16, async () => {
     await go('dashboard', 'admin')
     await glide(0)
     await point('#page-dashboard .tipq')
-    await pg.waitForTimeout(1600)
+    await pg.waitForTimeout(3000)
     await glide(360)
   })
-  // 17 · close
-  await beat(16, async () => {
+  // 18 · close
+  await beat(17, async () => {
     await go('home', 'manager')
-    await pg.waitForTimeout(2200)
-    await glideTo('#page-home .growth-grid-4', 120)
-    await pg.waitForTimeout(2600)
     await glide(0)
   })
 

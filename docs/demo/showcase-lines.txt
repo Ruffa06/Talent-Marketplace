@@ -3,20 +3,21 @@
 # single file back; cut.py re-measures the beats off it and re-cuts the film.
 # The lengths below are estimates at 168 wpm, not a target to hit.
 
-01  [9.3s]  Every year, Home Credit fills more than eight in ten roles from outside. The talent was already inside. It just had no way to be found.
-02  [8.6s]  Growth changes that. Four ways to move: a short gig, a developmental immersion, a service you offer the company yourself, and a permanent vacancy.
-03  [9.3s]  One path runs through all of them. Build a profile, get matched, apply, your manager signs off, do the work, and it goes on your record.
-04  [7.1s]  It starts with someone posting. A title, the work, and the skills it needs. Ten minutes, no requisition, no recruiter.
+01  [8.6s]  Home Credit fills more than eight in ten roles from outside. The talent was already inside. It just had no way to be found.
+02  [7.9s]  Growth changes that. Four ways to move: a short gig, a developmental immersion, a service you offer yourself, and a permanent vacancy.
+03  [8.2s]  One path runs through all of them. Profile, match, apply, your manager signs off, do the work, and it goes on your record.
+04  [6.4s]  It starts with someone posting. A title, the work, and the skills it needs. Ten minutes, no requisition.
 05  [5.4s]  Nothing goes live until HR approves it. Every post is reviewed before anyone sees it.
-06  [6.1s]  And nobody starts with an empty profile. HR has already loaded what the company knows about you.
-07  [9.3s]  Every skill shows where it came from. Verified by a manager, uploaded by HR, or added by you. You correct it. You don't begin from scratch.
-08  [8.2s]  Then every opportunity is scored against that profile, and it shows its reasoning. You see why you matched, and what you are missing.
-09  [6.4s]  And you don't have to come looking. Like LinkedIn, your top matches arrive in your inbox every week.
+06  [5.4s]  And nobody starts with an empty profile. HR has already loaded what the company knows.
+07  [10.0s]  Every skill shows where it came from. Verified by a manager, uploaded by HR from MyDevelopment, or added by you. You correct it. You don't begin from scratch.
+08  [7.5s]  Every opportunity is then scored against that profile, and it shows its reasoning. Why you matched, and what you are missing.
+09  [6.4s]  And you don't have to come looking. Like LinkedIn, your top matches arrive in your email every week.
 10  [4.6s]  The score never blocks you. A stretch is a choice, not a permission.
-11  [6.8s]  Applying takes one click, and your manager releases the time before anything starts. Nobody disappears from their day job.
-12  [7.5s]  You always know where you stand. In review, conversation scheduled, accepted. And if it is a no, you are told why.
-13  [7.1s]  The host sees what each applicant has actually finished, and who vouched for it. Evidence, not who they already know.
-14  [7.1s]  When the work ends, the host rates it, and that rating verifies the skill on your record. The loop closes.
-15  [5.0s]  Managers see their whole team's growth in one place, and who needs a nudge.
-16  [5.4s]  HR sees the whole company. What is posted, who is moving, and what it saved.
-17  [7.9s]  Sixteen internal hires. Five point six million pesos we did not spend on recruitment. This is Growth. Where talent meets opportunity, intelligently.
+11  [11.1s]  And it is not only about you. Anyone can nominate anyone. Spot a colleague who fits, put them forward in one click, and the top referrer each quarter wins a prize.
+12  [6.8s]  Applying takes one click, and your manager releases the time before anything starts. Nobody disappears from their day job.
+13  [6.1s]  You always know where you stand. In review, conversation scheduled, accepted. And a no comes with reasons.
+14  [6.1s]  The host sees what each applicant has actually finished, and who vouched for it. Evidence, not familiarity.
+15  [6.1s]  When the work ends, the host rates it, and that rating verifies the skill on your record.
+16  [5.0s]  Managers see their whole team's growth in one place, and who needs a nudge.
+17  [8.6s]  Admin sees in real time how many transactions are made, how many careers are impacted, and how much savings this means for Home Credit.
+18  [2.9s]  This is Growth. Where talent meets opportunity, intelligently.
