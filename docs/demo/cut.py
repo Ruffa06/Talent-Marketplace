@@ -12,11 +12,17 @@ capture by differencing the caption strip frame to frame, and every beat is
 then time-stretched to the length of its spoken line. Boundaries land within
 a frame or two of the narration.
 
-    python3 docs/demo/cut.py <raw.webm> <narration.mp3|-> <out-dir> [recorder.js]
+    python3 docs/demo/cut.py [--music bed.wav] \
+        <raw.webm> <narration.mp3|-> <out-dir> [recorder.js]
 
 Pass "-" for the narration to cut the silent captioned film on its own, which
 is what you do before the voice comes back. The recorder defaults to
 record.js; name record-showcase.js to cut the long one.
+
+--music lays an instrumental bed under the voice: 13 dB down, then ducked a
+further 7-8 dB by a compressor the narration drives, so it sits ~14 dB under
+her in the gaps between lines and ~22 dB under inside them. Generate one the
+length of the narration with music.py. The whole mix lands at -16 LUFS.
 """
 import json, re, shutil, subprocess, sys, os
 
@@ -75,8 +81,14 @@ def transitions(path, n):
 
 
 def main():
-    raw, voice, out = sys.argv[1], sys.argv[2], sys.argv[3]
-    recorder = sys.argv[4] if len(sys.argv) > 4 else os.path.join(HERE, 'record.js')
+    argv = sys.argv[1:]
+    music = None
+    if '--music' in argv:
+        i = argv.index('--music')
+        music = argv[i + 1]
+        del argv[i:i + 2]
+    raw, voice, out = argv[0], argv[1], argv[2]
+    recorder = argv[3] if len(argv) > 3 else os.path.join(HERE, 'record.js')
     stem = 'growth-showcase' if 'showcase' in os.path.basename(recorder) \
         else 'growth-walkthrough'
     B = beats(recorder)
@@ -101,10 +113,25 @@ def main():
         '-r', '25', '-c:v', 'libx264', '-preset', 'slow', '-crf', '22',
         '-pix_fmt', 'yuv420p', '-movflags', '+faststart', silent)
     if voice != '-':
-        run('-i', silent, '-i', voice, '-af',
-            'loudnorm=I=-16:TP=-1.5:LRA=11,aresample=48000', '-ac', '2',
-            '-c:v', 'copy', '-c:a', 'aac', '-b:a', '160k', '-shortest',
-            '-movflags', '+faststart', os.path.join(out, stem + '.mp4'))
+        film = os.path.join(out, stem + '.mp4')
+        if music:
+            # The voice drives the duck AND is mixed in, so it needs splitting.
+            mix = ('[1:a]loudnorm=I=-16:TP=-1.5:LRA=11,aresample=48000,'
+                   'pan=stereo|c0=c0|c1=c0,asplit=2[vo][key];'
+                   '[2:a]aresample=48000,volume=-13dB[bed];'
+                   '[bed][key]sidechaincompress=threshold=0.02:ratio=6:'
+                   'attack=20:release=250[duck];'
+                   '[duck][vo]amix=inputs=2:normalize=0:duration=shortest[sum];'
+                   '[sum]loudnorm=I=-16:TP=-1.5:LRA=11,aresample=48000[a]')
+            run('-i', silent, '-i', voice, '-i', music,
+                '-filter_complex', mix, '-map', '0:v', '-map', '[a]',
+                '-c:v', 'copy', '-c:a', 'aac', '-b:a', '192k', '-shortest',
+                '-movflags', '+faststart', film)
+        else:
+            run('-i', silent, '-i', voice, '-af',
+                'loudnorm=I=-16:TP=-1.5:LRA=11,aresample=48000', '-ac', '2',
+                '-c:v', 'copy', '-c:a', 'aac', '-b:a', '160k', '-shortest',
+                '-movflags', '+faststart', film)
 
     # the boundaries, re-read off the finished cut
     got = transitions(silent, len(B))

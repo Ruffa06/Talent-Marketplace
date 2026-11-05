@@ -1,4 +1,4 @@
-/* Growth — the showcase film (2:01).
+/* Growth — the showcase film (2:08).
 
    The longer cut, for an audience meeting the product for the first time: it
    opens on the problem, walks the whole journey once in order — post, HR
@@ -16,24 +16,24 @@ const film = require('./film')
 const OUT = process.argv[2]
 
 const BEATS = [
-  { t: 8571, cap: 'Home Credit fills more than 8 in 10 roles from outside.\nThe talent was already inside.' },
-  { t: 7857, cap: 'Four ways to move — a gig, an immersion,\na service offer, and a permanent vacancy.' },
-  { t: 8214, cap: 'One path through all of them: profile, match, apply,\nsign-off, the work, on record.' },
-  { t: 6429, cap: 'It starts with someone posting —\nten minutes, no requisition.' },
-  { t: 5357, cap: 'Nothing goes live until HR approves it.' },
-  { t: 5357, cap: 'Nobody starts with an empty profile — HR has already\nloaded what the company knows.' },
-  { t: 10000, cap: 'Verified by a manager, uploaded by HR from MyDevelopment,\nor added by you. You don\u2019t begin from scratch.' },
-  { t: 7500, cap: 'Every opportunity is scored against that profile —\nand it shows its reasoning.' },
-  { t: 6429, cap: 'Like LinkedIn, your top matches\narrive in your email every week.' },
-  { t: 4643, cap: 'The score never blocks you.\nA stretch is a choice, not a permission.' },
-  { t: 11071, cap: 'Anyone can nominate anyone — and the top referrer\neach quarter wins a prize.' },
-  { t: 6786, cap: 'One click to apply — and your manager releases\nthe time before anything starts.' },
-  { t: 6071, cap: 'You always know where you stand — in review,\nscheduled, accepted, and a no comes with reasons.' },
-  { t: 6071, cap: 'The host chooses on evidence — what you finished,\nand who vouched for it.' },
-  { t: 6071, cap: 'The host rates the work, and that rating\nverifies the skill on your record.' },
-  { t: 5000, cap: "Managers see their whole team's growth\nin one place." },
-  { t: 8571, cap: 'Admin sees it in real time — transactions made,\ncareers impacted, and what it saved Home Credit.' },
-  { t: 2857, cap: 'This is Growth — where talent meets\nopportunity, intelligently.' },
+  { t: 7768, cap: 'Home Credit fills more than 8 in 10 roles from outside.\nThe talent was already inside.' },
+  { t: 8093, cap: 'Four ways to move — a gig, an immersion,\na service offer, and a permanent vacancy.' },
+  { t: 8007, cap: 'One path through all of them: profile, match, apply,\nsign-off, the work, on record.' },
+  { t: 7476, cap: 'It starts with someone posting —\nten minutes, no requisition.' },
+  { t: 5867, cap: 'Nothing goes live until HR approves it.' },
+  { t: 5672, cap: 'Nobody starts with an empty profile — HR has already\nloaded what the company knows.' },
+  { t: 10357, cap: 'Verified by a manager, uploaded by HR from MyDevelopment,\nor added by you. You don\u2019t begin from scratch.' },
+  { t: 7641, cap: 'Every opportunity is scored against that profile —\nand it shows its reasoning.' },
+  { t: 5826, cap: 'Like LinkedIn, your top matches\narrive in your email every week.' },
+  { t: 4969, cap: 'The score never blocks you.\nA stretch is a choice, not a permission.' },
+  { t: 10725, cap: 'Anyone can nominate anyone — and the top referrer\neach quarter wins a prize.' },
+  { t: 7679, cap: 'One click to apply — and your manager releases\nthe time before anything starts.' },
+  { t: 7673, cap: 'You always know where you stand — in review,\nscheduled, accepted, and a no comes with reasons.' },
+  { t: 7055, cap: 'The host chooses on evidence — what you finished,\nand who vouched for it.' },
+  { t: 5108, cap: 'The host rates the work, and that rating\nverifies the skill on your record.' },
+  { t: 4853, cap: "Managers see their whole team's growth\nin one place." },
+  { t: 8214, cap: 'Admin sees it in real time — transactions made,\ncareers impacted, and what it saved Home Credit.' },
+  { t: 5147, cap: 'This is Growth — where talent meets\nopportunity, intelligently.' },
 ]
 
 ;(async () => {
